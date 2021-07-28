@@ -16,6 +16,7 @@ app.use(express.json());
 
 // Definimos rutas 
 app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 // Abrimos la aplicacion en el puerto 3000
 app.listen(process.env.PORT, () => {
