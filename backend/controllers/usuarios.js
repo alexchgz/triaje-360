@@ -4,13 +4,13 @@ const bcrypt = require('bcryptjs');
 
 const getUsuarios = async(req, res) => {
 
-    try {
-        // parametros para la paginacion
-        // si no es un numero lo pone a 0
-        const desde = Number(req.query.desde) || 0;
-        // cantidad de registros que vamos a mostrar por pagina
-        const registropp = Number(process.env.DOCSPERPAGE);
+    // parametros para la paginacion ->
+    // si no es un numero lo pone a 0
+    const desde = Number(req.query.desde) || 0;
+    // cantidad de registros que vamos a mostrar por pagina
+    const registropp = Number(process.env.DOCSPERPAGE);
 
+    try {
         // usamos Promise.all para realizar las consultas de forma paralela
         const [usuarios, totalUsuarios] = await Promise.all([
             // consulta con los parametros establecidos
