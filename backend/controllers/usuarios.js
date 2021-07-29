@@ -7,9 +7,9 @@ const getUsuarios = async(req, res) => {
     try {
         // parametros para la paginacion
         // si no es un numero lo pone a 0
-        const desde = Number(req.query.desde) || process.env.DOCSPERPAGE;
+        const desde = Number(req.query.desde) || 0;
         // cantidad de registros que vamos a mostrar por pagina
-        const registropp = 2;
+        const registropp = Number(process.env.DOCSPERPAGE);
 
         // usamos Promise.all para realizar las consultas de forma paralela
         const [usuarios, totalUsuarios] = await Promise.all([
