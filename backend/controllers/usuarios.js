@@ -7,7 +7,7 @@ const getUsuarios = async(req, res) => {
     try {
         // parametros para la paginacion
         // si no es un numero lo pone a 0
-        const desde = Number(req.query.desde) || 0;
+        const desde = Number(req.query.desde) || process.env.DOCSPERPAGE;
         // cantidad de registros que vamos a mostrar por pagina
         const registropp = 2;
 
