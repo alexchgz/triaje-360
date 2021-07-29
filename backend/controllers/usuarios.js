@@ -3,12 +3,41 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const getUsuarios = async(req, res) => {
-    const usuarios = await Usuario.find({});
-    res.json({
-        ok: true,
-        msg: 'getUsuarios',
-        usuarios
-    });
+
+    try {
+        // parametros para la paginacion
+        // si no es un numero lo pone a 0
+        const desde = Number(req.query.desde) || 0;
+        // cantidad de registros que vamos a mostrar por pagina
+        const registropp = 2;
+
+        // usamos Promise.all para realizar las consultas de forma paralela
+        const [usuarios, totalUsuarios] = await Promise.all([
+            // consulta con los parametros establecidos
+            Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(registropp),
+            // consulta para obtener el numero total de usuarios
+            Usuario.countDocuments()
+        ]);
+
+        res.json({
+            ok: true,
+            msg: 'getUsuarios',
+            usuarios,
+            // recogemos los datos de la página para mostrarlos en la respuesta
+            page: {
+                desde,
+                registropp,
+                totalUsuarios
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            ok: false,
+            msg: 'error obteniendo usuarios'
+        })
+    }
 }
 
 const crearUsuario = async(req, res = response) => {
