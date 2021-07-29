@@ -1,7 +1,6 @@
 const Usuario = require('../models/usuarios');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
-const validator = require('mongoose').Types.ObjectId;
 
 const getUsuarios = async(req, res) => {
 
@@ -18,14 +17,6 @@ const getUsuarios = async(req, res) => {
         var usuarios, totalUsuarios;
 
         if (id) { // si nos pasan un id
-            // comprobamos que sea un id de mongo
-            if (!validator.isValid(id)) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'el id debe ser válido'
-                });
-            }
-
             // usamos Promise.all para realizar las consultas de forma paralela
             [usuarios, totalUsuarios] = await Promise.all([
                 // buscamos por el id
@@ -68,10 +59,10 @@ const getUsuarios = async(req, res) => {
 
 const crearUsuario = async(req, res = response) => {
 
-    const { email, password, rol } = req.body;
+    const { email, password } = req.body;
 
     try {
-        //comprobamos si ya existe el correo
+        // comprobamos si ya existe el correo
         const existeEmail = await Usuario.findOne({ email: email });
         if (existeEmail) {
             return res.status(400).json({
@@ -80,12 +71,15 @@ const crearUsuario = async(req, res = response) => {
             });
         }
 
-        //ciframos password
+        // ciframos password
         const salt = bcrypt.genSaltSync(); // generamos salt
         const cpassword = bcrypt.hashSync(password, salt); // ciframos
 
-        //almacenamos los datos en la BBDD
-        const usuario = new Usuario(req.body);
+        // sacamos el campo alta del req.body para que no nos la puedan mandar
+        const { alta, ...object } = req.body;
+
+        // creamos el usuario y lo almacenamos los datos en la BBDD
+        const usuario = new Usuario(object);
         usuario.password = cpassword;
         await usuario.save();
 
@@ -106,7 +100,7 @@ const crearUsuario = async(req, res = response) => {
 const actualizarUsuario = async(req, res) => {
 
     //obtenemos parametros asegurandonos de dejar fuera la password, ya que para modificarla se hace en otra llamada especifica para ello
-    const { email, password, ...object } = req.body;
+    const { email, password, alta, ...object } = req.body;
     const uid = req.params.id;
 
     try {
