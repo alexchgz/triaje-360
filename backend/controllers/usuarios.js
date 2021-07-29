@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuarios');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
+const validator = require('mongoose').Types.ObjectId;
 
 const getUsuarios = async(req, res) => {
 
@@ -10,14 +11,39 @@ const getUsuarios = async(req, res) => {
     // cantidad de registros que vamos a mostrar por pagina
     const registropp = Number(process.env.DOCSPERPAGE);
 
+    // recogemos un parametro para poder buscar tambien por id
+    const id = req.query.id;
+
     try {
-        // usamos Promise.all para realizar las consultas de forma paralela
-        const [usuarios, totalUsuarios] = await Promise.all([
-            // consulta con los parametros establecidos
-            Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(registropp),
-            // consulta para obtener el numero total de usuarios
-            Usuario.countDocuments()
-        ]);
+        var usuarios, totalUsuarios;
+
+        if (id) { // si nos pasan un id
+            // comprobamos que sea un id de mongo
+            if (!validator.isValid(id)) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'el id debe ser válido'
+                });
+            }
+
+            // usamos Promise.all para realizar las consultas de forma paralela
+            [usuarios, totalUsuarios] = await Promise.all([
+                // buscamos por el id
+                Usuario.findById(id),
+                // consulta para obtener el numero total de usuarios
+                Usuario.countDocuments()
+            ]);
+
+        } else { // si no nos pasan el id
+
+            // usamos Promise.all para realizar las consultas de forma paralela
+            [usuarios, totalUsuarios] = await Promise.all([
+                // consulta con los parametros establecidos
+                Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(registropp),
+                // consulta para obtener el numero total de usuarios
+                Usuario.countDocuments()
+            ]);
+        }
 
         res.json({
             ok: true,
