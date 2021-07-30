@@ -38,7 +38,7 @@ const getUsuarios = async(req, res) => {
 
         res.json({
             ok: true,
-            msg: 'getUsuarios',
+            msg: 'Usuarios obtenidos',
             usuarios,
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
@@ -85,7 +85,7 @@ const crearUsuario = async(req, res = response) => {
 
         res.json({
             ok: true,
-            msg: 'crearUsuario',
+            msg: 'Usuario creado',
             usuario
         });
     } catch (error) {

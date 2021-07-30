@@ -30,8 +30,8 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
-    check('nombre', 'El argumento nombre es obligatorio').not().isEmpty(),
-    check('apellidos', 'El argumento apellidos es obligatorio').not().isEmpty(),
+    check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
+    check('apellidos', 'El argumento apellidos es obligatorio').not().isEmpty().trim(),
     check('email', 'El argumento email es obligatorio').not().isEmpty(),
     check('email', 'El argumento debe ser un email').isEmail(),
     check('id', 'El identificador no es válido').isMongoId(),
