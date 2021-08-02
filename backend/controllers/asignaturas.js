@@ -171,12 +171,11 @@ const actualizarAsignatura = async(req, res = response) => {
                 });
             }
 
-            // si se han pasado todos los filtros almacenamos la asignatura
-            const asignatura = new Asignatura(req.body);
-            // sustituimos campo por lista
-            asignatura.profesores = profesInsertar;
-            // guardamos en BD
-            await asignatura.save();
+            // si se han pasado todos los filtros actualizamos la asignatura
+            const object = req.body;
+            object.profesores = profesInsertar;
+            const asignatura = await Asignatura.findByIdAndUpdate(uid, object, { new: true });
+
 
             res.json({
                 ok: true,
@@ -208,7 +207,7 @@ const borrarAsignatura = async(req, res = response) => {
             });
         }
 
-        const resultado = await Usuario.findByIdAndRemove(uid);
+        const resultado = await Asignatura.findByIdAndRemove(uid);
 
         res.json({
             ok: true,
