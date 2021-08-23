@@ -1,3 +1,7 @@
-<h1>HOLA MUNDO!!</h1>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div class="h-100">
+  <app-color-switcher *ngIf="isMultiColorActive"></app-color-switcher>
+  <router-outlet></router-outlet>
+</div>
+
+
+
