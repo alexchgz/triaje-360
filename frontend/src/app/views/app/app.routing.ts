@@ -56,7 +56,7 @@ const routes: Routes = [
         path: 'exercises',
         loadChildren: () =>
           import('./exercises/exercises.module').then((m) => m.ExercisesModule),
-          data: { roles: [UserRole.Admin, UserRole.Teacher] },
+          data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
       },
       {
         path: 'ui',

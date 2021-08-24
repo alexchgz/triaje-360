@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { from } from 'rxjs';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 import { getUserRole } from 'src/app/utils/util';
 
 export interface ISignInCredentials {
   email: string;
   password: string;
+}
+
+export interface ILoginCredentials {
+  email: string;
+  password: string;
+  rol: string;
 }
 
 export interface ICreateCredentials {
@@ -22,7 +34,7 @@ export interface IPasswordReset {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: AngularFireAuth) {}
+  constructor(private auth: AngularFireAuth, private http: HttpClient) {}
 
   // tslint:disable-next-line:typedef
   signIn(credentials: ISignInCredentials) {
@@ -31,6 +43,22 @@ export class AuthService {
       .then(({ user }) => {
         return user;
       });
+  }
+
+  login(credentials: ILoginCredentials){
+    //console.log('login desde usuario.service',formData);
+
+    return this.http.post(`${environment.base_url}/login`, credentials)
+    .pipe(
+      tap( (res:any)=> {
+        //console.log(res);
+          localStorage.setItem('token', res['token']);
+          localStorage.setItem('uid', res['id']);
+          localStorage.setItem('rol', res['rol']);
+          console.log('Se ha hecho login');
+          //console.log(res['rol']);
+      })
+    );
   }
 
   signOut = () => from(this.auth.signOut());

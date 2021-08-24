@@ -58,19 +58,28 @@ export const setThemeLang = (lang) => {
 }
 
 export const getUserRole = () => {
-  let role = environment.defaultRole;
-  try {
-      role = localStorage.getItem('theme_user_role') || environment.defaultRole;
-  } catch (error) {
-      console.log(">>>> src/app/utils/util.js : getUserRole -> error", error)
-      role = environment.defaultRole
-  }
-  return role;
+    let role = environment.defaultRole;
+    let apiRol = 0;
+    try {
+        role = localStorage.getItem('rol') || environment.defaultRole;
+        console.log('ROL: ' + role);
+        if (role == 'ROL_ADMIN') {
+            apiRol = 0;
+        } else if (role == 'ROL_PROFESOR') {
+            apiRol = 1;
+        } else if (role == 'ROL_ALUMNO') {
+            apiRol = 2;
+        }
+    } catch (error) {
+        console.log(">>>> src/app/utils/util.js : getUserRole -> error", error)
+        role = environment.defaultRole
+    }
+    return apiRol;
 }
 export const setUserRole = (role) => {
-  try {
-      localStorage.setItem('theme_user_role', role);
-  } catch (error) {
-      console.log(">>>> src/app/utils/util.js : setUserRole -> error", role)
-  }
+    try {
+        localStorage.setItem('theme_user_role', role);
+    } catch (error) {
+        console.log(">>>> src/app/utils/util.js : setUserRole -> error", role)
+    }
 }

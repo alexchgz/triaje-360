@@ -40,4 +40,49 @@ export class LoginComponent {
       }
     }
   }
+
+  login() {
+
+    if(!this.loginForm.valid){
+      //console.log('errores en el formulario');
+      return;
+    } //si es valido
+
+    // if (this.buttonDisabled) {
+    //   this.buttonDisabled = true;
+    //   this.buttonState = 'show-spinner';
+      this.authService.login(this.loginForm.value).subscribe(res =>{
+          this.router.navigate([environment.adminRoot]);
+        },(error) => {
+          //mostrar mensaje de error en pantalla con sweetalert2
+          console.log('No se ha podido hacer login');
+          this.buttonDisabled = false;
+          this.buttonState = '';
+          this.notifications.create('Error', error.message, NotificationType.Bare, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+      });
+    // }
+  }
+  // if (this.loginForm.valid) {
+  //   if (this.buttonDisabled) {
+
+  //     this.buttonDisabled = true;
+  //     this.buttonState = 'show-spinner';
+  //     this.authService.signIn(this.loginForm.value).then(() => {
+  //       this.router.navigate([environment.adminRoot]);
+  //     }).catch((error) => {
+  //       this.buttonDisabled = false;
+  //       this.buttonState = '';
+  //       this.notifications.create('Error', error.message, NotificationType.Bare, {
+  //         theClass: 'outline primary',
+  //         timeOut: 6000,
+  //         showProgressBar: false
+  //       });
+  //     });
+  //   }
+  // }
+
 }
