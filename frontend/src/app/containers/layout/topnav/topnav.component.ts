@@ -125,7 +125,10 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
   onSignOut(): void {
     this.authService.signOut().subscribe(() => {
-      this.router.navigate(['/']);
+      localStorage.removeItem('token');
+      localStorage.removeItem('rol');
+      localStorage.removeItem('uid');
+      this.router.navigate(['/user/login']);
     });
   }
 
