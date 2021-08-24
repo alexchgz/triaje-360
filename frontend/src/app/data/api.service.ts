@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpParams
+  HttpParams,
+  HttpHeaders
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { emailsMatch } from '../containers/form-validations/custom.validators';
 
 export interface IProduct {
   id: number;
@@ -27,6 +29,24 @@ export interface IProductResponse {
   totalPage: number;
   pageSize: string;
   currentPage: string;
+}
+
+export interface IUser {
+  rol: string;
+  uid: number;
+  nombre: string;
+  apellidos: string;
+  email: string;
+}
+
+export interface IUserResponse {
+  usuarios: IUser[];
+  ok: boolean;
+  msg: string;
+  // totalItem: number;
+  // totalPage: number;
+  // pageSize: string;
+  // currentPage: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -52,4 +72,29 @@ export class ApiService {
         })
       );
   }
+
+  getUsers() {
+    const url = environment.base_url + '/usuarios';
+    const token = localStorage.getItem('token');
+    // let params = new HttpParams();
+    // params = params.append('pageSize', pageSize + '');
+    // params = params.append('currentPage', currentPage + '');
+    // params = params.append('search', search);
+    // params = params.append('orderBy', orderBy);
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers })
+      .pipe(
+        map((res: IUserResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
 }
