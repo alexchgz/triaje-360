@@ -43,10 +43,10 @@ export interface IUserResponse {
   usuarios: IUser[];
   ok: boolean;
   msg: string;
-  // totalItem: number;
+  totalUsuarios: number;
   // totalPage: number;
-  // pageSize: string;
-  // currentPage: string;
+  pageSize: string;
+  currentPage: string;
 }
 
 @Injectable({ providedIn: 'root' })

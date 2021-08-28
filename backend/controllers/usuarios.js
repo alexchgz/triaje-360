@@ -43,6 +43,9 @@ const getUsuarios = async(req, res) => {
             ok: true,
             msg: 'Usuarios obtenidos',
             usuarios,
+            totalUsuarios,
+            pageSize,
+            currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
                 desde,

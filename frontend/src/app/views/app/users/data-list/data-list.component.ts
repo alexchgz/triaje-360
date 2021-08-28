@@ -35,7 +35,7 @@ export class DataListComponent implements OnInit {
       this.selected = [];
       return false;
     }));
-    console.log(this.selected);
+    //console.log(this.selected);
   }
 
 
@@ -80,7 +80,7 @@ export class DataListComponent implements OnInit {
 
     this.apiService.getUsers(pageSize, currentPage).subscribe(
       data => {
-        if (data != undefined) {
+        if (data.ok) {
           this.isLoading = false;
           this.data = data.usuarios.map(x => {
             return {
@@ -88,8 +88,9 @@ export class DataListComponent implements OnInit {
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
-          // this.totalItem = data.totalItem;
-          // this.totalPage = data.totalPage;
+          this.totalItem = data.totalUsuarios;
+          //console.log(this.totalItem);
+          //this.totalPage = data.totalPage;
           this.setSelectAllState();
         } else {
           this.endOfTheList = true;
@@ -142,9 +143,11 @@ export class DataListComponent implements OnInit {
     this.setSelectAllState();
   }
 
-  // pageChanged(event: any): void {
-  //   this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
-  // }
+  pageChanged(event: any): void {
+    //this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
+    console.log('CAMBIO PAGINA');
+    this.cargarUsuarios(this.itemsPerPage, event.page);
+  }
 
   itemsPerPageChange(perPage: number): void {
     this.cargarUsuarios(perPage, 1);

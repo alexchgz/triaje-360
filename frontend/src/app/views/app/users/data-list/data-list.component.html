@@ -98,7 +98,7 @@
     </div>
 
     <div class="col-12">
-        <pagination [totalItems]="totalItem" [itemsPerPage]="itemsPerPage" [rotate]="true" [maxSize]="5" [(ngModel)]="currentPage" class="justify-content-center" [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
+        <pagination [totalItems]="totalItem" [itemsPerPage]="itemsPerPage" [rotate]="true" [maxSize]="5" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" class="justify-content-center" [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
         </pagination>
     </div>
 </div>
