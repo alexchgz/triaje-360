@@ -33,7 +33,7 @@ const getUsuarios = async(req, res) => {
             // usamos Promise.all para realizar las consultas de forma paralela
             [usuarios, totalUsuarios] = await Promise.all([
                 // consulta con los parametros establecidos
-                Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(pageSize),
+                Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize),
                 // consulta para obtener el numero total de usuarios
                 Usuario.countDocuments()
             ]);

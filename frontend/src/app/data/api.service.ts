@@ -31,12 +31,20 @@ export interface IProductResponse {
   currentPage: string;
 }
 
+export interface ISchoolYear {
+  id: number;
+  activo: boolean;
+  nombre: string;
+  nombrecorto: string;
+}
+
 export interface IUser {
   rol: string;
   uid: number;
   nombre: string;
   apellidos: string;
   email: string;
+  curso: ISchoolYear;
 }
 
 export interface IUserResponse {

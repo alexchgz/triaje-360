@@ -22,6 +22,7 @@ export class DataListComponent implements OnInit {
   endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
+  itemYear = '20/21';
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewProductModalComponent;

@@ -9,7 +9,7 @@ const CursoSchema = Schema({
     nombrecorto: {
         type: String,
         require: true,
-        unique: true
+        //unique: true
     },
     activo: {
         type: Boolean,

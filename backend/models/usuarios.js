@@ -19,8 +19,10 @@ const UsuarioSchema = Schema({
         type: String,
         require: true
     },
-    imagen: {
-        type: String
+    curso: {
+        type: Schema.Types.ObjectId,
+        ref: 'Curso',
+        require: true
     },
     rol: {
         type: String,
