@@ -6,9 +6,12 @@ const getUsuarios = async(req, res) => {
 
     // parametros para la paginacion ->
     // si no es un numero lo pone a 0
-    const desde = Number(req.query.desde) || 0;
+    //const desde = Number(req.query.desde) || 0;
     // cantidad de registros que vamos a mostrar por pagina
-    const registropp = Number(process.env.DOCSPERPAGE);
+    //const registropp = Number(process.env.DOCSPERPAGE);
+    const currentPage = Number(req.query.currentPage);
+    const pageSize = Number(req.query.pageSize) || 0;
+    const desde = (currentPage - 1) * pageSize;
 
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
@@ -30,7 +33,7 @@ const getUsuarios = async(req, res) => {
             // usamos Promise.all para realizar las consultas de forma paralela
             [usuarios, totalUsuarios] = await Promise.all([
                 // consulta con los parametros establecidos
-                Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(registropp),
+                Usuario.find({}, 'nombre apellidos email rol').skip(desde).limit(pageSize),
                 // consulta para obtener el numero total de usuarios
                 Usuario.countDocuments()
             ]);
@@ -43,7 +46,7 @@ const getUsuarios = async(req, res) => {
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
                 desde,
-                registropp,
+                currentPage,
                 totalUsuarios
             }
         });

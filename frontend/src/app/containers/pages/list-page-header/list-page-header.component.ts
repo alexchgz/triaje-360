@@ -7,6 +7,7 @@ import { Component,  ViewChild, EventEmitter, Output, Input } from '@angular/cor
 export class ListPageHeaderComponent {
   displayOptionsCollapsed = false;
 
+  @Input() showSchoolYears = true;
   @Input() showOrderBy = true;
   @Input() showSearch = true;
   @Input() showItemsPerPage = true;
@@ -20,6 +21,11 @@ export class ListPageHeaderComponent {
     { label: 'Product Name', value: 'title' },
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
+  @Input() itemYear = { label: '20/21', value: '20/21' };
+  @Input()  itemOptionsYears = [
+    { label: '19/20', value: '19/20' },
+    { label: '20/21', value: '20/21' },
+    { label: '21/22', value: '21/22' }];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addNewItem: EventEmitter<any> = new EventEmitter();

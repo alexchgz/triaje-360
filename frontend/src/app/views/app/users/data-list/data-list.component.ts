@@ -15,7 +15,7 @@ export class DataListComponent implements OnInit {
   selected: IUser[] = [];
   data: IUser[] = [];
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 2;
   search = '';
   orderBy = '';
   isLoading: boolean;
@@ -41,7 +41,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
-    this.cargarUsuarios();
+    this.cargarUsuarios(this.itemsPerPage, this.currentPage);
   }
 
   // loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
@@ -73,9 +73,12 @@ export class DataListComponent implements OnInit {
   //   );
   // }
 
-  cargarUsuarios(): void {
+  cargarUsuarios(pageSize: number, currentPage: number): void {
 
-    this.apiService.getUsers().subscribe(
+    this.itemsPerPage = pageSize;
+    this.currentPage = currentPage;
+
+    this.apiService.getUsers(pageSize, currentPage).subscribe(
       data => {
         if (data != undefined) {
           this.isLoading = false;
@@ -143,9 +146,9 @@ export class DataListComponent implements OnInit {
   //   this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
   // }
 
-  // itemsPerPageChange(perPage: number): void {
-  //   this.loadData(perPage, 1, this.search, this.orderBy);
-  // }
+  itemsPerPageChange(perPage: number): void {
+    this.cargarUsuarios(perPage, 1);
+  }
 
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);

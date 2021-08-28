@@ -73,12 +73,12 @@ export class ApiService {
       );
   }
 
-  getUsers() {
+  getUsers(pageSize: number, currentPage: number) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
-    // let params = new HttpParams();
-    // params = params.append('pageSize', pageSize + '');
-    // params = params.append('currentPage', currentPage + '');
+    let params = new HttpParams();
+    params = params.append('pageSize', pageSize + '');
+    params = params.append('currentPage', currentPage + '');
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 
@@ -86,7 +86,7 @@ export class ApiService {
     headers = headers.append('x-token', token);
     //console.log(url);
     //console.log(token);
-    return this.http.get(url, { headers })
+    return this.http.get(url, { headers, params })
       .pipe(
         map((res: IUserResponse) => {
           return res;
