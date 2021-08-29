@@ -38,6 +38,13 @@ export interface ISchoolYear {
   nombrecorto: string;
 }
 
+export interface ISchoolYearResponse {
+  cursos: ISchoolYear[];
+  ok: boolean;
+  msg: string;
+  totalCursos: number;
+}
+
 export interface IUser {
   rol: string;
   uid: number;
@@ -88,7 +95,7 @@ export class ApiService {
     params = params.append('pageSize', pageSize + '');
     params = params.append('currentPage', currentPage + '');
     params = params.append('schoolYear', schoolYear + '');
-    console.log(params);
+    //console.log(params);
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 
@@ -99,6 +106,25 @@ export class ApiService {
     return this.http.get(url, { headers, params })
       .pipe(
         map((res: IUserResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
+  getSchoolYears() {
+    const url = environment.base_url + '/cursos';
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers })
+      .pipe(
+        map((res: ISchoolYearResponse) => {
           return res;
         }),
         catchError(errorRes => {

@@ -1,11 +1,19 @@
-import { Component,  ViewChild, EventEmitter, Output, Input } from '@angular/core';
+import { Component,  ViewChild, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/data/api.service';
+import { ISchoolYear } from 'src/app/data/api.service';
+import { ISchoolYearResponse } from '../../../data/api.service';
+
 
 @Component({
   selector: 'app-list-page-header',
   templateUrl: './list-page-header.component.html'
 })
-export class ListPageHeaderComponent {
+export class ListPageHeaderComponent implements OnInit {
   displayOptionsCollapsed = false;
+  data: ISchoolYear[] = [];
+  isLoading: boolean;
+  endOfTheList = false;
+  itemOptionsYears: ISchoolYear[];
 
   @Input() showSchoolYears = true;
   @Input() showOrderBy = true;
@@ -21,12 +29,7 @@ export class ListPageHeaderComponent {
     { label: 'Product Name', value: 'title' },
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
-  @Input() itemYear = { label: 'All', value: '' };
-  @Input()  itemOptionsYears = [
-    { label: 'All', value: '', uid: '' },
-    { label: '19/20', value: '19/20', uid: '612a9102d5e8413c68f28e10' },
-    { label: '20/21', value: '20/21', uid: '612a911cd5e8413c68f28e14' },
-    { label: '21/22', value: '21/22', uid: '612a9133d5e8413c68f28e18' }];
+  @Input() itemYear = { nombrecorto: 'All', value: '' };
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addNewItem: EventEmitter<any> = new EventEmitter();
@@ -37,9 +40,37 @@ export class ListPageHeaderComponent {
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
+  ngOnInit(): void {
+    this.loadSchoolYears();
+  }
 
+  loadSchoolYears(): void {
+
+    this.apiService.getSchoolYears().subscribe(
+      data => {
+        if (data.ok) {
+          //console.log(data.usuarios);
+          this.isLoading = false;
+          this.data = data.cursos.map(x => {
+            return {
+              ...x,
+              // img: x.img.replace('/img/', '/img/products/')
+            };
+          });
+          this.itemOptionsYears = data.cursos;
+          this.itemOptionsYears.unshift({ nombrecorto: 'All', uid: 0, nombre: 'All', activo: false});
+          //console.log(this.itemOptionsYears);
+        } else {
+          this.endOfTheList = true;
+        }
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
+  }
 
   onSelectDisplayMode(mode: string): void {
     this.changeDisplayMode.emit(mode);
@@ -56,6 +87,7 @@ export class ListPageHeaderComponent {
 
   onChangeSchoolYear(item): void {
     this.itemYear = item;
+    //console.log(this.itemYear);
     this.schoolYearChange.emit(item);
   }
 

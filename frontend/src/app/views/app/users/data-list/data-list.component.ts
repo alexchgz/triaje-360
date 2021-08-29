@@ -158,7 +158,7 @@ export class DataListComponent implements OnInit {
   }
 
   schoolYearChange(year: ISchoolYear): void {
-    console.log(year.uid);
+    //console.log(year.uid);
     this.itemYear = year.uid;
     this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
   }
