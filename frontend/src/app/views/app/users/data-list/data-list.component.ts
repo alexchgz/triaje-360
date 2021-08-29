@@ -165,7 +165,7 @@ export class DataListComponent implements OnInit {
   }
 
   dropUsers(users: IUser[]): void {
-    console.log(users);
+    //console.log(users);
     for(let i=0; i<users.length; i++){
       this.apiService.dropUser(users[i].uid).subscribe(
         data => {
@@ -176,6 +176,19 @@ export class DataListComponent implements OnInit {
         }
       );
     }
+  }
+
+  dropUser(user: IUser): void {
+    console.log(user);
+      this.apiService.dropUser(user.uid).subscribe(
+        data => {
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+
   }
 
   // changeOrderBy(item: any): void {

@@ -3,7 +3,7 @@
 </app-list-page-header>
 <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal>
 
-<context-menu #basicMenu>
+<!-- <context-menu #basicMenu>
     <ng-template contextMenuItem let-item>
         <i class="simple-icon-docs mr-1"></i> <span>Copy</span>
     </ng-template>
@@ -13,7 +13,7 @@
     <ng-template contextMenuItem let-item>
         <i class="simple-icon-trash mr-1"></i><span>Delete</span>
     </ng-template>
-</context-menu>
+</context-menu> -->
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
@@ -28,6 +28,8 @@
                     <div class="w-15 w-xs-100">
                         <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.rol}}</span>
                     </div>
+                    <i class="simple-icon-pencil"></i>
+                    <i class="simple-icon-trash" (click)="dropUser(p)"></i>
                 </div>
                 <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
@@ -35,6 +37,9 @@
           <label class="custom-control-label" [for]="'customCheck'+i"></label>
                 </label>
             </div>
+            <!-- <div class="iconos">
+
+            </div> -->
         </div>
     </div>
 
