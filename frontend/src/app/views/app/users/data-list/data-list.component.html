@@ -1,5 +1,5 @@
 <app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[2,3,5]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)">
+    (itemsPerPageChange)="itemsPerPageChange($event)" (schoolYearChange)="schoolYearChange($event)">
 </app-list-page-header>
 <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal>
 
@@ -21,9 +21,9 @@
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
-            {{p.nombre}}
+            {{p.nombre}} {{p.apellidos}}
           </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso}}</p>
+                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.email}}</p>
                     <div class="w-15 w-xs-100">
                         <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.rol}}</span>

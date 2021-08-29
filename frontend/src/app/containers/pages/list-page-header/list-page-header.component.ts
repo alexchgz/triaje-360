@@ -23,15 +23,17 @@ export class ListPageHeaderComponent {
     { label: 'Status', value: 'status' }];
   @Input() itemYear = { label: '20/21', value: '20/21' };
   @Input()  itemOptionsYears = [
-    { label: '19/20', value: '19/20' },
-    { label: '20/21', value: '20/21' },
-    { label: '21/22', value: '21/22' }];
+    { label: 'All', value: '', uid: '' },
+    { label: '19/20', value: '19/20', uid: '612a9102d5e8413c68f28e10' },
+    { label: '20/21', value: '20/21', uid: '612a911cd5e8413c68f28e14' },
+    { label: '21/22', value: '21/22', uid: '612a9133d5e8413c68f28e18' }];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addNewItem: EventEmitter<any> = new EventEmitter();
   @Output() selectAllChange: EventEmitter<any> = new EventEmitter();
   @Output() searchKeyUp: EventEmitter<any> = new EventEmitter();
   @Output() itemsPerPageChange: EventEmitter<any> = new EventEmitter();
+  @Output() schoolYearChange: EventEmitter<any> = new EventEmitter();
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
@@ -50,6 +52,11 @@ export class ListPageHeaderComponent {
   }
   onChangeItemsPerPage(item): void  {
     this.itemsPerPageChange.emit(item);
+  }
+
+  onChangeSchoolYear(item): void {
+    this.itemYear = item;
+    this.schoolYearChange.emit(item);
   }
 
   onChangeOrderBy(item): void  {

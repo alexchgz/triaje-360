@@ -70,7 +70,7 @@
               Curso : {{itemYear.label}} <span class="caret"></span>
             </button>
                         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                            <li role="menuitem" *ngFor="let item of itemOptionsYears"><a [ngClass]="item.value === itemYear.value ? 'dropdown-item active' : 'dropdown-item'" (click)="onChangeOrderBy(item)">{{item.label}}</a></li>
+                            <li role="menuitem" *ngFor="let item of itemOptionsYears"><a [ngClass]="item.value === itemYear.value ? 'dropdown-item active' : 'dropdown-item'" (click)="onChangeSchoolYear(item)">{{item.label}}</a></li>
                         </ul>
                     </div>
                 </div>

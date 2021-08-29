@@ -12,6 +12,8 @@ const getUsuarios = async(req, res) => {
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
+    const schoolYear = req.query.schoolYear;
+    //const schoolYear = "612a911cd5e8413c68f28e14";
 
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
@@ -23,20 +25,31 @@ const getUsuarios = async(req, res) => {
             // usamos Promise.all para realizar las consultas de forma paralela
             [usuarios, totalUsuarios] = await Promise.all([
                 // buscamos por el id
-                Usuario.findById(id),
+                Usuario.findById(id).populate('curso', '-__v'),
                 // consulta para obtener el numero total de usuarios
                 Usuario.countDocuments()
             ]);
 
         } else { // si no nos pasan el id
 
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [usuarios, totalUsuarios] = await Promise.all([
-                // consulta con los parametros establecidos
-                Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize),
-                // consulta para obtener el numero total de usuarios
-                Usuario.countDocuments()
-            ]);
+            if (schoolYear == 0 || schoolYear == null) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.countDocuments()
+                ]);
+            } else {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({ curso: schoolYear }, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.countDocuments()
+                ]);
+            }
+
         }
         // console.log(usuarios);
         res.json({

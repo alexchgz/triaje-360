@@ -4,6 +4,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
 import { IProduct, IUser } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ISchoolYear } from '../../../../data/api.service';
 
 @Component({
   selector: 'app-data-list',
@@ -22,7 +23,7 @@ export class DataListComponent implements OnInit {
   endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
-  itemYear = '20/21';
+  itemYear = 0;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewProductModalComponent;
@@ -42,7 +43,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
-    this.cargarUsuarios(this.itemsPerPage, this.currentPage);
+    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
   }
 
   // loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
@@ -74,14 +75,15 @@ export class DataListComponent implements OnInit {
   //   );
   // }
 
-  cargarUsuarios(pageSize: number, currentPage: number): void {
+  cargarUsuarios(pageSize: number, currentPage: number, schoolYear: number): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
 
-    this.apiService.getUsers(pageSize, currentPage).subscribe(
+    this.apiService.getUsers(pageSize, currentPage, schoolYear).subscribe(
       data => {
         if (data.ok) {
+          console.log(data.usuarios);
           this.isLoading = false;
           this.data = data.usuarios.map(x => {
             return {
@@ -147,11 +149,16 @@ export class DataListComponent implements OnInit {
   pageChanged(event: any): void {
     //this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
     console.log('CAMBIO PAGINA');
-    this.cargarUsuarios(this.itemsPerPage, event.page);
+    this.cargarUsuarios(this.itemsPerPage, event.page, this.itemYear);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.cargarUsuarios(perPage, 1);
+    this.cargarUsuarios(perPage, 1, this.itemYear);
+  }
+
+  schoolYearChange(year: ISchoolYear): void {
+    console.log(year.uid);
+    this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
   }
 
   // changeOrderBy(item: any): void {

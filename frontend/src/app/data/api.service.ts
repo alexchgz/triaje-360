@@ -32,7 +32,7 @@ export interface IProductResponse {
 }
 
 export interface ISchoolYear {
-  id: number;
+  uid: number;
   activo: boolean;
   nombre: string;
   nombrecorto: string;
@@ -81,12 +81,13 @@ export class ApiService {
       );
   }
 
-  getUsers(pageSize: number, currentPage: number) {
+  getUsers(pageSize: number, currentPage: number, schoolYear: number) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
     let params = new HttpParams();
     params = params.append('pageSize', pageSize + '');
     params = params.append('currentPage', currentPage + '');
+    params = params.append('schoolYear', schoolYear + '');
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 
