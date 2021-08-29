@@ -88,6 +88,7 @@ export class ApiService {
     params = params.append('pageSize', pageSize + '');
     params = params.append('currentPage', currentPage + '');
     params = params.append('schoolYear', schoolYear + '');
+    console.log(params);
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 

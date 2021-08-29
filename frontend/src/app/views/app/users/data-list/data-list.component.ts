@@ -83,7 +83,7 @@ export class DataListComponent implements OnInit {
     this.apiService.getUsers(pageSize, currentPage, schoolYear).subscribe(
       data => {
         if (data.ok) {
-          console.log(data.usuarios);
+          //console.log(data.usuarios);
           this.isLoading = false;
           this.data = data.usuarios.map(x => {
             return {
@@ -91,6 +91,7 @@ export class DataListComponent implements OnInit {
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
+          // console.log(data.totalUsuarios);
           this.totalItem = data.totalUsuarios;
           //console.log(this.totalItem);
           //this.totalPage = data.totalPage;
@@ -148,7 +149,7 @@ export class DataListComponent implements OnInit {
 
   pageChanged(event: any): void {
     //this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
-    console.log('CAMBIO PAGINA');
+    //console.log('CAMBIO PAGINA');
     this.cargarUsuarios(this.itemsPerPage, event.page, this.itemYear);
   }
 
@@ -158,6 +159,7 @@ export class DataListComponent implements OnInit {
 
   schoolYearChange(year: ISchoolYear): void {
     console.log(year.uid);
+    this.itemYear = year.uid;
     this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
   }
 

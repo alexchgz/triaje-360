@@ -13,6 +13,7 @@ const getUsuarios = async(req, res) => {
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
     const schoolYear = req.query.schoolYear;
+    // console.log(schoolYear);
     //const schoolYear = "612a911cd5e8413c68f28e14";
 
     // recogemos un parametro para poder buscar tambien por id
@@ -45,8 +46,10 @@ const getUsuarios = async(req, res) => {
                 [usuarios, totalUsuarios] = await Promise.all([
                     // consulta con los parametros establecidos
                     Usuario.find({ curso: schoolYear }, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+
                     // consulta para obtener el numero total de usuarios
-                    Usuario.countDocuments()
+                    Usuario.find({ curso: schoolYear }).countDocuments()
+                    // Usuario.countDocuments({})
                 ]);
             }
 

@@ -21,7 +21,7 @@ export class ListPageHeaderComponent {
     { label: 'Product Name', value: 'title' },
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
-  @Input() itemYear = { label: '20/21', value: '20/21' };
+  @Input() itemYear = { label: 'All', value: '' };
   @Input()  itemOptionsYears = [
     { label: 'All', value: '', uid: '' },
     { label: '19/20', value: '19/20', uid: '612a9102d5e8413c68f28e10' },
