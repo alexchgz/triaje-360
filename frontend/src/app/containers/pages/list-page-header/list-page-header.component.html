@@ -16,7 +16,7 @@
         </button>
                 <ul id="dropdown-split" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-split">
                     <li role="menuitem"><a class="dropdown-item" href="javascript:;">{{ 'pages.move' | translate }}</a></li>
-                    <li role="menuitem"><a class="dropdown-item" href="javascript:;">{{ 'pages.delete' | translate }}</a></li>
+                    <li role="menuitem"><a class="dropdown-item" href="javascript:;" (click)="onDropUsers(selected)">{{ 'pages.delete' | translate }}</a></li>
                 </ul>
             </div>
         </div>

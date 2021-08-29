@@ -1,5 +1,5 @@
 import { Component,  ViewChild, EventEmitter, Output, Input, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/data/api.service';
+import { ApiService, IUser } from 'src/app/data/api.service';
 import { ISchoolYear } from 'src/app/data/api.service';
 import { ISchoolYearResponse } from '../../../data/api.service';
 
@@ -30,6 +30,7 @@ export class ListPageHeaderComponent implements OnInit {
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
   @Input() itemYear = { nombrecorto: 'All', value: '' };
+  @Input() selected: IUser[];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addNewItem: EventEmitter<any> = new EventEmitter();
@@ -38,6 +39,7 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() itemsPerPageChange: EventEmitter<any> = new EventEmitter();
   @Output() schoolYearChange: EventEmitter<any> = new EventEmitter();
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
+  @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
   constructor(private apiService: ApiService) { }
@@ -98,5 +100,10 @@ export class ListPageHeaderComponent implements OnInit {
 
   onSearchKeyUp($event): void {
     this.searchKeyUp.emit($event);
+  }
+
+  onDropUsers(users: IUser[]): void {
+    //console.log(users);
+    this.dropUsers.emit(users);
   }
 }

@@ -125,6 +125,7 @@ export class DataListComponent implements OnInit {
     } else {
       this.selected.push(item);
     }
+    console.log(this.selected);
     this.setSelectAllState();
   }
 
@@ -161,6 +162,20 @@ export class DataListComponent implements OnInit {
     //console.log(year.uid);
     this.itemYear = year.uid;
     this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
+  }
+
+  dropUsers(users: IUser[]): void {
+    console.log(users);
+    for(let i=0; i<users.length; i++){
+      this.apiService.dropUser(users[i].uid).subscribe(
+        data => {
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
   // changeOrderBy(item: any): void {

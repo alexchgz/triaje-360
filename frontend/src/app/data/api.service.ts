@@ -9,6 +9,7 @@ import { throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { emailsMatch } from '../containers/form-validations/custom.validators';
 
+// ESQUEMAS PRODUCTOS
 export interface IProduct {
   id: number;
   title: string;
@@ -31,6 +32,7 @@ export interface IProductResponse {
   currentPage: string;
 }
 
+// ESQUEMAS CURSOS
 export interface ISchoolYear {
   uid: number;
   activo: boolean;
@@ -45,6 +47,7 @@ export interface ISchoolYearResponse {
   totalCursos: number;
 }
 
+// ESQUEMAS USUARIOS
 export interface IUser {
   rol: string;
   uid: number;
@@ -63,6 +66,9 @@ export interface IUserResponse {
   pageSize: string;
   currentPage: string;
 }
+
+// ESQUEMAS ASIGNATURAS
+
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -87,6 +93,8 @@ export class ApiService {
         })
       );
   }
+
+  // ******* PETICIONES USARIOS *********
 
   getUsers(pageSize: number, currentPage: number, schoolYear: number) {
     const url = environment.base_url + '/usuarios';
@@ -113,6 +121,21 @@ export class ApiService {
         })
       );
   }
+
+  dropUser(uid: number) {
+    console.log(uid);
+    const url = environment.base_url + '/usuarios/' + uid;
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.delete(url, { headers });
+  }
+
+
+  // ******* PETICIONES CURSOS *********
 
   getSchoolYears() {
     const url = environment.base_url + '/cursos';
