@@ -247,7 +247,15 @@
             "useractionsauditlog": "Registro de acciones del usuario",
             "featurecomparison": "Comparación de Características",
             "pricecomparison": "Comparación de Precios"
-        }
+        },
+        "add-new-user-title": "Agregar Nuevo Usuario",
+        "user-name": "Nombre",
+        "user-last-name": "Apellidos",
+        "user-email": "Correo",
+        "user-password": "Contraseña",
+        "user-school-year": "Curso",
+        "user-role": "Rol",
+        "edit-user-title": "Editar Usuario"
     },
     "chat": {
         "messages": "Mensajes",

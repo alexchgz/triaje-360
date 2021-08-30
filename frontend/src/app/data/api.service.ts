@@ -67,6 +67,16 @@ export interface IUserResponse {
   currentPage: string;
 }
 
+export interface ISingleUserResponse {
+  usuarios: IUser;
+  ok: boolean;
+  msg: string;
+  totalUsuarios: number;
+  // totalPage: number;
+  pageSize: string;
+  currentPage: string;
+}
+
 // ESQUEMAS ASIGNATURAS
 
 
@@ -120,6 +130,67 @@ export class ApiService {
           return throwError(errorRes);
         })
       );
+  }
+
+  getUser(id: number) {
+    const url = environment.base_url + '/usuarios';
+    const token = localStorage.getItem('token');
+    let params = new HttpParams();
+    params = params.append('id', id + '');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers, params })
+      .pipe(
+        map((res: ISingleUserResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
+  createUser(data: IUser) {
+
+    const url = environment.base_url + '/usuarios';
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "apellidos": data['apellidos'],
+      "email": data['email'],
+      "password": data['password'],
+      "rol": data['rol'],
+      "curso": data['curso']
+    }
+
+    return this.http.post(url, sendData, { headers });
+
+  }
+
+  updateUser(data: IUser, id: number) {
+
+    const url = environment.base_url + '/usuarios/' + id;
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "apellidos": data['apellidos'],
+      "email": data['email'],
+      "password": data['password'],
+      "rol": data['rol'],
+      "curso": data['curso'].uid
+    }
+
+    return this.http.put(url, sendData, { headers });
+
   }
 
   dropUser(uid: number) {

@@ -11,6 +11,9 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { LayoutContainersModule } from './containers/layout/layout.containers.module';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -20,7 +23,9 @@ import { LayoutContainersModule } from './containers/layout/layout.containers.mo
     BrowserAnimationsModule,
     TranslateModule.forRoot(),
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent

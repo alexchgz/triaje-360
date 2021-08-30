@@ -35,7 +35,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-
+import { AddNewUserModalComponent } from './add-new-user-modal/add-new-user-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ProductDetailOrdersComponent,
     ProductDetailCommentsComponent,
     ProductDetailInfoComponent,
-    ProductDetailTabsComponent
+    ProductDetailTabsComponent,
+    AddNewUserModalComponent
   ],
   imports: [
     CommonModule,
@@ -76,10 +78,12 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     RatingModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ReactiveFormsModule
   ],
   exports: [
     AddNewProductModalComponent,
+    AddNewUserModalComponent,
     ListPageHeaderComponent,
     ProfileUserSocialComponent,
     ProfilePhotosComponent,
