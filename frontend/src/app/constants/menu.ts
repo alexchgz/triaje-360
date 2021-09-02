@@ -16,39 +16,39 @@ const data: IMenuItem[] = [
   {
     icon: 'iconsminds-shop-4',
     label: 'menu.dashboards',
-    to: `${adminRoot}/dashboards`,
+    to: `${adminRoot}/dashboards/all`,
     roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
     subs: [
-      {
-        icon: 'simple-icon-briefcase',
-        label: 'menu.all',
-        to: `${adminRoot}/dashboards/all`,
-        roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
-      },
-      {
-        icon: 'iconsminds-digital-drawing',
-        label: 'menu.schoolYears',
-        to: `${adminRoot}/school-years/data-list`,
-        roles: [UserRole.Admin],
-      },
-      {
-        icon: 'iconsminds-air-balloon-1',
-        label: 'menu.subjects',
-        to: `${adminRoot}/subjects/data-list`,
-        roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
-      },
-      {
-        icon: 'iconsminds-pantone',
-        label: 'menu.users',
-        to: `${adminRoot}/users/data-list`,
-        roles: [UserRole.Admin, UserRole.Teacher],
-      },
-      {
-        icon: 'iconsminds-library',
-        label: 'menu.exercises',
-        to: `${adminRoot}/exercises/data-list`,
-        roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
-      },
+    //   {
+    //     icon: 'simple-icon-briefcase',
+    //     label: 'menu.all',
+    //     to: `${adminRoot}/dashboards/all`,
+    //     roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
+    //   },
+    //   {
+    //     icon: 'iconsminds-digital-drawing',
+    //     label: 'menu.schoolYears',
+    //     to: `${adminRoot}/school-years/data-list`,
+    //     roles: [UserRole.Admin],
+    //   },
+    //   {
+    //     icon: 'iconsminds-air-balloon-1',
+    //     label: 'menu.subjects',
+    //     to: `${adminRoot}/subjects/data-list`,
+    //     roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
+    //   },
+    //   {
+    //     icon: 'iconsminds-pantone',
+    //     label: 'menu.users',
+    //     to: `${adminRoot}/subjects/data-list`,
+    //     roles: [UserRole.Admin, UserRole.Teacher],
+    //   },
+    //   {
+    //     icon: 'iconsminds-library',
+    //     label: 'menu.exercises',
+    //     to: `${adminRoot}/exercises/data-list`,
+    //     roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
+    //   },
     ],
   },
   {

@@ -9,6 +9,8 @@ export const environment = {
   buyUrl : 'https://1.envato.market/6NV1b',
   SCARF_ANALYTICS : false,
   adminRoot: '/app/dashboards/all',
+  usersRoot: '/app/users/data-list',
+  schoolYearsRoot: '/app/school-years/data-list',
   apiUrl: 'https://api.coloredstrategies.com',
   base_url: 'http://localhost:3000/api',
   defaultMenuType: 'menu-default',

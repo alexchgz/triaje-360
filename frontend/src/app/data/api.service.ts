@@ -208,15 +208,22 @@ export class ApiService {
 
   // ******* PETICIONES CURSOS *********
 
-  getSchoolYears() {
+  getSchoolYears(pageSize?: number, currentPage?: number, schoolYear?: number) {
     const url = environment.base_url + '/cursos';
     const token = localStorage.getItem('token');
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
+
+    let params = new HttpParams();
+    if(pageSize || currentPage || schoolYear){
+      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+      if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
+    }
     //console.log(url);
     //console.log(token);
-    return this.http.get(url, { headers })
+    return this.http.get(url, { headers, params })
       .pipe(
         map((res: ISchoolYearResponse) => {
           return res;

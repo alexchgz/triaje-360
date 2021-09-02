@@ -9,11 +9,15 @@ const Curso = require('../models/cursos');
 const getCursos = async(req, res = response) => {
     // parametros para la paginacion ->
     // si no es un numero lo pone a 0
-    const desde = Number(req.query.desde) || 0;
+    // const desde = Number(req.query.desde) || 0;
     // cantidad de registros que vamos a mostrar por pagina
-    const registropp = Number(process.env.DOCSPERPAGE);
+    // const registropp = Number(process.env.DOCSPERPAGE);
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
+    const currentPage = Number(req.query.currentPage);
+    const pageSize = Number(req.query.pageSize) || 0;
+    const desde = (currentPage - 1) * pageSize;
+    const schoolYear = req.query.schoolYear;
 
     try {
         var cursos, totalCursos;
@@ -29,20 +33,38 @@ const getCursos = async(req, res = response) => {
 
         } else { // si no nos pasan el id
 
-            [cursos, totalCursos] = await Promise.all([
-                Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(registropp),
-                Curso.countDocuments()
-            ]);
+            if (schoolYear == 0 || schoolYear == null) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [cursos, totalCursos] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+                    // consulta para obtener el numero total de usuarios
+                    Curso.countDocuments()
+                ]);
+            } else {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [cursos, totalCursos] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Curso.find({ _id: schoolYear }, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+
+                    // consulta para obtener el numero total de usuarios
+                    Curso.find({ _id: schoolYear }).countDocuments()
+                    // Usuario.countDocuments({})
+                ]);
+            }
         }
 
         res.json({
             ok: true,
             msg: 'Cursos obtenidos',
             cursos,
+            totalCursos,
+            pageSize,
+            currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
                 desde,
-                registropp,
+                currentPage,
                 totalCursos
             }
         });
