@@ -234,4 +234,17 @@ export class ApiService {
       );
   }
 
+  dropSchoolYear(uid: number) {
+    console.log(uid);
+    const url = environment.base_url + '/cursos/' + uid;
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.delete(url, { headers });
+  }
+
+
 }

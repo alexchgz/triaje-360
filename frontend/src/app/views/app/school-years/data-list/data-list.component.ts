@@ -120,6 +120,39 @@ export class DataListComponent implements OnInit {
     this.loadSchoolYears(perPage, 1, this.itemYear);
   }
 
+  schoolYearChange(year: ISchoolYear): void {
+    //console.log(year.uid);
+    this.itemYear = year.uid;
+    this.loadSchoolYears(this.itemsPerPage, 1, year.uid);
+  }
+
+  dropSchoolYears(years: ISchoolYear[]): void {
+    //console.log(users);
+    for(let i=0; i<years.length; i++){
+      this.apiService.dropSchoolYear(years[i].uid).subscribe(
+        data => {
+          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  dropSchoolYear(year: ISchoolYear): void {
+    console.log(year);
+      this.apiService.dropSchoolYear(year.uid).subscribe(
+        data => {
+          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+
+  }
+
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
   // }

@@ -1,5 +1,5 @@
 <app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[1,2,3]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)">
+    (itemsPerPageChange)="itemsPerPageChange($event)" (schoolYearChange)="schoolYearChange($event)" [selected]="selected" (dropUsers)="dropSchoolYears($event)">
 </app-list-page-header>
 <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal>
 
@@ -24,10 +24,6 @@
                       {{p.nombre}}
                     </a>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.nombrecorto}}</p>
-                    <!-- <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.date}}</p> -->
-                    <!-- <div class="w-15 w-xs-100">
-                        <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.status}}</span>
-                    </div> -->
                     <ng-template *ngIf="p.activo then active else noActive"> </ng-template>
                     <ng-template #active>
                         <a class="mb-0 text-muted text-small w-30 w-xs-100">Activo</a>
@@ -36,7 +32,7 @@
                         <p class="mb-0 text-muted text-small w-30 w-xs-100">No Activo</p>
                     </ng-template>
                     <i class="simple-icon-pencil"></i>
-                    <i class="simple-icon-trash"></i>
+                    <i class="simple-icon-trash" (click)="dropSchoolYear(p)"></i>
                 </div>
                 <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
