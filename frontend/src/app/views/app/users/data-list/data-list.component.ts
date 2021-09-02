@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewUserModalComponent } from 'src/app/containers/pages/add-new-user-modal/add-new-user-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
-import { IProduct, IUser } from 'src/app/data/api.service';
+import { IUser } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ISchoolYear } from '../../../../data/api.service';
 
@@ -83,7 +83,7 @@ export class DataListComponent implements OnInit {
     this.apiService.getUsers(pageSize, currentPage, schoolYear).subscribe(
       data => {
         if (data.ok) {
-          //console.log(data.usuarios);
+          console.log(data.usuarios);
           this.isLoading = false;
           this.data = data.usuarios.map(x => {
             return {

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddNewProductModalComponent } from 'src/app/containers/pages/add-new-product-modal/add-new-product-modal.component';
+import { AddNewSchoolYearModalComponent } from 'src/app/containers/pages/add-new-school-year-modal/add-new-school-year-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
-import { IProduct, ISchoolYear } from 'src/app/data/api.service';
+import { ISchoolYear } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 
 @Component({
@@ -25,7 +25,7 @@ export class DataListComponent implements OnInit {
   itemYear = 0;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
-  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewProductModalComponent;
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {

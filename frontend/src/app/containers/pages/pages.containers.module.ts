@@ -37,6 +37,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AddNewUserModalComponent } from './add-new-user-modal/add-new-user-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddNewSchoolYearModalComponent } from './add-new-school-year-modal/add-new-school-year-modal.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductDetailCommentsComponent,
     ProductDetailInfoComponent,
     ProductDetailTabsComponent,
-    AddNewUserModalComponent
+    AddNewUserModalComponent,
+    AddNewSchoolYearModalComponent
   ],
   imports: [
     CommonModule,
@@ -84,6 +86,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   exports: [
     AddNewProductModalComponent,
     AddNewUserModalComponent,
+    AddNewSchoolYearModalComponent,
     ListPageHeaderComponent,
     ProfileUserSocialComponent,
     ProfilePhotosComponent,

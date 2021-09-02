@@ -255,7 +255,11 @@
         "user-password": "Contraseña",
         "user-school-year": "Curso",
         "user-role": "Rol",
-        "edit-user-title": "Editar Usuario"
+        "edit-user-title": "Editar Usuario",
+        "add-new-school-year-title": "Agregar Nuevo Curso",
+        "school-year-name": "Nombre",
+        "school-year-short-name": "Nombre Corto",
+        "school-year-active": "Activo"
     },
     "chat": {
         "messages": "Mensajes",
