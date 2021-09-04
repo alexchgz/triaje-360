@@ -47,6 +47,13 @@ export interface ISchoolYearResponse {
   totalCursos: number;
 }
 
+export interface ISingleSchoolYearResponse {
+  cursos: ISchoolYear;
+  ok: boolean;
+  msg: string;
+  totalCursos: number;
+}
+
 // ESQUEMAS USUARIOS
 export interface IUser {
   rol: string;
@@ -234,6 +241,27 @@ export class ApiService {
       );
   }
 
+  getSchoolYear(id: number) {
+    const url = environment.base_url + '/cursos';
+    const token = localStorage.getItem('token');
+    let params = new HttpParams();
+    params = params.append('id', id + '');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers, params })
+      .pipe(
+        map((res: ISingleSchoolYearResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
   dropSchoolYear(uid: number) {
     console.log(uid);
     const url = environment.base_url + '/cursos/' + uid;
@@ -244,6 +272,40 @@ export class ApiService {
     //console.log(url);
     //console.log(token);
     return this.http.delete(url, { headers });
+  }
+
+  createSchoolYear(data: ISchoolYear) {
+
+    const url = environment.base_url + '/cursos';
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "nombrecorto": data['nombrecorto'],
+      "activo": data['activo']
+    }
+
+    return this.http.post(url, sendData, { headers });
+
+  }
+
+  updateSchoolYear(data: ISchoolYear, id: number) {
+
+    const url = environment.base_url + '/cursos/' + id;
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "nombrecorto": data['nombrecorto'],
+      "activo": data['activo']
+    }
+
+    return this.http.put(url, sendData, { headers });
+
   }
 
 

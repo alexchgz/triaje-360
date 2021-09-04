@@ -31,7 +31,7 @@
                     <ng-template #noActive>
                         <p class="mb-0 text-muted text-small w-30 w-xs-100">No Activo</p>
                     </ng-template>
-                    <i class="simple-icon-pencil"></i>
+                    <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i>
                     <i class="simple-icon-trash" (click)="dropSchoolYear(p)"></i>
                 </div>
                 <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">

@@ -77,8 +77,13 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(): void {
-    this.addNewModalRef.show();
+  showAddNewModal(schoolYear? : ISchoolYear): void {
+    if(schoolYear) {
+      console.log(schoolYear.uid);
+      this.addNewModalRef.show(schoolYear.uid);
+    } else {
+      this.addNewModalRef.show();
+    }
   }
 
   isSelected(p: ISchoolYear): boolean {

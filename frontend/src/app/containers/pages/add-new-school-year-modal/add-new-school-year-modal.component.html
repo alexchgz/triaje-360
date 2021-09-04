@@ -1,26 +1,37 @@
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">{{'pages.add-new-school-year-title' | translate}}</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <ng-template *ngIf="schoolYear then editar else crear"> </ng-template>
+        <ng-template #crear>
+            <h4 class="modal-title pull-left">{{'pages.add-new-school-year-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
       </button>
+        </ng-template>
+        <ng-template #editar>
+            <h4 class="modal-title pull-left">{{'pages.edit-school-year-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+        </ng-template>
     </div>
-    <div class="modal-body">
-        <div>
-            <label>{{ 'pages.school-year-name' | translate }}</label>
-            <input type="text" class="form-control" formControlName="nombre" id="nombre" placeholder="" required>
+    <form class="form-horizontal m-t-20 scrollMio" [formGroup]="formData" (ngSubmit)="createSchoolYear()">
+        <div class="modal-body">
+            <div>
+                <label>{{ 'pages.school-year-name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="nombre" placeholder="" required>
+            </div>
+            <div class="mt-4">
+                <label>{{ 'pages.school-year-short-name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="nombrecorto" placeholder="" required>
+            </div>
+            <div class="mt-4">
+                <label>{{ 'pages.school-year-active' | translate }}</label>
+                <input type="checkbox" class="form-control" formControlName="activo" placeholder="" required>
+            </div>
         </div>
-        <div class="mt-4">
-            <label>{{ 'pages.school-year-short-name' | translate }}</label>
-            <input type="text" class="form-control" formControlName="nombrecorto" id="nombrecorto" placeholder="" required>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.cancel' | translate }}</button>
+            <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
         </div>
-        <div class="mt-4">
-            <label>{{ 'pages.school-year-active' | translate }}</label>
-            <input type="checkbox" class="form-control" formControlName="activo" id="activo" placeholder="" required>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide()">{{'pages.cancel' | translate }}</button>
-        <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
-    </div>
+    </form>
 </ng-template>
