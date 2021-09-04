@@ -12,7 +12,9 @@ router.get('/', [
     validarJWT,
     // comprobamos campos opcionales
     check('id', 'El id debe ser válido').optional().isMongoId(),
-    check('desde', 'Desde debe ser un número').optional().isNumeric(),
+    check('pageSize', 'Desde debe ser un número').optional().isNumeric(),
+    check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
+    check('schoolYear', 'Desde debe ser una cadena de texto').optional().isString(),
     validarCampos
 ], getAsignaturas);
 

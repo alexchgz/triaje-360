@@ -1,9 +1,9 @@
-<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[2,5,10]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)" (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[1,2,3]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
+    (itemsPerPageChange)="itemsPerPageChange($event)" (schoolYearChange)="schoolYearChange($event)" [selected]="selected" (dropUsers)="dropSubjects($event)">
 </app-list-page-header>
 <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal>
 
-<context-menu #basicMenu>
+<!-- <context-menu #basicMenu>
     <ng-template contextMenuItem let-item (execute)="onContextMenuClick('copy',$event.item)">
         <i class="simple-icon-docs mr-1"></i> <span>Copy</span>
     </ng-template>
@@ -13,7 +13,7 @@
     <ng-template contextMenuItem let-item (execute)="onContextMenuClick('delete',$event.item)">
         <i class="simple-icon-trash mr-1"></i><span>Delete</span>
     </ng-template>
-</context-menu>
+</context-menu> -->
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
@@ -21,13 +21,14 @@
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
-            {{p.title}}
-          </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.category}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.date}}</p>
-                    <div class="w-15 w-xs-100">
-                        <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.status}}</span>
-                    </div>
+                      {{p.nombre}}
+                    </a>
+                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.nombrecorto}}</p>
+                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
+                    <p class="mb-0 text-muted text-small w-15 w-xs-100">Profesores: {{p.profesores.length}}</p>
+                    <p class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
+                    <i class="simple-icon-pencil"></i>
+                    <i class="simple-icon-trash ml-4" (click)="dropSubject(p)"></i>
                 </div>
                 <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"

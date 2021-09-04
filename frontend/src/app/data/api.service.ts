@@ -85,6 +85,34 @@ export interface ISingleUserResponse {
 }
 
 // ESQUEMAS ASIGNATURAS
+export interface ISubject {
+  uid: number;
+  nombre: string;
+  nombrecorto: string;
+  curso: ISchoolYear;
+  profesores: IUser[];
+  alumnos: IUser[];
+}
+
+export interface ISubjectResponse {
+  asignaturas: ISubject[];
+  ok: boolean;
+  msg: string;
+  totalAsignaturas: number;
+  // totalPage: number;
+  pageSize: string;
+  currentPage: string;
+}
+
+export interface ISingleSubjectResponse {
+  asignaturas: ISubject;
+  ok: boolean;
+  msg: string;
+  totalAsignaturas: number;
+  // totalPage: number;
+  pageSize: string;
+  currentPage: string;
+}
 
 
 @Injectable({ providedIn: 'root' })
@@ -308,5 +336,44 @@ export class ApiService {
 
   }
 
+
+  // ******* PETICIONES CURSOS *********
+  getSubjects(pageSize: number, currentPage: number, schoolYear: number) {
+    const url = environment.base_url + '/asignaturas';
+    const token = localStorage.getItem('token');
+    let params = new HttpParams();
+    params = params.append('pageSize', pageSize + '');
+    params = params.append('currentPage', currentPage + '');
+    params = params.append('schoolYear', schoolYear + '');
+    //console.log(params);
+    // params = params.append('search', search);
+    // params = params.append('orderBy', orderBy);
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers, params })
+      .pipe(
+        map((res: ISubjectResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
+  dropSubject(uid: number) {
+    console.log(uid);
+    const url = environment.base_url + '/asignaturas/' + uid;
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.delete(url, { headers });
+  }
 
 }

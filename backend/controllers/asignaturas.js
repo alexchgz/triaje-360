@@ -7,12 +7,16 @@ const bcrypt = require('bcryptjs');
 const getAsignaturas = async(req, res = response) => {
     // parametros para la paginacion ->
     // si no es un numero lo pone a 0
-    const desde = Number(req.query.desde) || 0;
-    // cantidad de registros que vamos a mostrar por pagina
-    const registropp = Number(process.env.DOCSPERPAGE);
+    // const desde = Number(req.query.desde) || 0;
+    // // cantidad de registros que vamos a mostrar por pagina
+    // const registropp = Number(process.env.DOCSPERPAGE);
 
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
+    const currentPage = Number(req.query.currentPage);
+    const pageSize = Number(req.query.pageSize) || 0;
+    const desde = (currentPage - 1) * pageSize;
+    const schoolYear = req.query.schoolYear;
 
     try {
         var asignaturas, totalAsignaturas;
@@ -21,30 +25,44 @@ const getAsignaturas = async(req, res = response) => {
             // usamos Promise.all para realizar las consultas de forma paralela
             [asignaturas, totalAsignaturas] = await Promise.all([
                 // buscamos por el id
-                Asignatura.findById(id).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v'),
+                Asignatura.findById(id).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
                 // consulta para obtener el numero total de usuarios
                 Asignatura.countDocuments()
             ]);
 
         } else { // si no nos pasan el id
 
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [asignaturas, totalAsignaturas] = await Promise.all([
-                // consulta con los parametros establecidos
-                Asignatura.find({}).skip(desde).limit(registropp).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v'),
-                // consulta para obtener el numero total de usuarios
-                Asignatura.countDocuments()
-            ]);
+            if (schoolYear == 0 || schoolYear == null) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [asignaturas, totalAsignaturas] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Asignatura.find({}).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Asignatura.countDocuments()
+                ]);
+            } else {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [asignaturas, totalAsignaturas] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Asignatura.find({ curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Asignatura.countDocuments({ curso: schoolYear })
+                ]);
+            }
+
         }
 
         res.json({
             ok: true,
             msg: 'Asignaturas obtenidas',
             asignaturas,
+            totalAsignaturas,
+            pageSize,
+            currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
                 desde,
-                registropp,
+                currentPage,
                 totalAsignaturas
             }
         });
