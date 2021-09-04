@@ -337,7 +337,7 @@ export class ApiService {
   }
 
 
-  // ******* PETICIONES CURSOS *********
+  // ******* PETICIONES ASIGNATURAS *********
   getSubjects(pageSize: number, currentPage: number, schoolYear: number) {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
@@ -364,6 +364,27 @@ export class ApiService {
       );
   }
 
+  getSubject(id: number) {
+    const url = environment.base_url + '/asignaturas';
+    const token = localStorage.getItem('token');
+    let params = new HttpParams();
+    params = params.append('id', id + '');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers, params })
+      .pipe(
+        map((res: ISingleSubjectResponse) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          return throwError(errorRes);
+        })
+      );
+  }
+
   dropSubject(uid: number) {
     console.log(uid);
     const url = environment.base_url + '/asignaturas/' + uid;
@@ -374,6 +395,44 @@ export class ApiService {
     //console.log(url);
     //console.log(token);
     return this.http.delete(url, { headers });
+  }
+
+  createSubject(data: ISubject) {
+
+    const url = environment.base_url + '/asignaturas';
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "nombrecorto": data['nombrecorto'],
+      "curso": data['curso'],
+      "profesores": data['profesores'],
+      "alumnos": data['alumnos']
+    }
+
+    return this.http.post(url, sendData, { headers });
+
+  }
+
+  updateSubject(data: ISubject, id: number) {
+
+    const url = environment.base_url + '/asignaturas/' + id;
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "nombre": data['nombre'],
+      "nombrecorto": data['nombrecorto'],
+      "curso": data['curso'],
+      "profesores": data['profesores'],
+      "alumnos": data['alumnos']
+    }
+
+    return this.http.put(url, sendData, { headers });
+
   }
 
 }

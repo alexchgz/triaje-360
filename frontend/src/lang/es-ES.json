@@ -259,7 +259,15 @@
         "add-new-school-year-title": "Agregar Nuevo Curso",
         "school-year-name": "Nombre",
         "school-year-short-name": "Nombre Corto",
-        "school-year-active": "Activo"
+        "school-year-active": "Activo",
+        "edit-school-year-title": "Editar Curso Académico",
+        "add-new-subject-title": "Agregar Nueva Asignatura",
+        "subject-name": "Nombre",
+        "subject-short-name": "Nombre Corto",
+        "subject-school-year": "Curso",
+        "edit-subject-title": "Editar Asignatura",
+        "subject-teachers": "Profesores",
+        "subject-students": "Alumnos"
     },
     "chat": {
         "messages": "Mensajes",

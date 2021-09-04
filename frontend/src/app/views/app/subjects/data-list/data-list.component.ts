@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddNewProductModalComponent } from 'src/app/containers/pages/add-new-product-modal/add-new-product-modal.component';
+import { AddNewSubjectModalComponent } from 'src/app/containers/pages/add-new-subject-modal/add-new-subject-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
 import { ISchoolYear } from 'src/app/data/api.service';
@@ -26,7 +26,7 @@ export class DataListComponent implements OnInit {
   itemYear = 0;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
-  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewProductModalComponent;
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
@@ -78,8 +78,13 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(): void {
-    this.addNewModalRef.show();
+  showAddNewModal(subject? : ISubject): void {
+    if(subject) {
+      console.log(subject.uid);
+      this.addNewModalRef.show(subject.uid);
+    } else {
+      this.addNewModalRef.show();
+    }
   }
 
   isSelected(p: ISubject): boolean {
