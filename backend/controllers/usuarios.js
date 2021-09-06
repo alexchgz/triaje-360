@@ -10,7 +10,7 @@ const getUsuarios = async(req, res) => {
     // cantidad de registros que vamos a mostrar por pagina
     //const registropp = Number(process.env.DOCSPERPAGE);
     const currentPage = Number(req.query.currentPage);
-    const pageSize = Number(req.query.pageSize) || 0;
+    const pageSize = Number(req.query.pageSize);
     const desde = (currentPage - 1) * pageSize;
     const schoolYear = req.query.schoolYear;
     // console.log(schoolYear);
@@ -33,11 +33,18 @@ const getUsuarios = async(req, res) => {
 
         } else { // si no nos pasan el id
 
-            if (schoolYear == 0 || schoolYear == null) {
+            if (schoolYear == 0) {
                 // usamos Promise.all para realizar las consultas de forma paralela
                 [usuarios, totalUsuarios] = await Promise.all([
                     // consulta con los parametros establecidos
                     Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.countDocuments()
+                ]);
+            } else if (schoolYear == null) {
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({}, 'nombre apellidos email rol curso').populate('curso', '-__v'),
                     // consulta para obtener el numero total de usuarios
                     Usuario.countDocuments()
                 ]);

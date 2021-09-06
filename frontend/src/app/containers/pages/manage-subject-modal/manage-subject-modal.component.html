@@ -6,7 +6,50 @@
       </button>
     </div>
     <div class="modal-body">
-        <app-subject-details-tabs></app-subject-details-tabs>
+        <div class="card">
+            <tabset class="card-tabs">
+                <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
+                    <p class="font-weight-bold">Lista Profesores ({{profesores.length}})</p>
+
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellidos</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let p of profesores">
+                            <tr>
+                                <td>{{p.email}}</td>
+                                <td>{{p.nombre}}</td>
+                                <td>{{p.apellidos}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tab>
+                <tab heading="{{'pages.students-title' | translate}}" class="card-body">
+                    <p class="font-weight-bold">Lista Alumnos ({{alumnos.length}})</p>
+
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellidos</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let p of alumnos">
+                            <tr>
+                                <td>{{p.email}}</td>
+                                <td>{{p.nombre}}</td>
+                                <td>{{p.apellidos}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tab>
+            </tabset>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide()">{{'pages.cancel' | translate }}</button>

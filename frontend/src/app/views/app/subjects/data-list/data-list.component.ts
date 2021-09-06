@@ -54,7 +54,7 @@ export class DataListComponent implements OnInit {
     this.apiService.getSubjects(pageSize, currentPage, schoolYear).subscribe(
       data => {
         if (data.ok) {
-          console.log(data.asignaturas);
+          // console.log(data.asignaturas);
           this.isLoading = false;
           this.data = data.asignaturas.map(x => {
             return {
@@ -83,7 +83,7 @@ export class DataListComponent implements OnInit {
 
   showAddNewModal(subject? : ISubject): void {
     if(subject) {
-      console.log(subject.uid);
+      // console.log(subject.uid);
       this.addNewModalRef.show(subject.uid);
     } else {
       this.addNewModalRef.show();
