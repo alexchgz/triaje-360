@@ -1,6 +1,6 @@
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">{{'pages.manage-subject-modal-title' | translate}}</h4>
+        <h4 class="modal-title pull-left" *ngIf="asignatura">{{'pages.manage-subject-modal-title' | translate}}: {{asignatura.nombre}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
           <span aria-hidden="true">&times;</span>
       </button>

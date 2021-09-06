@@ -5,6 +5,7 @@ import { IUser } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
+import { ISubject } from '../../../data/api.service';
 
 @Component({
   selector: 'app-manage-subject-modal',
@@ -26,6 +27,7 @@ export class ManageSubjectModalComponent implements OnInit{
   data: IUser[] = [];
   profesores: IUser[] = [];
   alumnos: IUser[] = [];
+  asignatura: ISubject;
   isLoading: boolean;
   endOfTheList = false;
 
@@ -35,11 +37,28 @@ export class ManageSubjectModalComponent implements OnInit{
   constructor(private modalService: BsModalService, private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.getUsers();
   }
 
   show(id: number): void {
+    this.getSubject(id);
+    this.getUsers();
     this.modalRef = this.modalService.show(this.template, this.config);
+  }
+
+  getSubject(id: number): void {
+    this.apiService.getSubject(id).subscribe(
+      data => {
+        if (data.ok) {
+          console.log(data.asignaturas);
+          this.asignatura = data.asignaturas;
+        } else {
+          this.endOfTheList = true;
+        }
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
   }
 
   getUsers(): void {
