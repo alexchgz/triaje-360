@@ -141,7 +141,7 @@ export class ApiService {
 
   // ******* PETICIONES USARIOS *********
 
-  getUsers(pageSize: number, currentPage: number, schoolYear: number) {
+  getUsers(pageSize?: number, currentPage?: number, schoolYear?: number, role?: string) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
     let params = new HttpParams();

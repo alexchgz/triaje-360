@@ -267,7 +267,8 @@
         "subject-school-year": "Curso",
         "edit-subject-title": "Editar Asignatura",
         "subject-teachers": "Profesores",
-        "subject-students": "Alumnos"
+        "subject-students": "Alumnos",
+        "manage-subject-modal-title": "Gestionar Asignaturas"
     },
     "chat": {
         "messages": "Mensajes",

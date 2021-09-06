@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewSubjectModalComponent } from 'src/app/containers/pages/add-new-subject-modal/add-new-subject-modal.component';
+import { ManageSubjectModalComponent } from 'src/app/containers/pages/manage-subject-modal/manage-subject-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
 import { ISchoolYear } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ISubject } from '../../../../data/api.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-data-list',
@@ -27,6 +29,7 @@ export class DataListComponent implements OnInit {
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
+  @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
@@ -87,6 +90,9 @@ export class DataListComponent implements OnInit {
     }
   }
 
+  showManageModal(subject: ISubject): void {
+    this.manageModalRef.show(subject.uid);
+ }
   isSelected(p: ISubject): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }

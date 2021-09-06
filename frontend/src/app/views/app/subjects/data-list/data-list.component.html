@@ -3,6 +3,7 @@
 </app-list-page-header>
 <!-- <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal> -->
 <app-add-new-subject-modal #addNewModalRef></app-add-new-subject-modal>
+<app-manage-subject-modal #manageModalRef></app-manage-subject-modal>
 
 <!-- <context-menu #basicMenu>
     <ng-template contextMenuItem let-item (execute)="onContextMenuClick('copy',$event.item)">
@@ -28,7 +29,7 @@
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">Profesores: {{p.profesores.length}}</p>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
-                    <i class="simple-icon-plus"></i>
+                    <i class="simple-icon-plus" (click)="showManageModal(p)"></i>
                     <i class="simple-icon-pencil ml-3" (click)="showAddNewModal(p)"></i>
                     <i class="simple-icon-trash ml-3" (click)="dropSubject(p)"></i>
                 </div>
