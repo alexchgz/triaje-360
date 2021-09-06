@@ -29,7 +29,7 @@ export class ListPageHeaderComponent implements OnInit {
     { label: 'Product Name', value: 'title' },
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
-  @Input() itemYear = { nombrecorto: 'All', value: '' };
+  @Input() itemYear = { nombrecorto: 'All', uid: 0 };
   @Input() selected: IUser[];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
@@ -62,7 +62,8 @@ export class ListPageHeaderComponent implements OnInit {
             };
           });
           this.itemOptionsYears = data.cursos;
-          this.itemOptionsYears.unshift({ nombrecorto: 'All', uid: 0, nombre: 'All', activo: false});
+          this.getActiveSchoolYear();
+          // this.itemOptionsYears.unshift({ nombrecorto: 'All', uid: 0, nombre: 'All', activo: false});
           //console.log(this.itemOptionsYears);
         } else {
           this.endOfTheList = true;
@@ -105,5 +106,17 @@ export class ListPageHeaderComponent implements OnInit {
   onDropUsers(users: IUser[]): void {
     //console.log(users);
     this.dropUsers.emit(users);
+  }
+
+  getActiveSchoolYear(): void {
+    var stop = false;
+    for(let i=0; i<this.itemOptionsYears.length && !stop; i++) {
+      if(this.itemOptionsYears[i].activo) {
+        this.itemYear.nombrecorto = this.itemOptionsYears[i].nombrecorto;
+        this.itemYear.uid = this.itemOptionsYears[i].uid;
+        this.onChangeSchoolYear(this.itemYear);
+        stop = true;
+      }
+    }
   }
 }
