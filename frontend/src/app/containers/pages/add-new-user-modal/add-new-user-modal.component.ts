@@ -1,11 +1,13 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/data/api.service';
-import { ISchoolYear, IUser } from 'src/app/data/api.service';
+import { ISchoolYear } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/users/data-list/data-list.component';
-import { IUserResponse } from '../../../data/api.service';
+// import { IUserResponse } from '../../../data/api.service';
+import { Usuario } from 'src/app/models/usuario.model';
+import { UsuarioService } from 'src/app/data/usuario.service';
 
 
 @Component({
@@ -28,7 +30,7 @@ export class AddNewUserModalComponent {
   isLoading: boolean;
   endOfTheList = false;
   schoolYears: ISchoolYear[];
-  user: IUser;
+  user: Usuario;
 
   // FORM
   private formSubmited = false;
@@ -43,7 +45,7 @@ export class AddNewUserModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private apiService: ApiService, private usuarioService: UsuarioService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -83,7 +85,7 @@ export class AddNewUserModalComponent {
     if (this.formData.invalid) { console.log(this.formData.invalid )}
 
     if(this.user) {
-      this.apiService.updateUser(this.formData.value, this.user.uid)
+      this.usuarioService.updateUser(this.formData.value, this.user.uid)
         .subscribe( res => {
           console.log('Usuario creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -93,7 +95,7 @@ export class AddNewUserModalComponent {
           return;
       });
     } else {
-      this.apiService.createUser(this.formData.value)
+      this.usuarioService.createUser(this.formData.value)
         .subscribe( res => {
           console.log('Usuario creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -120,11 +122,11 @@ export class AddNewUserModalComponent {
 
   getUser(id: number): void {
 
-    this.apiService.getUser(id).subscribe(
+    this.usuarioService.getUser(id).subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.usuarios);
-          this.user = data.usuarios;
+        if (data['ok']) {
+          console.log(data['usuarios']);
+          this.user = data['usuarios'];
           this.loadUserData();
         } else {
           this.endOfTheList = true;

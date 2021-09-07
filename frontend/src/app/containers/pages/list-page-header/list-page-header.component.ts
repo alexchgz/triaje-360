@@ -1,7 +1,7 @@
 import { Component,  ViewChild, EventEmitter, Output, Input, OnInit } from '@angular/core';
-import { ApiService, IUser } from 'src/app/data/api.service';
+import { ApiService } from 'src/app/data/api.service';
 import { ISchoolYear } from 'src/app/data/api.service';
-import { ISchoolYearResponse } from '../../../data/api.service';
+import { Usuario } from '../../../models/usuario.model';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class ListPageHeaderComponent implements OnInit {
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
   @Input() itemYear = { nombrecorto: 'All', uid: 0 };
-  @Input() selected: IUser[];
+  @Input() selected: Usuario[];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addNewItem: EventEmitter<any> = new EventEmitter();
@@ -103,7 +103,7 @@ export class ListPageHeaderComponent implements OnInit {
     this.searchKeyUp.emit($event);
   }
 
-  onDropUsers(users: IUser[]): void {
+  onDropUsers(users: Usuario[]): void {
     //console.log(users);
     this.dropUsers.emit(users);
   }

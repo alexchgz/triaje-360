@@ -1,11 +1,13 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/data/api.service';
-import { IUser } from 'src/app/data/api.service';
+import { UsuarioService } from 'src/app/data/usuario.service';
+// import { IUser } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
 import { ISubject } from '../../../data/api.service';
+import { Usuario } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-manage-subject-modal',
@@ -24,11 +26,11 @@ export class ManageSubjectModalComponent implements OnInit{
     { label: 'Cupcakes', value: 'vanilla' },
     { label: 'Desserts', value: 'strawberry' }
   ];
-  data: IUser[] = [];
-  profesores: IUser[] = [];
-  profesoresAgregados: IUser[] = [];
-  alumnos: IUser[] = [];
-  alumnosAgregados: IUser[] = [];
+  data: Usuario[] = [];
+  profesores: Usuario[] = [];
+  profesoresAgregados: Usuario[] = [];
+  alumnos: Usuario[] = [];
+  alumnosAgregados: Usuario[] = [];
   asignatura: ISubject;
   isLoading: boolean;
   endOfTheList = false;
@@ -36,7 +38,7 @@ export class ManageSubjectModalComponent implements OnInit{
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService) { }
+  constructor(private modalService: BsModalService, private apiService: ApiService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
   }
@@ -64,12 +66,12 @@ export class ManageSubjectModalComponent implements OnInit{
   }
 
   getUsers(): void {
-    this.apiService.getUsers().subscribe(
+    this.usuarioService.getUsers().subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.usuarios);
+        if (data['ok']) {
+          console.log(data['usuarios']);
           this.isLoading = false;
-          this.data = data.usuarios.map(x => {
+          this.data = data['usuarios'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')

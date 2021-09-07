@@ -5,7 +5,8 @@ import { ISchoolYear, ISubject } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
-import { IUserResponse, IUser } from '../../../data/api.service';
+// import { IUserResponse, IUser } from '../../../data/api.service';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-add-new-subject-modal',
@@ -23,8 +24,8 @@ export class AddNewSubjectModalComponent {
   endOfTheList = false;
   schoolYears: ISchoolYear[];
   subject: ISubject;
-  profesores: IUser[] = [];
-  alumnos: IUser[] = [];
+  profesores: Usuario[] = [];
+  alumnos: Usuario[] = [];
 
   // FORM
   private formSubmited = false;

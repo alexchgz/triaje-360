@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewUserModalComponent } from 'src/app/containers/pages/add-new-user-modal/add-new-user-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
-import { IUser } from 'src/app/data/api.service';
+// import { IUser } from 'src/app/data/api.service';
+import { Usuario } from 'src/app/models/usuario.model';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ISchoolYear } from '../../../../data/api.service';
+import { UsuarioService } from '../../../../data/usuario.service';
 
 @Component({
   selector: 'app-data-list',
@@ -13,8 +15,8 @@ import { ISchoolYear } from '../../../../data/api.service';
 export class DataListComponent implements OnInit {
   displayMode = 'list';
   selectAllState = '';
-  selected: IUser[] = [];
-  data: IUser[] = [];
+  selected: Usuario[] = [];
+  data: Usuario[] = [];
   currentPage = 1;
   itemsPerPage = 2;
   search = '';
@@ -28,7 +30,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewUserModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
+  constructor(private hotkeysService: HotkeysService, private apiService: ApiService, private usuarioService: UsuarioService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -80,19 +82,19 @@ export class DataListComponent implements OnInit {
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
 
-    this.apiService.getUsers(pageSize, currentPage, schoolYear).subscribe(
+    this.usuarioService.getUsers(pageSize, currentPage, schoolYear).subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.usuarios);
+        if (data['ok']) {
+          console.log(data['usuarios']);
           this.isLoading = false;
-          this.data = data.usuarios.map(x => {
+          this.data = data['usuarios'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
           // console.log(data.totalUsuarios);
-          this.totalItem = data.totalUsuarios;
+          this.totalItem = data['totalUsuarios'];
           //console.log(this.totalItem);
           //this.totalPage = data.totalPage;
           this.setSelectAllState();
@@ -111,7 +113,7 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(user? : IUser): void {
+  showAddNewModal(user? : Usuario): void {
     if(user) {
       console.log(user.uid);
       this.addNewModalRef.show(user.uid);
@@ -120,10 +122,10 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  isSelected(p: IUser): boolean {
+  isSelected(p: Usuario): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
-  onSelect(item: IUser): void {
+  onSelect(item: Usuario): void {
     //console.log(item);
     if (this.isSelected(item)) {
       this.selected = this.selected.filter(x => x.uid !== item.uid);
@@ -169,10 +171,10 @@ export class DataListComponent implements OnInit {
     this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
   }
 
-  dropUsers(users: IUser[]): void {
+  dropUsers(users: Usuario[]): void {
     //console.log(users);
     for(let i=0; i<users.length; i++){
-      this.apiService.dropUser(users[i].uid).subscribe(
+      this.usuarioService.dropUser(users[i].uid).subscribe(
         data => {
           this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
         },
@@ -183,9 +185,9 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  dropUser(user: IUser): void {
+  dropUser(user: Usuario): void {
     console.log(user);
-      this.apiService.dropUser(user.uid).subscribe(
+      this.usuarioService.dropUser(user.uid).subscribe(
         data => {
           this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
         },
