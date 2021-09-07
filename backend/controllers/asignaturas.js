@@ -36,7 +36,15 @@ const getAsignaturas = async(req, res = response) => {
                 // usamos Promise.all para realizar las consultas de forma paralela
                 [asignaturas, totalAsignaturas] = await Promise.all([
                     // consulta con los parametros establecidos
-                    Asignatura.find({}).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
+                    Asignatura.find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
+                    .populate({
+                        path: 'profesores.usuario',
+                        select: 'rol nombre'
+                    })
+                    .populate({
+                        path: 'alumnos.usuario',
+                        select: 'rol nombre'
+                    }),
                     // consulta para obtener el numero total de usuarios
                     Asignatura.countDocuments()
                 ]);
