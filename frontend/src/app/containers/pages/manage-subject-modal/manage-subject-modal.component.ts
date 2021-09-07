@@ -1,20 +1,16 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ApiService } from 'src/app/data/api.service';
 import { UsuarioService } from 'src/app/data/usuario.service';
-// import { IUser } from 'src/app/data/api.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
-import { ISubject } from '../../../data/api.service';
+import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { Usuario } from '../../../models/usuario.model';
+import { Asignatura } from '../../../models/asignatura.model';
 
 @Component({
   selector: 'app-manage-subject-modal',
   templateUrl: './manage-subject-modal.component.html',
   styleUrls: ['./manage-subject-modal.component.scss']
 })
-export class ManageSubjectModalComponent implements OnInit{
+export class ManageSubjectModalComponent implements OnInit {
 
   modalRef: BsModalRef;
   config = {
@@ -31,14 +27,14 @@ export class ManageSubjectModalComponent implements OnInit{
   profesoresAgregados: Usuario[] = [];
   alumnos: Usuario[] = [];
   alumnosAgregados: Usuario[] = [];
-  asignatura: ISubject;
+  asignatura: Asignatura;
   isLoading: boolean;
   endOfTheList = false;
 
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService, private usuarioService: UsuarioService) { }
+  constructor(private modalService: BsModalService, private asignaturaService: AsignaturaService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
   }
@@ -50,11 +46,11 @@ export class ManageSubjectModalComponent implements OnInit{
   }
 
   getSubject(id: number): void {
-    this.apiService.getSubject(id).subscribe(
+    this.asignaturaService.getSubject(id).subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.asignaturas);
-          this.asignatura = data.asignaturas;
+        if (data['ok']) {
+          console.log(data['asignaturas']);
+          this.asignatura = data['asignaturas'];
         } else {
           this.endOfTheList = true;
         }

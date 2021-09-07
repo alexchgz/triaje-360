@@ -3,7 +3,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/users/data-list/data-list.component';
-// import { IUserResponse } from '../../../data/api.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/data/usuario.service';
 import { Curso } from '../../../models/curso.model';

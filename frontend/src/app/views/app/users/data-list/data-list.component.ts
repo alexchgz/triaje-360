@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewUserModalComponent } from 'src/app/containers/pages/add-new-user-modal/add-new-user-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ApiService } from 'src/app/data/api.service';
-// import { IUser } from 'src/app/data/api.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { UsuarioService } from '../../../../data/usuario.service';
@@ -30,7 +28,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewUserModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private apiService: ApiService, private usuarioService: UsuarioService) {
+  constructor(private hotkeysService: HotkeysService, private usuarioService: UsuarioService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;

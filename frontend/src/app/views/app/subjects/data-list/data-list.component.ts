@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewSubjectModalComponent } from 'src/app/containers/pages/add-new-subject-modal/add-new-subject-modal.component';
 import { ManageSubjectModalComponent } from 'src/app/containers/pages/manage-subject-modal/manage-subject-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ApiService } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
-import { ISubject } from '../../../../data/api.service';
 import { Subject } from 'rxjs';
 import { Curso } from '../../../../models/curso.model';
+import { Asignatura } from '../../../../models/asignatura.model';
+import { AsignaturaService } from 'src/app/data/asignatura.service';
 
 @Component({
   selector: 'app-data-list',
@@ -15,8 +15,8 @@ import { Curso } from '../../../../models/curso.model';
 export class DataListComponent implements OnInit {
   displayMode = 'list';
   selectAllState = '';
-  selected: ISubject[] = [];
-  data: ISubject[] = [];
+  selected: Asignatura[] = [];
+  data: Asignatura[] = [];
   currentPage = 1;
   itemsPerPage = 2;
   search = '';
@@ -31,7 +31,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
+  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -51,19 +51,19 @@ export class DataListComponent implements OnInit {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.apiService.getSubjects(pageSize, currentPage, schoolYear).subscribe(
+    this.asignaturaService.getSubjects(pageSize, currentPage, schoolYear).subscribe(
       data => {
-        if (data.ok) {
+        if (data['ok']) {
           // console.log(data.asignaturas);
           this.isLoading = false;
-          this.data = data.asignaturas.map(x => {
+          this.data = data['asignaturas'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
           // console.log(data.totalUsuarios);
-          this.totalItem = data.totalAsignaturas;
+          this.totalItem = data['totalAsignaturas'];
           //console.log(this.totalItem);
           //this.totalPage = data.totalPage;
           this.setSelectAllState();
@@ -81,7 +81,7 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(subject? : ISubject): void {
+  showAddNewModal(subject? : Asignatura): void {
     if(subject) {
       // console.log(subject.uid);
       this.addNewModalRef.show(subject.uid);
@@ -90,13 +90,13 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  showManageModal(subject: ISubject): void {
+  showManageModal(subject: Asignatura): void {
     this.manageModalRef.show(subject.uid);
  }
-  isSelected(p: ISubject): boolean {
+  isSelected(p: Asignatura): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
-  onSelect(item: ISubject): void {
+  onSelect(item: Asignatura): void {
     if (this.isSelected(item)) {
       this.selected = this.selected.filter(x => x.uid !== item.uid);
     } else {
@@ -138,10 +138,10 @@ export class DataListComponent implements OnInit {
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
   }
 
-  dropSubjects(subjects: ISubject[]): void {
+  dropSubjects(subjects: Asignatura[]): void {
     //console.log(users);
     for(let i=0; i<subjects.length; i++){
-      this.apiService.dropSubject(subjects[i].uid).subscribe(
+      this.asignaturaService.dropSubject(subjects[i].uid).subscribe(
         data => {
           this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
         },
@@ -152,9 +152,9 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  dropSubject(subject: ISubject): void {
+  dropSubject(subject: Asignatura): void {
     // console.log(subject);
-      this.apiService.dropSubject(subject.uid).subscribe(
+      this.asignaturaService.dropSubject(subject.uid).subscribe(
         data => {
           this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
         },

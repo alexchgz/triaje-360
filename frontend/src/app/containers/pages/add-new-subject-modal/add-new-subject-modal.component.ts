@@ -1,14 +1,13 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ApiService } from 'src/app/data/api.service';
 import { CursoService } from 'src/app/data/curso.service';
-import { ISubject } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
-// import { IUserResponse, IUser } from '../../../data/api.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { Curso } from '../../../models/curso.model';
+import { Asignatura } from '../../../models/asignatura.model';
+import { AsignaturaService } from '../../../data/asignatura.service';
 
 @Component({
   selector: 'app-add-new-subject-modal',
@@ -25,7 +24,7 @@ export class AddNewSubjectModalComponent {
   isLoading: boolean;
   endOfTheList = false;
   schoolYears: Curso[];
-  subject: ISubject;
+  subject: Asignatura;
   profesores: Usuario[] = [];
   alumnos: Usuario[] = [];
 
@@ -41,7 +40,7 @@ export class AddNewSubjectModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private cursoService: CursoService, private asingnaturaService: AsignaturaService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -83,7 +82,7 @@ export class AddNewSubjectModalComponent {
     if(this.subject) {
       this.formData.value.profesores = this.subject.profesores;
       this.formData.value.alumnos = this.subject.alumnos;
-      this.apiService.updateSubject(this.formData.value, this.subject.uid)
+      this.asingnaturaService.updateSubject(this.formData.value, this.subject.uid)
         .subscribe( res => {
           console.log('Asignatura actualizada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -96,7 +95,7 @@ export class AddNewSubjectModalComponent {
       this.formData.value.profesores = this.profesores;
       this.formData.value.alumnos = this.alumnos;
       console.log(this.formData);
-      this.apiService.createSubject(this.formData.value)
+      this.asingnaturaService.createSubject(this.formData.value)
         .subscribe( res => {
           console.log('Asignatura creada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -120,11 +119,11 @@ export class AddNewSubjectModalComponent {
 
   getSubject(id: number): void {
 
-    this.apiService.getSubject(id).subscribe(
+    this.asingnaturaService.getSubject(id).subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.asignaturas);
-          this.subject = data.asignaturas;
+        if (data['ok']) {
+          console.log(data['asignaturas']);
+          this.subject = data['asignaturas'];
           this.loadSubjectData();
         } else {
           this.endOfTheList = true;
