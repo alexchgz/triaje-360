@@ -191,6 +191,7 @@
         "description": "Descripción",
         "status": "Estado",
         "cancel": "Cancelar",
+        "close": "Cerrar",
         "submit": "Enviar",
         "delete": "Borrar",
         "move": "Moverse",

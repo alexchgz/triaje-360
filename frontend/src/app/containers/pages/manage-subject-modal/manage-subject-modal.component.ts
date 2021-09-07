@@ -26,7 +26,9 @@ export class ManageSubjectModalComponent implements OnInit{
   ];
   data: IUser[] = [];
   profesores: IUser[] = [];
+  profesoresAgregados: IUser[] = [];
   alumnos: IUser[] = [];
+  alumnosAgregados: IUser[] = [];
   asignatura: ISubject;
   isLoading: boolean;
   endOfTheList = false;
@@ -88,10 +90,17 @@ export class ManageSubjectModalComponent implements OnInit{
     for(let i=0; i<this.data.length; i++) {
       if(this.data[i].rol == 'ROL_PROFESOR') {
         this.profesores.push(this.data[i]);
-      } else if (this.data[i].rol == 'ROL_ALUMNO') {
-        this.alumnos.push(this.data[i]);
       }
     }
+  }
+
+  closeModal(): void {
+    // console.log('entro aqui');
+    this.modalRef.hide();
+    this.asignatura = undefined;
+    this.profesores = [];
+    this.alumnos = [];
+    this.data = [];
   }
 
 }

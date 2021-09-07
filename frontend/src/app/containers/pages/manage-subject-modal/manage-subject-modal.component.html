@@ -9,8 +9,7 @@
         <div class="card">
             <tabset class="card-tabs">
                 <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
-                    <p class="font-weight-bold">Lista Profesores ({{profesores.length}})</p>
-
+                    <p class="font-weight-bold">Profesores ({{profesores.length}})</p>
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -52,7 +51,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide()">{{'pages.cancel' | translate }}</button>
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.close' | translate }}</button>
         <!-- <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button> -->
     </div>
 </ng-template>
