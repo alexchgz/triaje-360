@@ -19,14 +19,14 @@ export class UsuarioService {
 
   // ******* PETICIONES USARIOS *********
 
-  getUsers(pageSize?: number, currentPage?: number, schoolYear?: number) {
+  getUsers(pageSize?: number, currentPage?: number, role?: string) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
     let params = new HttpParams();
-    if(pageSize || currentPage || schoolYear){
+    if(pageSize || currentPage || role){
       if(pageSize) params = params.append('pageSize', pageSize + '');
       if(currentPage) params = params.append('currentPage', currentPage + '');
-      if(schoolYear) params = params.append('schoolYear', schoolYear + '');
+      if(role) params = params.append('role', role + '');
     }
     //console.log(params);
     // params = params.append('search', search);

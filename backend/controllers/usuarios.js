@@ -12,7 +12,7 @@ const getUsuarios = async(req, res) => {
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize);
     const desde = (currentPage - 1) * pageSize;
-    //const schoolYear = req.query.schoolYear;
+    const role = req.query.role;
     // console.log(schoolYear);
     //const schoolYear = "612a911cd5e8413c68f28e14";
 
@@ -33,32 +33,32 @@ const getUsuarios = async(req, res) => {
 
         } else { // si no nos pasan el id
 
-            // if (schoolYear == 0) {
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [usuarios, totalUsuarios] = await Promise.all([
-                // consulta con los parametros establecidos
-                Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                // consulta para obtener el numero total de usuarios
-                Usuario.countDocuments()
-            ]);
-            // } else if (schoolYear == null) {
-            //     [usuarios, totalUsuarios] = await Promise.all([
-            //         // consulta con los parametros establecidos
-            //         Usuario.find({}, 'nombre apellidos email rol curso').populate('curso', '-__v'),
-            //         // consulta para obtener el numero total de usuarios
-            //         Usuario.countDocuments()
-            //     ]);
-            // } else {
-            //     // usamos Promise.all para realizar las consultas de forma paralela
-            //     [usuarios, totalUsuarios] = await Promise.all([
-            //         // consulta con los parametros establecidos
-            //         Usuario.find({ curso: schoolYear }, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+            if (role == '' || role == null) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.countDocuments()
+                ]);
+            } else if (role == null) {
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({}, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.countDocuments()
+                ]);
+            } else {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [usuarios, totalUsuarios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Usuario.find({ rol: role }, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
 
-            //         // consulta para obtener el numero total de usuarios
-            //         Usuario.find({ curso: schoolYear }).countDocuments()
-            //         // Usuario.countDocuments({})
-            //     ]);
-            // }
+                    // consulta para obtener el numero total de usuarios
+                    Usuario.find({ rol: role }).countDocuments()
+                    // Usuario.countDocuments({})
+                ]);
+            }
 
         }
         // console.log(usuarios);

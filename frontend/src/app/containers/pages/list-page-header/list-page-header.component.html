@@ -63,7 +63,7 @@
             </svg>
           </a>
         </span>
-                <!-- PARA FILTRAR POR CURSO -->
+                <!-- PARA FILTRAR POR CURSO -> ASIGNATURAS -->
                 <div class="d-block d-md-inline-block position-relative" *ngIf="showSchoolYears">
                     <div class="float-md-left mr-1 mb-1" dropdown>
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" aria-controls="dropdown-basic">
@@ -71,6 +71,18 @@
             </button>
                         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                             <li role="menuitem" *ngFor="let item of itemOptionsYears"><a [ngClass]="item.nombrecorto === itemYear.nombrecorto? 'dropdown-item active' : 'dropdown-item'" (click)="onChangeSchoolYear(item)">{{item.nombrecorto}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PARA FILTRAR POR ROL -> USUARIOS -->
+                <div class="d-block d-md-inline-block position-relative" *ngIf="showRoles">
+                    <div class="float-md-left mr-1 mb-1" dropdown>
+                        <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" aria-controls="dropdown-basic">
+            Rol : {{itemRol.label}} <span class="caret"></span>
+          </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                            <li role="menuitem" *ngFor="let item of itemOptionRoles"><a [ngClass]="item.label === itemRol.label? 'dropdown-item active' : 'dropdown-item'" (click)="onChangeRol(item)">{{item.label}}</a></li>
                         </ul>
                     </div>
                 </div>

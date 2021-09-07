@@ -3,6 +3,7 @@ import { Usuario } from '../../../models/usuario.model';
 import { Curso } from '../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
 import { Router } from '@angular/router';
+import { UserRole } from '../../../shared/auth.roles';
 
 @Component({
   selector: 'app-list-page-header',
@@ -14,9 +15,15 @@ export class ListPageHeaderComponent implements OnInit {
   isLoading: boolean;
   endOfTheList = false;
   itemOptionsYears: Curso[];
-  userRole: number;
+  itemOptionRoles = [
+    { label: 'Cualquiera', value: '' },
+    { label: 'Admin', value: 'ROL_ADMIN' },
+    { label: 'Profesor', value: 'ROL_PROFESOR' },
+    { label: 'Alumno', value: 'ROL_ALUMNO' }
+  ];
 
   @Input() showSchoolYears = false;
+  @Input() showRoles = false;
   @Input() showOrderBy = true;
   @Input() showSearch = true;
   @Input() showItemsPerPage = true;
@@ -31,6 +38,7 @@ export class ListPageHeaderComponent implements OnInit {
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
   @Input() itemYear = { nombrecorto: 'All', uid: 0 };
+  @Input() itemRol = this.itemOptionRoles[0];
   @Input() selected: Usuario[];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
@@ -39,6 +47,7 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() searchKeyUp: EventEmitter<any> = new EventEmitter();
   @Output() itemsPerPageChange: EventEmitter<any> = new EventEmitter();
   @Output() schoolYearChange: EventEmitter<any> = new EventEmitter();
+  @Output() rolChange: EventEmitter<any> = new EventEmitter();
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
@@ -47,6 +56,7 @@ export class ListPageHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getComponent();
+    console.log(this.itemOptionRoles);
   }
 
   getComponent(): void {
@@ -55,6 +65,9 @@ export class ListPageHeaderComponent implements OnInit {
     if(splitUrl[splitUrl.length-1] == "subjects") {
       this.showSchoolYears = true;
       this.loadSchoolYears();
+    }
+    else if(splitUrl[splitUrl.length-1] == "users") {
+      this.showRoles = true;
     }
   }
 
@@ -102,6 +115,12 @@ export class ListPageHeaderComponent implements OnInit {
     this.itemYear = item;
     //console.log(this.itemYear);
     this.schoolYearChange.emit(item);
+  }
+
+  onChangeRol(item): void {
+    this.itemRol = item;
+    //console.log(this.itemYear);
+    this.rolChange.emit(item);
   }
 
   onChangeOrderBy(item): void  {

@@ -23,7 +23,8 @@ export class DataListComponent implements OnInit {
   endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
-  itemYear = 0;
+  // itemYear = 0;
+  itemRol = '';
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewUserModalComponent;
@@ -43,7 +44,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
-    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
+    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
   }
 
   // loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
@@ -75,12 +76,12 @@ export class DataListComponent implements OnInit {
   //   );
   // }
 
-  cargarUsuarios(pageSize: number, currentPage: number, schoolYear: number): void {
+  cargarUsuarios(pageSize: number, currentPage: number, role: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
 
-    this.usuarioService.getUsers(pageSize, currentPage, schoolYear).subscribe(
+    this.usuarioService.getUsers(pageSize, currentPage, role).subscribe(
       data => {
         if (data['ok']) {
           //console.log(data['usuarios']);
@@ -156,17 +157,24 @@ export class DataListComponent implements OnInit {
   pageChanged(event: any): void {
     //this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
     //console.log('CAMBIO PAGINA');
-    this.cargarUsuarios(this.itemsPerPage, event.page, this.itemYear);
+    this.cargarUsuarios(this.itemsPerPage, event.page, this.itemRol);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.cargarUsuarios(perPage, 1, this.itemYear);
+    this.cargarUsuarios(perPage, 1, this.itemRol);
   }
 
-  schoolYearChange(year: Curso): void {
-    //console.log(year.uid);
-    this.itemYear = year.uid;
-    this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
+  // schoolYearChange(year: Curso): void {
+  //   //console.log(year.uid);
+  //   this.itemYear = year.uid;
+  //   this.cargarUsuarios(this.itemsPerPage, 1, year.uid);
+  // }
+
+  rolChange(rol: {label, value}): void {
+    console.log(rol);
+    this.itemRol = rol.value;
+    console.log(this.itemRol);
+    this.cargarUsuarios(this.itemsPerPage, 1, this.itemRol);
   }
 
   dropUsers(users: Usuario[]): void {
@@ -174,7 +182,7 @@ export class DataListComponent implements OnInit {
     for(let i=0; i<users.length; i++){
       this.usuarioService.dropUser(users[i].uid).subscribe(
         data => {
-          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
         },
         error => {
           this.isLoading = false;
@@ -187,7 +195,7 @@ export class DataListComponent implements OnInit {
     console.log(user);
       this.usuarioService.dropUser(user.uid).subscribe(
         data => {
-          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
         },
         error => {
           this.isLoading = false;
