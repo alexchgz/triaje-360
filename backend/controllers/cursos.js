@@ -17,7 +17,6 @@ const getCursos = async(req, res = response) => {
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
-    const schoolYear = req.query.schoolYear;
 
     try {
         var cursos, totalCursos;
@@ -33,25 +32,14 @@ const getCursos = async(req, res = response) => {
 
         } else { // si no nos pasan el id
 
-            if (schoolYear == 0 || schoolYear == null) {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [cursos, totalCursos] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
-                    // consulta para obtener el numero total de usuarios
-                    Curso.countDocuments()
-                ]);
-            } else {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [cursos, totalCursos] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Curso.find({ _id: schoolYear }, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+            // usamos Promise.all para realizar las consultas de forma paralela
+            [cursos, totalCursos] = await Promise.all([
+                // consulta con los parametros establecidos
+                Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+                // consulta para obtener el numero total de usuarios
+                Curso.countDocuments()
+            ]);
 
-                    // consulta para obtener el numero total de usuarios
-                    Curso.find({ _id: schoolYear }).countDocuments()
-                    // Usuario.countDocuments({})
-                ]);
-            }
         }
 
         res.json({

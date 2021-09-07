@@ -83,7 +83,7 @@ export class DataListComponent implements OnInit {
     this.usuarioService.getUsers(pageSize, currentPage, schoolYear).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data['usuarios']);
+          //console.log(data['usuarios']);
           this.isLoading = false;
           this.data = data['usuarios'].map(x => {
             return {

@@ -33,7 +33,7 @@ export const environment = {
   defaultDirection: 'ltr',
   themeRadiusStorageKey: 'vien-themeradius',
   isAuthGuardActive: true,
-  defaultRole: UserRole.Admin,
+  defaultRole: UserRole.Student,
   firebase: {
     apiKey: 'AIzaSyCqoNLB_jTw4nncO12qR-eDH9gAeWiZVaw',
     authDomain: 'vien-angular-login.firebaseapp.com',

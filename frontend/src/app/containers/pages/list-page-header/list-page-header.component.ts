@@ -2,7 +2,7 @@ import { Component,  ViewChild, EventEmitter, Output, Input, OnInit } from '@ang
 import { Usuario } from '../../../models/usuario.model';
 import { Curso } from '../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-page-header',
@@ -14,8 +14,9 @@ export class ListPageHeaderComponent implements OnInit {
   isLoading: boolean;
   endOfTheList = false;
   itemOptionsYears: Curso[];
+  userRole: number;
 
-  @Input() showSchoolYears = true;
+  @Input() showSchoolYears = false;
   @Input() showOrderBy = true;
   @Input() showSearch = true;
   @Input() showItemsPerPage = true;
@@ -42,10 +43,19 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor(private cursoService: CursoService) { }
+  constructor(private cursoService: CursoService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadSchoolYears();
+    this.getComponent();
+  }
+
+  getComponent(): void {
+    let splitUrl = this.router.url.split("/", 5);
+    console.log(splitUrl);
+    if(splitUrl[splitUrl.length-1] == "subjects") {
+      this.showSchoolYears = true;
+      this.loadSchoolYears();
+    }
   }
 
   loadSchoolYears(): void {
