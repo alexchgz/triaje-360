@@ -1,10 +1,12 @@
 import { Component, TemplateRef,  ViewChild } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ApiService, ISchoolYear } from 'src/app/data/api.service';
+import { ApiService} from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/school-years/data-list/data-list.component';
 import { id } from '@swimlane/ngx-datatable';
+import { CursoService } from '../../../data/curso.service';
+import { Curso } from '../../../models/curso.model';
 
 @Component({
   selector: 'app-add-new-school-year-modal',
@@ -20,7 +22,7 @@ export class AddNewSchoolYearModalComponent {
   };
   isLoading: boolean;
   endOfTheList = false;
-  schoolYear: ISchoolYear;
+  schoolYear: Curso;
 
   // FORM
   private formSubmited = false;
@@ -33,7 +35,7 @@ export class AddNewSchoolYearModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -49,7 +51,7 @@ export class AddNewSchoolYearModalComponent {
     if (this.formData.invalid) { console.log(this.formData.invalid )}
 
     if(this.schoolYear) {
-      this.apiService.updateSchoolYear(this.formData.value, this.schoolYear.uid)
+      this.cursoService.updateSchoolYear(this.formData.value, this.schoolYear.uid)
         .subscribe( res => {
           console.log('Curso Académico Actualizado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -59,7 +61,8 @@ export class AddNewSchoolYearModalComponent {
           return;
       });
     } else {
-      this.apiService.createSchoolYear(this.formData.value)
+      console.log(this.formData.value);
+      this.cursoService.createSchoolYear(this.formData.value)
         .subscribe( res => {
           console.log('Curso Académico creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -83,11 +86,11 @@ export class AddNewSchoolYearModalComponent {
 
   getSchoolYear(id: number): void {
 
-    this.apiService.getSchoolYear(id).subscribe(
+    this.cursoService.getSchoolYear(id).subscribe(
       data => {
-        if (data.ok) {
-          console.log(data.cursos);
-          this.schoolYear = data.cursos;
+        if (data['ok']) {
+          console.log(data['cursos']);
+          this.schoolYear = data['cursos'];
           this.loadSchoolYearData();
         } else {
           this.endOfTheList = true;

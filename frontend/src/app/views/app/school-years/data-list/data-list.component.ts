@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewSchoolYearModalComponent } from 'src/app/containers/pages/add-new-school-year-modal/add-new-school-year-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ApiService } from 'src/app/data/api.service';
-import { ISchoolYear } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
+import { Curso } from '../../../../models/curso.model';
+import { CursoService } from 'src/app/data/curso.service';
 
 @Component({
   selector: 'app-data-list',
@@ -12,8 +12,8 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 export class DataListComponent implements OnInit {
   displayMode = 'list';
   selectAllState = '';
-  selected: ISchoolYear[] = [];
-  data: ISchoolYear[] = [];
+  selected: Curso[] = [];
+  data: Curso[] = [];
   currentPage = 1;
   itemsPerPage = 2;
   search = '';
@@ -27,7 +27,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
+  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -47,19 +47,19 @@ export class DataListComponent implements OnInit {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.apiService.getSchoolYears(pageSize, currentPage, schoolYear).subscribe(
+    this.cursoService.getSchoolYears(pageSize, currentPage, schoolYear).subscribe(
       data => {
-        if (data.ok) {
+        if (data['ok']) {
           //console.log(data.usuarios);
           this.isLoading = false;
-          this.data = data.cursos.map(x => {
+          this.data = data['cursos'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
           // console.log(data.totalUsuarios);
-          this.totalItem = data.totalCursos;
+          this.totalItem = data['totalCursos'];
           //console.log(this.totalItem);
           //this.totalPage = data.totalPage;
           this.setSelectAllState();
@@ -77,7 +77,7 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(schoolYear? : ISchoolYear): void {
+  showAddNewModal(schoolYear? : Curso): void {
     if(schoolYear) {
       console.log(schoolYear.uid);
       this.addNewModalRef.show(schoolYear.uid);
@@ -86,10 +86,10 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  isSelected(p: ISchoolYear): boolean {
+  isSelected(p: Curso): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
-  onSelect(item: ISchoolYear): void {
+  onSelect(item: Curso): void {
     if (this.isSelected(item)) {
       this.selected = this.selected.filter(x => x.uid !== item.uid);
     } else {
@@ -125,16 +125,16 @@ export class DataListComponent implements OnInit {
     this.loadSchoolYears(perPage, 1, this.itemYear);
   }
 
-  schoolYearChange(year: ISchoolYear): void {
+  schoolYearChange(year: Curso): void {
     //console.log(year.uid);
     this.itemYear = year.uid;
     this.loadSchoolYears(this.itemsPerPage, 1, year.uid);
   }
 
-  dropSchoolYears(years: ISchoolYear[]): void {
+  dropSchoolYears(years: Curso[]): void {
     //console.log(users);
     for(let i=0; i<years.length; i++){
-      this.apiService.dropSchoolYear(years[i].uid).subscribe(
+      this.cursoService.dropSchoolYear(years[i].uid).subscribe(
         data => {
           this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
         },
@@ -145,9 +145,9 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  dropSchoolYear(year: ISchoolYear): void {
+  dropSchoolYear(year: Curso): void {
     console.log(year);
-      this.apiService.dropSchoolYear(year.uid).subscribe(
+      this.cursoService.dropSchoolYear(year.uid).subscribe(
         data => {
           this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
         },

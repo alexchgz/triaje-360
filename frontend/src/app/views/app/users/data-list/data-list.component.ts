@@ -5,8 +5,8 @@ import { ApiService } from 'src/app/data/api.service';
 // import { IUser } from 'src/app/data/api.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { ContextMenuComponent } from 'ngx-contextmenu';
-import { ISchoolYear } from '../../../../data/api.service';
 import { UsuarioService } from '../../../../data/usuario.service';
+import { Curso } from '../../../../models/curso.model';
 
 @Component({
   selector: 'app-data-list',
@@ -165,7 +165,7 @@ export class DataListComponent implements OnInit {
     this.cargarUsuarios(perPage, 1, this.itemYear);
   }
 
-  schoolYearChange(year: ISchoolYear): void {
+  schoolYearChange(year: Curso): void {
     //console.log(year.uid);
     this.itemYear = year.uid;
     this.cargarUsuarios(this.itemsPerPage, 1, year.uid);

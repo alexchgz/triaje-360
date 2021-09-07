@@ -1,3 +1,4 @@
+import { Usuario } from './usuario.model';
 
 export class Asignatura {
 
@@ -5,6 +6,6 @@ export class Asignatura {
     public nombre: string,
     public nombrecorto: string,
     public curso: string,
-    public profesores: Array<String>,
-    public alumnos: Array<String>) {}
+    public profesores: Array<Usuario>,
+    public alumnos: Array<Usuario>) {}
 }

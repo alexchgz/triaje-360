@@ -1,12 +1,14 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/data/api.service';
-import { ISchoolYear, ISubject } from 'src/app/data/api.service';
+import { CursoService } from 'src/app/data/curso.service';
+import { ISubject } from 'src/app/data/api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
 // import { IUserResponse, IUser } from '../../../data/api.service';
 import { Usuario } from 'src/app/models/usuario.model';
+import { Curso } from '../../../models/curso.model';
 
 @Component({
   selector: 'app-add-new-subject-modal',
@@ -22,7 +24,7 @@ export class AddNewSubjectModalComponent {
   };
   isLoading: boolean;
   endOfTheList = false;
-  schoolYears: ISchoolYear[];
+  schoolYears: Curso[];
   subject: ISubject;
   profesores: Usuario[] = [];
   alumnos: Usuario[] = [];
@@ -39,7 +41,7 @@ export class AddNewSubjectModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private apiService: ApiService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private apiService: ApiService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -50,12 +52,12 @@ export class AddNewSubjectModalComponent {
   }
 
   getSchoolYears() {
-    this.apiService.getSchoolYears().subscribe(
+    this.cursoService.getSchoolYears().subscribe(
       data => {
-        if (data.ok) {
+        if (data['ok']) {
           //console.log(data.usuarios);
           this.isLoading = false;
-          this.schoolYears = data.cursos.map(x => {
+          this.schoolYears = data['cursos'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')

@@ -1,7 +1,7 @@
 import { Component,  ViewChild, EventEmitter, Output, Input, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/data/api.service';
-import { ISchoolYear } from 'src/app/data/api.service';
 import { Usuario } from '../../../models/usuario.model';
+import { Curso } from '../../../models/curso.model';
+import { CursoService } from 'src/app/data/curso.service';
 
 
 @Component({
@@ -10,10 +10,10 @@ import { Usuario } from '../../../models/usuario.model';
 })
 export class ListPageHeaderComponent implements OnInit {
   displayOptionsCollapsed = false;
-  data: ISchoolYear[] = [];
+  data: Curso[] = [];
   isLoading: boolean;
   endOfTheList = false;
-  itemOptionsYears: ISchoolYear[];
+  itemOptionsYears: Curso[];
 
   @Input() showSchoolYears = true;
   @Input() showOrderBy = true;
@@ -42,7 +42,7 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor(private apiService: ApiService) { }
+  constructor(private cursoService: CursoService) { }
 
   ngOnInit(): void {
     this.loadSchoolYears();
@@ -50,18 +50,18 @@ export class ListPageHeaderComponent implements OnInit {
 
   loadSchoolYears(): void {
 
-    this.apiService.getSchoolYears().subscribe(
+    this.cursoService.getSchoolYears().subscribe(
       data => {
-        if (data.ok) {
+        if (data['ok']) {
           //console.log(data.usuarios);
           this.isLoading = false;
-          this.data = data.cursos.map(x => {
+          this.data = data['cursos'].map(x => {
             return {
               ...x,
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
-          this.itemOptionsYears = data.cursos;
+          this.itemOptionsYears = data['cursos'];
           this.getActiveSchoolYear();
           // this.itemOptionsYears.unshift({ nombrecorto: 'All', uid: 0, nombre: 'All', activo: false});
           //console.log(this.itemOptionsYears);

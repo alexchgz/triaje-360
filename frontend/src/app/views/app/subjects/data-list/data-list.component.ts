@@ -3,10 +3,10 @@ import { AddNewSubjectModalComponent } from 'src/app/containers/pages/add-new-su
 import { ManageSubjectModalComponent } from 'src/app/containers/pages/manage-subject-modal/manage-subject-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ApiService } from 'src/app/data/api.service';
-import { ISchoolYear } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ISubject } from '../../../../data/api.service';
 import { Subject } from 'rxjs';
+import { Curso } from '../../../../models/curso.model';
 
 @Component({
   selector: 'app-data-list',
@@ -132,7 +132,7 @@ export class DataListComponent implements OnInit {
     this.loadSubjects(perPage, 1, this.itemYear);
   }
 
-  schoolYearChange(year: ISchoolYear): void {
+  schoolYearChange(year: Curso): void {
     //console.log(year.uid);
     this.itemYear = year.uid;
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
