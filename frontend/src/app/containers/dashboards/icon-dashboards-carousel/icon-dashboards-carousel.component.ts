@@ -17,7 +17,7 @@ export class IconDashboardsCarouselComponent {
     { title: 'dashboards.schoolYears', icon: 'iconsminds-digital-drawing', url: '/app/dashboards/all/school-years/data-list' },
     { title: 'dashboards.subjects', icon: 'iconsminds-air-balloon-1', url: '/app/dashboards/all/subjects/data-list' },
     { title: 'dashboards.users', icon: 'iconsminds-pantone', url: '/app/dashboards/all/users/data-list' },
-    { title: 'dashboards.exercises', icon: 'iconsminds-library', url: '/app/dashboards/all/exercises/data-list' }
+    // { title: 'dashboards.exercises', icon: 'iconsminds-library', url: '/app/dashboards/all/exercises/data-list' }
   ];
 
   constructor() { }

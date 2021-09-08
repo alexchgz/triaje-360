@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
-import { getThemeColor, setThemeColor } from 'src/app/utils/util';
+import { getThemeColor, setThemeColor, getUserRole } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-topnav',
@@ -23,6 +23,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   isFullScreen = false;
   isDarkModeActive = false;
   searchKey = '';
+  userRole: number;
 
   constructor(
     private sidebarService: SidebarService,
@@ -34,6 +35,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.currentLanguage = this.langService.languageShorthand;
     this.isSingleLang = this.langService.isSingleLang;
     this.isDarkModeActive = getThemeColor().indexOf('dark') > -1 ? true : false;
+    this.userRole = getUserRole();
   }
 
   onDarkModeChange(event): void {

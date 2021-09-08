@@ -4,6 +4,7 @@ import { Curso } from '../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
 import { Router } from '@angular/router';
 import { UserRole } from '../../../shared/auth.roles';
+import { getUserRole } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-list-page-header',
@@ -11,6 +12,7 @@ import { UserRole } from '../../../shared/auth.roles';
 })
 export class ListPageHeaderComponent implements OnInit {
   displayOptionsCollapsed = false;
+  userRole: number;
   data: Curso[] = [];
   isLoading: boolean;
   endOfTheList = false;
@@ -55,6 +57,7 @@ export class ListPageHeaderComponent implements OnInit {
   constructor(private cursoService: CursoService, private router: Router) { }
 
   ngOnInit(): void {
+    this.userRole = getUserRole();
     this.getComponent();
     console.log(this.itemOptionRoles);
   }

@@ -271,7 +271,8 @@
         "subject-students": "Alumnos",
         "manage-subject-modal-title": "Gestionar Asignaturas",
         "teachers-title": "Profesores",
-        "students-title": "Alumnos"
+        "students-title": "Alumnos",
+        "exercises-title": "Ejercicios"
     },
     "chat": {
         "messages": "Mensajes",

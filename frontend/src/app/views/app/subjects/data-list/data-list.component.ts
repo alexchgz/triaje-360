@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { Curso } from '../../../../models/curso.model';
 import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
+import { getUserRole } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-data-list',
@@ -26,6 +27,7 @@ export class DataListComponent implements OnInit {
   totalItem = 0;
   totalPage = 0;
   itemYear = 0;
+  userRole: number;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
@@ -44,6 +46,7 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.userRole = getUserRole();
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
   }
 

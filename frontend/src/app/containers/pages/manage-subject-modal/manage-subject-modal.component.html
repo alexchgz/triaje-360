@@ -1,7 +1,7 @@
 <ng-template #template>
     <div class="modal-header">
         <h4 class="modal-title pull-left" *ngIf="asignatura">{{'pages.manage-subject-modal-title' | translate}}: {{asignatura.nombre}}</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -63,6 +63,26 @@
                             </tr>
                         </tbody>
                     </table>
+                </tab>
+                <tab heading="{{'pages.exercises-title' | translate}}" class="card-body">
+                    <p class="font-weight-bold">Lista Ejercicios</p>
+
+                    <!-- <table class="table table-borderless">
+                      <thead>
+                          <tr>
+                              <th scope="col">Email</th>
+                              <th scope="col">Nombre</th>
+                              <th scope="col">Apellidos</th>
+                          </tr>
+                      </thead>
+                      <tbody *ngFor="let p of alumnos">
+                          <tr>
+                              <td>{{p.email}}</td>
+                              <td>{{p.nombre}}</td>
+                              <td>{{p.apellidos}}</td>
+                          </tr>
+                      </tbody>
+                  </table> -->
                 </tab>
             </tabset>
         </div>

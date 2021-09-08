@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <app-heading></app-heading>
-        <div class="top-right-button-container text-zero">
+        <div *ngIf="userRole == 0" class="top-right-button-container text-zero">
             <button type="button" (click)="onAddNewItem()" class="top-right-button btn btn-primary btn-lg mr-1">{{ 'pages.add-new' | translate}}</button>
             <div class="btn-group" dropdown>
                 <div class="btn btn-primary btn-lg pl-4 pr-0 check-button">

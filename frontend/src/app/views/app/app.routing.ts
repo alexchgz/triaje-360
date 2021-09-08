@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '',
     component: AppComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'dashboards' },
+      { path: '', pathMatch: 'full', redirectTo: 'subjects' },
       {
         path: 'dashboards',
         loadChildren: () =>
@@ -50,7 +50,7 @@ const routes: Routes = [
         path: 'users',
         loadChildren: () =>
           import('./users/users.module').then((m) => m.UsersModule),
-          data: { roles: [UserRole.Admin, UserRole.Teacher] },
+          data: { roles: [UserRole.Admin] },
       },
       {
         path: 'exercises',

@@ -28,12 +28,12 @@
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">Profesores: {{p.profesores.length}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
+                    <p *ngIf="userRole == 0 || userRole == 1" class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
                     <i class="simple-icon-plus" (click)="showManageModal(p)"></i>
-                    <i class="simple-icon-pencil ml-3" (click)="showAddNewModal(p)"></i>
-                    <i class="simple-icon-trash ml-3" (click)="dropSubject(p)"></i>
+                    <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" (click)="showAddNewModal(p)"></i>
+                    <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" (click)="dropSubject(p)"></i>
                 </div>
-                <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
             (change)="onSelect(p)">
           <label class="custom-control-label" [for]="'customCheck'+i"></label>

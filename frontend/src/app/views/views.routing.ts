@@ -35,6 +35,27 @@ let routes: Routes = [
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
   },
+  {
+    path: 'users',
+    loadChildren: () => import('./app/users/users.module').then((m) => m.UsersModule),
+    data: { roles: [UserRole.Admin] },
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+  },
+  {
+    path: 'school-years',
+    loadChildren: () => import('./app/school-years/school-years.module').then((m) => m.SchoolYearsModule),
+    data: { roles: [UserRole.Admin] },
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+  },
+  {
+    path: 'subjects',
+    loadChildren: () => import('./app/subjects/subjects.module').then((m) => m.SubjectsModule),
+    data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+  },
   { path: 'error', component: ErrorComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', redirectTo: '/error' },
@@ -55,6 +76,18 @@ if (!environment.isAuthGuardActive) {
       path: 'user',
       loadChildren: () =>
         import('./user/user.module').then((m) => m.UserModule),
+    },
+    {
+      path: 'users',
+      loadChildren: () => import('./app/users/users.module').then((m) => m.UsersModule),
+    },
+    {
+      path: 'school-years',
+      loadChildren: () => import('./app/school-years/school-years.module').then((m) => m.SchoolYearsModule),
+    },
+    {
+      path: 'subjects',
+      loadChildren: () => import('./app/subjects/subjects.module').then((m) => m.SubjectsModule),
     },
     { path: 'error', component: ErrorComponent },
     { path: '**', redirectTo: '/error' },

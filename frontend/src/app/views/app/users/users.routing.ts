@@ -6,6 +6,7 @@ import { ThumbListComponent } from './thumb-list/thumb-list.component';
 import { ImageListComponent } from './image-list/image-list.component';
 import { DetailsComponent } from './details/details.component';
 import { DetailsAltComponent } from './details-alt/details-alt.component';
+import { UserRole } from '../../../shared/auth.roles';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'image-list', component: ImageListComponent },
       { path: 'details', component: DetailsComponent },
       { path: 'details-alt', component: DetailsAltComponent },
-    ]
+    ],
+    data: { roles: [UserRole.Admin]}
   }
 ];
 

@@ -8,6 +8,9 @@ import { EcommerceComponent } from './ecommerce/ecommerce.component';
 import { PruebaComponent } from './prueba/prueba.component';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { AllComponent } from './all/all.component';
+import { UsersComponent } from '../users/users.component';
+import { SchoolYearsComponent } from '../school-years/school-years.component';
+import { SubjectsComponent } from '../subjects/subjects.component';
 
 const routes: Routes = [
   {
@@ -38,6 +41,24 @@ const routes: Routes = [
       {
         path: 'all',
         component: AllComponent,
+        // children: [
+        //   { path: '', redirectTo: 'all', pathMatch: 'full' },
+        //   {
+        //     path: 'users',
+        //     component: UsersComponent,
+        //     data: { roles: [UserRole.Admin] },
+        //   },
+        //   {
+        //     path: 'school-years',
+        //     component: SchoolYearsComponent,
+        //     data: { roles: [UserRole.Admin] },
+        //   },
+        //   {
+        //     path: 'subjects',
+        //     component: SubjectsComponent,
+        //     data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
+        //   },
+        // ],
         // data: { roles: [UserRole.Editor] },
       },
     ],
