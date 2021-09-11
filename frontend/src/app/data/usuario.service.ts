@@ -28,23 +28,29 @@ export class UsuarioService {
       if(currentPage) params = params.append('currentPage', currentPage + '');
       if(role) params = params.append('role', role + '');
     }
-    //console.log(params);
-    // params = params.append('search', search);
-    // params = params.append('orderBy', orderBy);
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: IUserResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
+
+  }
+
+  getTeachers(idTeachers: Array<number>) {
+
+    console.log(idTeachers);
+    const url = environment.base_url + '/usuarios/profesores';
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    let params = new HttpParams();
+    params = params.append('idProfesores', idTeachers.join(', '));
+    // console.log(params);
+
+    return this.http.get(url, { headers, params });
+
   }
 
   getUser(id: number) {

@@ -7,6 +7,6 @@ export class Asignatura {
     public nombre: string,
     public nombrecorto: string,
     public curso: Curso,
-    public profesores: Array<Usuario>,
+    public profesores: Array< { usuario: Usuario, _id: number } >,
     public alumnos: Array<Usuario>) {}
 }

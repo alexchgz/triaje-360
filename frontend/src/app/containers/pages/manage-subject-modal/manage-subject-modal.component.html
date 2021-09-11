@@ -9,7 +9,7 @@
         <div class="card">
             <tabset class="card-tabs">
                 <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
-                    <p class="font-weight-bold">Profesores Agregados ({{profesoresAgregados.length}})</p>
+                    <p class="font-weight-bold">Profesores Agregados ({{profesoresAsignados.length}})</p>
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -18,7 +18,7 @@
                                 <th scope="col">Apellidos</th>
                             </tr>
                         </thead>
-                        <tbody *ngFor="let p of profesoresAgregados">
+                        <tbody *ngFor="let p of profesoresAsignados">
                             <tr>
                                 <td>{{p.email}}</td>
                                 <td>{{p.nombre}}</td>
@@ -26,7 +26,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p class="font-weight-bold">Profesores ({{profesores.length}})</p>
+                    <p class="font-weight-bold">Profesores ({{profesoresNoAsignados.length}})</p>
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -35,7 +35,7 @@
                                 <th scope="col">Apellidos</th>
                             </tr>
                         </thead>
-                        <tbody *ngFor="let p of profesores">
+                        <tbody *ngFor="let p of profesoresNoAsignados">
                             <tr>
                                 <td>{{p.email}}</td>
                                 <td>{{p.nombre}}</td>

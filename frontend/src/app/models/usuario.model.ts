@@ -9,5 +9,6 @@ export class Usuario {
                  public apellidos?: string,
                  public email?: string,
                  public curso?: Curso,
-                 public alta?: Date) {}
+                 public alta?: Date,
+                 public _id?: number) {}
 }

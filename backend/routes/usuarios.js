@@ -1,7 +1,7 @@
 // RUTA BASE: /api/usuarios
 
 const { Router } = require('express');
-const { getUsuarios, crearUsuario, actualizarUsuario, borrarUsuario } = require('../controllers/usuarios');
+const { getUsuarios, getProfesores, crearUsuario, actualizarUsuario, borrarUsuario } = require('../controllers/usuarios');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarRol } = require('../middleware/validar-rol');
@@ -17,6 +17,13 @@ router.get('/', [
     check('role', 'Desde debe ser una cadena de texto').optional().isString(),
     validarCampos
 ], getUsuarios);
+
+router.get('/profesores', [
+    validarJWT,
+    // comprobamos campos opcionales
+    check('idProfesores', 'Desde debe ser un objeto').isString(),
+    validarCampos
+], getProfesores);
 
 router.post('/', [
     validarJWT,

@@ -59,12 +59,12 @@ export class ListPageHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = getUserRole();
     this.getComponent();
-    console.log(this.itemOptionRoles);
+    // console.log(this.itemOptionRoles);
   }
 
   getComponent(): void {
     let splitUrl = this.router.url.split("/", 5);
-    console.log(splitUrl);
+    //console.log(splitUrl);
     if(splitUrl[splitUrl.length-1] == "subjects") {
       this.showSchoolYears = true;
       this.loadSchoolYears();
