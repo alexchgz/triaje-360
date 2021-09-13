@@ -152,6 +152,8 @@ const actualizarAsignatura = async(req, res = response) => {
     const { curso, profesores } = req.body;
     const uid = req.params.id;
 
+    console.log('Entro a actualizar');
+
     try {
 
         // comprobamos que la asignatura existe
@@ -199,6 +201,7 @@ const actualizarAsignatura = async(req, res = response) => {
 
             // si se han pasado todos los filtros actualizamos la asignatura
             const object = req.body;
+            console.log(object.profesores);
             object.profesores = profesInsertar;
             const asignatura = await Asignatura.findByIdAndUpdate(uid, object, { new: true });
 

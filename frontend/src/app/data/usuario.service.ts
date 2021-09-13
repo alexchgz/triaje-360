@@ -38,7 +38,7 @@ export class UsuarioService {
 
   getTeachers(idTeachers: Array<number>) {
 
-    console.log(idTeachers);
+    // console.log(idTeachers);
     const url = environment.base_url + '/usuarios/profesores';
     const token = localStorage.getItem('token');
 
@@ -47,6 +47,23 @@ export class UsuarioService {
 
     let params = new HttpParams();
     params = params.append('idProfesores', idTeachers.join(', '));
+    // console.log(params);
+
+    return this.http.get(url, { headers, params });
+
+  }
+
+  getStudents(idStudents: Array<number>) {
+
+    // console.log(idStudents);
+    const url = environment.base_url + '/usuarios/alumnos';
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    let params = new HttpParams();
+    params = params.append('idAlumnos', idStudents.join(', '));
     // console.log(params);
 
     return this.http.get(url, { headers, params });

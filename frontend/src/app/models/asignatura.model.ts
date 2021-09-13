@@ -1,5 +1,6 @@
 import { Usuario } from './usuario.model';
 import { Curso } from './curso.model';
+import { Profesor } from './profesor.model';
 
 export class Asignatura {
 
@@ -7,6 +8,7 @@ export class Asignatura {
     public nombre: string,
     public nombrecorto: string,
     public curso: Curso,
+    // public profesores: Array<Profesor>,
     public profesores: Array< { usuario: Usuario, _id: number } >,
-    public alumnos: Array<Usuario>) {}
+    public alumnos: Array< { usuario: Usuario, _id: number } >) {}
 }

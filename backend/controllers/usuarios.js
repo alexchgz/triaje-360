@@ -129,6 +129,49 @@ const getProfesores = async(req, res) => {
     }
 }
 
+const getAlumnos = async(req, res) => {
+
+    const alumAsignados = req.query.idAlumnos;
+    const ids = alumAsignados.split(",");
+
+    for (let i = 0; i < ids.length; i++) {
+        ids[i] = ids[i].trim();
+    }
+
+    // console.log(profesAgregados);
+    // console.log(ids);
+
+    try {
+        var alumnosAsignados, alumnosNoAsignados;
+
+        // for (let i = 0; i < ids.length; i++) {
+
+        // usamos Promise.all para realizar las consultas de forma paralela
+        [alumnosAsignados, alumnosNoAsignados] = await Promise.all([
+            // consulta para profesores asignados a la asignatura
+            Usuario.find({ rol: "ROL_ALUMNO", _id: { $in: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+            // consulta para profesores NO asignados a la asignatura
+            Usuario.find({ rol: "ROL_ALUMNO", _id: { $nin: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+
+        ]);
+        // }
+        // console.log(usuarios);
+        res.json({
+            ok: true,
+            msg: 'Alumnos obtenidos',
+            alumnosAsignados,
+            alumnosNoAsignados
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            ok: false,
+            msg: 'error obteniendo alumnos'
+        })
+    }
+}
+
 const crearUsuario = async(req, res = response) => {
 
     const { email, password } = req.body;
@@ -246,4 +289,4 @@ const borrarUsuario = async(req, res) => {
 }
 
 // Exportamos el modulo
-module.exports = { getUsuarios, getProfesores, crearUsuario, actualizarUsuario, borrarUsuario };
+module.exports = { getUsuarios, getProfesores, getAlumnos, crearUsuario, actualizarUsuario, borrarUsuario };

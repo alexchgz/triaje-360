@@ -30,12 +30,12 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
-    check('id', 'El identificador no es válido').isMongoId(),
-    check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
-    check('nombrecorto', 'El argumento nombrecorto es obligatorio').not().isEmpty().trim(),
-    check('curso', 'El argumento curso es obligatorio').isMongoId(),
+    // check('id', 'El identificador no es válido').isMongoId(),
+    // check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
+    // check('nombrecorto', 'El argumento nombrecorto es obligatorio').not().isEmpty().trim(),
+    // check('curso', 'El argumento curso es obligatorio').isMongoId(),
     // profesores
-    check('prpfesores.*usuario', 'El id del profesor no es válido').optional().isMongoId(),
+    check('profesores.*usuario', 'El id del profesor no es válido').optional().isMongoId(),
     validarCampos
 ], actualizarAsignatura);
 

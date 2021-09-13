@@ -358,6 +358,14 @@
 
 .simple-icon-minus:before {
     content: "\e615";
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #145388;
+    color: white;
+    padding: .4em;
+    margin-left: 2%;
+    border-radius: 50px;
+    border-color: #145388;
 }
 
 .simple-icon-close:before {
