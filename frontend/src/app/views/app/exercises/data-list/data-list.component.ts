@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddNewProductModalComponent } from 'src/app/containers/pages/add-new-product-modal/add-new-product-modal.component';
+import { AddNewExerciseModalComponent } from 'src/app/containers/pages/add-new-exercise-modal/add-new-exercise-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ApiService } from 'src/app/data/api.service';
-import { IProduct } from 'src/app/data/api.service';
 import { ContextMenuComponent } from 'ngx-contextmenu';
+import { Ejercicio } from '../../../../models/ejercicio.model';
+import { EjercicioService } from 'src/app/data/ejercicio.service';
+import { Asignatura } from '../../../../models/asignatura.model';
 
 @Component({
   selector: 'app-data-list',
@@ -12,21 +13,22 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 export class DataListComponent implements OnInit {
   displayMode = 'list';
   selectAllState = '';
-  selected: IProduct[] = [];
-  data: IProduct[] = [];
+  selected: Ejercicio[] = [];
+  data: Ejercicio[] = [];
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 2;
   search = '';
   orderBy = '';
   isLoading: boolean;
   endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
+  itemSubject = 0;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
-  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewProductModalComponent;
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private apiService: ApiService) {
+  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -39,27 +41,29 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
+    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
   }
 
-  loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
+  loadExercises(pageSize: number, currentPage: number, subject: number): void {
+
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.search = search;
-    this.orderBy = orderBy;
-
-    this.apiService.getProducts(pageSize, currentPage, search, orderBy).subscribe(
+    this.ejercicioService.getExercises(pageSize, currentPage, subject).subscribe(
       data => {
-        if (data.status) {
+        if (data['ok']) {
+          console.log(data['ejercicios']);
           this.isLoading = false;
-          this.data = data.data.map(x => {
+          this.data = data['ejercicios'].map(x => {
             return {
               ...x,
-              img: x.img.replace('/img/', '/img/products/')
+              // img: x.img.replace('/img/', '/img/products/')
             };
           });
-          this.totalItem = data.totalItem;
-          this.totalPage = data.totalPage;
+
+          // console.log(data.totalUsuarios);
+          this.totalItem = data['totalEjercicios'];
+          //console.log(this.totalItem);
+          //this.totalPage = data.totalPage;
           this.setSelectAllState();
         } else {
           this.endOfTheList = true;
@@ -75,16 +79,21 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(): void {
-    this.addNewModalRef.show();
+  showAddNewModal(subject? : Asignatura): void {
+    if(subject) {
+      console.log(subject.uid);
+      this.addNewModalRef.show(subject.uid);
+    } else {
+      this.addNewModalRef.show();
+    }
   }
 
-  isSelected(p: IProduct): boolean {
-    return this.selected.findIndex(x => x.id === p.id) > -1;
+  isSelected(p: Ejercicio): boolean {
+    return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
-  onSelect(item: IProduct): void {
+  onSelect(item: Ejercicio): void {
     if (this.isSelected(item)) {
-      this.selected = this.selected.filter(x => x.id !== item.id);
+      this.selected = this.selected.filter(x => x.uid !== item.uid);
     } else {
       this.selected.push(item);
     }
@@ -111,23 +120,50 @@ export class DataListComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
+    this.loadExercises(this.itemsPerPage, event.page, this.itemSubject);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.loadData(perPage, 1, this.search, this.orderBy);
+    this.loadExercises(perPage, 1, this.itemSubject);
   }
 
-  changeOrderBy(item: any): void {
-    this.loadData(this.itemsPerPage, 1, this.search, item.value);
+  dropExercises(exercises: Ejercicio[]): void {
+    //console.log(users);
+    for(let i=0; i<exercises.length; i++){
+      this.ejercicioService.dropExercise(exercises[i].uid).subscribe(
+        data => {
+          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
-  searchKeyUp(event): void {
-    const val = event.target.value.toLowerCase().trim();
-    this.loadData(this.itemsPerPage, 1, val, this.orderBy);
+  dropExercise(exercise: Ejercicio): void {
+    console.log(exercise);
+      this.ejercicioService.dropExercise(exercise.uid).subscribe(
+        data => {
+          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+
   }
 
-  onContextMenuClick(action: string, item: IProduct): void {
-    console.log('onContextMenuClick -> action :  ', action, ', item.title :', item.title);
-  }
+  // changeOrderBy(item: any): void {
+  //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
+  // }
+
+  // searchKeyUp(event): void {
+  //   const val = event.target.value.toLowerCase().trim();
+  //   this.loadData(this.itemsPerPage, 1, val, this.orderBy);
+  // }
+
+  // onContextMenuClick(action: string, item: IProduct): void {
+  //   console.log('onContextMenuClick -> action :  ', action, ', item.title :', item.title);
+  // }
 }

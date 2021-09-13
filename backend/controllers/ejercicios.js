@@ -7,12 +7,16 @@ const validator = require('validator');
 const getEjercicios = async(req, res = response) => {
     // parametros para la paginacion ->
     // si no es un numero lo pone a 0
-    const desde = Number(req.query.desde) || 0;
+    // const desde = Number(req.query.desde) || 0;
     // cantidad de registros que vamos a mostrar por pagina
-    const registropp = Number(process.env.DOCSPERPAGE);
+    // const registropp = Number(process.env.DOCSPERPAGE);
 
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
+    const currentPage = Number(req.query.currentPage);
+    const pageSize = Number(req.query.pageSize) || 0;
+    const desde = (currentPage - 1) * pageSize;
+    const asignatura = req.query.asignatura;
 
     try {
         var ejercicios, totalEjercicios;
@@ -28,23 +32,45 @@ const getEjercicios = async(req, res = response) => {
 
         } else { // si no nos pasan el id
 
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [ejercicios, totalEjercicios] = await Promise.all([
-                // consulta con los parametros establecidos
-                Ejercicio.find({}).skip(desde).limit(registropp).populate({ path: 'asignatura', populate: { path: 'profesores.usuario', select: '-password' } }).populate({ path: 'asignatura', select: '-__v', populate: { path: 'curso', select: '-__v' } }),
-                // consulta para obtener el numero total de ejercicios
-                Ejercicio.countDocuments()
-            ]);
+
+            if (asignatura == 0 || asignatura == null) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [ejercicios, totalEjercicios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Ejercicio.find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
+                    .populate({
+                        path: 'asignatura',
+                        select: 'nombre nombrecorto profesores alumnos'
+                    }),
+
+                    // consulta para obtener el numero total de usuarios
+                    Ejercicio.countDocuments()
+                ]);
+            } else {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [ejercicios, totalEjercicios] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                    .populate({
+                        path: 'asignatura',
+                        select: 'nombre nombrecorto profesores alumnos'
+                    }),
+                    // consulta para obtener el numero total de usuarios
+                    Ejercicio.countDocuments({ asignatura: asignatura })
+                ]);
+            }
         }
 
         res.json({
             ok: true,
             msg: 'Ejercicios obtenidos',
             ejercicios,
+            pageSize,
+            currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta
             page: {
                 desde,
-                registropp,
+                currentPage,
                 totalEjercicios
             }
         });

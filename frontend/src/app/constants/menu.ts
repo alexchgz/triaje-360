@@ -38,11 +38,11 @@ const data: IMenuItem[] = [
     to: `${adminRoot}/users/data-list`,
     roles: [UserRole.Admin],
   },
-  // {
-  //   icon: 'iconsminds-library',
-  //   label: 'menu.exercises',
-  //   to: `${adminRoot}/exercises/data-list`,
-  //   roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
-  // },
+  {
+    icon: 'iconsminds-library',
+    label: 'menu.exercises',
+    to: `${adminRoot}/exercises/data-list`,
+    roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
+  },
 ];
 export default data;

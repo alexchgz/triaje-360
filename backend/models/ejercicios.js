@@ -10,6 +10,14 @@ const EjercicioSchema = Schema({
         type: String,
         require: true
     },
+    desde: {
+        type: Date,
+        require: true
+    },
+    hasta: {
+        type: Date,
+        require: true
+    },
     asignatura: {
         type: Schema.Types.ObjectId,
         ref: 'Asignatura',

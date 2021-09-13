@@ -40,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddNewSchoolYearModalComponent } from './add-new-school-year-modal/add-new-school-year-modal.component';
 import { AddNewSubjectModalComponent } from './add-new-subject-modal/add-new-subject-modal.component';
 import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subject-modal.component';
+import { AddNewExerciseModalComponent } from './add-new-exercise-modal/add-new-exercise-modal.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subje
     AddNewUserModalComponent,
     AddNewSchoolYearModalComponent,
     AddNewSubjectModalComponent,
-    ManageSubjectModalComponent
+    ManageSubjectModalComponent,
+    AddNewExerciseModalComponent
   ],
   imports: [
     CommonModule,
@@ -92,6 +94,7 @@ import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subje
     AddNewUserModalComponent,
     AddNewSchoolYearModalComponent,
     AddNewSubjectModalComponent,
+    AddNewExerciseModalComponent,
     ManageSubjectModalComponent,
     ListPageHeaderComponent,
     ProfileUserSocialComponent,
