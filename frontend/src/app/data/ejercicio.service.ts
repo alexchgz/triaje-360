@@ -10,6 +10,7 @@ import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Curso } from '../models/curso.model';
 import { Ejercicio } from '../models/ejercicio.model'
 import { environment } from '../../environments/environment';
+import { send } from 'process';
 
 @Injectable({ providedIn: 'root' })
 export class EjercicioService {
@@ -93,6 +94,8 @@ export class EjercicioService {
       "hasta": data['hasta'],
       "asignatura": data['asignatura']
     }
+
+    // console.log(sendData);
 
     return this.http.put(url, sendData, { headers });
 

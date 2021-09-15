@@ -72,18 +72,23 @@ export class ManageSubjectModalComponent implements OnInit {
           this.asignatura = data['asignaturas'];
           // console.log(this.asignatura);
 
-          for(let i = 0; i < this.asignatura.profesores.length; i++) {
-            this.idTeachers.push(this.asignatura.profesores[i].usuario._id);
+          if(this.asignatura.profesores.length > 0) {
+            for(let i = 0; i < this.asignatura.profesores.length; i++) {
+              this.idTeachers.push(this.asignatura.profesores[i].usuario._id);
+            }
           }
 
-          for(let j = 0; j < this.asignatura.alumnos.length; j++) {
-            this.idStudents.push(this.asignatura.alumnos[j].usuario._id);
+          if(this.asignatura.alumnos.length > 0) {
+            for(let j = 0; j < this.asignatura.alumnos.length; j++) {
+              this.idStudents.push(this.asignatura.alumnos[j].usuario._id);
+            }
           }
 
           console.log(this.idTeachers);
           console.log(this.idStudents);
           this.getTeachers();
           this.getStudents();
+
         } else {
           this.endOfTheList = true;
         }
@@ -118,13 +123,23 @@ export class ManageSubjectModalComponent implements OnInit {
   }
 
   getTeachers(): void {
+    console.log(this.idTeachers);
     this.usuarioService.getTeachers(this.idTeachers).subscribe(
       data => {
         if (data['ok']) {
-          // console.log(data['profesores']);
+          console.log(data['profesoresAsignados']);
+          console.log(data['profesoresNoAsignados']);
           this.isLoading = false;
           this.profesoresAsignados = data['profesoresAsignados'];
+          // por si no hay profesores asignados
+          if(!this.profesoresAsignados) {
+            this.profesoresAsignados = [];
+          }
           this.profesoresNoAsignados = data['profesoresNoAsignados'];
+          // por si están todos asignados
+          if(!this.profesoresNoAsignados) {
+            this.profesoresNoAsignados = [];
+          }
           // this.sortRoles();
         } else {
           this.endOfTheList = true;

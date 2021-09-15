@@ -111,13 +111,13 @@ const crearAsignatura = async(req, res = response) => {
                     profesInsertar.push(registro);
                 }
             });
-            console.log('profesBusqueda:', profesBusqueda);
-            console.log('profesInsertar:', profesInsertar);
+            // console.log('profesBusqueda:', profesBusqueda);
+            // console.log('profesInsertar:', profesInsertar);
 
             // comprobamos que existan y que están bien pasados
             const existenProfes = await Usuario.find().where('_id').in(profesBusqueda);
             if (existenProfes.length != profesBusqueda.length) {
-                console.log('existenProfes.length', existenProfes.length, 'profesBusqueda.length:', profesBusqueda.length);
+                // console.log('existenProfes.length', existenProfes.length, 'profesBusqueda.length:', profesBusqueda.length);
                 return res.status(400).json({
                     ok: false,
                     msg: 'Alguno de los profesores no existe o está duplicado'
@@ -152,7 +152,7 @@ const actualizarAsignatura = async(req, res = response) => {
     const { curso, profesores } = req.body;
     const uid = req.params.id;
 
-    console.log('Entro a actualizar');
+    // console.log('Entro a actualizar');
 
     try {
 
@@ -201,7 +201,7 @@ const actualizarAsignatura = async(req, res = response) => {
 
             // si se han pasado todos los filtros actualizamos la asignatura
             const object = req.body;
-            console.log(object.profesores);
+            // console.log(object.profesores);
             object.profesores = profesInsertar;
             const asignatura = await Asignatura.findByIdAndUpdate(uid, object, { new: true });
 

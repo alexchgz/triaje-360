@@ -113,7 +113,7 @@ export class AddNewSubjectModalComponent {
     if(this.subject) {
       this.formData.get('nombre').setValue(this.subject.nombre);
       this.formData.get('nombrecorto').setValue(this.subject.nombrecorto);
-      this.formData.get('curso').setValue(this.subject.curso.nombrecorto);
+      this.formData.get('curso').setValue(this.subject.curso._id);
     }
   }
 

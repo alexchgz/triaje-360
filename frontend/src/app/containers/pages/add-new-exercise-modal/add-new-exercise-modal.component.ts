@@ -53,7 +53,7 @@ export class AddNewExerciseModalComponent {
     this.asignaturaService.getSubjects().subscribe(
       data => {
         if (data['ok']) {
-          //console.log(data.usuarios);
+          // console.log(data['asignaturas']);
           this.isLoading = false;
           this.subjects = data['asignaturas'].map(x => {
             return {
@@ -73,15 +73,17 @@ export class AddNewExerciseModalComponent {
   }
 
   createExercise(): void {
-    console.log('Envío formulario');
+    // console.log('Envío formulario');
 
     this.formSubmited = true;
     if (this.formData.invalid) { console.log(this.formData.invalid )}
 
     if(this.exercise) {
+      console.log(this.exercise);
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
-          console.log('Ejercicio actualizado');
+          // console.log(this.formData.get('asignatura').value);
+          // console.log('Ejercicio actualizado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
           this.closeModal();
@@ -109,7 +111,7 @@ export class AddNewExerciseModalComponent {
       this.formData.get('descripcion').setValue(this.exercise.descripcion);
       this.formData.get('desde').setValue(this.exercise.desde);
       this.formData.get('hasta').setValue(this.exercise.hasta);
-      this.formData.get('asignatura').setValue(this.exercise.asignatura.nombrecorto);
+      this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
     }
   }
 
@@ -118,7 +120,7 @@ export class AddNewExerciseModalComponent {
     this.ejercicioService.getExercise(id).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data['ejercicios']);
+          // console.log(data['ejercicios']);
           this.exercise = data['ejercicios'];
           this.loadExerciseData();
         } else {

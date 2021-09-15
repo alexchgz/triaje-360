@@ -88,20 +88,27 @@ const getUsuarios = async(req, res) => {
 
 const getProfesores = async(req, res) => {
 
-    const profesAsignados = req.query.idProfesores;
-    const ids = profesAsignados.split(",");
+    let profesAsignados;
+    if (req.query.idProfesores) {
+        profesAsignados = req.query.idProfesores;
+    }
+    // console.log(profesAsignados);
+    let ids = [];
 
-    for (let i = 0; i < ids.length; i++) {
-        ids[i] = ids[i].trim();
+    if (profesAsignados) {
+        ids = profesAsignados.split(",");
+
+        for (let i = 0; i < ids.length; i++) {
+            ids[i] = ids[i].trim();
+        }
     }
 
     // console.log(profesAgregados);
     // console.log(ids);
 
     try {
+        // console.log('entro');
         var profesoresAsignados, profesoresNoAsignados;
-
-        // for (let i = 0; i < ids.length; i++) {
 
         // usamos Promise.all para realizar las consultas de forma paralela
         [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
@@ -111,6 +118,9 @@ const getProfesores = async(req, res) => {
             Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
 
         ]);
+
+        // console.log(profesoresAsignados);
+        // console.log(profesoresNoAsignados);
         // }
         // console.log(usuarios);
         res.json({
@@ -131,15 +141,20 @@ const getProfesores = async(req, res) => {
 
 const getAlumnos = async(req, res) => {
 
-    const alumAsignados = req.query.idAlumnos;
-    const ids = alumAsignados.split(",");
-
-    for (let i = 0; i < ids.length; i++) {
-        ids[i] = ids[i].trim();
+    let alumAsignados;
+    if (req.query.idAlumnos) {
+        alumAsignados = req.query.idAlumnos;
     }
+    // console.log(profesAsignados);
+    let ids = [];
 
-    // console.log(profesAgregados);
-    // console.log(ids);
+    if (alumAsignados) {
+        ids = alumAsignados.split(",");
+
+        for (let i = 0; i < ids.length; i++) {
+            ids[i] = ids[i].trim();
+        }
+    }
 
     try {
         var alumnosAsignados, alumnosNoAsignados;

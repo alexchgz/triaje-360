@@ -46,7 +46,11 @@ export class UsuarioService {
     headers = headers.append('x-token', token);
 
     let params = new HttpParams();
-    params = params.append('idProfesores', idTeachers.join(', '));
+    if(idTeachers.length > 0) {
+      params = params.append('idProfesores', idTeachers.join(', '));
+    }
+
+    console.log(idTeachers);
     // console.log(params);
 
     return this.http.get(url, { headers, params });
