@@ -144,6 +144,7 @@ const actualizarEjercicio = async(req, res = response) => {
             });
         }
 
+        object.asignatura = asignatura;
         // si existe la actualizamos
         const ejercicio = await Ejercicio.findByIdAndUpdate(uid, object, { new: true });
 

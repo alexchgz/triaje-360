@@ -8,11 +8,13 @@ import { Ejercicio } from '../../../models/ejercicio.model';
 import { EjercicioService } from '../../../data/ejercicio.service';
 import { Asignatura } from '../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-new-exercise-modal',
   templateUrl: './add-new-exercise-modal.component.html',
-  styleUrls: ['./add-new-exercise-modal.component.scss']
+  styleUrls: ['./add-new-exercise-modal.component.scss'],
+  providers: [DatePipe]
 })
 export class AddNewExerciseModalComponent {
 
@@ -39,7 +41,8 @@ export class AddNewExerciseModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
+     private fb: FormBuilder, private router: Router , private dataList: DataListComponent, private datePipe: DatePipe) { }
 
   show(id? : number): void {
     if(id) {
@@ -82,7 +85,7 @@ export class AddNewExerciseModalComponent {
       console.log(this.exercise);
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
-          // console.log(this.formData.get('asignatura').value);
+          console.log(this.formData.get('asignatura').value);
           // console.log('Ejercicio actualizado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
@@ -109,8 +112,10 @@ export class AddNewExerciseModalComponent {
     if(this.exercise) {
       this.formData.get('nombre').setValue(this.exercise.nombre);
       this.formData.get('descripcion').setValue(this.exercise.descripcion);
-      this.formData.get('desde').setValue(this.exercise.desde);
-      this.formData.get('hasta').setValue(this.exercise.hasta);
+      // this.formData.get('desde').setValue(this.exercise.desde);
+      this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
+      // this.formData.get('hasta').setValue(this.exercise.hasta);
+      this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
       this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
     }
   }

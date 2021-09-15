@@ -80,6 +80,7 @@ export class AddNewSubjectModalComponent {
     if (this.formData.invalid) { console.log(this.formData.invalid )}
 
     if(this.subject) {
+      console.log(this.formData.value);
       this.formData.value.profesores = this.subject.profesores;
       this.formData.value.alumnos = this.subject.alumnos;
       this.asingnaturaService.updateSubject(this.formData.value, this.subject.uid)
@@ -109,7 +110,7 @@ export class AddNewSubjectModalComponent {
   }
 
   loadSubjectData() {
-    console.log(this.subject);
+    // console.log(this.subject);
     if(this.subject) {
       this.formData.get('nombre').setValue(this.subject.nombre);
       this.formData.get('nombrecorto').setValue(this.subject.nombrecorto);

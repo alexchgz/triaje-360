@@ -80,7 +80,7 @@ export class EjercicioService {
 
   }
 
-  updateExercise(data: Ejercicio, id: number) {
+  updateExercise(data: Object, id: number) {
     console.log(data);
     const url = environment.base_url + '/ejercicios/' + id;
     const token = localStorage.getItem('token');

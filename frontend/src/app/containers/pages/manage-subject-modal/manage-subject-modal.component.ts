@@ -84,8 +84,8 @@ export class ManageSubjectModalComponent implements OnInit {
             }
           }
 
-          console.log(this.idTeachers);
-          console.log(this.idStudents);
+          // console.log(this.idTeachers);
+          // console.log(this.idStudents);
           this.getTeachers();
           this.getStudents();
 
@@ -123,12 +123,12 @@ export class ManageSubjectModalComponent implements OnInit {
   }
 
   getTeachers(): void {
-    console.log(this.idTeachers);
+    // console.log(this.idTeachers);
     this.usuarioService.getTeachers(this.idTeachers).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data['profesoresAsignados']);
-          console.log(data['profesoresNoAsignados']);
+          // console.log(data['profesoresAsignados']);
+          // console.log(data['profesoresNoAsignados']);
           this.isLoading = false;
           this.profesoresAsignados = data['profesoresAsignados'];
           // por si no hay profesores asignados

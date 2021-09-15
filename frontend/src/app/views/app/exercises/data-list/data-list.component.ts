@@ -5,10 +5,12 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Ejercicio } from '../../../../models/ejercicio.model';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Asignatura } from '../../../../models/asignatura.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-data-list',
-  templateUrl: './data-list.component.html'
+  templateUrl: './data-list.component.html',
+  providers: [DatePipe]
 })
 export class DataListComponent implements OnInit {
   displayMode = 'list';
@@ -28,7 +30,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService) {
+  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private datePipe: DatePipe) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -53,13 +55,8 @@ export class DataListComponent implements OnInit {
         if (data['ok']) {
           console.log(data['ejercicios']);
           this.isLoading = false;
-          this.data = data['ejercicios'].map(x => {
-            return {
-              ...x,
-              // img: x.img.replace('/img/', '/img/products/')
-            };
-          });
-
+          this.data = data['ejercicios'];
+          this.changeDateFormat();
           // console.log(data.totalUsuarios);
           this.totalItem = data['totalEjercicios'];
           //console.log(this.totalItem);
@@ -81,7 +78,7 @@ export class DataListComponent implements OnInit {
 
   showAddNewModal(subject? : Asignatura): void {
     if(subject) {
-      console.log(subject.uid);
+      // console.log(subject.uid);
       this.addNewModalRef.show(subject.uid);
     } else {
       this.addNewModalRef.show();
@@ -151,6 +148,14 @@ export class DataListComponent implements OnInit {
           this.isLoading = false;
         }
       );
+
+  }
+
+  changeDateFormat(): void {
+    for(let i = 0; i < this.data.length; i++) {
+      this.data[i].desde = this.datePipe.transform(this.data[i].desde, 'dd/MM/yyyy');
+      this.data[i].hasta = this.datePipe.transform(this.data[i].hasta, 'dd/MM/yyyy');
+    }
 
   }
 
