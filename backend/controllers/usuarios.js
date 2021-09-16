@@ -37,14 +37,14 @@ const getUsuarios = async(req, res) => {
                 // usamos Promise.all para realizar las consultas de forma paralela
                 [usuarios, totalUsuarios] = await Promise.all([
                     // consulta con los parametros establecidos
-                    Usuario.find({}, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    Usuario.find({}, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
                     // consulta para obtener el numero total de usuarios
                     Usuario.countDocuments()
                 ]);
             } else if (role == null) {
                 [usuarios, totalUsuarios] = await Promise.all([
                     // consulta con los parametros establecidos
-                    Usuario.find({}, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+                    Usuario.find({}, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
                     // consulta para obtener el numero total de usuarios
                     Usuario.countDocuments()
                 ]);
@@ -52,7 +52,7 @@ const getUsuarios = async(req, res) => {
                 // usamos Promise.all para realizar las consultas de forma paralela
                 [usuarios, totalUsuarios] = await Promise.all([
                     // consulta con los parametros establecidos
-                    Usuario.find({ rol: role }, 'nombre apellidos email rol curso').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                    Usuario.find({ rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
 
                     // consulta para obtener el numero total de usuarios
                     Usuario.find({ rol: role }).countDocuments()
@@ -113,9 +113,9 @@ const getProfesores = async(req, res) => {
         // usamos Promise.all para realizar las consultas de forma paralela
         [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
             // consulta para profesores asignados a la asignatura
-            Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+            Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
             // consulta para profesores NO asignados a la asignatura
-            Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+            Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
 
         ]);
 
@@ -164,9 +164,9 @@ const getAlumnos = async(req, res) => {
         // usamos Promise.all para realizar las consultas de forma paralela
         [alumnosAsignados, alumnosNoAsignados] = await Promise.all([
             // consulta para profesores asignados a la asignatura
-            Usuario.find({ rol: "ROL_ALUMNO", _id: { $in: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+            Usuario.find({ rol: "ROL_ALUMNO", _id: { $in: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
             // consulta para profesores NO asignados a la asignatura
-            Usuario.find({ rol: "ROL_ALUMNO", _id: { $nin: ids } }, 'nombre apellidos email rol curso').populate('curso', '-__v'),
+            Usuario.find({ rol: "ROL_ALUMNO", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
 
         ]);
         // }

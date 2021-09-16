@@ -128,7 +128,7 @@ export class UsuarioService {
       "email": data['email'],
       "password": data['password'],
       "rol": data['rol'],
-      "curso": data['curso'].uid
+      "activo": data['activo']
     }
 
     return this.http.put(url, sendData, { headers });

@@ -19,11 +19,6 @@ const UsuarioSchema = Schema({
         type: String,
         require: true
     },
-    curso: {
-        type: Schema.Types.ObjectId,
-        ref: 'Curso',
-        require: true
-    },
     rol: {
         type: String,
         require: true,

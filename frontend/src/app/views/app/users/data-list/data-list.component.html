@@ -21,13 +21,17 @@
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
-            {{p.nombre}} {{p.apellidos}}
-          </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
+                      {{p.nombre}} {{p.apellidos}}
+                    </a>
+                    <!-- <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p> -->
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.email}}</p>
                     <div class="w-15 w-xs-100">
                         <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.rol}}</span>
                     </div>
+
+                    <i class="w-15 w-xs-100 simple-icon-check" *ngIf="p.activo"></i>
+                    <i class="w-15 w-xs-100 simple-icon-close" *ngIf="!p.activo"></i>
+
                     <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i>
                     <i class="simple-icon-trash" (click)="dropUser(p)"></i>
                 </div>

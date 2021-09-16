@@ -32,6 +32,10 @@
                 <label>{{ 'pages.user-password' | translate }}</label>
                 <input type="password" class="form-control" formControlName="password" placeholder="" required>
             </div>
+            <div class="mt-4">
+                <label>{{ 'pages.school-year-active' | translate }}</label>
+                <input type="checkbox" class="form-control" formControlName="activo" placeholder="" required>
+            </div>
             <div class="mt-2">
                 <label>{{ 'pages.user-role' | translate }}</label>
                 <label class="w-100">
@@ -41,7 +45,7 @@
                 </ng-select>
             </label>
             </div>
-            <div class="mt-2">
+            <!-- <div class="mt-2">
                 <label>{{ 'pages.user-school-year' | translate }}</label>
                 <label class="w-100">
               <ng-select appearance="outline" [searchable]="false" formControlName="curso" required>
@@ -49,7 +53,7 @@
                   </ng-option>
               </ng-select>
           </label>
-            </div>
+            </div> -->
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.cancel' | translate }}</button>

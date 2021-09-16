@@ -38,7 +38,7 @@ export class AddNewUserModalComponent {
     email: ['', [Validators.required]],
     password: ['', [Validators.required]],
     rol: ['', [Validators.required]],
-    curso: ['', Validators.required]
+    activo: ['', Validators.required]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
@@ -114,7 +114,8 @@ export class AddNewUserModalComponent {
       this.formData.get('email').setValue(this.user.email);
       this.formData.get('password').setValue('');
       this.formData.get('rol').setValue(this.user.rol);
-      this.formData.get('curso').setValue(this.user.curso.nombrecorto);
+      this.formData.get('activo').setValue(this.user.activo);
+      // this.formData.get('curso').setValue(this.user.curso.nombrecorto);
     }
   }
 

@@ -346,6 +346,13 @@
 
 .simple-icon-check:before {
     content: "\e080";
+    font-size: 32px;
+    cursor: pointer;
+    background-color: white;
+    color: #145388;
+    padding: .4em;
+    border-radius: 50px;
+    border-color: #145388;
 }
 
 .simple-icon-clock:before {
@@ -377,6 +384,13 @@
 
 .simple-icon-close:before {
     content: "\e082";
+    font-size: 32px;
+    cursor: pointer;
+    background-color: white;
+    color: #145388;
+    padding: .4em;
+    border-radius: 50px;
+    border-color: #145388;
 }
 
 .simple-icon-event:before {
