@@ -1,5 +1,5 @@
 <app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[1,2,3]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)" [selected]="selected" (dropExercises)="dropExercises($event)">
+    (itemsPerPageChange)="itemsPerPageChange($event)" (subjectChange)="subjectChange($event)" [selected]="selected" (dropExercises)="dropExercises($event)">
 </app-list-page-header>
 <app-add-new-exercise-modal #addNewModalRef></app-add-new-exercise-modal>
 <!-- <context-menu #basicMenu>

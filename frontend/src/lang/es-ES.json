@@ -272,7 +272,13 @@
         "manage-subject-modal-title": "Gestionar Asignaturas",
         "teachers-title": "Profesores",
         "students-title": "Alumnos",
-        "exercises-title": "Ejercicios"
+        "exercises-title": "Ejercicios",
+        "add-new-exercise-title": "Agregar Nuevo Curso",
+        "exercise-name": "Nombre",
+        "exercise-description": "Descripcion",
+        "exercise-from": "Desde",
+        "exercise-to": "Hasta",
+        "exercise-subject": "Asignatura"
     },
     "chat": {
         "messages": "Mensajes",

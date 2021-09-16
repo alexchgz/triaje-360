@@ -5,6 +5,9 @@ import { CursoService } from 'src/app/data/curso.service';
 import { Router } from '@angular/router';
 import { UserRole } from '../../../shared/auth.roles';
 import { getUserRole } from 'src/app/utils/util';
+import { Asignatura } from '../../../models/asignatura.model';
+import { AsignaturaService } from 'src/app/data/asignatura.service';
+import { Profesor } from '../../../models/profesor.model';
 
 @Component({
   selector: 'app-list-page-header',
@@ -16,16 +19,22 @@ export class ListPageHeaderComponent implements OnInit {
   data: Curso[] = [];
   isLoading: boolean;
   endOfTheList = false;
+  // FILTRO DE ASIGNATURAS POR CURSO
   itemOptionsYears: Curso[];
+  // FILTRO DE USUARIOS POR ROLES
   itemOptionRoles = [
     { label: 'Cualquiera', value: '' },
     { label: 'Admin', value: 'ROL_ADMIN' },
     { label: 'Profesor', value: 'ROL_PROFESOR' },
     { label: 'Alumno', value: 'ROL_ALUMNO' }
   ];
+  // FILTRO DE EJERCICIOS POR ASIGNATURA
+  // itemOptionsSubjects: Asignatura[];
+  itemOptionsSubjects: Object[];
 
   @Input() showSchoolYears = false;
   @Input() showRoles = false;
+  @Input() showSubjects = false;
   @Input() showOrderBy = true;
   @Input() showSearch = true;
   @Input() showItemsPerPage = true;
@@ -39,8 +48,9 @@ export class ListPageHeaderComponent implements OnInit {
     { label: 'Product Name', value: 'title' },
     { label: 'Category', value: 'category' },
     { label: 'Status', value: 'status' }];
-  @Input() itemYear = { nombrecorto: 'All', uid: 0 };
+  @Input() itemYear = { nombrecorto: 'Todos', uid: 0 };
   @Input() itemRol = this.itemOptionRoles[0];
+  @Input() itemSubject = { nombrecorto: 'Todas', uid: 0 };
   @Input() selected: Usuario[];
 
   @Output() changeDisplayMode: EventEmitter<string> = new EventEmitter<string>();
@@ -50,11 +60,12 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() itemsPerPageChange: EventEmitter<any> = new EventEmitter();
   @Output() schoolYearChange: EventEmitter<any> = new EventEmitter();
   @Output() rolChange: EventEmitter<any> = new EventEmitter();
+  @Output() subjectChange: EventEmitter<any> = new EventEmitter();
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor(private cursoService: CursoService, private router: Router) { }
+  constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router) { }
 
   ngOnInit(): void {
     this.userRole = getUserRole();
@@ -71,6 +82,11 @@ export class ListPageHeaderComponent implements OnInit {
     }
     else if(splitUrl[splitUrl.length-1] == "users") {
       this.showRoles = true;
+    }
+    else if(splitUrl[splitUrl.length-1] == "exercises") {
+      this.showSubjects = true;
+      this.loadSchoolYears();
+      this.loadSubjects();
     }
   }
 
@@ -91,6 +107,28 @@ export class ListPageHeaderComponent implements OnInit {
           this.getActiveSchoolYear();
           // this.itemOptionsYears.unshift({ nombrecorto: 'All', uid: 0, nombre: 'All', activo: false});
           //console.log(this.itemOptionsYears);
+        } else {
+          this.endOfTheList = true;
+        }
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  loadSubjects(): void {
+
+    this.asignaturaService.getSubjects(undefined, undefined, this.itemYear.uid).subscribe(
+      data => {
+        if (data['ok']) {
+          // console.log(data['asignaturas']);
+          this.isLoading = false;
+          this.data = data['asignaturas'];
+          this.itemOptionsSubjects = data['asignaturas'];
+          this.itemOptionsSubjects.unshift({ nombrecorto: 'Todas', uid: 0 });
+          // this.getActiveSchoolYear();
+
         } else {
           this.endOfTheList = true;
         }
@@ -126,6 +164,12 @@ export class ListPageHeaderComponent implements OnInit {
     this.rolChange.emit(item);
   }
 
+  onChangeSubject(item): void {
+    this.itemSubject = item;
+    //console.log(this.itemYear);
+    this.subjectChange.emit(item);
+  }
+
   onChangeOrderBy(item): void  {
     this.itemOrder = item;
     this.changeOrderBy.emit(item);
@@ -150,5 +194,6 @@ export class ListPageHeaderComponent implements OnInit {
         stop = true;
       }
     }
+
   }
 }

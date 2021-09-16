@@ -49,13 +49,24 @@ const getAsignaturas = async(req, res = response) => {
                     Asignatura.countDocuments()
                 ]);
             } else {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [asignaturas, totalAsignaturas] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Asignatura.find({ curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
-                    // consulta para obtener el numero total de usuarios
-                    Asignatura.countDocuments({ curso: schoolYear })
-                ]);
+                if (desde == undefined && pageSize == undefined) {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [asignaturas, totalAsignaturas] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Asignatura.find({ curso: schoolYear }).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Asignatura.countDocuments({ curso: schoolYear })
+                    ]);
+                } else {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [asignaturas, totalAsignaturas] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Asignatura.find({ curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Asignatura.countDocuments({ curso: schoolYear })
+                    ]);
+                }
+
             }
 
         }

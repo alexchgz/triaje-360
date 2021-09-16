@@ -17,6 +17,7 @@ const getEjercicios = async(req, res = response) => {
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
     const asignatura = req.query.asignatura;
+    // console.log(req.query);
 
     try {
         var ejercicios, totalEjercicios;

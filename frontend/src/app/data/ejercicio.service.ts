@@ -29,8 +29,10 @@ export class EjercicioService {
     if(pageSize || currentPage || subject){
       if(pageSize) { params = params.append('pageSize', pageSize + ''); }
       if(currentPage) { params = params.append('currentPage', currentPage + ''); }
-      if(subject) { params = params.append('subject', subject + ''); }
+      if(subject) { params = params.append('asignatura', subject + ''); }
     }
+
+    console.log(params);
 
     return this.http.get(url, { headers, params });
 

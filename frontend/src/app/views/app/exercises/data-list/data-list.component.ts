@@ -124,6 +124,13 @@ export class DataListComponent implements OnInit {
     this.loadExercises(perPage, 1, this.itemSubject);
   }
 
+  subjectChange(subject: Asignatura): void {
+    //console.log(year.uid);
+    this.itemSubject = subject.uid;
+    console.log(this.itemSubject);
+    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+  }
+
   dropExercises(exercises: Ejercicio[]): void {
     //console.log(users);
     for(let i=0; i<exercises.length; i++){
