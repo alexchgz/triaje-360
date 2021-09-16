@@ -44,6 +44,7 @@ export class ManageSubjectModalComponent implements OnInit {
   public formData=this.fb.group({
     nombre: ['', [Validators.required]],
     nombrecorto: ['', [Validators.required]],
+    codigo: ['', [Validators.required]],
     curso: ['', [Validators.required]],
     profesores: [''],
     alumnos: ['']

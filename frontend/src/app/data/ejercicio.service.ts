@@ -32,7 +32,7 @@ export class EjercicioService {
       if(subject) { params = params.append('asignatura', subject + ''); }
     }
 
-    console.log(params);
+    // console.log(params);
 
     return this.http.get(url, { headers, params });
 
@@ -52,7 +52,7 @@ export class EjercicioService {
   }
 
   dropExercise(uid: number) {
-    console.log(uid);
+    // console.log(uid);
     const url = environment.base_url + '/ejercicios/' + uid;
     const token = localStorage.getItem('token');
 

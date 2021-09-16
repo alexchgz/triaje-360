@@ -19,12 +19,12 @@
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                    <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
+                    <a class="list-item-heading mb-0 truncate w-25 w-xs-100" href="javascript:;">
             {{p.nombre}}
           </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.desde}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.hasta}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.asignatura.nombrecorto}}</p>
+                    <p class="mb-0 text-muted w-20 w-xs-100">{{p.asignatura.nombrecorto}}</p>
+                    <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.desde}}</p>
+                    <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
 
                     <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i>
                     <i class="simple-icon-trash" (click)="dropExercise(p)"></i>

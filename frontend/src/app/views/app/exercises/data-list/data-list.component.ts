@@ -5,6 +5,7 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Ejercicio } from '../../../../models/ejercicio.model';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Asignatura } from '../../../../models/asignatura.model';
+import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -30,7 +31,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private datePipe: DatePipe) {
+  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService, private datePipe: DatePipe) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -57,7 +58,7 @@ export class DataListComponent implements OnInit {
           this.isLoading = false;
           this.data = data['ejercicios'];
           this.changeDateFormat();
-          // console.log(data.totalUsuarios);
+          console.log(this.data);
           this.totalItem = data['totalEjercicios'];
           // console.log(this.totalItem);
           //this.totalPage = data.totalPage;
@@ -146,10 +147,11 @@ export class DataListComponent implements OnInit {
   }
 
   dropExercise(exercise: Ejercicio): void {
-    console.log(exercise);
+    // console.log(exercise);
       this.ejercicioService.dropExercise(exercise.uid).subscribe(
         data => {
           this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+          this.dropExerciseFromSubject(exercise);
         },
         error => {
           this.isLoading = false;
@@ -164,6 +166,40 @@ export class DataListComponent implements OnInit {
       this.data[i].hasta = this.datePipe.transform(this.data[i].hasta, 'dd/MM/yyyy');
     }
 
+  }
+
+  dropExerciseFromSubject(ejercicio: Ejercicio): void {
+    // console.log(ejercicio);
+    if(ejercicio) {
+      this.asignaturaService.getSubject(ejercicio.asignatura._id).subscribe(
+        data => {
+          if (data['ok']) {
+
+            // console.log(data['asignaturas']);
+            for(let i = 0; i < data['asignaturas']['ejercicios'].length; i++) {
+              if(data['asignaturas']['ejercicios'][i]['ejercicio'] == ejercicio.uid) {
+                data['asignaturas']['ejercicios'].splice(i, 1);
+              }
+            }
+
+            this.asignaturaService.updateSubject(data['asignaturas'], data['asignaturas'].uid).subscribe( res => {
+              console.log('Asignatura actualizada');
+              // mensaje modal
+
+            }, (err) => {
+              return;
+            });
+
+            console.log(data['asignaturas']);
+          } else {
+            this.endOfTheList = true;
+          }
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
   // changeOrderBy(item: any): void {

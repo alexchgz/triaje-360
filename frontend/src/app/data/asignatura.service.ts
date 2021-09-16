@@ -123,13 +123,16 @@ export class AsignaturaService {
         // console.log(data['profesores'][i]);
     }
 
+    // console.log(data['ejercicios']);
     for(let k=0; k<data['ejercicios'].length; k++){
       // console.log(data['profesores'][i]['usuario']['uid']);
-      if(data['ejercicios'][k]['ejercicio']['uid'])
+      // console.log(data['ejercicios'][k]);
+      if(data['ejercicios'][k]['ejercicio']['uid']) {
         data['ejercicios'][k]['ejercicio'] = data['ejercicios'][k]['ejercicio']['uid'];
-
+      }
         // console.log(data['profesores'][i]);
     }
+    // console.log(data['ejercicios']);
 
     const sendData = {
       "nombre": data['nombre'],
@@ -140,6 +143,8 @@ export class AsignaturaService {
       "alumnos": data['alumnos'],
       "ejercicios": data['ejercicios']
     }
+
+    console.log(sendData);
 
     return this.http.put(url, sendData, { headers });
 
