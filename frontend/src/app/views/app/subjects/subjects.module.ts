@@ -21,9 +21,10 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 
 @NgModule({
-  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SubjectsComponent, DetailsAltComponent],
+  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SubjectsComponent, DetailsAltComponent, AddExerciseComponent],
   imports: [
     SharedModule,
     SubjectsRoutingModule,

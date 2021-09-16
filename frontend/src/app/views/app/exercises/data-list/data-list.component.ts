@@ -53,13 +53,13 @@ export class DataListComponent implements OnInit {
     this.ejercicioService.getExercises(pageSize, currentPage, subject).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data['ejercicios']);
+          // console.log(data);
           this.isLoading = false;
           this.data = data['ejercicios'];
           this.changeDateFormat();
           // console.log(data.totalUsuarios);
           this.totalItem = data['totalEjercicios'];
-          //console.log(this.totalItem);
+          // console.log(this.totalItem);
           //this.totalPage = data.totalPage;
           this.setSelectAllState();
         } else {

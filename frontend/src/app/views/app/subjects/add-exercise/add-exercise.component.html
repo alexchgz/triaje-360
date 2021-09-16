@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{'pages.add-new-exercise-title' | translate}}</h4>
+</div>
+<form class="form-horizontal m-t-20 scrollMio" [formGroup]="formData" (ngSubmit)="createExercise()">
+    <div class="modal-body">
+        <div *ngIf="subject">
+            <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
+            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required>
+        </div>
+        <div>
+            <label>{{ 'pages.exercise-name' | translate }}</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="" required>
+        </div>
+        <div class="mt-2">
+            <label>{{ 'pages.exercise-description' | translate }}</label>
+            <textarea type="text" class="form-control" formControlName="descripcion" id="nombre" placeholder="" required></textarea>
+        </div>
+        <div class="mt-2">
+            <label>{{ 'pages.exercise-from' | translate }}</label>
+            <input type="date" class="form-control" formControlName="desde" id="nombre" placeholder="" required>
+        </div>
+        <div class="mt-2">
+            <label>{{ 'pages.exercise-to' | translate }}</label>
+            <input type="date" class="form-control" formControlName="hasta" id="nombre" placeholder="" required>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
+    </div>
+</form>

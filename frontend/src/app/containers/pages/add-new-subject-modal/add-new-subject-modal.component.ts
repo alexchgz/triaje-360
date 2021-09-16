@@ -40,7 +40,7 @@ export class AddNewSubjectModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private cursoService: CursoService, private asingnaturaService: AsignaturaService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private cursoService: CursoService, private asignaturaSerivce: AsignaturaService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -83,7 +83,7 @@ export class AddNewSubjectModalComponent {
       console.log(this.formData.value);
       this.formData.value.profesores = this.subject.profesores;
       this.formData.value.alumnos = this.subject.alumnos;
-      this.asingnaturaService.updateSubject(this.formData.value, this.subject.uid)
+      this.asignaturaSerivce.updateSubject(this.formData.value, this.subject.uid)
         .subscribe( res => {
           console.log('Asignatura actualizada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -96,7 +96,7 @@ export class AddNewSubjectModalComponent {
       this.formData.value.profesores = this.profesores;
       this.formData.value.alumnos = this.alumnos;
       console.log(this.formData);
-      this.asingnaturaService.createSubject(this.formData.value)
+      this.asignaturaSerivce.createSubject(this.formData.value)
         .subscribe( res => {
           console.log('Asignatura creada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -120,7 +120,7 @@ export class AddNewSubjectModalComponent {
 
   getSubject(id: number): void {
 
-    this.asingnaturaService.getSubject(id).subscribe(
+    this.asignaturaSerivce.getSubject(id).subscribe(
       data => {
         if (data['ok']) {
           console.log(data['asignaturas']);

@@ -8,6 +8,7 @@ import { Curso } from '../../../../models/curso.model';
 import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { getUserRole } from 'src/app/utils/util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-list',
@@ -33,7 +34,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService) {
+  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -167,6 +168,11 @@ export class DataListComponent implements OnInit {
       );
 
   }
+
+  // addExercise(subject: Asignatura) {
+  //   localStorage.setItem('asignatura', subject.uid.toString());
+  //   this.router.navigate(['app/dashboards/all/exercises/'])
+  // }
 
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);

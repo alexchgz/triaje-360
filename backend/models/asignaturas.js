@@ -26,6 +26,12 @@ const AsignaturaSchema = Schema({
             type: Schema.Types.ObjectId,
             ref: 'Usuario'
         }
+    }],
+    ejercicios: [{
+        ejercicio: {
+            type: Schema.Types.ObjectId,
+            ref: 'Ejercicio'
+        }
     }]
 }, { collection: 'asignaturas' });
 

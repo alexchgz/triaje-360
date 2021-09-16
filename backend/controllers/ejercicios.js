@@ -66,6 +66,7 @@ const getEjercicios = async(req, res = response) => {
             ok: true,
             msg: 'Ejercicios obtenidos',
             ejercicios,
+            totalEjercicios,
             pageSize,
             currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta
