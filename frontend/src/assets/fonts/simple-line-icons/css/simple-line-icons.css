@@ -215,6 +215,13 @@
 
 .simple-icon-user:before {
     content: "\e005";
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #145388;
+    color: white;
+    padding: .4em;
+    border-radius: 50px;
+    border-color: #145388;
 }
 
 .simple-icon-people:before {
