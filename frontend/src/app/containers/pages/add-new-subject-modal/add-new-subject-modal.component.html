@@ -25,6 +25,10 @@
                 <input type="text" class="form-control" formControlName="nombrecorto" id="nombre" placeholder="" required>
             </div>
             <div class="mt-2">
+                <label>{{ 'pages.subject-code' | translate }}</label>
+                <input type="text" class="form-control" formControlName="codigo" id="codigo" placeholder="" required>
+            </div>
+            <div class="mt-2">
                 <label>{{ 'pages.subject-school-year' | translate }}</label>
                 <label class="w-100">
                   <ng-select appearance="outline" [searchable]="false" formControlName="curso" required>

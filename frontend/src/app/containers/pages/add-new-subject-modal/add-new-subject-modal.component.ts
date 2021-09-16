@@ -8,6 +8,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 import { Curso } from '../../../models/curso.model';
 import { Asignatura } from '../../../models/asignatura.model';
 import { AsignaturaService } from '../../../data/asignatura.service';
+import { Ejercicio } from '../../../models/ejercicio.model';
 
 @Component({
   selector: 'app-add-new-subject-modal',
@@ -27,20 +28,24 @@ export class AddNewSubjectModalComponent {
   subject: Asignatura;
   profesores: Usuario[] = [];
   alumnos: Usuario[] = [];
+  ejercicios: Ejercicio[] = [];
 
   // FORM
   private formSubmited = false;
   public formData=this.fb.group({
     nombre: ['', [Validators.required]],
     nombrecorto: ['', [Validators.required]],
+    codigo: ['', [Validators.required]],
     curso: ['', [Validators.required]],
     profesores: [''],
-    alumnos: ['']
+    alumnos: [''],
+    ejercicios: ['']
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private cursoService: CursoService, private asignaturaSerivce: AsignaturaService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private cursoService: CursoService, private asignaturaSerivce: AsignaturaService,
+     private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
     if(id) {
@@ -83,6 +88,7 @@ export class AddNewSubjectModalComponent {
       console.log(this.formData.value);
       this.formData.value.profesores = this.subject.profesores;
       this.formData.value.alumnos = this.subject.alumnos;
+      this.formData.value.ejercicios = this.subject.ejercicios;
       this.asignaturaSerivce.updateSubject(this.formData.value, this.subject.uid)
         .subscribe( res => {
           console.log('Asignatura actualizada');
@@ -95,6 +101,7 @@ export class AddNewSubjectModalComponent {
     } else {
       this.formData.value.profesores = this.profesores;
       this.formData.value.alumnos = this.alumnos;
+      this.formData.value.ejercicios = this.ejercicios;
       console.log(this.formData);
       this.asignaturaSerivce.createSubject(this.formData.value)
         .subscribe( res => {
@@ -114,6 +121,7 @@ export class AddNewSubjectModalComponent {
     if(this.subject) {
       this.formData.get('nombre').setValue(this.subject.nombre);
       this.formData.get('nombrecorto').setValue(this.subject.nombrecorto);
+      this.formData.get('codigo').setValue(this.subject.codigo);
       this.formData.get('curso').setValue(this.subject.curso._id);
     }
   }

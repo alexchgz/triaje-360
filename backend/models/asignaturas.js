@@ -10,6 +10,11 @@ const AsignaturaSchema = Schema({
         type: String,
         require: true
     },
+    codigo: {
+        type: String,
+        require: true,
+        unique: true
+    },
     curso: {
         type: Schema.Types.ObjectId,
         ref: 'Curso',

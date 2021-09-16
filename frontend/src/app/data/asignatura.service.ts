@@ -88,9 +88,11 @@ export class AsignaturaService {
     const sendData = {
       "nombre": data['nombre'],
       "nombrecorto": data['nombrecorto'],
+      "codigo": data['codigo'],
       "curso": data['curso'],
       "profesores": data['profesores'],
-      "alumnos": data['alumnos']
+      "alumnos": data['alumnos'],
+      "ejercicios": data['ejercicios']
     }
 
     return this.http.post(url, sendData, { headers });
@@ -121,38 +123,25 @@ export class AsignaturaService {
         // console.log(data['profesores'][i]);
     }
 
+    for(let k=0; k<data['ejercicios'].length; k++){
+      // console.log(data['profesores'][i]['usuario']['uid']);
+      if(data['ejercicios'][k]['ejercicio']['uid'])
+        data['ejercicios'][k]['ejercicio'] = data['ejercicios'][k]['ejercicio']['uid'];
+
+        // console.log(data['profesores'][i]);
+    }
+
     const sendData = {
       "nombre": data['nombre'],
       "nombrecorto": data['nombrecorto'],
+      "codigo": data['codigo'],
       "curso": data['curso'],
       "profesores": data['profesores'],
-      "alumnos": data['alumnos']
+      "alumnos": data['alumnos'],
+      "ejercicios": data['ejercicios']
     }
 
     return this.http.put(url, sendData, { headers });
-
-  }
-
-  updateSubjectTeachersAndStudents(data: Asignatura, id: number, teachers: Array<number>, students: Array<number>) {
-
-    const url = environment.base_url + '/asignaturas/pa/' + id;
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
-
-    let params = new HttpParams();
-    params.append('profesores', teachers.join(', '));
-    params.append('alumnos', students.join(', '));
-
-    const sendData = {
-      "nombre": data['nombre'],
-      "nombrecorto": data['nombrecorto'],
-      "curso": data['curso'],
-      "profesores": data['profesores'],
-      "alumnos": data['alumnos']
-    }
-
-    return this.http.put(url, sendData, { headers, params });
 
   }
 
