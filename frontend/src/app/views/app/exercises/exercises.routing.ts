@@ -6,6 +6,7 @@ import { ThumbListComponent } from './thumb-list/thumb-list.component';
 import { ImageListComponent } from './image-list/image-list.component';
 import { DetailsComponent } from './details/details.component';
 import { DetailsAltComponent } from './details-alt/details-alt.component';
+import { AddExerciseComponent } from '../subjects/add-exercise/add-exercise.component';
 
 const routes: Routes = [
   {

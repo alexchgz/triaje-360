@@ -26,7 +26,8 @@
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.desde}}</p>
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
 
-                    <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i>
+                    <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
+                    <i class="simple-icon-pencil" (click)="toEditExercise(p)"></i>
                     <i class="simple-icon-trash" (click)="dropExercise(p)"></i>
                 </div>
                 <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">

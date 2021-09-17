@@ -19,6 +19,7 @@ const routes: Routes = [
       { path: 'details', component: DetailsComponent },
       { path: 'details-alt', component: DetailsAltComponent },
       { path: 'add-exercise/:uid', component: AddExerciseComponent },
+      { path: 'add-exercise/:uid/:uid2', component: AddExerciseComponent },
     ]
   }
 ];

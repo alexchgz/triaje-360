@@ -25,6 +25,8 @@ export class AddExerciseComponent implements OnInit {
   exercise: Ejercicio;
   subject: Asignatura;
   uid: number;
+  uidEx: number;
+  totalItem: 0;
 
   // FORM
   private formSubmited = false;
@@ -43,7 +45,35 @@ export class AddExerciseComponent implements OnInit {
 
   ngOnInit(): void {
     this.uid = this.route.snapshot.params['uid'];
+    this.uidEx = this.route.snapshot.params['uid2'];
+    console.log(this.uidEx);
     // this.formData.get('uid').setValue(this.uid);
+    // si tenemos el id del ejercicio --> editar
+    if(this.uidEx != null) {
+      this.ejercicioService.getExercise(this.uidEx).subscribe(
+        data => {
+          console.log(data);
+          if (data['ok']) {
+            // console.log(data);
+            this.isLoading = false;
+            this.exercise = data['ejercicios'];
+            console.log(data['ejercicios']);
+            this.totalItem = data['totalEjercicios'];
+            this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
+            this.formData.get('nombre').setValue(this.exercise.nombre);
+            this.formData.get('descripcion').setValue(this.exercise.descripcion);
+            this.formData.get('desde').setValue(this.exercise.desde);
+            this.formData.get('hasta').setValue(this.exercise.hasta);
+          } else {
+            this.endOfTheList = true;
+          }
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
+    }
+
     this.loadSubjectData(this.uid);
   }
 

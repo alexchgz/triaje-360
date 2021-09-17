@@ -17,19 +17,26 @@ const getEjercicios = async(req, res = response) => {
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
     const asignatura = req.query.asignatura;
-    // console.log(req.query);
+    console.log(req.query.id);
 
     try {
+        console.log('Estoy');
         var ejercicios, totalEjercicios;
-
         if (id) { // si nos pasan un id
+            // console.log('entro');
             // usamos Promise.all para realizar las consultas de forma paralela
             [ejercicios, totalEjercicios] = await Promise.all([
                 // buscamos por el id
-                Ejercicio.findById(id).populate({ path: 'asignatura', populate: { path: 'profesores.usuario', select: '-password' } }).populate({ path: 'asignatura', select: '-__v', populate: { path: 'curso', select: '-__v' } }),
+                Ejercicio.findById(id).populate('curso', '-__v')
+                .populate({
+                    path: 'asignatura',
+                    select: 'nombre nombrecorto profesores alumnos'
+                }),
                 // consulta para obtener el numero total de ejercicios
                 Ejercicio.countDocuments()
             ]);
+
+            console.log(ejercicios);
 
         } else { // si no nos pasan el id
 
@@ -61,6 +68,9 @@ const getEjercicios = async(req, res = response) => {
                 ]);
             }
         }
+
+        // console.log(ejercicios);
+        console.log('vamos a devolver ejercicio');
 
         res.json({
             ok: true,

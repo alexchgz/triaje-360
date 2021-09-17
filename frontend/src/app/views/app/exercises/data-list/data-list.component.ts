@@ -7,6 +7,8 @@ import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-data-list',
@@ -31,7 +33,8 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService, private datePipe: DatePipe) {
+  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
+    private datePipe: DatePipe, private router: Router) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -200,6 +203,10 @@ export class DataListComponent implements OnInit {
         }
       );
     }
+  }
+
+  toEditExercise(e: Ejercicio): void {
+    this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.uid +"/" + e.asignatura._id);
   }
 
   // changeOrderBy(item: any): void {
