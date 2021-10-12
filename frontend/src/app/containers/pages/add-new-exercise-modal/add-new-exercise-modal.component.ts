@@ -88,7 +88,7 @@ export class AddNewExerciseModalComponent {
           console.log(this.formData.get('asignatura').value);
           // console.log('Ejercicio actualizado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
+          this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject, this.dataList.userId);
           this.closeModal();
         }, (err) => {
           return;
@@ -99,7 +99,7 @@ export class AddNewExerciseModalComponent {
         .subscribe( res => {
           console.log('Ejercicio creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
+          this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject, this.dataList.userId);
           this.closeModal();
         }, (err) => {
           return;

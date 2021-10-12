@@ -29,6 +29,7 @@ export class DataListComponent implements OnInit {
   totalPage = 0;
   itemYear = 0;
   userRole: number;
+  userId: string;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
@@ -48,17 +49,19 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
+    this.userId = localStorage.getItem('uid');
+    console.log(this.userId);
+    this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
   }
 
-  loadSubjects(pageSize: number, currentPage: number, schoolYear: number): void {
+  loadSubjects(pageSize: number, currentPage: number, schoolYear: number, userId:string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.asignaturaService.getSubjects(pageSize, currentPage, schoolYear).subscribe(
+    this.asignaturaService.getSubjects(pageSize, currentPage, schoolYear, userId).subscribe(
       data => {
         if (data['ok']) {
-          // console.log(data.asignaturas);
+          // console.log(data);
           this.isLoading = false;
           this.data = data['asignaturas'].map(x => {
             return {
@@ -129,17 +132,17 @@ export class DataListComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.loadSubjects(this.itemsPerPage, event.page, this.itemYear);
+    this.loadSubjects(this.itemsPerPage, event.page, this.itemYear, this.userId);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.loadSubjects(perPage, 1, this.itemYear);
+    this.loadSubjects(perPage, 1, this.itemYear, this.userId);
   }
 
   schoolYearChange(year: Curso): void {
     //console.log(year.uid);
     this.itemYear = year.uid;
-    this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
+    this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
   }
 
   dropSubjects(subjects: Asignatura[]): void {
@@ -147,7 +150,7 @@ export class DataListComponent implements OnInit {
     for(let i=0; i<subjects.length; i++){
       this.asignaturaService.dropSubject(subjects[i].uid).subscribe(
         data => {
-          this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
         },
         error => {
           this.isLoading = false;
@@ -160,7 +163,7 @@ export class DataListComponent implements OnInit {
     // console.log(subject);
       this.asignaturaService.dropSubject(subject.uid).subscribe(
         data => {
-          this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
         },
         error => {
           this.isLoading = false;

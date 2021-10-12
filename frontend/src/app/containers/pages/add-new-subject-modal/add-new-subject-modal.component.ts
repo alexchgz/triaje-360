@@ -93,7 +93,7 @@ export class AddNewSubjectModalComponent {
         .subscribe( res => {
           console.log('Asignatura actualizada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
+          this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);
           this.closeModal();
         }, (err) => {
           return;
@@ -107,7 +107,7 @@ export class AddNewSubjectModalComponent {
         .subscribe( res => {
           console.log('Asignatura creada');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
+          this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);
           this.closeModal();
         }, (err) => {
           return;

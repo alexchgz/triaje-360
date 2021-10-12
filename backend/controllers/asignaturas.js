@@ -4,6 +4,8 @@ const Usuario = require('../models/usuarios');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
+const { infoToken } = require('../helpers/infotoken');
+
 const getAsignaturas = async(req, res = response) => {
     // parametros para la paginacion ->
     // si no es un numero lo pone a 0
@@ -15,12 +17,17 @@ const getAsignaturas = async(req, res = response) => {
     const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
-    const desde = (currentPage - 1) * pageSize;
+    const desde = (currentPage - 1) * pageSize || 0;
     const schoolYear = req.query.schoolYear;
+    const userId = req.query.userId;
+    // console.log(req.query.userId);
+
+    // Solo puede crear asignaturas un admin
+    const token = req.header('x-token');
 
     try {
         var asignaturas, totalAsignaturas;
-
+        // console.log('entroooo');
         if (id) { // si nos pasan un id
             // usamos Promise.all para realizar las consultas de forma paralela
             [asignaturas, totalAsignaturas] = await Promise.all([
@@ -31,40 +38,263 @@ const getAsignaturas = async(req, res = response) => {
             ]);
 
         } else { // si no nos pasan el id
-
+            // console.log('entroooo');
             if (schoolYear == 0 || schoolYear == null) {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [asignaturas, totalAsignaturas] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Asignatura.find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
-                    .populate({
-                        path: 'profesores.usuario',
-                        select: 'rol nombre'
-                    })
-                    .populate({
-                        path: 'alumnos.usuario',
-                        select: 'rol nombre'
-                    }),
-                    // consulta para obtener el numero total de usuarios
-                    Asignatura.countDocuments()
-                ]);
-            } else {
-                if (desde == undefined && pageSize == undefined) {
-                    // usamos Promise.all para realizar las consultas de forma paralela
-                    [asignaturas, totalAsignaturas] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Asignatura.find({ curso: schoolYear }).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
-                        // consulta para obtener el numero total de usuarios
-                        Asignatura.countDocuments({ curso: schoolYear })
-                    ]);
+                if (desde == 0 && pageSize == 0) {
+                    if (userId) {
+
+                        // ADMIN
+                        if (infoToken(token).rol === 'ROL_ADMIN') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({}).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({})
+                            ]);
+                        }
+
+                        // PROFESORES
+                        if (infoToken(token).rol === 'ROL_PROFESOR') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'profesores.usuario': userId }).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'profesores.usuario': userId })
+                            ]);
+                        }
+
+                        // ALUMNOS
+                        if (infoToken(token).rol === 'ROL_ALUMNO') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'alumnos.usuario': userId }).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'alumnos.usuario': userId })
+                            ]);
+                        }
+
+                    }
+
                 } else {
-                    // usamos Promise.all para realizar las consultas de forma paralela
-                    [asignaturas, totalAsignaturas] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Asignatura.find({ curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v').populate('profesores.usuario', '-password, -alta, -__v').populate('alumnos.usuario', '-password, -alta, -__v'),
-                        // consulta para obtener el numero total de usuarios
-                        Asignatura.countDocuments({ curso: schoolYear })
-                    ]);
+                    if (userId) {
+
+                        // ADMIN
+                        if (infoToken(token).rol === 'ROL_ADMIN') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({})
+                            ]);
+                        }
+
+                        // PROFESORES
+                        if (infoToken(token).rol === 'ROL_PROFESOR') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'profesores.usuario': userId }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'profesores.usuario': userId })
+                            ]);
+                        }
+
+                        // ALUMNOS
+                        if (infoToken(token).rol === 'ROL_ALUMNO') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'alumnos.usuario': userId }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'alumnos.usuario': userId })
+                            ]);
+                        }
+
+                    }
+
+                }
+
+            } else {
+                // console.log('entroooo');
+                // console.log(desde);
+                // console.log(pageSize);
+                if (desde == undefined && pageSize == undefined) {
+                    // console.log('entro');
+                    if (userId) {
+                        // console.log('entro 2');
+                        // ADMIN
+                        if (infoToken(token).rol === 'ROL_ADMIN') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ curso: schoolYear }).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ curso: schoolYear })
+                            ]);
+                        }
+
+                        // PROFESORES
+                        if (infoToken(token).rol === 'ROL_PROFESOR') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'profesores.usuario': userId, curso: schoolYear }).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'profesores.usuario': userId, curso: schoolYear })
+                            ]);
+                        }
+
+                        // ALUMNOS
+                        if (infoToken(token).rol === 'ROL_ALUMNO') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'alumnos.usuario': userId, curso: schoolYear }).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'alumnos.usuario': userId, curso: schoolYear })
+                            ]);
+                        }
+
+                    }
+
+                } else {
+                    if (userId) {
+
+                        // ADMIN
+                        if (infoToken(token).rol === 'ROL_ADMIN') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ curso: schoolYear })
+                            ]);
+                        }
+
+                        // PROFESORES
+                        if (infoToken(token).rol === 'ROL_PROFESOR') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'profesores.usuario': userId, curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'profesores.usuario': userId, curso: schoolYear })
+                            ]);
+                        }
+
+                        // ALUMNOS
+                        if (infoToken(token).rol === 'ROL_ALUMNO') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({ 'alumnos.usuario': userId, curso: schoolYear }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({ 'alumnos.usuario': userId, curso: schoolYear })
+                            ]);
+                        }
+
+                    }
+
                 }
 
             }
@@ -98,6 +328,16 @@ const getAsignaturas = async(req, res = response) => {
 const crearAsignatura = async(req, res = response) => {
 
     const { curso, profesores } = req.body;
+
+    // Solo puede crear asignaturas un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para crear asignatura',
+        });
+    }
 
     try {
 
@@ -163,7 +403,15 @@ const actualizarAsignatura = async(req, res = response) => {
     const { curso, profesores } = req.body;
     const uid = req.params.id;
 
-    // console.log('Entro a actualizar');
+    // Solo puede actualizar asignaturas un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para actualizar asignatura',
+        });
+    }
 
     try {
 
@@ -235,6 +483,16 @@ const actualizarAsignatura = async(req, res = response) => {
 
 const borrarAsignatura = async(req, res = response) => {
     const uid = req.params.id;
+
+    // Solo puede borrar asignaturas un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para borrar asignatura',
+        });
+    }
 
     try {
 

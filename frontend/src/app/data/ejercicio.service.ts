@@ -18,7 +18,7 @@ export class EjercicioService {
 
   // ******* PETICIONES EJERCICIOS *********
 
-  getExercises(pageSize?: number, currentPage?: number, subject?: number) {
+  getExercises(pageSize?: number, currentPage?: number, subject?: number, userId?: string) {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
 
@@ -26,10 +26,11 @@ export class EjercicioService {
     headers = headers.append('x-token', token);
 
     let params = new HttpParams();
-    if(pageSize || currentPage || subject){
+    if(pageSize || currentPage || subject || userId){
       if(pageSize) { params = params.append('pageSize', pageSize + ''); }
       if(currentPage) { params = params.append('currentPage', currentPage + ''); }
       if(subject) { params = params.append('asignatura', subject + ''); }
+      if(userId) { params = params.append('userId', userId + ''); }
     }
 
     // console.log(params);

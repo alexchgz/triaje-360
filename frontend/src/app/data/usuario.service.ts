@@ -36,7 +36,7 @@ export class UsuarioService {
 
   }
 
-  getTeachers(idTeachers: Array<number>) {
+  getTeachers(idTeachers: Array<number>, search?: string) {
 
     // console.log(idTeachers);
     const url = environment.base_url + '/usuarios/profesores';
@@ -48,6 +48,9 @@ export class UsuarioService {
     let params = new HttpParams();
     if(idTeachers.length > 0) {
       params = params.append('idProfesores', idTeachers.join(', '));
+    }
+    if(search) {
+      params = params.append('texto', search + '');
     }
 
     console.log(idTeachers);

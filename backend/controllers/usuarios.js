@@ -2,6 +2,8 @@ const Usuario = require('../models/usuarios');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
+const { infoToken } = require('../helpers/infotoken');
+
 const getUsuarios = async(req, res) => {
 
     // parametros para la paginacion ->
@@ -18,6 +20,16 @@ const getUsuarios = async(req, res) => {
 
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
+
+    // Solo puede obtener usuarios un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener usuarios',
+        });
+    }
 
     try {
         var usuarios, totalUsuarios;
@@ -88,6 +100,14 @@ const getUsuarios = async(req, res) => {
 
 const getProfesores = async(req, res) => {
 
+    let texto = req.query.texto;
+    console.log(texto);
+    let textoBusqueda = '';
+    if (texto) {
+        textoBusqueda = new RegExp(texto, 'i');
+        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
+    }
+
     let profesAsignados;
     if (req.query.idProfesores) {
         profesAsignados = req.query.idProfesores;
@@ -110,14 +130,25 @@ const getProfesores = async(req, res) => {
         // console.log('entro');
         var profesoresAsignados, profesoresNoAsignados;
 
-        // usamos Promise.all para realizar las consultas de forma paralela
-        [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
-            // consulta para profesores asignados a la asignatura
-            Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
-            // consulta para profesores NO asignados a la asignatura
-            Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+        if (texto != undefined) {
+            [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
+                // consulta para profesores asignados a la asignatura
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+                // consulta para profesores NO asignados a la asignatura
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
 
-        ]);
+            ]);
+        } else {
+            // usamos Promise.all para realizar las consultas de forma paralela
+            [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
+                // consulta para profesores asignados a la asignatura
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+                // consulta para profesores NO asignados a la asignatura
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+
+            ]);
+        }
+
 
         // console.log(profesoresAsignados);
         // console.log(profesoresNoAsignados);
@@ -156,6 +187,16 @@ const getAlumnos = async(req, res) => {
         }
     }
 
+    // Solo puede obtener alumnos un admin o un profesor
+    const token = req.header('x-token');
+    // lo puede obtener un administrador o un profesor
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener alumnos',
+        });
+    }
+
     try {
         var alumnosAsignados, alumnosNoAsignados;
 
@@ -190,6 +231,16 @@ const getAlumnos = async(req, res) => {
 const crearUsuario = async(req, res = response) => {
 
     const { email, password } = req.body;
+
+    // Solo puede crear usuarios un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para crear usuarios',
+        });
+    }
 
     try {
         // comprobamos si ya existe el correo
@@ -233,6 +284,16 @@ const actualizarUsuario = async(req, res) => {
     const { email, password, alta, ...object } = req.body;
     const uid = req.params.id;
 
+    // Solo puede actualizar usuarios un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para actualizar usuarios',
+        });
+    }
+
     try {
 
         // comprobamos si el email que se esta intentando cambiar existe
@@ -272,6 +333,16 @@ const borrarUsuario = async(req, res) => {
 
     // obtenemos el id
     const uid = req.params.id;
+
+    // Solo puede borrar usuarios un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para borrar usuarios',
+        });
+    }
 
     try {
         // en primer lugar comprobamos que exista el usuario

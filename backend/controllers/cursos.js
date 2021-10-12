@@ -5,6 +5,8 @@ const { validator } = require('validator');
 // modelo
 const Curso = require('../models/cursos');
 
+const { infoToken } = require('../helpers/infotoken');
+
 // funciones
 const getCursos = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -70,6 +72,16 @@ const crearCurso = async(req, res = response) => {
 
     const { nombre, nombrecorto } = req.body;
 
+    // Solo puede crear cursos un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para crear cursos',
+        });
+    }
+
     try {
         // comprobamos si ya existe el nombre
         const existeNombre = await Curso.findOne({ nombre });
@@ -111,6 +123,16 @@ const actualizarCurso = async(req, res = response) => {
 
     const { nombre, nombrecorto } = req.body;
     const uid = req.params.id;
+
+    // Solo puede actualizar cursos un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para actualizar cursos',
+        });
+    }
 
     try {
 
@@ -162,6 +184,16 @@ const actualizarCurso = async(req, res = response) => {
 const borrarCurso = async(req, res = response) => {
 
     const uid = req.params.id;
+
+    // Solo puede borrar cursos un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para borrar cursos',
+        });
+    }
 
     try {
 

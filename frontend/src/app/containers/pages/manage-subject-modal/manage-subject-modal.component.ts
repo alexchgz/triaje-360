@@ -7,6 +7,7 @@ import { Asignatura } from '../../../models/asignatura.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { id } from '@swimlane/ngx-datatable';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
+import { getUserRole } from 'src/app/utils/util';
 
 const mongoose = require('mongoose');
 const bson = require('bson');
@@ -40,6 +41,8 @@ export class ManageSubjectModalComponent implements OnInit {
   asignatura: Asignatura;
   isLoading: boolean;
   endOfTheList = false;
+  userRole: number;
+  val: string;
 
   public formData=this.fb.group({
     nombre: ['', [Validators.required]],
@@ -56,6 +59,7 @@ export class ManageSubjectModalComponent implements OnInit {
   constructor(private modalService: BsModalService, private asignaturaService: AsignaturaService, private usuarioService: UsuarioService, private fb: FormBuilder, private dataList: DataListComponent) { }
 
   ngOnInit(): void {
+    this.userRole = getUserRole();
   }
 
   show(id: number): void {
@@ -123,9 +127,9 @@ export class ManageSubjectModalComponent implements OnInit {
     );
   }
 
-  getTeachers(): void {
+  getTeachers(search?: string): void {
     // console.log(this.idTeachers);
-    this.usuarioService.getTeachers(this.idTeachers).subscribe(
+    this.usuarioService.getTeachers(this.idTeachers, search).subscribe(
       data => {
         if (data['ok']) {
           // console.log(data['profesoresAsignados']);
@@ -175,14 +179,16 @@ export class ManageSubjectModalComponent implements OnInit {
     // console.log('entro aqui');
 
     // actualizamos la asignatura con las nuevas listas
-    this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid).subscribe( res => {
-      console.log('Asignatura actualizada');
-      this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
-      // mensaje modal
-    }, (err) => {
-      return;
-    });
-
+    console.log(getUserRole());
+    if(getUserRole() == 0) {
+      this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid).subscribe( res => {
+        console.log('Asignatura actualizada');
+        this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);
+        // mensaje modal
+      }, (err) => {
+        return;
+      });
+    }
 
     this.modalRef.hide();
     this.asignatura = undefined;
@@ -298,4 +304,12 @@ export class ManageSubjectModalComponent implements OnInit {
       this.idsAlumnosAsignados[j] = this.alumnosAsignados[j].uid;
     }
   }
+
+  buscar(val: string): void {
+    // val = event.target.value.toLowerCase().trim();
+    console.log(val);
+    this.getTeachers(val);
+    // this.loadData(this.itemsPerPage, 1, val, this.orderBy);
+  }
+
 }

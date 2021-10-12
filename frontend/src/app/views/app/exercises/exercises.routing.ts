@@ -18,6 +18,7 @@ const routes: Routes = [
       { path: 'image-list', component: ImageListComponent },
       { path: 'details', component: DetailsComponent },
       { path: 'details-alt', component: DetailsAltComponent },
+      { path: 'data-list/:uid', component: DataListComponent },
     ]
   }
 ];

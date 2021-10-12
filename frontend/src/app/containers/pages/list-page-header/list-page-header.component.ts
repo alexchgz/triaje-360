@@ -16,6 +16,7 @@ import { Profesor } from '../../../models/profesor.model';
 export class ListPageHeaderComponent implements OnInit {
   displayOptionsCollapsed = false;
   userRole: number;
+  userId: string;
   data: Curso[] = [];
   isLoading: boolean;
   endOfTheList = false;
@@ -69,6 +70,8 @@ export class ListPageHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
+    this.userId = localStorage.getItem('uid');
+    // console.log(this.userId);
     this.getComponent();
     // console.log(this.itemOptionRoles);
   }
@@ -119,14 +122,17 @@ export class ListPageHeaderComponent implements OnInit {
 
   loadSubjects(): void {
 
-    this.asignaturaService.getSubjects(undefined, undefined, this.itemYear.uid).subscribe(
+    this.asignaturaService.getSubjects(undefined, undefined, this.itemYear.uid, this.userId).subscribe(
       data => {
         if (data['ok']) {
-          // console.log(data['asignaturas']);
+          console.log(data);
           this.isLoading = false;
-          this.data = data['asignaturas'];
-          this.itemOptionsSubjects = data['asignaturas'];
-          this.itemOptionsSubjects.unshift({ nombrecorto: 'Todas', uid: 0 });
+          if(data['asignaturas']) {
+            this.data = data['asignaturas'];
+            this.itemOptionsSubjects = data['asignaturas'];
+            this.itemOptionsSubjects.unshift({ nombrecorto: 'Todas', uid: 0 });
+          }
+
           // this.getActiveSchoolYear();
 
         } else {

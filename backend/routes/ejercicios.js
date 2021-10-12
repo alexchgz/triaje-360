@@ -15,6 +15,7 @@ router.get('/', [
     check('pageSize', 'Desde debe ser un número').optional().isNumeric(),
     check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
     check('asignatura', 'Desde debe ser una cadena de texto').optional().isString(),
+    check('userId', 'Desde debe ser una cadena de texto').optional().isString(),
     validarCampos
 ], getEjercicios);
 

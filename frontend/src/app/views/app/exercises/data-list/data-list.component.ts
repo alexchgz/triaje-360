@@ -29,6 +29,7 @@ export class DataListComponent implements OnInit {
   totalItem = 0;
   totalPage = 0;
   itemSubject = 0;
+  userId: string;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
@@ -47,14 +48,15 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+    this.userId = localStorage.getItem('uid');
+    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }
 
-  loadExercises(pageSize: number, currentPage: number, subject: number): void {
+  loadExercises(pageSize: number, currentPage: number, subject: number, userId: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.ejercicioService.getExercises(pageSize, currentPage, subject).subscribe(
+    this.ejercicioService.getExercises(pageSize, currentPage, subject, userId).subscribe(
       data => {
         if (data['ok']) {
           // console.log(data);
@@ -121,18 +123,18 @@ export class DataListComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.loadExercises(this.itemsPerPage, event.page, this.itemSubject);
+    this.loadExercises(this.itemsPerPage, event.page, this.itemSubject, this.userId);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.loadExercises(perPage, 1, this.itemSubject);
+    this.loadExercises(perPage, 1, this.itemSubject, this.userId);
   }
 
   subjectChange(subject: Asignatura): void {
     //console.log(year.uid);
     this.itemSubject = subject.uid;
     console.log(this.itemSubject);
-    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+    this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }
 
   dropExercises(exercises: Ejercicio[]): void {
@@ -140,7 +142,7 @@ export class DataListComponent implements OnInit {
     for(let i=0; i<exercises.length; i++){
       this.ejercicioService.dropExercise(exercises[i].uid).subscribe(
         data => {
-          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
         },
         error => {
           this.isLoading = false;
@@ -153,7 +155,7 @@ export class DataListComponent implements OnInit {
     // console.log(exercise);
       this.ejercicioService.dropExercise(exercise.uid).subscribe(
         data => {
-          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject);
+          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
           this.dropExerciseFromSubject(exercise);
         },
         error => {
@@ -206,7 +208,7 @@ export class DataListComponent implements OnInit {
   }
 
   toEditExercise(e: Ejercicio): void {
-    this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.uid +"/" + e.asignatura._id);
+    this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.asignatura._id +"/" + e.uid);
   }
 
   // changeOrderBy(item: any): void {

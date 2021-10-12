@@ -9,14 +9,20 @@
         <div class="card">
             <tabset class="card-tabs">
                 <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
+                    <div class="d-inline-block">
+                        <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                            <input #val type="text" class="form-control" placeholder="Buscar" (keyup)="buscar(val.value)">
+                        </div>
+                    </div>
                     <p class="font-weight-bold">Profesores Asignados ({{profesoresAsignados.length}})</p>
-                    <table class="table table-borderless">
+                    <p *ngIf="profesoresAsignados.length == 0">Aún no hay profesores asignados</p>
+                    <table *ngIf="profesoresAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Email</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Apellidos</th>
-                                <th scope="col">Eliminar</th>
+                                <th *ngIf="userRole == 0" scope="col">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of profesoresAsignados">
@@ -24,12 +30,13 @@
                                 <td>{{p.email}}</td>
                                 <td>{{p.nombre}}</td>
                                 <td>{{p.apellidos}}</td>
-                                <td class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p class="font-weight-bold">Profesores No Asignados ({{profesoresNoAsignados.length}})</p>
-                    <table class="table table-borderless">
+                    <p *ngIf="userRole == 0" class="font-weight-bold">Profesores No Asignados ({{profesoresNoAsignados.length}})</p>
+                    <p *ngIf="profesoresNoAsignados.length == 0">No hay profesores sin asignar</p>
+                    <table *ngIf="userRole == 0 && profesoresNoAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Email</th>
@@ -56,7 +63,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Apellidos</th>
-                                <th scope="col">Eliminar</th>
+                                <th *ngIf="userRole == 0" scope="col">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of alumnosAsignados">
@@ -64,13 +71,13 @@
                                 <td>{{p.email}}</td>
                                 <td>{{p.nombre}}</td>
                                 <td>{{p.apellidos}}</td>
-                                <td class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p class="font-weight-bold">Alumnos No Asignados ({{alumnosNoAsignados.length}})</p>
-                    <table class="table table-borderless">
+                    <p *ngIf="userRole == 0" class="font-weight-bold">Alumnos No Asignados ({{alumnosNoAsignados.length}})</p>
+                    <table *ngIf="userRole == 0" class="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Email</th>

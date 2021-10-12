@@ -16,17 +16,18 @@ export class AsignaturaService {
   constructor(private http: HttpClient) { }
 
   // ******* PETICIONES ASIGNATURAS *********
-  getSubjects(pageSize?: number, currentPage?: number, schoolYear?: number) {
+  getSubjects(pageSize?: number, currentPage?: number, schoolYear?: number, userId?:string) {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
 
     let params = new HttpParams();
-    if(pageSize || currentPage || schoolYear){
+    if(pageSize || currentPage || schoolYear || userId){
       if(pageSize) { params = params.append('pageSize', pageSize + ''); }
       if(currentPage) { params = params.append('currentPage', currentPage + ''); }
       if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
+      if(userId) { params = params.append('userId', userId + ''); }
     }
-    //console.log(params);
+    console.log(params);
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 
