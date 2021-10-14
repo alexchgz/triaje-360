@@ -8,6 +8,7 @@ import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { getUserRole } from 'src/app/utils/util';
 
 
 @Component({
@@ -28,8 +29,9 @@ export class DataListComponent implements OnInit {
   endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
-  itemSubject = 0;
+  itemSubject = '';
   userId: string;
+  userRole: number;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
@@ -48,11 +50,19 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.userRole = getUserRole();
+    // console.log(this.userRole);
     this.userId = localStorage.getItem('uid');
+    let splitUrl = this.router.url.split("/");
+    // console.log(splitUrl);
+    if(splitUrl[splitUrl.length-1] != "data-list") {
+      // console.log(splitUrl[splitUrl.length-1]);
+      this.itemSubject = splitUrl[splitUrl.length-1];
+    }
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }
 
-  loadExercises(pageSize: number, currentPage: number, subject: number, userId: string): void {
+  loadExercises(pageSize: number, currentPage: number, subject: string, userId: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
@@ -132,7 +142,7 @@ export class DataListComponent implements OnInit {
 
   subjectChange(subject: Asignatura): void {
     //console.log(year.uid);
-    this.itemSubject = subject.uid;
+    this.itemSubject = subject.uid.toString();
     console.log(this.itemSubject);
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }

@@ -30,7 +30,7 @@
                     <i class="simple-icon-pencil" (click)="toEditExercise(p)"></i>
                     <i class="simple-icon-trash" (click)="dropExercise(p)"></i>
                 </div>
-                <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
             (change)="onSelect(p)">
           <label class="custom-control-label" [for]="'customCheck'+i"></label>

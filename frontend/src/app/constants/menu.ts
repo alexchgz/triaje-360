@@ -30,7 +30,7 @@ const data: IMenuItem[] = [
     icon: 'iconsminds-air-balloon-1',
     label: 'menu.subjects',
     to: `${adminRoot}/subjects/data-list`,
-    roles: [UserRole.Admin],
+    roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
   },
   {
     icon: 'iconsminds-pantone',

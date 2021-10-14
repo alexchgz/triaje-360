@@ -18,7 +18,7 @@ export class EjercicioService {
 
   // ******* PETICIONES EJERCICIOS *********
 
-  getExercises(pageSize?: number, currentPage?: number, subject?: number, userId?: string) {
+  getExercises(pageSize?: number, currentPage?: number, subject?: string, userId?: string) {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
 

@@ -78,7 +78,7 @@ export class ListPageHeaderComponent implements OnInit {
 
   getComponent(): void {
     let splitUrl = this.router.url.split("/", 5);
-    //console.log(splitUrl);
+    // console.log(splitUrl);
     if(splitUrl[splitUrl.length-1] == "subjects") {
       this.showSchoolYears = true;
       this.loadSchoolYears();
@@ -130,6 +130,17 @@ export class ListPageHeaderComponent implements OnInit {
           if(data['asignaturas']) {
             this.data = data['asignaturas'];
             this.itemOptionsSubjects = data['asignaturas'];
+
+            let splitUrl2 = this.router.url.split("/");
+            // console.log(splitUrl2);
+            for(let i=0; i<this.itemOptionsSubjects.length; i++) {
+              if(splitUrl2[splitUrl2.length-1] == this.itemOptionsSubjects[i]['uid']) {
+                this.itemSubject.nombrecorto = this.itemOptionsSubjects[i]['nombrecorto'];
+                this.itemSubject.uid = this.itemOptionsSubjects[i]['uid'];
+                // console.log(this.itemSubject);
+              }
+            }
+
             this.itemOptionsSubjects.unshift({ nombrecorto: 'Todas', uid: 0 });
           }
 

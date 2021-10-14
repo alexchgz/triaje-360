@@ -27,7 +27,7 @@ export class AsignaturaService {
       if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
       if(userId) { params = params.append('userId', userId + ''); }
     }
-    console.log(params);
+    // console.log(params);
     // params = params.append('search', search);
     // params = params.append('orderBy', orderBy);
 
