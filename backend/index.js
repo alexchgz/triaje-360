@@ -5,6 +5,8 @@ const cors = require('cors');
 require('dotenv').config();
 const { dbConnection } = require('./database/configdb');
 
+const { initDB } = require('./helpers/initDB');
+
 // Creamos Aplicacion Express
 const app = express();
 // Llamamos a nuestra cadena de conexion
@@ -13,6 +15,9 @@ dbConnection();
 app.use(cors());
 //Middleware para acceder a JSON
 app.use(express.json());
+
+// Creamos usuario default
+initDB();
 
 // Definimos rutas 
 app.use('/api/login', require('./routes/auth'));
