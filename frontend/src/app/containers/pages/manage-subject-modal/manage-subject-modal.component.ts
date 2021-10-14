@@ -156,8 +156,8 @@ export class ManageSubjectModalComponent implements OnInit {
     );
   }
 
-  getStudents(): void {
-    this.usuarioService.getStudents(this.idStudents).subscribe(
+  getStudents(search?: string): void {
+    this.usuarioService.getStudents(this.idStudents, search).subscribe(
       data => {
         if (data['ok']) {
           // console.log(data['alumnosNoAsignados']);
@@ -305,11 +305,18 @@ export class ManageSubjectModalComponent implements OnInit {
     }
   }
 
-  buscar(val: string): void {
+  buscarProfes(val: string): void {
     // val = event.target.value.toLowerCase().trim();
-    console.log(val);
+    // console.log(val);
     this.getTeachers(val);
-    // this.loadData(this.itemsPerPage, 1, val, this.orderBy);
+        // this.loadData(this.itemsPerPage, 1, val, this.orderBy);
+  }
+
+  buscarAlumnos(val: string): void {
+    // val = event.target.value.toLowerCase().trim();
+    // console.log(val);
+    this.getStudents(val);
+        // this.loadData(this.itemsPerPage, 1, val, this.orderBy);
   }
 
 }

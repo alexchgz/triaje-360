@@ -60,7 +60,7 @@ export class UsuarioService {
 
   }
 
-  getStudents(idStudents: Array<number>) {
+  getStudents(idStudents: Array<number>, search?: string) {
 
     // console.log(idStudents);
     const url = environment.base_url + '/usuarios/alumnos';
@@ -72,6 +72,9 @@ export class UsuarioService {
     let params = new HttpParams();
     params = params.append('idAlumnos', idStudents.join(', '));
     // console.log(params);
+    if(search) {
+      params = params.append('texto', search + '');
+    }
 
     return this.http.get(url, { headers, params });
 

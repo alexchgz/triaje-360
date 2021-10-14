@@ -30,6 +30,7 @@ router.get('/alumnos', [
     validarJWT,
     // comprobamos campos opcionales
     check('idAlumnos', 'Desde debe ser un objeto').isString(),
+    check('search', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getAlumnos);
 
