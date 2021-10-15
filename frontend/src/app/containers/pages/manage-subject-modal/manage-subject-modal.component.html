@@ -62,7 +62,8 @@
                         </div>
                     </div>
                     <p class="font-weight-bold">Alumnos Asignados ({{alumnosAsignados.length}})</p>
-                    <table class="table table-borderless">
+                    <p *ngIf="alumnosAsignados.length == 0">Aún no hay alumnos asignados</p>
+                    <table *ngIf="alumnosAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Email</th>
@@ -82,7 +83,8 @@
                     </table>
 
                     <p *ngIf="userRole == 0" class="font-weight-bold">Alumnos No Asignados ({{alumnosNoAsignados.length}})</p>
-                    <table *ngIf="userRole == 0" class="table table-borderless">
+                    <p *ngIf="alumnosNoAsignados.length == 0">No hay alumnos sin asignar</p>
+                    <table *ngIf="userRole == 0 && alumnosNoAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Email</th>
