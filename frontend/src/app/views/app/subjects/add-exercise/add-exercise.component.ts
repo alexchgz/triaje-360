@@ -74,8 +74,8 @@ export class AddExerciseComponent implements OnInit {
               this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
               this.formData.get('nombre').setValue(this.exercise.nombre);
               this.formData.get('descripcion').setValue(this.exercise.descripcion);
-              this.formData.get('desde').setValue(this.exercise.desde);
-              this.formData.get('hasta').setValue(this.exercise.hasta);
+              this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
+              this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
             } else {
               this.endOfTheList = true;
             }

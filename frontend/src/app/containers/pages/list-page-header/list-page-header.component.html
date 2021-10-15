@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="d-inline-block" *ngIf="showSearch">
+                <div class="d-inline-block" *ngIf="component=='users'">
                     <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                         <input #val type="text" class="form-control" placeholder="Buscar" (keyup)="onSearchKeyUp(val.value)">
                     </div>
