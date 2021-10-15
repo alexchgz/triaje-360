@@ -87,7 +87,7 @@ export class AddNewUserModalComponent {
         .subscribe( res => {
           console.log('Usuario creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol);
+          this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
         }, (err) => {
           return;
@@ -97,7 +97,7 @@ export class AddNewUserModalComponent {
         .subscribe( res => {
           console.log('Usuario creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol);
+          this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
         }, (err) => {
           return;

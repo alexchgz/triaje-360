@@ -29,7 +29,7 @@ export class UsuarioService {
       if(role) params = params.append('role', role + '');
     }
     if(search) {
-      console.log(search);
+      // console.log(search);
       params = params.append('texto', search + '');
     }
 

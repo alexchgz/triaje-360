@@ -211,7 +211,7 @@ export class DataListComponent implements OnInit {
 
   searchKeyUp(val: string): void {
     // const val = event.target.value.toLowerCase().trim();
-    console.log(val);
+    // console.log(val);
     this.search = val;
     this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
   }

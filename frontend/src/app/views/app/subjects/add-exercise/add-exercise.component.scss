@@ -1,0 +1,34 @@
+.form-horizontal>div>div {
+    margin-bottom: 1em;
+}
+
+#asignatura {
+    width: 40%;
+    margin-right: 0;
+}
+
+#nombre {
+    width: 40%;
+    margin-right: 0;
+}
+
+#descripcion {
+    width: 40%;
+    min-height: 2em;
+}
+
+#desde {
+    width: 40%;
+}
+
+#hasta {
+    width: 40%;
+}
+
+.modal-footer {
+    justify-content: left;
+}
+
+.modal-footer>#danger {
+    margin-left: 12%;
+}
