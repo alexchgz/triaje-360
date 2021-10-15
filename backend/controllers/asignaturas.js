@@ -100,6 +100,26 @@ const getAsignaturas = async(req, res = response) => {
                             ]);
                         }
 
+                    } else {
+
+                        // ADMIN
+                        if (infoToken(token).rol === 'ROL_ADMIN') {
+                            // usamos Promise.all para realizar las consultas de forma paralela
+                            [asignaturas, totalAsignaturas] = await Promise.all([
+                                // consulta con los parametros establecidos
+                                Asignatura.find({}).populate('curso', '-__v')
+                                .populate({
+                                    path: 'profesores.usuario',
+                                    select: 'rol nombre'
+                                })
+                                .populate({
+                                    path: 'alumnos.usuario',
+                                    select: 'rol nombre'
+                                }),
+                                // consulta para obtener el numero total de usuarios
+                                Asignatura.countDocuments({})
+                            ]);
+                        }
                     }
 
                 } else {

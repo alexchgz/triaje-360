@@ -12,6 +12,15 @@
             <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
             <input type="text" class="form-control" formControlName="asignatura" placeholder="" required disabled="disabled">
         </div>
+        <div *ngIf="!subject" id="asignatura" class="mt-2">
+            <label>{{ 'pages.exercise-subject' | translate }}</label>
+            <label class="w-100">
+            <ng-select appearance="outline" [searchable]="false" class="form-control" name="asignatura" formControlName="asignatura" required>
+                <ng-option *ngFor="let item of subjects" [value]="item.uid">{{item.nombrecorto}}
+                </ng-option>
+            </ng-select>
+        </label>
+        </div>
         <div id="nombre">
             <label>{{ 'pages.exercise-name' | translate }}</label>
             <input type="text" class="form-control" formControlName="nombre" placeholder="" required>

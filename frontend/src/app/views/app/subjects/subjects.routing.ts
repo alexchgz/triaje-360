@@ -18,6 +18,7 @@ const routes: Routes = [
       { path: 'image-list', component: ImageListComponent },
       { path: 'details', component: DetailsComponent },
       { path: 'details-alt', component: DetailsAltComponent },
+      { path: 'add-exercise', component: AddExerciseComponent },
       { path: 'add-exercise/:uid', component: AddExerciseComponent },
       { path: 'add-exercise/:uid/:uid2', component: AddExerciseComponent },
     ]

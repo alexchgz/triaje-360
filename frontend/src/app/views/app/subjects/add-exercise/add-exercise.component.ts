@@ -24,6 +24,7 @@ export class AddExerciseComponent implements OnInit {
   endOfTheList = false;
   exercise: Ejercicio;
   subject: Asignatura;
+  subjects: Asignatura[];
   uid: number;
   uidEx: number;
   totalItem: 0;
@@ -44,37 +45,72 @@ export class AddExerciseComponent implements OnInit {
     private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location) { }
 
   ngOnInit(): void {
-    this.uid = this.route.snapshot.params['uid'];
-    this.uidEx = this.route.snapshot.params['uid2'];
-    console.log(this.uidEx);
-    // this.formData.get('uid').setValue(this.uid);
-    // si tenemos el id del ejercicio --> editar
-    if(this.uidEx != null) {
-      this.ejercicioService.getExercise(this.uidEx).subscribe(
-        data => {
-          console.log(data);
-          if (data['ok']) {
-            // console.log(data);
-            this.isLoading = false;
-            this.exercise = data['ejercicios'];
-            console.log(data['ejercicios']);
-            this.totalItem = data['totalEjercicios'];
-            this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
-            this.formData.get('nombre').setValue(this.exercise.nombre);
-            this.formData.get('descripcion').setValue(this.exercise.descripcion);
-            this.formData.get('desde').setValue(this.exercise.desde);
-            this.formData.get('hasta').setValue(this.exercise.hasta);
-          } else {
-            this.endOfTheList = true;
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
+
+    if(this.route.snapshot.params['uid']) {
+      this.uid = this.route.snapshot.params['uid'];
+    }
+    if(this.route.snapshot.params['uid2']) {
+      this.uidEx = this.route.snapshot.params['uid2'];
     }
 
-    this.loadSubjectData(this.uid);
+    if(this.uid == undefined && this.uidEx == undefined) {
+      console.log('eeee');
+      this.getSubjects();
+    } else {
+
+      console.log(this.uidEx);
+      // this.formData.get('uid').setValue(this.uid);
+      // si tenemos el id del ejercicio --> editar
+      if(this.uidEx != null) {
+        this.ejercicioService.getExercise(this.uidEx).subscribe(
+          data => {
+            console.log(data);
+            if (data['ok']) {
+              // console.log(data);
+              this.isLoading = false;
+              this.exercise = data['ejercicios'];
+              console.log(data['ejercicios']);
+              this.totalItem = data['totalEjercicios'];
+              this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
+              this.formData.get('nombre').setValue(this.exercise.nombre);
+              this.formData.get('descripcion').setValue(this.exercise.descripcion);
+              this.formData.get('desde').setValue(this.exercise.desde);
+              this.formData.get('hasta').setValue(this.exercise.hasta);
+            } else {
+              this.endOfTheList = true;
+            }
+          },
+          error => {
+            this.isLoading = false;
+          }
+        );
+      }
+
+      this.loadSubjectData(this.uid);
+    }
+
+  }
+
+  getSubjects() {
+    console.log('llego');
+    this.asignaturaService.getSubjects().subscribe(
+      data => {
+        if (data['ok']) {
+          // console.log(data['asignaturas']);
+          this.isLoading = false;
+          this.subjects = data['asignaturas'];
+
+          console.log(this.subjects);
+          console.log(this.subject);
+          //console.log(this.itemOptionsYears);
+        } else {
+          this.endOfTheList = true;
+        }
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
   }
 
   loadSubjectData(uid: number) {
@@ -122,6 +158,13 @@ export class AddExerciseComponent implements OnInit {
           console.log('Ejercicio creado');
           this.exercise = res['ejercicio'];
           // console.log(this.exercise);
+
+          console.log(this.formData.get('asignatura').value);
+          if(this.subject == undefined) {
+            this.loadSubjectData(this.formData.get('asignatura').value);
+          }
+          console.log(this.subject);
+
           // y lo añadimos a la lista de ejercicios de la asignatura
             // generamos primer id para el ejercicio
           var idE = new bson.ObjectId().toString();

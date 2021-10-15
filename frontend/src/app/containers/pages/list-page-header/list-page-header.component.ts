@@ -32,6 +32,7 @@ export class ListPageHeaderComponent implements OnInit {
   // FILTRO DE EJERCICIOS POR ASIGNATURA
   // itemOptionsSubjects: Asignatura[];
   itemOptionsSubjects: Object[];
+  component: string;
 
   @Input() showSchoolYears = false;
   @Input() showRoles = false;
@@ -80,13 +81,16 @@ export class ListPageHeaderComponent implements OnInit {
     let splitUrl = this.router.url.split("/", 5);
     // console.log(splitUrl);
     if(splitUrl[splitUrl.length-1] == "subjects") {
+      this.component = 'subjects';
       this.showSchoolYears = true;
       this.loadSchoolYears();
     }
     else if(splitUrl[splitUrl.length-1] == "users") {
+      this.component = 'users';
       this.showRoles = true;
     }
     else if(splitUrl[splitUrl.length-1] == "exercises") {
+      this.component = 'exercises';
       this.showSubjects = true;
       this.loadSchoolYears();
       this.loadSubjects();
@@ -160,7 +164,12 @@ export class ListPageHeaderComponent implements OnInit {
     this.changeDisplayMode.emit(mode);
   }
   onAddNewItem(): void {
-    this.addNewItem.emit(null);
+    if(this.component == 'exercises') {
+      this.router.navigate(['app/dashboards/all/subjects/add-exercise']);
+    } else {
+      this.addNewItem.emit(null);
+    }
+
   }
   selectAll(event): void  {
     this.selectAllChange.emit(event);

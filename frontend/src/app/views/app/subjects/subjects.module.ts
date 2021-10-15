@@ -22,6 +22,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SubjectsComponent, DetailsAltComponent, AddExerciseComponent],
@@ -44,7 +45,8 @@ import { AddExerciseComponent } from './add-exercise/add-exercise.component';
     AccordionModule.forRoot(),
     ContextMenuModule.forRoot({
       useBootstrap4: true,
-    })
+    }),
+    NgSelectModule
   ]
 })
 export class SubjectsModule { }
