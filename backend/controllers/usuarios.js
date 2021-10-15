@@ -18,6 +18,14 @@ const getUsuarios = async(req, res) => {
     // console.log(schoolYear);
     //const schoolYear = "612a911cd5e8413c68f28e14";
 
+    let texto = req.query.texto;
+    // console.log(texto);
+    let textoBusqueda = '';
+    if (texto) {
+        textoBusqueda = new RegExp(texto, 'i');
+        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
+    }
+
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
 
@@ -45,31 +53,64 @@ const getUsuarios = async(req, res) => {
 
         } else { // si no nos pasan el id
 
-            if (role == '' || role == null) {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [usuarios, totalUsuarios] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Usuario.find({}, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                    // consulta para obtener el numero total de usuarios
-                    Usuario.countDocuments()
-                ]);
-            } else if (role == null) {
-                [usuarios, totalUsuarios] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Usuario.find({}, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
-                    // consulta para obtener el numero total de usuarios
-                    Usuario.countDocuments()
-                ]);
-            } else {
-                // usamos Promise.all para realizar las consultas de forma paralela
-                [usuarios, totalUsuarios] = await Promise.all([
-                    // consulta con los parametros establecidos
-                    Usuario.find({ rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+            if (texto != undefined) {
 
-                    // consulta para obtener el numero total de usuarios
-                    Usuario.find({ rol: role }).countDocuments()
-                    // Usuario.countDocuments({})
-                ]);
+                if (role == '' || role == null) {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
+                    ]);
+                } else if (role == null) {
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
+                    ]);
+                } else {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }).countDocuments()
+                        // Usuario.countDocuments({})
+                    ]);
+                }
+
+            } else {
+
+                if (role == '' || role == null) {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({}, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.countDocuments()
+                    ]);
+                } else if (role == null) {
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({}, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.countDocuments()
+                    ]);
+                } else {
+                    // usamos Promise.all para realizar las consultas de forma paralela
+                    [usuarios, totalUsuarios] = await Promise.all([
+                        // consulta con los parametros establecidos
+                        Usuario.find({ rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+
+                        // consulta para obtener el numero total de usuarios
+                        Usuario.find({ rol: role }).countDocuments()
+                        // Usuario.countDocuments({})
+                    ]);
+                }
+
             }
 
         }

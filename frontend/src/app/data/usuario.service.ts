@@ -19,7 +19,7 @@ export class UsuarioService {
 
   // ******* PETICIONES USARIOS *********
 
-  getUsers(pageSize?: number, currentPage?: number, role?: string) {
+  getUsers(pageSize?: number, currentPage?: number, role?: string, search?: string) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
     let params = new HttpParams();
@@ -28,6 +28,12 @@ export class UsuarioService {
       if(currentPage) params = params.append('currentPage', currentPage + '');
       if(role) params = params.append('role', role + '');
     }
+    if(search) {
+      console.log(search);
+      params = params.append('texto', search + '');
+    }
+
+    // console.log(params);
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);

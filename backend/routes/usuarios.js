@@ -15,6 +15,7 @@ router.get('/', [
     check('pageSize', 'Desde debe ser un número').optional().isNumeric(),
     check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
     check('role', 'Desde debe ser una cadena de texto').optional().isString(),
+    check('texto', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getUsuarios);
 
@@ -22,7 +23,7 @@ router.get('/profesores', [
     validarJWT,
     // comprobamos campos opcionales
     check('idProfesores', 'Desde debe ser un objeto').optional().isString(),
-    check('search', 'Desde debe ser un objeto').optional().isString(),
+    check('texto', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getProfesores);
 
@@ -30,7 +31,7 @@ router.get('/alumnos', [
     validarJWT,
     // comprobamos campos opcionales
     check('idAlumnos', 'Desde debe ser un objeto').isString(),
-    check('search', 'Desde debe ser un objeto').optional().isString(),
+    check('texto', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getAlumnos);
 

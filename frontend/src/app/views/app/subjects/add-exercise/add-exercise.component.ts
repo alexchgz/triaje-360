@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/exercises/data-list/data-list.component';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { Asignatura } from '../../../../models/asignatura.model';
 
@@ -41,7 +41,7 @@ export class AddExerciseComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
-    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe) { }
+    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location) { }
 
   ngOnInit(): void {
     this.uid = this.route.snapshot.params['uid'];
@@ -149,6 +149,10 @@ export class AddExerciseComponent implements OnInit {
 
 
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

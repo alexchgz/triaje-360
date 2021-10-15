@@ -45,7 +45,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
-    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
+    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
   }
 
   // loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
@@ -77,12 +77,12 @@ export class DataListComponent implements OnInit {
   //   );
   // }
 
-  cargarUsuarios(pageSize: number, currentPage: number, role: string): void {
+  cargarUsuarios(pageSize: number, currentPage: number, role: string, search: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
 
-    this.usuarioService.getUsers(pageSize, currentPage, role).subscribe(
+    this.usuarioService.getUsers(pageSize, currentPage, role, search).subscribe(
       data => {
         if (data['ok']) {
           console.log(data['usuarios']);
@@ -158,11 +158,11 @@ export class DataListComponent implements OnInit {
   pageChanged(event: any): void {
     //this.loadData(this.itemsPerPage, event.page, this.search, this.orderBy);
     //console.log('CAMBIO PAGINA');
-    this.cargarUsuarios(this.itemsPerPage, event.page, this.itemRol);
+    this.cargarUsuarios(this.itemsPerPage, event.page, this.itemRol, this.search);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.cargarUsuarios(perPage, 1, this.itemRol);
+    this.cargarUsuarios(perPage, 1, this.itemRol, this.search);
   }
 
   // schoolYearChange(year: Curso): void {
@@ -175,7 +175,7 @@ export class DataListComponent implements OnInit {
     console.log(rol);
     this.itemRol = rol.value;
     console.log(this.itemRol);
-    this.cargarUsuarios(this.itemsPerPage, 1, this.itemRol);
+    this.cargarUsuarios(this.itemsPerPage, 1, this.itemRol, this.search);
   }
 
   dropUsers(users: Usuario[]): void {
@@ -183,7 +183,7 @@ export class DataListComponent implements OnInit {
     for(let i=0; i<users.length; i++){
       this.usuarioService.dropUser(users[i].uid).subscribe(
         data => {
-          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
         },
         error => {
           this.isLoading = false;
@@ -196,7 +196,7 @@ export class DataListComponent implements OnInit {
     console.log(user);
       this.usuarioService.dropUser(user.uid).subscribe(
         data => {
-          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol);
+          this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
         },
         error => {
           this.isLoading = false;
@@ -209,10 +209,12 @@ export class DataListComponent implements OnInit {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
   // }
 
-  // searchKeyUp(event): void {
-  //   const val = event.target.value.toLowerCase().trim();
-  //   this.loadData(this.itemsPerPage, 1, val, this.orderBy);
-  // }
+  searchKeyUp(val: string): void {
+    // const val = event.target.value.toLowerCase().trim();
+    console.log(val);
+    this.search = val;
+    this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
+  }
 
   // onContextMenuClick(action: string, item: IProduct): void {
   //   console.log('onContextMenuClick -> action :  ', action, ', item.title :', item.title);

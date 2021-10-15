@@ -112,7 +112,7 @@
 
                 <div class="d-inline-block" *ngIf="showSearch">
                     <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
-                        <input class="form-control" placeholder="Search" (keyup)="onSearchKeyUp($event)">
+                        <input #val type="text" class="form-control" placeholder="Buscar" (keyup)="onSearchKeyUp(val.value)">
                     </div>
                 </div>
                 <div class="float-right" *ngIf="showItemsPerPage">
