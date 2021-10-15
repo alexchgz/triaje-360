@@ -14,6 +14,7 @@ import { getUserRole } from 'src/app/utils/util';
 @Component({
   selector: 'app-data-list',
   templateUrl: './data-list.component.html',
+  styleUrls: ['./data-list.component.scss'],
   providers: [DatePipe]
 })
 export class DataListComponent implements OnInit {

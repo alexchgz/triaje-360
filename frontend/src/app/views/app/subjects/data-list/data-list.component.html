@@ -19,6 +19,58 @@
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
+
+        <div [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="card-dashborad d-flex flex-grow-1 min-width-zero">
+                <div *ngIf="userRole == 0" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="codigo title-card list-item-heading mb-0">
+              <span>Código</span>
+                    </span>
+                    <span class="nombre title-card list-item-heading mb-0">
+                <span>Nombre</span>
+                    </span>
+                    <span class="curso title-card list-item-heading mb-0">
+                <span>Curso</span>
+                    </span>
+                    <span class="datos title-card list-item-heading mb-0">
+                <span>Datos</span>
+                    </span>
+                </div>
+
+                <div *ngIf="userRole == 1" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="codigo2 title-card list-item-heading mb-0">
+                    <span>Código</span>
+                    </span>
+                    <span class="nombre2 title-card list-item-heading mb-0">
+                      <span>Nombre</span>
+                    </span>
+                    <span class="curso2 title-card list-item-heading mb-0">
+                      <span>Curso</span>
+                    </span>
+                    <span class="datos2 title-card list-item-heading mb-0">
+                      <span>Datos</span>
+                    </span>
+                </div>
+
+                <div *ngIf="userRole == 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="codigo3 title-card list-item-heading mb-0">
+                  <span>Código</span>
+                    </span>
+                    <span class="nombre3 title-card list-item-heading mb-0">
+                    <span>Nombre</span>
+                    </span>
+                    <span class="curso3 title-card list-item-heading mb-0">
+                    <span>Curso</span>
+                    </span>
+                    <span class="datos3 title-card list-item-heading mb-0">
+                    <span>Datos</span>
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">

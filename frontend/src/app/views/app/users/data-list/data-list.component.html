@@ -17,11 +17,49 @@
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
+
+        <div [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="card-dashboard d-flex flex-grow-1 min-width-zero">
+                <div class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="nombre title-card list-item-heading mb-0">
+                      <span>Apellidos, Nombre</span>
+                    </span>
+                    <span class="email title-card list-item-heading mb-0">
+                        <span>Email</span>
+                    </span>
+                    <span class="rol title-card list-item-heading mb-0">
+                        <span>Rol</span>
+                    </span>
+                    <span class="activo title-card list-item-heading mb-0">
+                        <span>Activo</span>
+                    </span>
+                </div>
+            </div>
+            <!-- <div class="iconos">
+
+        </div> -->
+        </div>
+
+        <!-- <div class="card-dashboard">
+            <a class="list-item-heading mb-0 truncate w-40 w-xs-90">
+          Apellidos, Nombre
+        </a>
+            <a class="list-item-heading mb-0 truncate w-40 w-xs-90">
+          Email
+        </a>
+            <a class="list-item-heading mb-0 truncate w-40 w-xs-90">
+          Rol
+        </a>
+            <a class="list-item-heading mb-0 truncate w-40 w-xs-90">
+          Activo
+        </a>
+        </div> -->
+
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
-                      {{p.nombre}} {{p.apellidos}}
+                      {{p.apellidos}}, {{p.nombre}}
                     </a>
                     <!-- <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p> -->
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.email}}</p>

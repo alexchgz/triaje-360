@@ -16,6 +16,45 @@
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
+
+        <div [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="card-dashborad d-flex flex-grow-1 min-width-zero">
+                <div *ngIf="userRole != 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="nombre title-card list-item-heading mb-0">
+                    <span>Nombre</span>
+                    </span>
+                    <span class="asignatura title-card list-item-heading mb-0">
+                      <span>Asignatura</span>
+                    </span>
+                    <span class="desde title-card list-item-heading mb-0">
+                    <span>Desde</span>
+                    </span>
+                    <span class="hasta title-card list-item-heading mb-0">
+                    <span>Hasta</span>
+                    </span>
+                </div>
+
+                <div *ngIf="userRole == 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="nombre2 title-card list-item-heading mb-0">
+                  <span>Nombre</span>
+                    </span>
+                    <span class="asignatura2 title-card list-item-heading mb-0">
+                    <span>Asignatura</span>
+                    </span>
+                    <span class="desde2 title-card list-item-heading mb-0">
+                  <span>Desde</span>
+                    </span>
+                    <span class="hasta2 title-card list-item-heading mb-0">
+                  <span>Hasta</span>
+                    </span>
+                </div>
+            </div>
+            <!-- <div class="iconos">
+
+    </div> -->
+        </div>
+
+
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
@@ -27,8 +66,15 @@
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
 
                     <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
-                    <i class="simple-icon-pencil" (click)="toEditExercise(p)"></i>
-                    <i class="simple-icon-trash" (click)="dropExercise(p)"></i>
+                    <div *ngIf="userRole==0" class="options">
+                        <i class="sr simple-icon-pencil" (click)="toEditExercise(p)"></i>
+                        <i class="sr simple-icon-trash" (click)="dropExercise(p)"></i>
+                    </div>
+                    <div *ngIf="userRole==1" class="options2">
+                        <i class="sr simple-icon-pencil" (click)="toEditExercise(p)"></i>
+                        <i class="sr simple-icon-trash" (click)="dropExercise(p)"></i>
+                    </div>
+
                 </div>
                 <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
           <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
