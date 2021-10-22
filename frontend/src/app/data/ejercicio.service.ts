@@ -67,7 +67,7 @@ export class EjercicioService {
   }
 
   createExercise(data: Ejercicio) {
-    console.log(data);
+    // console.log(data);
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();

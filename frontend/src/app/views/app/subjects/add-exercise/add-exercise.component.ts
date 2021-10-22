@@ -142,7 +142,7 @@ export class AddExerciseComponent implements OnInit {
       console.log(this.exercise);
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
-          console.log(this.formData.get('asignatura').value);
+          // console.log(this.formData.get('asignatura').value);
           // console.log('Ejercicio actualizado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
@@ -151,7 +151,7 @@ export class AddExerciseComponent implements OnInit {
           return;
       });
     } else {
-      console.log(this.formData);
+      // console.log(this.formData);
       // creamos el ejercicio
       this.ejercicioService.createExercise(this.formData.value)
         .subscribe( res => {
@@ -159,11 +159,27 @@ export class AddExerciseComponent implements OnInit {
           this.exercise = res['ejercicio'];
           // console.log(this.exercise);
 
-          console.log(this.formData.get('asignatura').value);
+          // console.log(this.formData.get('asignatura').value);
           if(this.subject == undefined) {
-            this.loadSubjectData(this.formData.get('asignatura').value);
+            // si no había asignatura tenemos que obtener la del formulario para actualizarla
+            this.asignaturaService.getSubject(this.formData.get('asignatura').value).subscribe(
+              data => {
+                if (data['ok']) {
+                  // console.log(data['asignaturas']);
+                  this.subject = data['asignaturas'];
+                  // this.formData.get('asignatura').disable();
+                } else {
+                  // this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
+                  console.log('No se ha encontrado la asignatura');
+                  this.endOfTheList = true;
+                }
+              },
+              error => {
+                this.isLoading = false;
+              }
+            );
           }
-          console.log(this.subject);
+          // console.log(this.subject);
 
           // y lo añadimos a la lista de ejercicios de la asignatura
             // generamos primer id para el ejercicio

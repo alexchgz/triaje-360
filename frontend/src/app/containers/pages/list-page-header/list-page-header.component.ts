@@ -129,7 +129,7 @@ export class ListPageHeaderComponent implements OnInit {
     this.asignaturaService.getSubjects(undefined, undefined, this.itemYear.uid, this.userId).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data);
+          // console.log(data);
           this.isLoading = false;
           if(data['asignaturas']) {
             this.data = data['asignaturas'];

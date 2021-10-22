@@ -74,7 +74,7 @@ export class DataListComponent implements OnInit {
           this.isLoading = false;
           this.data = data['ejercicios'];
           this.changeDateFormat();
-          console.log(this.data);
+          // console.log(this.data);
           this.totalItem = data['totalEjercicios'];
           // console.log(this.totalItem);
           //this.totalPage = data.totalPage;

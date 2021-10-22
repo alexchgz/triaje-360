@@ -51,7 +51,7 @@ export class DataListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = getUserRole();
     this.userId = localStorage.getItem('uid');
-    console.log(this.userId);
+    // console.log(this.userId);
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
   }
 

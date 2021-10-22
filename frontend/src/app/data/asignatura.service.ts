@@ -145,7 +145,7 @@ export class AsignaturaService {
       "ejercicios": data['ejercicios']
     }
 
-    console.log(sendData);
+    // console.log(sendData);
 
     return this.http.put(url, sendData, { headers });
 
