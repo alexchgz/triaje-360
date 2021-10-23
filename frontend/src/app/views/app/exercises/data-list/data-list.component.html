@@ -75,12 +75,12 @@
 
                     <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
                     <div *ngIf="userRole==0" class="options">
-                        <i class="sr simple-icon-pencil" (click)="toEditExercise(p)"></i>
-                        <i class="sr simple-icon-trash" (click)="dropExercise(p)"></i>
+                        <i class="sr simple-icon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
+                        <i class="sr simple-icon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="dropExercise(p)"></i>
                     </div>
                     <div *ngIf="userRole==1" class="options2">
-                        <i class="sr simple-icon-pencil" (click)="toEditExercise(p)"></i>
-                        <i class="sr simple-icon-trash" (click)="dropExercise(p)"></i>
+                        <i class="sr simple-icon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
+                        <i class="sr simple-icon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="dropExercise(p)"></i>
                     </div>
 
                 </div>

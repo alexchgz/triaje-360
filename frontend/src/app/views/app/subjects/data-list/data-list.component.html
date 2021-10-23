@@ -92,12 +92,12 @@
                     <p class="mb-0 text-muted text-small w-15 w-xs-100">Profesores: {{p.profesores.length}}</p>
                     <p *ngIf="userRole == 0 || userRole == 1" class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
                     <!-- <i *ngIf="userRole == 0" class="simple-icon-plus" [routerLink]="['/app/dashboards/all/subjects/add-exercise/', p.uid]"></i> -->
-                    <i *ngIf="userRole == 0" class="simple-icon-plus" (click)="toCreateExercise(p.uid)"></i>
+                    <i *ngIf="userRole == 0" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Añadir Ejercicio" (click)="toCreateExercise(p.uid)"></i>
                     <!-- <i class="simple-icon-notebook ml-3" [routerLink]="['/app/dashboards/all/exercises/data-list/', p.uid]"></i> -->
-                    <i class="simple-icon-notebook ml-3" (click)="toExercises(p.uid)"></i>
-                    <i *ngIf="userRole != 2" class="simple-icon-user ml-3" (click)="showManageModal(p)"></i>
-                    <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" (click)="showAddNewModal(p)"></i>
-                    <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" (click)="dropSubject(p)"></i>
+                    <i class="simple-icon-notebook ml-3" data-toggle="tooltip" data-placement="bottom" title="Ver Ejercicios" (click)="toExercises(p.uid)"></i>
+                    <i *ngIf="userRole != 2" class="simple-icon-user ml-3" data-toggle="tooltip" data-placement="bottom" title="Gestionar Asignatura" (click)="showManageModal(p)"></i>
+                    <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Asignatura" (click)="showAddNewModal(p)"></i>
+                    <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Asignatura" (click)="dropSubject(p)"></i>
 
                 </div>
                 <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
