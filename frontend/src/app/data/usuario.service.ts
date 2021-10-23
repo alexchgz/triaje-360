@@ -120,7 +120,8 @@ export class UsuarioService {
       "email": data['email'],
       "password": data['password'],
       "rol": data['rol'],
-      "curso": data['curso']
+      "curso": data['curso'],
+      "activo": data['activo']
     }
 
     return this.http.post(url, sendData, { headers });
