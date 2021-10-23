@@ -25,6 +25,13 @@ const getAsignaturas = async(req, res = response) => {
     // Solo puede crear asignaturas un admin
     const token = req.header('x-token');
 
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener asignatura',
+        });
+    }
+
     try {
         var asignaturas, totalAsignaturas;
         // console.log('entroooo');

@@ -13,9 +13,14 @@ const adminRoot = environment.adminRoot.substr(1); // path cannot start with a s
 let routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: '/user/login',
     pathMatch: 'full',
   },
+  // {
+  //   path: '',
+  //   component: HomeComponent,
+  //   pathMatch: 'full',
+  // },
   // {
   //   path: '',
   //   pathMatch: 'full',

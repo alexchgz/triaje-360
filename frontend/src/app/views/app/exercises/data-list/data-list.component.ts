@@ -55,8 +55,8 @@ export class DataListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = getUserRole();
     // console.log(this.userRole);
-    // this.userId = localStorage.getItem('uid');
-    this.userId = this.sender.idUser;
+    this.userId = localStorage.getItem('uid');
+    // this.userId = this.sender.idUser;
     // let splitUrl = this.router.url.split("/");
     // // console.log(splitUrl);
     // if(splitUrl[splitUrl.length-1] != "data-list") {

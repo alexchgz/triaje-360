@@ -73,8 +73,8 @@ export class ListPageHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    // this.userId = localStorage.getItem('uid');
-    this.userId = this.sender.idUser;
+    this.userId = localStorage.getItem('uid');
+    // this.userId = this.sender.idUser;
     // console.log(this.userId);
     this.getComponent();
     // console.log(this.itemOptionRoles);

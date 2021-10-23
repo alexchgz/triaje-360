@@ -6,6 +6,7 @@ import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { getThemeColor, setThemeColor, getUserRole } from 'src/app/utils/util';
+import { SenderService } from '../../../data/sender.service';
 
 @Component({
   selector: 'app-topnav',
@@ -29,7 +30,8 @@ export class TopnavComponent implements OnInit, OnDestroy {
     private sidebarService: SidebarService,
     private authService: AuthService,
     private router: Router,
-    private langService: LangService
+    private langService: LangService,
+    private sender: SenderService
   ) {
     this.languages = this.langService.supportedLanguages;
     this.currentLanguage = this.langService.languageShorthand;
@@ -130,6 +132,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
       localStorage.removeItem('token');
       localStorage.removeItem('rol');
       localStorage.removeItem('uid');
+      this.sender.idUser = undefined;
       this.router.navigate(['/user/login']);
     });
   }
