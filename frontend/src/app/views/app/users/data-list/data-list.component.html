@@ -18,7 +18,16 @@
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
 
-        <div [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="d-flex flex-grow-1 min-width-zero">
+                <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    No hay resultados relacionados con la búsqueda.
+                </div>
+            </div>
+        </div>
+        <!-- asihda -->
+
+        <div *ngIf="totalItem > 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
             <div class="card-dashboard d-flex flex-grow-1 min-width-zero">
                 <div class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
                     <span class="nombre title-card list-item-heading mb-0">
@@ -144,7 +153,7 @@
         </div>
     </div>
 
-    <div class="col-12">
+    <div *ngIf="totalItem > 0" class="col-12">
         <pagination [totalItems]="totalItem" [itemsPerPage]="itemsPerPage" [rotate]="true" [maxSize]="5" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" class="justify-content-center" [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
         </pagination>
     </div>
