@@ -33,19 +33,20 @@ export class HeadingComponent {
     }
 
     // step 0
-    let foundedMenuItem = this.menuItems.find(x => x.to === path);
+    // let foundedMenuItem = this.menuItems.find(x => x.to === path);
+    let foundedMenuItem = this.menuItems.find(x => path.includes(x.to));
 
     if (!foundedMenuItem) {
       // step 1
       this.menuItems.map(menu => {
-        if (!foundedMenuItem && menu.subs) {foundedMenuItem = menu.subs.find(x => x.to === path); }
+        if (!foundedMenuItem && menu.subs) {foundedMenuItem = menu.subs.find(x => path.includes(x.to)); }
       });
       if (!foundedMenuItem) {
         // step 2
         this.menuItems.map(menu => {
           if (menu.subs) {
             menu.subs.map(sub => {
-                if (!foundedMenuItem && sub.subs) {foundedMenuItem = sub.subs.find(x => x.to === path); }
+                if (!foundedMenuItem && sub.subs) {foundedMenuItem = sub.subs.find(x => path.includes(x.to)); }
               });
           }
         });
@@ -56,7 +57,7 @@ export class HeadingComponent {
               menu.subs.map(sub => {
                 if (sub.subs) {
                   sub.subs.map(deepSub => {
-                    if (!foundedMenuItem && deepSub.subs) {foundedMenuItem = deepSub.subs.find(x => x.to === path); }
+                    if (!foundedMenuItem && deepSub.subs) {foundedMenuItem = deepSub.subs.find(x => path.includes(x.to)); }
                   });
                 }
               });
