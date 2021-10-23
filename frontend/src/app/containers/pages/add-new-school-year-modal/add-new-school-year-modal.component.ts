@@ -37,6 +37,10 @@ export class AddNewSchoolYearModalComponent {
   constructor(private modalService: BsModalService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
+
+    this.formData.reset();
+    this.schoolYear = undefined;
+
     if(id) {
       this.getSchoolYear(id);
     }
@@ -104,8 +108,8 @@ export class AddNewSchoolYearModalComponent {
   closeModal(): void {
     console.log('entro aqui');
     this.modalRef.hide();
-    this.formData.reset();
-    this.schoolYear = undefined;
+    // this.formData.reset();
+    // this.schoolYear = undefined;
   }
 
 }

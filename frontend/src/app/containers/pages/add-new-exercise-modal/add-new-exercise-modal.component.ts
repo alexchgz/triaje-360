@@ -45,6 +45,9 @@ export class AddNewExerciseModalComponent {
      private fb: FormBuilder, private router: Router , private dataList: DataListComponent, private datePipe: DatePipe) { }
 
   show(id? : number): void {
+    this.formData.reset();
+    this.exercise = undefined;
+
     if(id) {
       this.getExercise(id);
     }
@@ -140,8 +143,8 @@ export class AddNewExerciseModalComponent {
 
   closeModal(): void {
     this.modalRef.hide();
-    this.formData.reset();
-    this.exercise = undefined;
+    // this.formData.reset();
+    // this.exercise = undefined;
   }
 
 }

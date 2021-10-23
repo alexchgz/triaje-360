@@ -48,6 +48,9 @@ export class AddNewSubjectModalComponent {
      private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
+    this.formData.reset();
+    this.subject = undefined;
+
     if(id) {
       this.getSubject(id);
     }
@@ -146,8 +149,8 @@ export class AddNewSubjectModalComponent {
 
   closeModal(): void {
     this.modalRef.hide();
-    this.formData.reset();
-    this.subject = undefined;
+    // this.formData.reset();
+    // this.subject = undefined;
   }
 
 }

@@ -46,6 +46,10 @@ export class AddNewUserModalComponent {
   constructor(private modalService: BsModalService, private usuarioService: UsuarioService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
 
   show(id? : number): void {
+
+    this.formData.reset();
+    this.user = undefined;
+
     if(id) {
       this.getUser(id);
     }
@@ -139,8 +143,8 @@ export class AddNewUserModalComponent {
 
   closeModal(): void {
     this.modalRef.hide();
-    this.formData.reset();
-    this.user = undefined;
+    // this.formData.reset();
+    // this.user = undefined;
   }
 
 }
