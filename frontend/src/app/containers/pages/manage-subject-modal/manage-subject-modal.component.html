@@ -50,7 +50,7 @@
                                 <td>{{p.email}}</td>
                                 <td>{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td class="icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
+                                <td *ngIf="p.activo" class="icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>

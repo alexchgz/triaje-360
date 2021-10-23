@@ -63,6 +63,16 @@ export class ManageSubjectModalComponent implements OnInit {
   }
 
   show(id: number): void {
+
+    this.asignatura = undefined;
+    this.profesoresAsignados = [];
+    this.profesoresNoAsignados = [];
+    this.alumnosAsignados = [];
+    this.alumnosNoAsignados = [];
+    this.idTeachers = [];
+    this.idStudents = [];
+    this.data = [];
+
     this.getSubject(id);
     // this.getUsers();
     // this.getTeachers();
@@ -191,14 +201,14 @@ export class ManageSubjectModalComponent implements OnInit {
     }
 
     this.modalRef.hide();
-    this.asignatura = undefined;
-    this.profesoresAsignados = [];
-    this.profesoresNoAsignados = [];
-    this.alumnosAsignados = [];
-    this.alumnosNoAsignados = [];
-    this.idTeachers = [];
-    this.idStudents = [];
-    this.data = [];
+    // this.asignatura = undefined;
+    // this.profesoresAsignados = [];
+    // this.profesoresNoAsignados = [];
+    // this.alumnosAsignados = [];
+    // this.alumnosNoAsignados = [];
+    // this.idTeachers = [];
+    // this.idStudents = [];
+    // this.data = [];
 
   }
 

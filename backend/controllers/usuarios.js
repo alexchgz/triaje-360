@@ -174,7 +174,7 @@ const getProfesores = async(req, res) => {
         if (texto != undefined) {
             [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
                 // consulta para profesores asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_PROFESOR", _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
                 .sort({ apellidos: 1, nombre: 1 })
                 .populate('curso', '-__v'),
                 // consulta para profesores NO asignados a la asignatura
@@ -187,7 +187,7 @@ const getProfesores = async(req, res) => {
             // usamos Promise.all para realizar las consultas de forma paralela
             [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
                 // consulta para profesores asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo')
+                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo')
                 .sort({ apellidos: 1, nombre: 1 })
                 .populate('curso', '-__v'),
                 // consulta para profesores NO asignados a la asignatura
