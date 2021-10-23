@@ -9,6 +9,7 @@ import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { getUserRole } from 'src/app/utils/util';
 import { Router } from '@angular/router';
+import { SenderService } from '../../../../data/sender.service';
 
 @Component({
   selector: 'app-data-list',
@@ -36,7 +37,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router) {
+  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -50,9 +51,14 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    this.userId = localStorage.getItem('uid');
+    // this.userId = localStorage.getItem('uid');
+    this.userId = this.sender.idUser;
     // console.log(this.userId);
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
+
+    // reseteamos datos ID del servicio
+    this.sender.idSubjectExercise = undefined;
+    this.sender.idExercise = undefined;
   }
 
   loadSubjects(pageSize: number, currentPage: number, schoolYear: number, userId:string): void {
@@ -171,6 +177,19 @@ export class DataListComponent implements OnInit {
         }
       );
 
+  }
+
+  toExercises(uid: string): void {
+
+    this.sender.idSubject = uid;
+    // console.log(this.sender.idSubject);
+    // this.router.navigate(['/app/dashboards/all/exercises/data-list/'], { state: { data: uid } });
+    this.router.navigate(['/app/dashboards/all/exercises/data-list/']);
+  }
+
+  toCreateExercise(uid: string): void {
+    this.sender.idSubject = uid;
+    this.router.navigate(['/app/dashboards/all/subjects/add-exercise']);
   }
 
   // addExercise(subject: Asignatura) {

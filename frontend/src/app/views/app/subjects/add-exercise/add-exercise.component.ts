@@ -9,6 +9,7 @@ import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { DatePipe, Location } from '@angular/common';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { Asignatura } from '../../../../models/asignatura.model';
+import { SenderService } from '../../../../data/sender.service';
 
 const bson = require('bson');
 
@@ -25,7 +26,7 @@ export class AddExerciseComponent implements OnInit {
   exercise: Ejercicio;
   subject: Asignatura;
   subjects: Asignatura[];
-  uid: number;
+  uid: any;
   uidEx: number;
   totalItem: 0;
 
@@ -42,16 +43,33 @@ export class AddExerciseComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
-    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location) { }
+    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService) { }
 
   ngOnInit(): void {
 
-    if(this.route.snapshot.params['uid']) {
-      this.uid = this.route.snapshot.params['uid'];
+    // if(this.route.snapshot.params['uid']) {
+    //   this.uid = this.route.snapshot.params['uid'];
+    // }
+    // if(this.route.snapshot.params['uid2']) {
+    //   this.uidEx = this.route.snapshot.params['uid2'];
+    // }
+
+    // if(this.uid == undefined && this.uidEx == undefined) {
+    //   console.log('eeee');
+    //   this.getSubjects();
+    // } else {
+
+    if(this.sender.idSubjectExercise) {
+      this.uid = this.sender.idSubjectExercise;
+    } else if(this.sender.idSubject) {
+      this.uid = this.sender.idSubject;
     }
-    if(this.route.snapshot.params['uid2']) {
-      this.uidEx = this.route.snapshot.params['uid2'];
+    if(this.sender.idExercise) {
+      this.uidEx = this.sender.idExercise;
     }
+
+    console.log(this.sender.idSubjectExercise);
+    console.log(this.sender.idExercise);
 
     if(this.uid == undefined && this.uidEx == undefined) {
       console.log('eeee');
@@ -86,6 +104,7 @@ export class AddExerciseComponent implements OnInit {
         );
       }
 
+      console.log(this.uid);
       this.loadSubjectData(this.uid);
     }
 
@@ -144,8 +163,9 @@ export class AddExerciseComponent implements OnInit {
         .subscribe( res => {
           // console.log(this.formData.get('asignatura').value);
           // console.log('Ejercicio actualizado');
-          //this.router.navigateByUrl('app/dashboards/all/users/data-list');
-          // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
+          this.router.navigateByUrl('app/dashboards/all/exercises/data-list');
+          // let idUser = localStorage.getItem('uid');
+          // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject, idUser);
           // this.closeModal();
         }, (err) => {
           return;

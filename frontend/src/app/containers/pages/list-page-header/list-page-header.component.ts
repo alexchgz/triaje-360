@@ -8,6 +8,7 @@ import { getUserRole } from 'src/app/utils/util';
 import { Asignatura } from '../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { Profesor } from '../../../models/profesor.model';
+import { SenderService } from '../../../data/sender.service';
 
 @Component({
   selector: 'app-list-page-header',
@@ -34,6 +35,7 @@ export class ListPageHeaderComponent implements OnInit {
   itemOptionsSubjects: Object[];
   component: string;
 
+  @Input() subjectId: string;
   @Input() showSchoolYears = false;
   @Input() showRoles = false;
   @Input() showSubjects = false;
@@ -67,14 +69,16 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router) { }
+  constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService) { }
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    this.userId = localStorage.getItem('uid');
+    // this.userId = localStorage.getItem('uid');
+    this.userId = this.sender.idUser;
     // console.log(this.userId);
     this.getComponent();
     // console.log(this.itemOptionRoles);
+    console.log(this.itemSubject);
   }
 
   getComponent(): void {
@@ -135,10 +139,18 @@ export class ListPageHeaderComponent implements OnInit {
             this.data = data['asignaturas'];
             this.itemOptionsSubjects = data['asignaturas'];
 
-            let splitUrl2 = this.router.url.split("/");
+            // let splitUrl2 = this.router.url.split("/");
             // console.log(splitUrl2);
+            // for(let i=0; i<this.itemOptionsSubjects.length; i++) {
+            //   if(splitUrl2[splitUrl2.length-1] == this.itemOptionsSubjects[i]['uid']) {
+            //     this.itemSubject.nombrecorto = this.itemOptionsSubjects[i]['nombrecorto'];
+            //     this.itemSubject.uid = this.itemOptionsSubjects[i]['uid'];
+            //     // console.log(this.itemSubject);
+            //   }
+            // }
+
             for(let i=0; i<this.itemOptionsSubjects.length; i++) {
-              if(splitUrl2[splitUrl2.length-1] == this.itemOptionsSubjects[i]['uid']) {
+              if(this.subjectId == this.itemOptionsSubjects[i]['uid']) {
                 this.itemSubject.nombrecorto = this.itemOptionsSubjects[i]['nombrecorto'];
                 this.itemSubject.uid = this.itemOptionsSubjects[i]['uid'];
                 // console.log(this.itemSubject);

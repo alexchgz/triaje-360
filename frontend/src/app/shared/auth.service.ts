@@ -9,6 +9,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { getUserRole } from 'src/app/utils/util';
+import { SenderService } from '../data/sender.service';
 
 export interface ISignInCredentials {
   email: string;
@@ -34,7 +35,7 @@ export interface IPasswordReset {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: AngularFireAuth, private http: HttpClient) {}
+  constructor(private auth: AngularFireAuth, private http: HttpClient, private sender: SenderService) {}
 
   // tslint:disable-next-line:typedef
   signIn(credentials: ISignInCredentials) {
@@ -54,6 +55,7 @@ export class AuthService {
         //console.log(res);
           localStorage.setItem('token', res['token']);
           localStorage.setItem('uid', res['id']);
+          this.sender.idUser = res['id'];
           localStorage.setItem('rol', res['rol']);
           console.log('Se ha hecho login');
           //console.log(res['rol']);

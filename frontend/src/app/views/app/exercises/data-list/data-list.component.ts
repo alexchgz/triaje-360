@@ -9,6 +9,8 @@ import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { getUserRole } from 'src/app/utils/util';
+import data from '../../../../constants/menu';
+import { SenderService } from '../../../../data/sender.service';
 
 
 @Component({
@@ -38,7 +40,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
-    private datePipe: DatePipe, private router: Router) {
+    private datePipe: DatePipe, private router: Router, public sender: SenderService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -53,13 +55,21 @@ export class DataListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = getUserRole();
     // console.log(this.userRole);
-    this.userId = localStorage.getItem('uid');
-    let splitUrl = this.router.url.split("/");
-    // console.log(splitUrl);
-    if(splitUrl[splitUrl.length-1] != "data-list") {
-      // console.log(splitUrl[splitUrl.length-1]);
-      this.itemSubject = splitUrl[splitUrl.length-1];
-    }
+    // this.userId = localStorage.getItem('uid');
+    this.userId = this.sender.idUser;
+    // let splitUrl = this.router.url.split("/");
+    // // console.log(splitUrl);
+    // if(splitUrl[splitUrl.length-1] != "data-list") {
+    //   // console.log(splitUrl[splitUrl.length-1]);
+    //   this.itemSubject = splitUrl[splitUrl.length-1];
+    // }
+
+    // console.log(history.state.data);
+    // this.itemSubject = history.state.data;
+
+    console.log(this.sender.idSubject);
+    this.itemSubject = this.sender.idSubject;
+
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }
 
@@ -219,7 +229,10 @@ export class DataListComponent implements OnInit {
   }
 
   toEditExercise(e: Ejercicio): void {
-    this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.asignatura._id +"/" + e.uid);
+    this.sender.idSubjectExercise = e.asignatura._id;
+    this.sender.idExercise = e.uid;
+    // this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.asignatura._id +"/" + e.uid);
+    this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise");
   }
 
   // changeOrderBy(item: any): void {
