@@ -22,7 +22,7 @@ export class DataListComponent implements OnInit {
   selected: Asignatura[] = [];
   data: Asignatura[] = [];
   currentPage = 1;
-  itemsPerPage = 2;
+  itemsPerPage = 10;
   search = '';
   orderBy = '';
   isLoading: boolean;

@@ -17,7 +17,7 @@ export class DataListComponent implements OnInit {
   selected: Usuario[] = [];
   data: Usuario[] = [];
   currentPage = 1;
-  itemsPerPage = 2;
+  itemsPerPage = 10;
   search = '';
   orderBy = '';
   isLoading: boolean;

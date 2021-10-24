@@ -25,7 +25,7 @@ export class DataListComponent implements OnInit {
   selected: Ejercicio[] = [];
   data: Ejercicio[] = [];
   currentPage = 1;
-  itemsPerPage = 2;
+  itemsPerPage = 10;
   search = '';
   orderBy = '';
   isLoading: boolean;
