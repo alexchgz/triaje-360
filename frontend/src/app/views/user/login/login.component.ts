@@ -59,7 +59,7 @@ export class LoginComponent {
           console.log('No se ha podido hacer login');
           this.buttonDisabled = false;
           this.buttonState = '';
-          this.notifications.create('Error', error.message, NotificationType.Bare, {
+          this.notifications.create('Error', 'No se ha podido completar el inicio de sesión. Compruebe que el correo y la contraseña son correctos', NotificationType.Bare, {
             theClass: 'outline primary',
             timeOut: 6000,
             showProgressBar: false
