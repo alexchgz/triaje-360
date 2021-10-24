@@ -7,6 +7,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/data/usuario.service';
 import { Curso } from '../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-add-new-user-modal',
@@ -43,7 +44,8 @@ export class AddNewUserModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private usuarioService: UsuarioService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private usuarioService: UsuarioService, private cursoService: CursoService, private fb: FormBuilder,
+     private router: Router , private dataList: DataListComponent, private notifications: NotificationsService) { }
 
   show(id? : number): void {
 
@@ -93,7 +95,21 @@ export class AddNewUserModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
+
+          this.notifications.create('Usuario editado', 'Se ha editado el Usuario correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar el Usuario', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     } else {
@@ -103,7 +119,21 @@ export class AddNewUserModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
+
+          this.notifications.create('Usuario creado', 'Se ha creado el Usuario correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido crear el Usuario', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     }

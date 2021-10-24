@@ -6,6 +6,8 @@ import { DataListComponent } from 'src/app/views/app/school-years/data-list/data
 import { id } from '@swimlane/ngx-datatable';
 import { CursoService } from '../../../data/curso.service';
 import { Curso } from '../../../models/curso.model';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
+
 
 @Component({
   selector: 'app-add-new-school-year-modal',
@@ -34,7 +36,8 @@ export class AddNewSchoolYearModalComponent {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private cursoService: CursoService, private fb: FormBuilder, private router: Router , private dataList: DataListComponent,
+    private notifications: NotificationsService) { }
 
   show(id? : number): void {
 
@@ -60,7 +63,21 @@ export class AddNewSchoolYearModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadSchoolYears(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
           this.closeModal();
+
+          this.notifications.create('Curso Académico editado', 'Se ha editado el Curso Académico correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar el Curso Académico', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     } else {
@@ -71,7 +88,21 @@ export class AddNewSchoolYearModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadSchoolYears(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
           this.closeModal();
+
+          this.notifications.create('Curso Académico creado', 'Se ha creado el Curso Académico correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido crear el Curso Académico', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     }

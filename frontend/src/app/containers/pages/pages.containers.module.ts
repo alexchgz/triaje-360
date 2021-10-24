@@ -41,6 +41,8 @@ import { AddNewSchoolYearModalComponent } from './add-new-school-year-modal/add-
 import { AddNewSubjectModalComponent } from './add-new-subject-modal/add-new-subject-modal.component';
 import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subject-modal.component';
 import { AddNewExerciseModalComponent } from './add-new-exercise-modal/add-new-exercise-modal.component';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+
 
 @NgModule({
   declarations: [
@@ -87,6 +89,7 @@ import { AddNewExerciseModalComponent } from './add-new-exercise-modal/add-new-e
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
     ReactiveFormsModule
   ],
   exports: [

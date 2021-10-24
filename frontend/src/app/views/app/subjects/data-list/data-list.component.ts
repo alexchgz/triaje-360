@@ -10,6 +10,7 @@ import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { getUserRole } from 'src/app/utils/util';
 import { Router } from '@angular/router';
 import { SenderService } from '../../../../data/sender.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-data-list',
@@ -37,7 +38,8 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService) {
+  constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService,
+     private notifications: NotificationsService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -158,9 +160,22 @@ export class DataListComponent implements OnInit {
       this.asignaturaService.dropSubject(subjects[i].uid).subscribe(
         data => {
           this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
+
+          this.notifications.create('Asiganturas eliminadas', 'Se han eliminado las Asignaturas', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
           this.isLoading = false;
+
+          this.notifications.create('Error', 'No se han podido eliminar las Asiganturas', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
         }
       );
     }
@@ -171,8 +186,22 @@ export class DataListComponent implements OnInit {
       this.asignaturaService.dropSubject(subject.uid).subscribe(
         data => {
           this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
+
+          this.notifications.create('Asignatura eliminada', 'Se ha eliminado la Asignatura correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
+
+          this.notifications.create('Error', 'No se ha podido eliminar la Asignatura', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );

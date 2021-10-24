@@ -9,6 +9,7 @@ import { Curso } from '../../../models/curso.model';
 import { Asignatura } from '../../../models/asignatura.model';
 import { AsignaturaService } from '../../../data/asignatura.service';
 import { Ejercicio } from '../../../models/ejercicio.model';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-add-new-subject-modal',
@@ -45,7 +46,7 @@ export class AddNewSubjectModalComponent {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private cursoService: CursoService, private asignaturaSerivce: AsignaturaService,
-     private fb: FormBuilder, private router: Router , private dataList: DataListComponent) { }
+     private fb: FormBuilder, private router: Router , private dataList: DataListComponent, private notifications: NotificationsService) { }
 
   show(id? : number): void {
     this.formData.reset();
@@ -98,7 +99,21 @@ export class AddNewSubjectModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);
           this.closeModal();
+
+          this.notifications.create('Asignatura editada', 'Se ha editado la Asignatura correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar la Asigantura', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     } else {
@@ -112,7 +127,21 @@ export class AddNewSubjectModalComponent {
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);
           this.closeModal();
+
+          this.notifications.create('Asigantura creada', 'Se ha creado la Asignatura correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido crear la Asignatura', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     }

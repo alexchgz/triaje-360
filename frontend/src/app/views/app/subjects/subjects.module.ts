@@ -23,6 +23,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SubjectsComponent, DetailsAltComponent, AddExerciseComponent],
@@ -43,6 +44,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
     ContextMenuModule.forRoot({
       useBootstrap4: true,
     }),

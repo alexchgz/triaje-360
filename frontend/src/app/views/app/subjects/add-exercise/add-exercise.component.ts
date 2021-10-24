@@ -10,6 +10,7 @@ import { DatePipe, Location } from '@angular/common';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { Asignatura } from '../../../../models/asignatura.model';
 import { SenderService } from '../../../../data/sender.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 const bson = require('bson');
 
@@ -43,7 +44,8 @@ export class AddExerciseComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
-    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService) { }
+    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
+    private notifications: NotificationsService) { }
 
   ngOnInit(): void {
 
@@ -68,11 +70,11 @@ export class AddExerciseComponent implements OnInit {
       this.uidEx = this.sender.idExercise;
     }
 
-    console.log(this.sender.idSubjectExercise);
-    console.log(this.sender.idExercise);
+    // console.log(this.sender.idSubjectExercise);
+    // console.log(this.sender.idExercise);
 
     if(this.uid == undefined && this.uidEx == undefined) {
-      console.log('eeee');
+      // console.log('eeee');
       this.getSubjects();
     } else {
 
@@ -111,7 +113,7 @@ export class AddExerciseComponent implements OnInit {
   }
 
   getSubjects() {
-    console.log('llego');
+    // console.log('llego');
     this.asignaturaService.getSubjects().subscribe(
       data => {
         if (data['ok']) {
@@ -119,8 +121,8 @@ export class AddExerciseComponent implements OnInit {
           this.isLoading = false;
           this.subjects = data['asignaturas'];
 
-          console.log(this.subjects);
-          console.log(this.subject);
+          // console.log(this.subjects);
+          // console.log(this.subject);
           //console.log(this.itemOptionsYears);
         } else {
           this.endOfTheList = true;
@@ -167,7 +169,21 @@ export class AddExerciseComponent implements OnInit {
           // let idUser = localStorage.getItem('uid');
           // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject, idUser);
           // this.closeModal();
+
+          this.notifications.create('Ejercicio editado', 'Se ha editado el Ejercicio correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar el Ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
     } else {
@@ -180,14 +196,49 @@ export class AddExerciseComponent implements OnInit {
           // console.log(this.exercise);
 
           // console.log(this.formData.get('asignatura').value);
+          console.log(this.subject)
           if(this.subject == undefined) {
             // si no había asignatura tenemos que obtener la del formulario para actualizarla
             this.asignaturaService.getSubject(this.formData.get('asignatura').value).subscribe(
               data => {
                 if (data['ok']) {
-                  // console.log(data['asignaturas']);
+                  console.log(data['asignaturas']);
                   this.subject = data['asignaturas'];
                   // this.formData.get('asignatura').disable();
+
+                  // y lo añadimos a la lista de ejercicios de la asignatura
+                    // generamos primer id para el ejercicio
+                    var idE = new bson.ObjectId().toString();
+
+                    this.subject.ejercicios.push({ '_id': idE, 'ejercicio': this.exercise });
+                    // console.log(this.subject.ejercicios[1]);
+
+                    // y actualizamos la asignatura
+
+                    // console.log(this.subject);
+                    this.asignaturaService.updateSubject(this.subject, this.subject.uid).subscribe( res => {
+                      console.log('Asignatura actualizada');
+                      this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+                      // this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
+                      // mensaje modal
+
+                      this.notifications.create('Ejercicio creado', 'Se ha añadido el Ejercicio a la Asigantura correctamente', NotificationType.Info, {
+                        theClass: 'outline primary',
+                        timeOut: 6000,
+                        showProgressBar: false
+                      });
+
+                    }, (err) => {
+
+                      this.notifications.create('Error', 'No se ha podido añadir el Ejercicio a la Asignatura', NotificationType.Error, {
+                        theClass: 'outline primary',
+                        timeOut: 8000,
+                        showProgressBar: false
+                      });
+
+                      return;
+                    });
+
                 } else {
                   // this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
                   console.log('No se ha encontrado la asignatura');
@@ -199,30 +250,59 @@ export class AddExerciseComponent implements OnInit {
               }
             );
           }
-          // console.log(this.subject);
+          console.log(this.subject);
 
           // y lo añadimos a la lista de ejercicios de la asignatura
             // generamos primer id para el ejercicio
-          var idE = new bson.ObjectId().toString();
-          this.subject.ejercicios.push({ '_id': idE, 'ejercicio': this.exercise });
-          // console.log(this.subject.ejercicios[1]);
+          if(this.subject) {
+            var idE = new bson.ObjectId().toString();
+            this.subject.ejercicios.push({ '_id': idE, 'ejercicio': this.exercise });
+            // console.log(this.subject.ejercicios[1]);
 
-          // y actualizamos la asignatura
+            // y actualizamos la asignatura
 
-          // console.log(this.subject);
-          this.asignaturaService.updateSubject(this.subject, this.subject.uid).subscribe( res => {
-            console.log('Asignatura actualizada');
-            this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
-            // this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
-            // mensaje modal
+            // console.log(this.subject);
+            this.asignaturaService.updateSubject(this.subject, this.subject.uid).subscribe( res => {
+              console.log('Asignatura actualizada');
+              this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+              // this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
+              // mensaje modal
 
-          }, (err) => {
-            return;
-          });
-          // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
-          // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
-          // this.closeModal();
+              this.notifications.create('Ejercicio creado', 'Se ha creado el Ejercicio correctamente', NotificationType.Info, {
+                theClass: 'outline primary',
+                timeOut: 6000,
+                showProgressBar: false
+              });
+
+            }, (err) => {
+
+              this.notifications.create('Error', 'No se ha podido añadir el Ejercicio a la Asignatura', NotificationType.Error, {
+                theClass: 'outline primary',
+                timeOut: 8000,
+                showProgressBar: false
+              });
+
+              return;
+            });
+            // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+            // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject);
+            // this.closeModal();
+
+            this.notifications.create('Ejercicio creado', 'Se ha creado el Ejercicio correctamente', NotificationType.Info, {
+              theClass: 'outline primary',
+              timeOut: 6000,
+              showProgressBar: false
+            });
+          }
+
         }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido crear el Ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           return;
       });
 

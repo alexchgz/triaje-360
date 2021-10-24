@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { UsuarioService } from '../../../../data/usuario.service';
 import { Curso } from '../../../../models/curso.model';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-data-list',
@@ -30,7 +31,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewUserModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private usuarioService: UsuarioService) {
+  constructor(private hotkeysService: HotkeysService, private usuarioService: UsuarioService, private notifications: NotificationsService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -184,9 +185,23 @@ export class DataListComponent implements OnInit {
       this.usuarioService.dropUser(users[i].uid).subscribe(
         data => {
           this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
+
+          this.notifications.create('Usuarios eliminados', 'Se han eliminado los Usuarios correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
           this.isLoading = false;
+
+          this.notifications.create('Error', 'No se han podido eliminar los Usuarios', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         }
       );
     }
@@ -197,8 +212,23 @@ export class DataListComponent implements OnInit {
       this.usuarioService.dropUser(user.uid).subscribe(
         data => {
           this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
+
+          this.notifications.create('Usuario eliminado', 'Se ha eliminado el Usuario correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+
         },
         error => {
+
+          this.notifications.create('Error', 'No se ha podido eliminar el Usuario', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );

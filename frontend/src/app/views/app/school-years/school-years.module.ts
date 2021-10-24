@@ -21,6 +21,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SchoolYearsComponent, DetailsAltComponent],
@@ -41,6 +42,7 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
     ContextMenuModule.forRoot({
       useBootstrap4: true,
     })

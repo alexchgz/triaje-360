@@ -4,6 +4,8 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Curso } from '../../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
+
 
 @Component({
   selector: 'app-data-list',
@@ -28,7 +30,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService) {
+  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService, private notifications: NotificationsService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -132,8 +134,22 @@ export class DataListComponent implements OnInit {
       this.cursoService.dropSchoolYear(years[i].uid).subscribe(
         data => {
           this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+
+          this.notifications.create('Cursos Académicos eliminados', 'Se han eliminado los Cursos Académicos correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
+
+          this.notifications.create('Error', 'No se han podido eliminar los Cursos Académicos', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );
@@ -145,8 +161,21 @@ export class DataListComponent implements OnInit {
       this.cursoService.dropSchoolYear(year.uid).subscribe(
         data => {
           this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+
+          this.notifications.create('Curso Académico eliminado', 'Se ha eliminado el Curso Académico correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
         },
         error => {
+
+          this.notifications.create('Error', 'No se ha podido eliminar el Curso Académico', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );

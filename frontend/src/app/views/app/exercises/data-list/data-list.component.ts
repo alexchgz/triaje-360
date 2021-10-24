@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { getUserRole } from 'src/app/utils/util';
 import data from '../../../../constants/menu';
 import { SenderService } from '../../../../data/sender.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
-    private datePipe: DatePipe, private router: Router, public sender: SenderService) {
+    private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -164,8 +165,22 @@ export class DataListComponent implements OnInit {
       this.ejercicioService.dropExercise(exercises[i].uid).subscribe(
         data => {
           this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+
+          this.notifications.create('Ejercicios eliminados', 'Se han eliminado los Ejercicios correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
+
+          this.notifications.create('Error', 'No se han podido eliminar los Ejercicios', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );
@@ -178,8 +193,22 @@ export class DataListComponent implements OnInit {
         data => {
           this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
           this.dropExerciseFromSubject(exercise);
+
+          this.notifications.create('Ejercicio eliminado', 'Se ha eliminado el Ejercicio correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
         },
         error => {
+
+          this.notifications.create('Error', 'No se ha podido eliminar el Ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
           this.isLoading = false;
         }
       );
