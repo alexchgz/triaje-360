@@ -12,8 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginComponent {
   @ViewChild('loginForm') loginForm: NgForm;
-  emailModel = 'demo@vien.com';
-  passwordModel = 'demovien1122';
+  emailModel = 'admin@gmail.com';
+  passwordModel = '';
 
   buttonDisabled = false;
   buttonState = '';
