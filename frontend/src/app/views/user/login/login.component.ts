@@ -1,16 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
+// import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm: NgForm;
   emailModel = 'admin@gmail.com';
   passwordModel = '';
@@ -19,7 +20,15 @@ export class LoginComponent {
   buttonState = '';
 
   constructor(private authService: AuthService, private notifications: NotificationsService, private router: Router) { }
+  // private jwtHelper: JwtHelperService
 
+  ngOnInit(): void {
+
+    // if (!this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+    //   // token expired
+    //   this.router.navigate['/app/dashboards/all/subjects/data-list'];
+    // }
+  }
 
   onSubmit(): void {
     if (this.loginForm.valid) {

@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ComponentsStateButtonModule } from 'src/app/components/state-button/components.state-button.module';
+// import {JwtHelperService} from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [LoginComponent, RegisterComponent, ForgotPasswordComponent, UserComponent, ResetPasswordComponent],
@@ -20,7 +21,8 @@ import { ComponentsStateButtonModule } from 'src/app/components/state-button/com
     ReactiveFormsModule,
     SharedModule,
     SimpleNotificationsModule.forRoot(),
-    ComponentsStateButtonModule
+    ComponentsStateButtonModule,
+    // JwtHelperService
   ]
 })
 export class UserModule { }

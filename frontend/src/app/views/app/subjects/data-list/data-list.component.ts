@@ -11,6 +11,7 @@ import { getUserRole } from 'src/app/utils/util';
 import { Router } from '@angular/router';
 import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+// import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-data-list',
@@ -52,6 +53,12 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+    //   // token expired
+    //   this.router.navigate['/user/login'];
+    // }
+
     this.userRole = getUserRole();
     this.userId = localStorage.getItem('uid');
     // this.userId = this.sender.idUser;
