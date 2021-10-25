@@ -40,6 +40,9 @@
                     <span class="hasta title-card list-item-heading mb-0">
                     <span>Hasta</span>
                     </span>
+                    <span class="hasta title-card list-item-heading mb-0">
+                      <span>Resultados</span>
+                    </span>
                 </div>
 
                 <div *ngIf="userRole == 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
@@ -72,13 +75,18 @@
                     <p class="mb-0 text-muted w-20 w-xs-100">{{p.asignatura.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.desde}}</p>
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
+                    <!-- <p class="mb-0 text-muted text-small w-20 w-xs-100">{{getEjerciciosUsuario(p.uid)}}</p> -->
+
+                    <i class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p.uid)"></i>
 
                     <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
                     <div *ngIf="userRole==0" class="options">
+                        <!-- <i class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p.uid)"></i> -->
                         <i class="sr simple-icon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
                         <i class="sr simple-icon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="dropExercise(p)"></i>
                     </div>
                     <div *ngIf="userRole==1" class="options2">
+                        <!-- <i class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p.uid)"></i> -->
                         <i class="sr simple-icon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
                         <i class="sr simple-icon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="dropExercise(p)"></i>
                     </div>

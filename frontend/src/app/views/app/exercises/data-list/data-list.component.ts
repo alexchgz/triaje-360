@@ -12,6 +12,8 @@ import { getUserRole } from 'src/app/utils/util';
 import data from '../../../../constants/menu';
 import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { EjerciciosUsuarioService } from '../../../../data/ejerciciosUsuario.service';
+import { EjerciciosUsuario } from '../../../../models/ejerciciosUsuario.model';
 
 
 @Component({
@@ -36,12 +38,15 @@ export class DataListComponent implements OnInit {
   itemSubject = '';
   userId: string;
   userRole: number;
+  totalEjerciciosUsuario = 0;
+  ejerciciosUsuario: EjerciciosUsuario;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
-    private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService) {
+    private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService,
+    private ejerciciosUsuarioService: EjerciciosUsuarioService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -262,6 +267,60 @@ export class DataListComponent implements OnInit {
     this.sender.idExercise = e.uid;
     // this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise/" + e.asignatura._id +"/" + e.uid);
     this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise");
+  }
+
+  createUserExercise(idE: string): void {
+
+    this.ejerciciosUsuarioService.createUserExercise(this.userId, idE)
+        .subscribe( res => {
+          console.log('Registro de Ejercicio creado');
+          //this.router.navigateByUrl('app/dashboards/all/users/data-list');
+          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+
+          this.notifications.create('Registro creado', 'Se ha creado el registro de Ejercicio correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+        }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido crear el registro del Ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
+      });
+  }
+
+  getEjerciciosUsuario(idE: string): number {
+
+    // console.log('entro');
+
+    this.ejerciciosUsuarioService.getUserExercises(this.userId, idE)
+        .subscribe( res => {
+          console.log('Registros de Ejercicio obtenidos');
+
+          this.ejerciciosUsuario = data['ejerciciosUsuario'];
+          this.totalEjerciciosUsuario = data['totalEjerciciosUsuario'];
+
+          console.log(this.totalEjerciciosUsuario);
+
+        }, (err) => {
+
+          // this.notifications.create('Error', 'No se ha podido crear el registro del Ejercicio', NotificationType.Error, {
+          //   theClass: 'outline primary',
+          //   timeOut: 6000,
+          //   showProgressBar: false
+          // });
+
+          return;
+      });
+
+      return this.totalEjerciciosUsuario;
+
   }
 
   // changeOrderBy(item: any): void {
