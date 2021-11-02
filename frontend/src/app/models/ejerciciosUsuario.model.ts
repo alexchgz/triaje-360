@@ -6,5 +6,5 @@ export class EjerciciosUsuario {
   constructor( public uid: number,
                public idUsuario: number,
                public idEjercicio: number,
-               public fechaEjecucion: Date) {}
+               public fechaEjecucion: string) {}
 }

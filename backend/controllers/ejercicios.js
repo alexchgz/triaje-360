@@ -1,10 +1,12 @@
 const Ejercicio = require('../models/ejercicios');
 const Asignatura = require('../models/asignaturas');
+const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 
 const { response } = require('express');
 const validator = require('validator');
 
 const { infoToken } = require('../helpers/infotoken');
+const ejerciciosUsuario = require('../models/ejerciciosUsuario');
 
 const getEjercicios = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -29,6 +31,7 @@ const getEjercicios = async(req, res = response) => {
         // console.log('Estoy');
         var ejercicios, totalEjercicios;
         var asignaturas, totalAsignaturas;
+        // var ejerciciosUsuario, intentosPorEjercicioUsuario, registrosPorEjercicioUsuario;
 
         if (id) { // si nos pasan un id
             // console.log('entro');
@@ -152,6 +155,23 @@ const getEjercicios = async(req, res = response) => {
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: asignatura })
                     ]);
+
+                    // for(let i = 0; i < ejercicios.length; i++) {
+
+                    //     var eu, ipeu;
+
+                    //     [eu, ipeu] = await Promise.all([
+                    //         // consulta con los parametros establecidos
+                    //         EjerciciosUsuario.find({ idUsuario: userId, idEjercicio: ejercicio[i] }),
+                    //         // consulta para obtener el numero total de usuarios
+                    //         EjerciciosUsuario.countDocuments({ idUsuario: userId, idEjercicio: ejercicio[i] })
+                    //     ]);
+
+                    // }
+
+                    // console.log(ejerciciosUsuario);
+                    // console.log(totalEjerciciosUsuario);
+
                 }
 
                 // PROFESORES
@@ -203,6 +223,8 @@ const getEjercicios = async(req, res = response) => {
             msg: 'Ejercicios obtenidos',
             ejercicios,
             totalEjercicios,
+            // ejerciciosUsuario,
+            // totalEjerciciosUsuario,
             pageSize,
             currentPage,
             // recogemos los datos de la página para mostrarlos en la respuesta

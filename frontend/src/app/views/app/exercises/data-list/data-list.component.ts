@@ -39,7 +39,7 @@ export class DataListComponent implements OnInit {
   userId: string;
   userRole: number;
   totalEjerciciosUsuario = 0;
-  ejerciciosUsuario: EjerciciosUsuario;
+  ejerciciosUsuario: EjerciciosUsuario[] = [];
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
@@ -89,9 +89,12 @@ export class DataListComponent implements OnInit {
           // console.log(data);
           this.isLoading = false;
           this.data = data['ejercicios'];
+          // this.ejerciciosUsuario = data['ejerciciosUsuario'];
+
           this.changeDateFormat();
           // console.log(this.data);
           this.totalItem = data['totalEjercicios'];
+          // this.totalEjerciciosUsuario = data['totalEjerciciosUsuario'];
           // console.log(this.totalItem);
           //this.totalPage = data.totalPage;
           this.setSelectAllState();
@@ -225,6 +228,10 @@ export class DataListComponent implements OnInit {
       this.data[i].desde = this.datePipe.transform(this.data[i].desde, 'dd/MM/yyyy');
       this.data[i].hasta = this.datePipe.transform(this.data[i].hasta, 'dd/MM/yyyy');
     }
+
+    // for(let j = 0; j < this.ejerciciosUsuario.length; j++) {
+    //   this.ejerciciosUsuario[j].fechaEjecucion = this.datePipe.transform(this.ejerciciosUsuario[j].fechaEjecucion, 'dd/MM/yyyy');
+    // }
 
   }
 
