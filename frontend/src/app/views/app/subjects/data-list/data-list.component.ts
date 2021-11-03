@@ -66,6 +66,7 @@ export class DataListComponent implements OnInit {
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
 
     // reseteamos datos ID del servicio
+    this.sender.idSubject = undefined;
     this.sender.idSubjectExercise = undefined;
     this.sender.idExercise = undefined;
   }

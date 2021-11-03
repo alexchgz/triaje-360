@@ -5,6 +5,7 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Curso } from '../../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { SenderService } from '../../../../data/sender.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService, private notifications: NotificationsService) {
+  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService, private notifications: NotificationsService, public sender: SenderService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -43,6 +44,9 @@ export class DataListComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.sender.idSubject = undefined;
+    this.sender.idSubjectExercise = undefined;
+    this.sender.idExercise = undefined;
     this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
   }
 

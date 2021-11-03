@@ -77,6 +77,9 @@ export class DataListComponent implements OnInit {
     this.itemSubject = this.sender.idSubject;
 
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+
+    this.sender.idSubjectExercise = undefined;
+    this.sender.idExercise = undefined;
   }
 
   loadExercises(pageSize: number, currentPage: number, subject: string, userId: string): void {
