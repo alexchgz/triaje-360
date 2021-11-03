@@ -30,6 +30,7 @@ export class AddExerciseComponent implements OnInit {
   uid: any;
   uidEx: number;
   totalItem: 0;
+  todayString: string;
 
   // FORM
   private formSubmited = false;
@@ -49,17 +50,13 @@ export class AddExerciseComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // if(this.route.snapshot.params['uid']) {
-    //   this.uid = this.route.snapshot.params['uid'];
-    // }
-    // if(this.route.snapshot.params['uid2']) {
-    //   this.uidEx = this.route.snapshot.params['uid2'];
-    // }
-
-    // if(this.uid == undefined && this.uidEx == undefined) {
-    //   console.log('eeee');
-    //   this.getSubjects();
-    // } else {
+    // para comprobar la fecha de hoy en el input
+    var today = new Date();
+    console.log(today);
+    this.todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
+    console.log(this.todayString);
+    this.formData.get('desde').setValue(this.todayString);
+    this.formData.get('hasta').setValue(this.todayString);
 
     if(this.sender.idSubjectExercise) {
       this.uid = this.sender.idSubjectExercise;
@@ -158,6 +155,17 @@ export class AddExerciseComponent implements OnInit {
 
     this.formSubmited = true;
     if (this.formData.invalid) { console.log(this.formData.invalid )}
+
+    // var today = new Date();
+    // console.log(today);
+    // var todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
+    // console.log(todayString);
+    // var desde = this.formData.get('desde').value
+    // console.log(desde);
+
+    // if(desde < today) {
+    //   console.log('La fecha de inicio no puede ser anterior a hoy');
+    // }
 
     if(this.exercise) {
       console.log(this.exercise);
