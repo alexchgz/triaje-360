@@ -27,6 +27,8 @@ export class DataListComponent implements OnInit {
   totalItem = 0;
   totalPage = 0;
   itemYear = 0;
+  // @Output puedeActivo = true;
+  // puedeActivo = true;
 
   @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
@@ -65,6 +67,13 @@ export class DataListComponent implements OnInit {
               // img: x.img.replace('/img/', '/img/products/')
             };
           });
+
+          // comprobacion de los cursos para ver si hay alguno activo ya
+          // for(let i = 0; i < this.data.length && this.puedeActivo; i++) {
+          //   if(this.data[i].activo) {
+          //     this.puedeActivo = false;
+          //   }
+          // }
           // console.log(data.totalUsuarios);
           this.totalItem = data['totalCursos'];
           //console.log(this.totalItem);
