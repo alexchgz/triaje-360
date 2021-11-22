@@ -75,7 +75,7 @@
                     <p class="mb-0 text-muted w-20 w-xs-100">{{p.asignatura.nombrecorto}}</p>
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.desde}}</p>
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
-                    <p *ngIf="p.intentos!=undefined" class="mb-0 text-muted text-small w-20 w-xs-100">{{p.intentos.length}}</p>
+                    <p *ngIf="p.intentos!=undefined" class="mb-0 text-muted text-small w-20 w-xs-100">{{p.max_intentos}} ({{p.intentos.length}})</p>
                     <!-- <div *ngFor="let q of data[i].intentos">
                         <p class="mb-0 text-muted text-small w-20 w-xs-100">{{q.fecha_ejecucion}}</p>
                     </div> -->

@@ -22,7 +22,11 @@ const EjercicioSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Asignatura',
         require: true
-    }
+    },
+    max_intentos: {
+        type: Number,
+        require: true
+    },
 }, { collection: 'ejercicios' });
 
 // Modificamos Schema para que no aparezcan todos los datos

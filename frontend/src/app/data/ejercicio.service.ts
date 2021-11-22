@@ -78,7 +78,8 @@ export class EjercicioService {
       "descripcion": data['descripcion'],
       "desde": data['desde'],
       "hasta": data['hasta'],
-      "asignatura": data['asignatura']
+      "asignatura": data['asignatura'],
+      "max_intentos": data['max_intentos']
     }
 
     return this.http.post(url, sendData, { headers });
@@ -97,7 +98,8 @@ export class EjercicioService {
       "descripcion": data['descripcion'],
       "desde": data['desde'],
       "hasta": data['hasta'],
-      "asignatura": data['asignatura']
+      "asignatura": data['asignatura'],
+      "max_intentos": data['max_intentos']
     }
 
     // console.log(sendData);

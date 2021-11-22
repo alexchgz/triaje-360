@@ -279,7 +279,8 @@
         "exercise-description": "Descripcion",
         "exercise-from": "Desde",
         "exercise-to": "Hasta",
-        "exercise-subject": "Asignatura"
+        "exercise-subject": "Asignatura",
+        "exercise-max-attempts": "Máximo de Intentos"
     },
     "chat": {
         "messages": "Mensajes",

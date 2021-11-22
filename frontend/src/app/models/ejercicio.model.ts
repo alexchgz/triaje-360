@@ -7,5 +7,6 @@ export class Ejercicio {
                public descripcion: string,
                public desde: string,
                public hasta: string,
-               public asignatura: Asignatura) {}
+               public asignatura: Asignatura,
+               public max_intentos: number) {}
 }

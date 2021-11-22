@@ -39,7 +39,8 @@ export class AddExerciseComponent implements OnInit {
     descripcion: ['', [Validators.required]],
     desde: ['', [Validators.required]],
     hasta: ['', [Validators.required]],
-    asignatura: ['', [Validators.required]]
+    asignatura: ['', [Validators.required]],
+    max_intentos: ['', [Validators.required]]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
@@ -93,6 +94,7 @@ export class AddExerciseComponent implements OnInit {
               this.formData.get('descripcion').setValue(this.exercise.descripcion);
               this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
               this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
+              this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
             } else {
               this.endOfTheList = true;
             }
