@@ -334,6 +334,14 @@ export class DataListComponent implements OnInit {
 
   }
 
+  maxAttempts(): void {
+    this.notifications.create('Máximo de Intentos Alcanzado', 'Se han alcanzado el máximo de intentos permitidos para realizar este ejercicio', NotificationType.Error, {
+      theClass: 'outline primary',
+      timeOut: 6000,
+      showProgressBar: true
+    });
+  }
+
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
   // }
