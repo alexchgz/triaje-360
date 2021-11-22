@@ -59,11 +59,29 @@ const getEjercicios = async(req, res = response) => {
                     // usamos Promise.all para realizar las consultas de forma paralela
                     [ejercicios, totalEjercicios] = await Promise.all([
                         // consulta con los parametros establecidos
-                        Ejercicio.find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        .populate({
-                            path: 'asignatura',
-                            select: 'nombre nombrecorto profesores alumnos'
-                        }),
+                        Ejercicio
+                        .aggregate([
+                            //
+                            {
+                                $skip: desde
+                            },
+                            {
+                                $limit: pageSize
+                            },
+                            {
+                                $lookup: {
+                                    from: "ejerciciosUsuario",
+                                    localField: "_id",
+                                    foreignField: "idEjercicio",
+                                    as: "intentos"
+                                }
+                            },
+                        ]),
+                        // .find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
+                        // .populate({
+                        //     path: 'asignatura',
+                        //     select: 'nombre nombrecorto profesores alumnos'
+                        // }),
 
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({})
