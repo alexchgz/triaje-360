@@ -15,6 +15,7 @@ const getEjercicios = async(req, res = response) => {
     // cantidad de registros que vamos a mostrar por pagina
     // const registropp = Number(process.env.DOCSPERPAGE);
 
+    var ObjectId = require('mongodb').ObjectID;
     // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
@@ -142,19 +143,65 @@ const getEjercicios = async(req, res = response) => {
 
             } else {
                 // console.log('aaaa');
+                // console.log(asignatura);
                 if (infoToken(token).rol === 'ROL_ADMIN') {
                     // usamos Promise.all para realizar las consultas de forma paralela
                     [ejercicios, totalEjercicios] = await Promise.all([
                         // consulta con los parametros establecidos
-                        Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        .populate({
-                            path: 'asignatura',
-                            select: 'nombre nombrecorto profesores alumnos'
-                        }),
+                        Ejercicio
+                        // .find({ asignatura: asignatura })
+                        // .skip(desde).limit(pageSize)
+                        // .populate('curso', '-__v')
+                        // .populate({
+                        //     path: 'asignatura',
+                        //     select: 'nombre nombrecorto profesores alumnos'
+                        // })
+                        .aggregate([
+                            //
+                            {
+                                $match: {
+                                    asignatura: ObjectId(asignatura)
+                                }
+                            },
+                            {
+                                $skip: desde
+                            },
+                            {
+                                $limit: pageSize
+                            },
+                            {
+                                $lookup: {
+                                    from: "ejerciciosUsuario",
+                                    localField: "_id",
+                                    foreignField: "idEjercicio",
+                                    as: "intentos"
+                                }
+                            },
+                            // {
+                            //     $group: {
+                            //         _id: "_id",
+                            //         nombre: "nombre",
+                            //         descripcion: "descripcion",
+                            //         desde: "desde",
+                            //         hasta: "hasta",
+                            //         asignatura: {
+                            //             nombre: "asignatura.nombre",
+                            //             nombrecorto: "asignatura.nombrecorto",
+                            //             profesores: "asignatura.profesores",
+                            //             alumnos: "asignatura.alumnos"
+                            //         }
+                            //     }
+                            // },
+                            // {
+                            //     $unwind: "$intentos",
+                            // }
+                        ]),
 
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: asignatura })
                     ]);
+
+                    // console.log(ejercicios);
 
                     // for(let i = 0; i < ejercicios.length; i++) {
 

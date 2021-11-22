@@ -92,6 +92,7 @@ export class DataListComponent implements OnInit {
           // console.log(data);
           this.isLoading = false;
           this.data = data['ejercicios'];
+          console.log(data['ejercicios']);
           // this.ejerciciosUsuario = data['ejerciciosUsuario'];
 
           this.changeDateFormat();
