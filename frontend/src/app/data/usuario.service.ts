@@ -5,7 +5,7 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, of, Observable } from 'rxjs';
 import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../environments/environment';
@@ -159,4 +159,55 @@ export class UsuarioService {
     //console.log(token);
     return this.http.delete(url, { headers });
   }
+
+  // validar los tokens
+  validar(correcto: boolean, incorrecto: boolean): Observable<boolean> {
+
+    if (this.token === '') {
+      this.limpiarLocalStore();
+      return of(incorrecto);
+    }
+
+    return this.http.get(`${environment.base_url}/login/token`, this.cabeceras)
+      .pipe(
+        tap( (res: any) => {
+          // extaemos los datos que nos ha devuelto y los guardamos en el usurio y en localstore
+          const { uid, nombre, apellidos, email, rol, alta, activo, imagen, token} = res;
+          localStorage.setItem('token', token);
+          this.usuario = new Usuario(uid, rol, nombre, apellidos, email, alta, activo, imagen);
+        }),
+        map ( res => {
+          return correcto;
+        }),
+        catchError ( err => {
+          this.limpiarLocalStore();
+          return of(incorrecto);
+        })
+      );
+  }
+
+  validarToken(): Observable<boolean> {
+    return this.validar(true, false);
+  }
+
+  validarNoToken(): Observable<boolean> {
+    return this.validar(false, true);
+  }
+
+  // auxiliares token
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  limpiarLocalStore(): void{
+    localStorage.removeItem('token');
+  }
+
+  get cabeceras() {
+    return {
+      headers: {
+        'x-token': this.token
+      }};
+  }
+
 }
