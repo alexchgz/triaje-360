@@ -84,6 +84,7 @@ export class DataListComponent implements OnInit {
 
   loadExercises(pageSize: number, currentPage: number, subject: string, userId: string): void {
 
+    console.log(this.userRole);
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
     this.ejercicioService.getExercises(pageSize, currentPage, subject, userId).subscribe(
