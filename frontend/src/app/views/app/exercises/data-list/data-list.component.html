@@ -81,8 +81,8 @@
                     </div> -->
 
                     <!-- <i class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p._id)"></i> -->
-                    <i *ngIf="p.intentos!=undefined && (p.max_intentos > p.intentos.length) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p._id)"></i>
-                    <i *ngIf="p.intentos!=undefined && (p.max_intentos <= p.intentos.length) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="maxAttempts()"></i>
+                    <i *ngIf="dateIn(p.hasta) && p.intentos!=undefined && (p.max_intentos > p.intentos.length) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p._id)"></i>
+                    <i *ngIf="dateIn(p.hasta) && p.intentos!=undefined && (p.max_intentos <= p.intentos.length) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="maxAttempts()"></i>
 
                     <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
                     <div *ngIf="userRole==0" class="options">

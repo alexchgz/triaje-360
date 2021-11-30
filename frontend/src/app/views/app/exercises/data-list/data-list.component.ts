@@ -343,6 +343,17 @@ export class DataListComponent implements OnInit {
     });
   }
 
+  dateIn(hasta: string): boolean {
+    const now = new Date();
+
+    if(new Date(hasta).getTime() < now.getTime()) {
+      return true;
+    }
+
+    return false;
+
+  }
+
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
   // }
