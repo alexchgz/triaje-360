@@ -55,7 +55,7 @@ export class AddExerciseComponent implements OnInit {
     var today = new Date();
     console.log(today);
     this.todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
-    console.log(this.todayString);
+    // console.log(this.todayString);
     this.formData.get('desde').setValue(this.todayString);
     this.formData.get('hasta').setValue(this.todayString);
 
@@ -150,6 +150,38 @@ export class AddExerciseComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  checkDate(): void {
+
+    this.formSubmited = true;
+    if (this.formData.invalid) {
+      console.log(this.formData.invalid );
+      this.notifications.create('Error al crear ejercicio', 'Existen errores en el formulario. No se pudo crear el ejercicio', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+    } else {
+      const desde = new Date(this.formData.get('desde').value);
+      const hasta = new Date(this.formData.get('hasta').value);
+
+      console.log(desde.getTime());
+      console.log(hasta.getTime());
+
+      if(desde.getTime() <= hasta.getTime()) {
+        // console.log('menor o igual');
+        this.createExercise();
+      } else {
+        // console.log('mayor');
+        this.notifications.create('Error en la fecha', 'La fecha "desde" no puede ser posterior a la fecha "hasta"', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+      }
+    }
+
   }
 
   createExercise(): void {

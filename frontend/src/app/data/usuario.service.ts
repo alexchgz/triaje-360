@@ -172,9 +172,9 @@ export class UsuarioService {
       .pipe(
         tap( (res: any) => {
           // extaemos los datos que nos ha devuelto y los guardamos en el usurio y en localstore
-          const { uid, nombre, apellidos, email, rol, alta, activo, imagen, token} = res;
+          const { uid, nombre, apellidos, email, rol, alta, activo, token} = res;
           localStorage.setItem('token', token);
-          this.usuario = new Usuario(uid, rol, nombre, apellidos, email, alta, activo, imagen);
+          this.usuario = new Usuario(uid, rol, nombre, apellidos, email, alta, activo);
         }),
         map ( res => {
           return correcto;

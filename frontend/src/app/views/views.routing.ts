@@ -8,6 +8,8 @@ import { AllComponent } from './app/dashboards/all/all.component'
 import { AuthGuard } from '../shared/auth.guard';
 import { UserRole } from '../shared/auth.roles';
 import { LoginComponent } from './user/login/login.component';
+import { NoauthGuard } from '../shared/noauth.guard';
+import { Auth2Guard } from '../shared/auth2.guard';
 
 const adminRoot = environment.adminRoot.substr(1); // path cannot start with a slash
 
@@ -38,7 +40,7 @@ let routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
     data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
-    canActivate: [AuthGuard],
+    canActivate: [NoauthGuard],
     canActivateChild: [AuthGuard],
   },
   {

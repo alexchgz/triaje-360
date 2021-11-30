@@ -17,6 +17,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): Promise<boolean> {
     const currentUser = await this.authService.getUser();
+    // const currentToken = this.usuarioService.validarToken();
+
+    // if(!currentToken) {
+    //   this.router.navigateByUrl('/user/login');
+    // }
 
     if (currentUser) {
       if (route.data && route.data.roles) {
@@ -36,6 +41,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const currentUser = await this.authService.getUser();
+    // const currentToken = this.usuarioService.validarToken();
+
+    // if(!currentToken) {
+    //   this.router.navigateByUrl('/user/login');
+    // }
 
     if (currentUser) {
       if (route.data && route.data.roles) {
@@ -53,30 +63,39 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return false;
     }
 
-    // return this.usuarioService.validarToken()
-    //           .pipe(
-    //             tap( resp => {
-    //               // Si devuelve falso, el token no es bueno, salimos a login
-    //               if (!resp) {
-    //                 this.router.navigateByUrl('/login');
-    //               } else {
-    //                 // Si la ruta no es para el rol del token, reenviamos a ruta base de rol del token
-    //                 if ((next.data.rol !== '*') && (this.usuarioService.rol !== next.data.rol)) {
-    //                   switch (this.usuarioService.rol) {
-    //                     case 'ROL_ADMIN':
-    //                       this.router.navigateByUrl('/admin/dashboard');
-    //                       break;
-    //                     case 'ROL_ALUMNO':
-    //                       this.router.navigateByUrl('/alu/dashboard');
-    //                       break;
-    //                     case 'ROL_PROFESOR':
-    //                       this.router.navigateByUrl('/prof/dashboard');
-    //                       break;
-    //                   }
-    //                }
-    //               }
-    //             })
-    //           );
-
   }
 }
+
+// import { Injectable } from '@angular/core';
+// import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanDeactivate } from '@angular/router';
+// import { Observable } from 'rxjs';
+// import { UsuarioService } from '../data/usuario.service';
+// import { tap } from 'rxjs/operators';
+// import { getUserRole } from 'src/app/utils/util';
+
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class AuthGuard implements CanActivate {
+
+//   constructor( private usuarioService: UsuarioService,
+//                private router: Router) {}
+
+//   canActivate(
+//     next: ActivatedRouteSnapshot,
+//     state: RouterStateSnapshot) {
+//       return this.usuarioService.validarToken()
+//               .pipe(
+//                 tap( resp => {
+//                   // Si devuelve falso, el token no es bueno, salimos a login
+//                   if (!resp) {
+//                     this.router.navigateByUrl('/login');
+//                   } else {
+//                     this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
+//                   }
+//                 })
+//               );
+//   }
+
+// }
+
