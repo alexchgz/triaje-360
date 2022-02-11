@@ -60,36 +60,11 @@ const getEjercicios = async(req, res = response) => {
                     [ejercicios, totalEjercicios] = await Promise.all([
                         // consulta con los parametros establecidos
                         Ejercicio
-                        .aggregate([
-                            //
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
-                        // .find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // }),
+                        .find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
+                        .populate({
+                            path: 'asignatura',
+                            select: 'nombre nombrecorto profesores alumnos'
+                        }),
 
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({})
@@ -99,7 +74,7 @@ const getEjercicios = async(req, res = response) => {
                 // PROFESORES
                 if (infoToken(token).rol === 'ROL_PROFESOR') {
 
-                    // primero obtenemos todas las asignaturas del usuario
+                    // 1. Obetenemos asiganturas
                     [asignaturas, totalAsignaturas] = await Promise.all([
                         // consulta con los parametros establecidos
                         Asignatura.find({ 'profesores.usuario': userId }).populate('curso', '-__v')
@@ -115,56 +90,25 @@ const getEjercicios = async(req, res = response) => {
                         Asignatura.countDocuments({ 'profesores.usuario': userId })
                     ]);
 
-                    // posteriormente obtenemos los ejercicios de esas asignaturas
+                    // 2. Obtenemos ejercicios de esas asignaturas
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Ejercicio
-                        .aggregate([
-                            //
-                            // {
-                            //     $in: asignaturas
-                            // },
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
-                        // Ejercicio.find({ asignatura: { $in: asignaturas } }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // }), 
+                        Ejercicio.find({ asignatura: { $in: asignaturas } }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                            .populate({
+                                path: 'asignatura',
+                                select: 'nombre nombrecorto profesores alumnos'
+                            }), 
 
-                        // consulta para obtener el numero total de usuarios
+                            // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: { $in: asignaturas } })
                     ]);
 
-                    // console.log('voyy');
                     // console.log(ejercicios);
                 }
 
                 // ALUMNOS
                 if (infoToken(token).rol === 'ROL_ALUMNO') {
 
-                    // primero obtenemos todas las asignaturas del usuario
+                    // 1. Obetenemos asiganturas
                     [asignaturas, totalAsignaturas] = await Promise.all([
                         // consulta con los parametros establecidos
                         Asignatura.find({ 'alumnos.usuario': userId }).populate('curso', '-__v')
@@ -180,100 +124,54 @@ const getEjercicios = async(req, res = response) => {
                         Asignatura.countDocuments({ 'alumnos.usuario': userId })
                     ]);
 
-                    // posteriormente obtenemos los ejercicios de esas asignaturas
+                    // 2. Obtenemos ejercicios de esas asignaturas
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Ejercicio
-                        .aggregate([
-                            //
-                            // {
-                            //     $match: {
-                            //         asignatura: {
-                            //             $in: asignaturas
-                            //         }
-                            //     }
-                            // },
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
-                        // Ejercicio.find({ asignatura: { $in: asignaturas } }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // }), 
+                        Ejercicio.find({ asignatura: { $in: asignaturas } }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                        .populate({
+                            path: 'asignatura',
+                            select: 'nombre nombrecorto profesores alumnos'
+                        }), 
 
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: { $in: asignaturas } })
                     ]);
 
+                    // 3. Obtenemos intentos de esos ejercicios
+                    listaPeticiones = [];
+                    ejercicios.map(ejer=> {
+                        // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
+                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 'idEjercicio': ejer._id }));
+                    });
+
+                    resultados = await Promise.all(listaPeticiones);
+
+                    // 4. Creamos el objeto con los atributos deseados para la respuesta
+                    devolver = [];
+                    for(i=0; i<ejercicios.length; i++) {
+                        devolver.push({...ejercicios[i]._doc, intentos: resultados[i]});
+                    }
+
+                    // console.log(devolver);
+                    ejercicios = devolver;
                     // console.log(totalEjercicios);
                 }
 
             } else {
-                // console.log('aaaa');
-                // console.log(asignatura);
+        
+                // TO DO: comprobamos que el alumnos tenga la asignatura
+
                 if (infoToken(token).rol === 'ROL_ADMIN') {
                     // usamos Promise.all para realizar las consultas de forma paralela
                     [ejercicios, totalEjercicios] = await Promise.all([
                         // consulta con los parametros establecidos
                         Ejercicio
-                        // .find({ asignatura: asignatura })
-                        // .skip(desde).limit(pageSize)
-                        // .populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // })
-                        .aggregate([
-                            //
-                            {
-                                $match: {
-                                    asignatura: ObjectId(asignatura)
-                                }
-                            },
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
+                        .find({ asignatura: asignatura })
+                        .skip(desde).limit(pageSize)
+                        .populate('curso', '-__v')
+                        .populate({
+                            path: 'asignatura',
+                            select: 'nombre nombrecorto profesores alumnos'
+                        }),
 
                         // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: asignatura })
@@ -287,42 +185,11 @@ const getEjercicios = async(req, res = response) => {
                     [ejercicios, totalEjercicios] = await Promise.all([
                         // consulta con los parametros establecidos
                         // Ejercicio.find({ asignatura: asignatura, 'asignatura.profesores.usuario': userId }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // }),
-                        Ejercicio
-                        .aggregate([
-                            //
-                            {
-                                $match: {
-                                    asignatura: ObjectId(asignatura)
-                                }
-                            },
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
+                        Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                        .populate({
+                            path: 'asignatura',
+                            select: 'nombre nombrecorto profesores alumnos'
+                        }),
 
                         // consulta para obtener el numero total de usuarios
                         // Ejercicio.countDocuments({ asignatura: asignatura, 'asignatura.profesores.usuario': userId })
@@ -334,51 +201,33 @@ const getEjercicios = async(req, res = response) => {
 
                 // ALUMNOS
                 if (infoToken(token).rol === 'ROL_ALUMNO') {
-                    // usamos Promise.all para realizar las consultas de forma paralela
+                    // 1. Obtenemos los ejericios de esa asignatura
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        // Ejercicio.find({ asignatura: asignatura, 'asignatura.alumnos.usuario': userId }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
-                        // .populate({
-                        //     path: 'asignatura',
-                        //     select: 'nombre nombrecorto profesores alumnos'
-                        // }),
-                        Ejercicio
-                        .aggregate([
-                            //
-                            {
-                                $match: {
-                                    asignatura: ObjectId(asignatura)
-                                }
-                            },
-                            {
-                                $skip: desde
-                            },
-                            {
-                                $limit: pageSize
-                            },
-                            {
-                                $lookup: {
-                                    from: "ejerciciosUsuario",
-                                    localField: "_id",
-                                    foreignField: "idEjercicio",
-                                    as: "intentos"
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: "asignaturas",
-                                    localField: "asignatura",
-                                    foreignField: "_id",
-                                    as: "asignatura"
-                                }
-                            }
-                        ]),
+                        Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
+                        .populate({
+                            path: 'asignatura',
+                            select: 'nombre nombrecorto profesores alumnos'
+                        }),
 
-                        // consulta para obtener el numero total de usuarios
-                        // Ejercicio.countDocuments({ asignatura: asignatura, 'asignatura.alumnos.usuario': userId })
                         Ejercicio.countDocuments({ asignatura: asignatura })
                     ]);
+
+                    // 2. Obtenemos intentos de esos ejercicios
+                    listaPeticiones = [];
+                    ejercicios.map(ejer=> {
+                        // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
+                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 'idEjercicio': ejer._id }));
+                    });
+
+                    resultados = await Promise.all(listaPeticiones);
+
+                    // 3. Creamos el objeto con los atributos deseados para la respuesta
+                    devolver = [];
+                    for(i=0; i<ejercicios.length; i++) {
+                        devolver.push({...ejercicios[i]._doc, intentos: resultados[i]});
+                    }
+
+                    ejercicios = devolver;
                 }
 
             }
