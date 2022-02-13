@@ -1,0 +1,61 @@
+<ng-template #template>
+    <div class="modal-header">
+        <ng-template *ngIf="subject then editar else crear"> </ng-template>
+        <ng-template #crear>
+            <h4 class="modal-title pull-left">{{'pages.add-new-subject-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+        </ng-template>
+        <ng-template #editar>
+            <h4 class="modal-title pull-left">{{'pages.edit-subject-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+        </ng-template>
+    </div>
+    <form class="form-horizontal m-t-20 scrollMio" [formGroup]="formData" (ngSubmit)="createSubject()">
+        <div class="modal-body">
+            <div>
+                <label>{{ 'pages.subject-name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="nombre" placeholder="" required>
+            </div>
+            <div class="mt-2">
+                <label>{{ 'pages.subject-short-name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="nombrecorto" id="nombre" placeholder="" required>
+            </div>
+            <div class="mt-2">
+                <label>{{ 'pages.subject-code' | translate }}</label>
+                <input type="text" class="form-control" formControlName="codigo" id="codigo" placeholder="" required>
+            </div>
+            <div class="mt-2">
+                <label>{{ 'pages.subject-school-year' | translate }}</label>
+                <label class="w-100">
+                  <ng-select appearance="outline" [searchable]="false" formControlName="curso" required>
+                      <ng-option *ngFor="let item of schoolYears" [value]="item.uid">{{item.nombrecorto}}
+                      </ng-option>
+                  </ng-select>
+              </label>
+            </div>
+            <!-- <div class="mt-2">
+                <label>{{ 'pages.subject-teachers' | translate }}</label>
+                <label class="w-100">
+                <ng-select appearance="outline" [searchable]="false" formControlName="profesores" required>
+                </ng-select>
+            </label>
+            </div>
+            <div class="mt-2">
+                <label>{{ 'pages.subject-students' | translate }}</label>
+                <label class="w-100">
+              <ng-select appearance="outline" [searchable]="false" formControlName="alumnos" required>
+              </ng-select>
+          </label>
+            </div> -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.cancel' | translate }}</button>
+            <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
+        </div>
+    </form>
+</ng-template>
+<simple-notifications></simple-notifications>

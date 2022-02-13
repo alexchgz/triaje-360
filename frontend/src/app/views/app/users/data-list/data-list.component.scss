@@ -1,0 +1,43 @@
+input[type="checkbox"] {
+    margin-left: .4em;
+}
+
+.act {
+    margin: 0;
+}
+
+.tc {
+    padding: 1em 1.75em;
+    background-color: #145388;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
+}
+
+.title-card {
+    line-height: 2.5;
+}
+
+.title-card>span {
+    background-color: #145388;
+    color: white;
+    padding: .15rem .4em;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.nombre {
+    width: 42% !important;
+}
+
+.email {
+    width: 16% !important;
+}
+
+.rol {
+    width: 14% !important;
+}
+
+.activo {
+    width: 15% !important;
+}

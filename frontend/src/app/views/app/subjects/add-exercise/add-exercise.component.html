@@ -1,0 +1,50 @@
+<div class="top-right-button-container text-zero">
+    <button class="top-right-button btn btn-primary btn-lg mr-1" (click)="goBack()">VOLVER</button>
+</div>
+
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{'pages.add-new-exercise-title' | translate}}</h4>
+</div>
+
+<form class="form-horizontal m-t-20" [formGroup]="formData" (ngSubmit)="checkDate()">
+    <div class="modal-body">
+        <div *ngIf="subject" id="asignatura">
+            <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
+            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required disabled="disabled">
+        </div>
+        <div *ngIf="!subject" id="asignatura" class="mt-2">
+            <label>{{ 'pages.exercise-subject' | translate }}</label>
+            <label class="w-100">
+            <ng-select appearance="outline" [searchable]="false" class="form-control" name="asignatura" formControlName="asignatura" required>
+                <ng-option *ngFor="let item of subjects" [value]="item.uid">{{item.nombrecorto}}
+                </ng-option>
+            </ng-select>
+        </label>
+        </div>
+        <div id="nombre">
+            <label>{{ 'pages.exercise-name' | translate }}</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="" required>
+        </div>
+        <div class="mt-2" id="descripcion">
+            <label>{{ 'pages.exercise-description' | translate }}</label>
+            <textarea type="text" class="form-control" formControlName="descripcion" placeholder="" required></textarea>
+        </div>
+        <div class="mt-2" id="desde">
+            <label>{{ 'pages.exercise-from' | translate }}</label>
+            <input type="date" class="form-control" formControlName="desde" placeholder="" min="{{todayString}}" required>
+        </div>
+        <div class="mt-2" id="hasta">
+            <label>{{ 'pages.exercise-to' | translate }}</label>
+            <input type="date" class="form-control" formControlName="hasta" placeholder="" min="{{todayString}}" required>
+        </div>
+        <div class="mt-2" id="descripcion">
+            <label>{{ 'pages.exercise-max-attempts' | translate }}</label>
+            <input type="number" class="form-control" formControlName="max_intentos" value="3" placeholder="" required>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="goBack()" id="danger" class="btn btn-outline-primary float-right">{{ 'pages.cancel' | translate}}</button>
+        <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
+    </div>
+</form>
+<simple-notifications></simple-notifications>

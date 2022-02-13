@@ -19,13 +19,18 @@ const UsuarioSchema = Schema({
         type: String,
         require: true
     },
-    imagen: {
-        type: String
-    },
     rol: {
         type: String,
         require: true,
         default: 'ROL_ALUMNO'
+    },
+    activo: {
+        type: Boolean,
+        default: true
+    },
+    alta: {
+        type: Date,
+        default: Date.now
     }
 }, { collection: 'usuarios' });
 
