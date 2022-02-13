@@ -21,9 +21,9 @@ export class Auth2Guard implements CanActivate {
                   // Si devuelve falso, el token no es bueno, salimos a login
                   if (!resp) {
                     this.router.navigateByUrl('/user/login');
-                  } else {
+                  } /*else {
                     this.router.navigateByUrl('/user/login');
-                  }
+                  }*/
                 })
               );
   }

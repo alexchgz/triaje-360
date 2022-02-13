@@ -35,6 +35,11 @@ export interface IPasswordReset {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+
+  public uid: string;
+  public rol: number;
+  public token: string;
+
   constructor(private auth: AngularFireAuth, private http: HttpClient, private sender: SenderService) {}
 
   // tslint:disable-next-line:typedef
@@ -53,17 +58,43 @@ export class AuthService {
     .pipe(
       tap( (res:any)=> {
         //console.log(res);
+
+        this.uid = res['id'];
+        this.rol = res['rol'];
+
+        switch (res['token']) {
+          case 'ROL_ADMIN':
+            this.rol = 0;
+            break;
+          case 'ROL_PROFESOR':
+            this.rol = 1;
+            break;
+          case 'ROL_ALUMNO':
+            this.rol = 2;
+            break;
+          default:
+            break;
+        }
+        this.token = res['token'];
+
           localStorage.setItem('token', res['token']);
-          localStorage.setItem('uid', res['id']);
+          // localStorage.setItem('uid', res['id']);
           this.sender.idUser = res['id'];
-          localStorage.setItem('rol', res['rol']);
+          // localStorage.setItem('rol', res['rol']);
           console.log('Se ha hecho login');
           //console.log(res['rol']);
       })
     );
   }
 
-  signOut = () => from(this.auth.signOut());
+  signOut() {
+    localStorage.removeItem('token');
+    this.uid = '';
+    this.rol = -1;
+    this.token = '';
+  }
+
+  // signOut = () => from(this.auth.signOut());
 
   // tslint:disable-next-line:typedef
   register(credentials: ICreateCredentials) {
@@ -97,6 +128,6 @@ export class AuthService {
   // tslint:disable-next-line:typedef
   async getUser() {
     const u = await this.auth.currentUser;
-    return { ...u, role: getUserRole() };
+    return { ...u, uid: this.uid, role: getUserRole() };
   }
 }

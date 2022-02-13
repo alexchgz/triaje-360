@@ -11,6 +11,7 @@ import { getUserRole } from 'src/app/utils/util';
 import { Router } from '@angular/router';
 import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { AuthService } from 'src/app/shared/auth.service';
 // import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
@@ -40,7 +41,7 @@ export class DataListComponent implements OnInit {
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService,
-     private notifications: NotificationsService) {
+     private notifications: NotificationsService, private auth: AuthService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -60,7 +61,8 @@ export class DataListComponent implements OnInit {
     // }
 
     this.userRole = getUserRole();
-    this.userId = localStorage.getItem('uid');
+    this.userId = this.auth.uid;
+    // this.userId = localStorage.getItem('uid');
     // this.userId = this.sender.idUser;
     // console.log(this.userId);
     this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);

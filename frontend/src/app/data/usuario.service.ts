@@ -9,13 +9,14 @@ import { throwError, of, Observable } from 'rxjs';
 import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../shared/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
 
   private usuario: Usuario;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   // ******* PETICIONES USARIOS *********
 
@@ -174,6 +175,27 @@ export class UsuarioService {
           // extaemos los datos que nos ha devuelto y los guardamos en el usurio y en localstore
           const { uid, nombre, apellidos, email, rol, alta, activo, token} = res;
           localStorage.setItem('token', token);
+          
+          // Definimos las variables del servicio
+            // ID
+          this.auth.uid = uid;
+            // ROL
+          switch (rol) {
+            case 'ROL_ADMIN':
+              this.auth.rol = 0;
+              break;
+            case 'ROL_PROFESOR':
+              this.auth.rol = 1;
+              break;
+            case 'ROL_ALUMNO':
+              this.auth.rol = 2;
+              break;
+            default:
+              break;
+          }
+            // TOKEN
+          this.auth.token = token;
+
           this.usuario = new Usuario(uid, rol, nombre, apellidos, email, alta, activo);
         }),
         map ( res => {

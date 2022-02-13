@@ -128,13 +128,16 @@ export class TopnavComponent implements OnInit, OnDestroy {
   }
 
   onSignOut(): void {
-    this.authService.signOut().subscribe(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('rol');
-      localStorage.removeItem('uid');
-      this.sender.idUser = undefined;
-      this.router.navigate(['/user/login']);
-    });
+    this.authService.signOut();
+    this.router.navigate(['/user/login']);
+
+    // this.authService.signOut().subscribe(() => {
+    //   localStorage.removeItem('token');
+    //   localStorage.removeItem('rol');
+    //   localStorage.removeItem('uid');
+    //   this.sender.idUser = undefined;
+    //   this.router.navigate(['/user/login']);
+    // });
   }
 
   searchKeyUp(event: KeyboardEvent): void {

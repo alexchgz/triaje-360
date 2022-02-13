@@ -41,7 +41,7 @@ let routes: Routes = [
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
     data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
     canActivate: [NoauthGuard],
-    canActivateChild: [AuthGuard],
+    canActivateChild: [NoauthGuard],
   },
   {
     path: 'users',

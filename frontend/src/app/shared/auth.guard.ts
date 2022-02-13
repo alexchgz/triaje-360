@@ -43,11 +43,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const currentUser = await this.authService.getUser();
     // const currentToken = this.usuarioService.validarToken();
 
-    // if(!currentToken) {
-    //   this.router.navigateByUrl('/user/login');
-    // }
+    if(currentUser.uid === undefined && state.url!='/user/login') {
+      // console.log(currentUser);
+      // console.log('A LOGIN');
+      this.router.navigateByUrl('/user/login');
+      return false;
+    }
 
     if (currentUser) {
+      // console.log(currentUser);
       if (route.data && route.data.roles) {
         if (route.data.roles.includes(currentUser.role)) {
           return true;
