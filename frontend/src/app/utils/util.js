@@ -64,7 +64,7 @@ export const getUserRole = () => {
     try {
         role = localStorage.getItem('rol') || environment.defaultRole;
         // role = AuthService.uid || environment.defaultRole;
-        console.log('ROL: ' + role);
+        // console.log('ROL: ' + role);
         if (role == 'ROL_ADMIN') {
             apiRol = 0;
         } else if (role == 'ROL_PROFESOR') {

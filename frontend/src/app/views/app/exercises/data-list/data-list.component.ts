@@ -61,7 +61,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    console.log(this.userRole);
+    // console.log(this.userRole);
     // this.userId = localStorage.getItem('uid');
     this.userId = this.auth.uid;
     // this.userId = this.sender.idUser;
@@ -75,7 +75,7 @@ export class DataListComponent implements OnInit {
     // console.log(history.state.data);
     // this.itemSubject = history.state.data;
 
-    console.log(this.sender.idSubject);
+    // console.log(this.sender.idSubject);
     this.itemSubject = this.sender.idSubject;
 
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
@@ -86,7 +86,7 @@ export class DataListComponent implements OnInit {
 
   loadExercises(pageSize: number, currentPage: number, subject: string, userId: string): void {
 
-    console.log(this.userRole);
+    // console.log(this.userRole);
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
     this.ejercicioService.getExercises(pageSize, currentPage, subject, userId).subscribe(

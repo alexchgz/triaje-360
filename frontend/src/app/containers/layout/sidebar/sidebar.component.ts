@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ) {
     this.authService.getUser().then((user) => {
       this.currentUser = user;
-      console.log(user);
+      // console.log(user);
     });
 
     this.subscription = this.sidebarService.getSidebar().subscribe(
