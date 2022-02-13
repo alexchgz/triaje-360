@@ -60,23 +60,23 @@ export const setThemeLang = (lang) => {
 
 export const getUserRole = () => {
     let role = environment.defaultRole;
-    let apiRol = 0;
+    let apiRol = -1;
     try {
-        // role = localStorage.getItem('rol') || environment.defaultRole;
-        role = AuthService.uid || environment.defaultRole;
-        //console.log('ROL: ' + role);
-        /*if (role == 'ROL_ADMIN') {
+        role = localStorage.getItem('rol') || environment.defaultRole;
+        // role = AuthService.uid || environment.defaultRole;
+        console.log('ROL: ' + role);
+        if (role == 'ROL_ADMIN') {
             apiRol = 0;
         } else if (role == 'ROL_PROFESOR') {
             apiRol = 1;
         } else if (role == 'ROL_ALUMNO') {
             apiRol = 2;
-        }*/
+        }
     } catch (error) {
         console.log(">>>> src/app/utils/util.js : getUserRole -> error", error)
         role = environment.defaultRole
     }
-    return role;
+    return apiRol;
 }
 export const setUserRole = (role) => {
     try {

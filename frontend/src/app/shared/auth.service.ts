@@ -77,12 +77,12 @@ export class AuthService {
         }
         this.token = res['token'];
 
-          localStorage.setItem('token', res['token']);
-          // localStorage.setItem('uid', res['id']);
-          this.sender.idUser = res['id'];
-          // localStorage.setItem('rol', res['rol']);
-          console.log('Se ha hecho login');
-          //console.log(res['rol']);
+        localStorage.setItem('token', res['token']);
+        localStorage.setItem('rol', res['rol']);
+        // localStorage.setItem('uid', res['id']);
+        this.sender.idUser = res['id'];
+        console.log('Se ha hecho login');
+        //console.log(res['rol']);
       })
     );
   }

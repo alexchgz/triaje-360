@@ -61,7 +61,7 @@ export class DataListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    // console.log(this.userRole);
+    console.log(this.userRole);
     // this.userId = localStorage.getItem('uid');
     this.userId = this.auth.uid;
     // this.userId = this.sender.idUser;
