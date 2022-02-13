@@ -9,6 +9,7 @@ import { Asignatura } from '../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { Profesor } from '../../../models/profesor.model';
 import { SenderService } from '../../../data/sender.service';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-list-page-header',
@@ -69,11 +70,13 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('search') search: any;
-  constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService) { }
+  constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService,
+    private auth: AuthService) { }
 
   ngOnInit(): void {
     this.userRole = getUserRole();
-    this.userId = localStorage.getItem('uid');
+    // this.userId = localStorage.getItem('uid');
+    this.userId = this.auth.uid;
     // this.userId = this.sender.idUser;
     // console.log(this.userId);
     this.getComponent();

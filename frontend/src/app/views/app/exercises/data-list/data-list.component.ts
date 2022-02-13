@@ -14,6 +14,7 @@ import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { EjerciciosUsuarioService } from '../../../../data/ejerciciosUsuario.service';
 import { EjerciciosUsuario } from '../../../../models/ejerciciosUsuario.model';
+import { AuthService } from 'src/app/shared/auth.service';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class DataListComponent implements OnInit {
 
   constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
     private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService,
-    private ejerciciosUsuarioService: EjerciciosUsuarioService) {
+    private ejerciciosUsuarioService: EjerciciosUsuarioService, private auth: AuthService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
       this.selected = [...this.data];
       return false;
@@ -61,7 +62,8 @@ export class DataListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = getUserRole();
     // console.log(this.userRole);
-    this.userId = localStorage.getItem('uid');
+    // this.userId = localStorage.getItem('uid');
+    this.userId = this.auth.uid;
     // this.userId = this.sender.idUser;
     // let splitUrl = this.router.url.split("/");
     // // console.log(splitUrl);

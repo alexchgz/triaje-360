@@ -1,4 +1,5 @@
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/shared/auth.service.ts';
 
 export const getThemeColor = () => {
     let color = environment.defaultColor;
@@ -61,20 +62,21 @@ export const getUserRole = () => {
     let role = environment.defaultRole;
     let apiRol = 0;
     try {
-        role = localStorage.getItem('rol') || environment.defaultRole;
+        // role = localStorage.getItem('rol') || environment.defaultRole;
+        role = AuthService.uid || environment.defaultRole;
         //console.log('ROL: ' + role);
-        if (role == 'ROL_ADMIN') {
+        /*if (role == 'ROL_ADMIN') {
             apiRol = 0;
         } else if (role == 'ROL_PROFESOR') {
             apiRol = 1;
         } else if (role == 'ROL_ALUMNO') {
             apiRol = 2;
-        }
+        }*/
     } catch (error) {
         console.log(">>>> src/app/utils/util.js : getUserRole -> error", error)
         role = environment.defaultRole
     }
-    return apiRol;
+    return role;
 }
 export const setUserRole = (role) => {
     try {
