@@ -65,6 +65,14 @@ let routes: Routes = [
     canActivateChild: [AuthGuard],
     // component: LoginComponent
   },
+  {
+    path: 'exercises',
+    loadChildren: () => import('./app/exercises/exercises.module').then((m) => m.ExercisesModule),
+    data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    // component: LoginComponent
+  },
   { path: 'error', component: ErrorComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', redirectTo: '/error' },
@@ -97,6 +105,10 @@ if (!environment.isAuthGuardActive) {
     {
       path: 'subjects',
       loadChildren: () => import('./app/subjects/subjects.module').then((m) => m.SubjectsModule),
+    },
+    {
+      path: 'exercises',
+      loadChildren: () => import('./app/exercises/exercises.module').then((m) => m.ExercisesModule),
     },
     { path: 'error', component: ErrorComponent },
     { path: '**', redirectTo: '/error' },

@@ -22,9 +22,10 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { ViewExerciseComponent } from './view-exercise/view-exercise.component';
 
 @NgModule({
-  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, ExercisesComponent, DetailsAltComponent],
+  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, ExercisesComponent, DetailsAltComponent, ViewExerciseComponent],
   imports: [
     SharedModule,
     ExercisesRoutingModule,

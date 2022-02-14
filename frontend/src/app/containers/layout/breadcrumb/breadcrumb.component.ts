@@ -27,8 +27,10 @@ export class BreadcrumbComponent {
       })
     ).subscribe((event) => {
       this.path = this.router.url.slice(1, this.router.url.split('?')[0].length);
+      // console.log('PATH:',this.path);
       const paramtersLen = Object.keys(event.snapshot.params).length;
       this.pathArr = this.path.split('/').slice(0, this.path.split('/').length - paramtersLen);
+      // console.log('PATHARR:',this.pathArr);
     });
   }
 

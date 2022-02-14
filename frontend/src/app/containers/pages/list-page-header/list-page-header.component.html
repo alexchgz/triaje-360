@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <app-heading></app-heading>
+        <app-heading [title]="title"></app-heading>
         <div *ngIf="userRole == 0" class="top-right-button-container text-zero">
             <button type="button" (click)="onAddNewItem()" class="top-right-button btn btn-primary btn-lg mr-1">{{ 'pages.add-new' | translate}}</button>
             <div class="btn-group" dropdown>
@@ -20,7 +20,7 @@
                 </ul>
             </div>
         </div>
-        <app-breadcrumb></app-breadcrumb>
+        <app-breadcrumb [title]="titleBreadcrumb"></app-breadcrumb>
         <div class="display-options-container">
             <a class="btn pt-0 pl-0 d-inline-block d-md-none c-pointer" data-toggle="collapse" (click)="displayOptionsCollapsed = !displayOptionsCollapsed" role="button" aria-expanded="true" aria-controls="displayOptions">
         {{ 'pages.display-options' | translate}} {{' '}}

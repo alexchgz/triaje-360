@@ -68,6 +68,8 @@ export class ListPageHeaderComponent implements OnInit {
   @Output() subjectChange: EventEmitter<any> = new EventEmitter();
   @Output() changeOrderBy: EventEmitter<any> = new EventEmitter();
   @Output() dropUsers: EventEmitter<any> = new EventEmitter();
+  @Output() title='';
+  @Output() titleBreadcrumb='';
 
   @ViewChild('search') search: any;
   constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService,
@@ -86,22 +88,28 @@ export class ListPageHeaderComponent implements OnInit {
   }
 
   getComponent(): void {
-    let splitUrl = this.router.url.split("/", 5);
+    let splitUrl = this.router.url.split("/", 6);
     // console.log(splitUrl);
-    if(splitUrl[splitUrl.length-1] == "subjects") {
+    if(splitUrl[splitUrl.length-2] == "subjects") {
       this.component = 'subjects';
       this.showSchoolYears = true;
       this.loadSchoolYears();
     }
-    else if(splitUrl[splitUrl.length-1] == "users") {
+    else if(splitUrl[splitUrl.length-2] == "users") {
       this.component = 'users';
       this.showRoles = true;
     }
-    else if(splitUrl[splitUrl.length-1] == "exercises") {
-      this.component = 'exercises';
-      this.showSubjects = true;
-      this.loadSchoolYears();
-      this.loadSubjects();
+    else if(splitUrl[splitUrl.length-2] == "exercises") {
+      if(splitUrl[splitUrl.length-1] == 'data-list') {
+        this.component = 'exercises';
+        this.showSubjects = true;
+        this.loadSchoolYears();
+        this.loadSubjects();
+      } else {
+        this.component = 'view-exercises';
+        this.title = 'Ver Ejercicio';
+        this.titleBreadcrumb = 'Ver Ejercicio';
+      }
     }
   }
 

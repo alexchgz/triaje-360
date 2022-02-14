@@ -70,7 +70,7 @@
 
 
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
-            <div class="d-flex flex-grow-1 min-width-zero">
+            <div class="d-flex flex-grow-1 min-width-zero" (click)="toViewExercise()">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-25 w-xs-100" href="javascript:;">
             {{p.nombre}}

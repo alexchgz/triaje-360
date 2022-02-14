@@ -274,6 +274,11 @@ export class DataListComponent implements OnInit {
     this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise");
   }
 
+  toViewExercise(): void {
+    console.log('Vemos el ejercicio');
+    this.router.navigate(['/app/dashboards/all/exercises/view-exercise']);
+  }
+
   createUserExercise(idE: string): void {
 
     this.ejerciciosUsuarioService.createUserExercise(this.userId, idE)

@@ -7,6 +7,7 @@ import { ImageListComponent } from './image-list/image-list.component';
 import { DetailsComponent } from './details/details.component';
 import { DetailsAltComponent } from './details-alt/details-alt.component';
 import { AddExerciseComponent } from '../subjects/add-exercise/add-exercise.component';
+import { ViewExerciseComponent } from './view-exercise/view-exercise.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'data-list', pathMatch: 'full' },
       { path: 'data-list', component: DataListComponent },
+      { path: 'view-exercise', component: ViewExerciseComponent },
       { path: 'thumb-list', component: ThumbListComponent },
       { path: 'image-list', component: ImageListComponent },
       { path: 'details', component: DetailsComponent },

@@ -1,0 +1,22 @@
+<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)"></app-list-page-header>
+
+<div class="row">
+    <div class="col-12 list" *ngIf="displayMode==='list'">
+        <p>view-exercise LIST works!</p>
+    </div>
+
+    <div class="col-12 list" *ngIf="displayMode==='thumb'">
+        <p>view-exercise THUMB works!</p>
+    </div>
+
+    <div class="col-12 list" *ngIf="displayMode==='image'">
+        <p>view-exercise IMAGE works!</p>
+    </div>
+
+    <div class="col-12">
+        <pagination *ngIf="totalItem > 0" [totalItems]="totalItem" [itemsPerPage]="itemsPerPage" [rotate]="true" [maxSize]="5" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" class="justify-content-center" [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
+        </pagination>
+    </div>
+</div>
+
+
