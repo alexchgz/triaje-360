@@ -60,7 +60,8 @@ export class DataListComponent implements OnInit {
     //   this.router.navigate['/user/login'];
     // }
 
-    this.userRole = getUserRole();
+    // this.userRole = getUserRole();
+    this.userRole = this.auth.rol;
     this.userId = this.auth.uid;
     // this.userId = localStorage.getItem('uid');
     // this.userId = this.sender.idUser;

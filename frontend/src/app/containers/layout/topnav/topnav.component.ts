@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { getThemeColor, setThemeColor, getUserRole } from 'src/app/utils/util';
 import { SenderService } from '../../../data/sender.service';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-topnav',
@@ -37,7 +38,8 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.currentLanguage = this.langService.languageShorthand;
     this.isSingleLang = this.langService.isSingleLang;
     this.isDarkModeActive = getThemeColor().indexOf('dark') > -1 ? true : false;
-    this.userRole = getUserRole();
+    // this.userRole = getUserRole();
+    this.userRole = authService.rol;
   }
 
   onDarkModeChange(event): void {

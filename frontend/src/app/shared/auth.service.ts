@@ -60,9 +60,9 @@ export class AuthService {
         //console.log(res);
 
         this.uid = res['id'];
-        this.rol = res['rol'];
+        // this.rol = res['rol'];
 
-        switch (res['token']) {
+        switch (res['rol']) {
           case 'ROL_ADMIN':
             this.rol = 0;
             break;
@@ -78,7 +78,7 @@ export class AuthService {
         this.token = res['token'];
 
         localStorage.setItem('token', res['token']);
-        localStorage.setItem('rol', res['rol']);
+        // localStorage.setItem('rol', res['rol']);
         // localStorage.setItem('uid', res['id']);
         this.sender.idUser = res['id'];
         console.log('Se ha hecho login');
@@ -128,6 +128,7 @@ export class AuthService {
   // tslint:disable-next-line:typedef
   async getUser() {
     const u = await this.auth.currentUser;
-    return { ...u, uid: this.uid, role: getUserRole() };
+    // return { ...u, uid: this.uid, role: getUserRole() };
+    return { ...u, uid: this.uid, role: this.rol };
   }
 }

@@ -8,6 +8,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { id } from '@swimlane/ngx-datatable';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
 import { getUserRole } from 'src/app/utils/util';
+import { AuthService } from 'src/app/shared/auth.service';
 
 const mongoose = require('mongoose');
 const bson = require('bson');
@@ -56,10 +57,12 @@ export class ManageSubjectModalComponent implements OnInit {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private asignaturaService: AsignaturaService, private usuarioService: UsuarioService, private fb: FormBuilder, private dataList: DataListComponent) { }
+  constructor(private modalService: BsModalService, private asignaturaService: AsignaturaService, private usuarioService: UsuarioService, private fb: FormBuilder,
+    private dataList: DataListComponent, private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.userRole = getUserRole();
+    // this.userRole = getUserRole();
+    this.userRole = this.auth.rol;
   }
 
   show(id: number): void {
@@ -190,7 +193,8 @@ export class ManageSubjectModalComponent implements OnInit {
 
     // actualizamos la asignatura con las nuevas listas
     console.log(getUserRole());
-    if(getUserRole() == 0) {
+    // if(getUserRole() == 0) {
+    if(this.userRole == 0) {
       this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid).subscribe( res => {
         console.log('Asignatura actualizada');
         this.dataList.loadSubjects(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear, this.dataList.userId);

@@ -74,7 +74,8 @@ export class ListPageHeaderComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.userRole = getUserRole();
+    // this.userRole = getUserRole();
+    this.userRole = this.auth.rol;
     // this.userId = localStorage.getItem('uid');
     this.userId = this.auth.uid;
     // this.userId = this.sender.idUser;
