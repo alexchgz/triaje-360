@@ -1,0 +1,20 @@
+<ng-template #template>
+    <div class="modal-header">
+        <div class="header1">
+            <h4 class="modal-title pull-left">{{'pages.show-student-register-modal-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <h7 class="modal-subtitle pull-left">Intentos de Alejandro Chica para el Ejercicio 1</h7>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <p>Aquí van los registros de intentos</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.close' | translate }}</button>
+        <!-- <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button> -->
+    </div>
+</ng-template>

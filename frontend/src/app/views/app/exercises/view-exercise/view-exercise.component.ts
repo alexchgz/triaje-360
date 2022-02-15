@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ContextMenuComponent } from 'ngx-contextmenu';
+
 import { SenderService } from 'src/app/data/sender.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { AuthService } from 'src/app/shared/auth.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
+import { ShowStudentRegisterModalComponent } from 'src/app/containers/pages/show-student-register-modal/show-student-register-modal.component';
 
 @Component({
   selector: 'app-view-exercise',
@@ -24,7 +27,9 @@ export class ViewExerciseComponent implements OnInit {
   exerciseId: number;
   itemSubject = '';
   data: Usuario[] = [];
-  
+
+  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: ShowStudentRegisterModalComponent;
 
   constructor(private sender: SenderService, private auth: AuthService, private ejercicioService: EjercicioService) { }
 
@@ -65,7 +70,7 @@ export class ViewExerciseComponent implements OnInit {
   showStudentModal(user? : Usuario): void {
     if(user) {
       console.log(user.uid);
-      // this.addNewModalRef.show(subject.uid);
+      this.addNewModalRef.show(user.uid);
     } else {
       // this.addNewModalRef.show();
       console.log('NO HAY USUARIO');

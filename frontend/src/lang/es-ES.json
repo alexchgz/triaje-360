@@ -280,7 +280,8 @@
         "exercise-from": "Desde",
         "exercise-to": "Hasta",
         "exercise-subject": "Asignatura",
-        "exercise-max-attempts": "Máximo de Intentos"
+        "exercise-max-attempts": "Máximo de Intentos",
+        "show-student-register-modal-title": "Registro de Intentos"
     },
     "chat": {
         "messages": "Mensajes",

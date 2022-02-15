@@ -42,6 +42,7 @@ import { AddNewSubjectModalComponent } from './add-new-subject-modal/add-new-sub
 import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subject-modal.component';
 import { AddNewExerciseModalComponent } from './add-new-exercise-modal/add-new-exercise-modal.component';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { ShowStudentRegisterModalComponent } from './show-student-register-modal/show-student-register-modal.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     AddNewSchoolYearModalComponent,
     AddNewSubjectModalComponent,
     ManageSubjectModalComponent,
-    AddNewExerciseModalComponent
+    AddNewExerciseModalComponent,
+    ShowStudentRegisterModalComponent
   ],
   imports: [
     CommonModule,
@@ -118,7 +120,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     ProductDetailOrdersComponent,
     ProductDetailCommentsComponent,
     ProductDetailInfoComponent,
-    ProductDetailTabsComponent
+    ProductDetailTabsComponent,
+    ShowStudentRegisterModalComponent
   ]
 })
 export class PagesContainersModule { }

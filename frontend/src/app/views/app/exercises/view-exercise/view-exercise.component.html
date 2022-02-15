@@ -1,4 +1,5 @@
 <app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)"></app-list-page-header>
+<app-show-student-register-modal #addNewModalRef></app-show-student-register-modal>
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
@@ -24,6 +25,8 @@
                       <span class="email title-card list-item-heading mb-0 w-xs-100">
                           <span>Email</span>
                       </span>
+                      <span class="options title-card list-item-heading mb-0 w-xs-100">
+                    </span>
                 </div>
             </div>
 
@@ -36,7 +39,7 @@
                         </a>
                         <p class="email mb-0 text-muted text-small w-xs-100">{{p.usuario.email}}</p>
     
-                        <i class="simple-icon-eye" data-toggle="tooltip" data-placement="bottom" title="Ver Registros Alumno" (click)="showStudentModal(p.usuario)"></i>
+                        <i class="options simple-icon-eye w-xs-100" data-toggle="tooltip" data-placement="bottom" title="Ver Registros Alumno" (click)="showStudentModal(p.usuario)"></i>
 
                     </div>
                 </div>
@@ -58,5 +61,14 @@
         </pagination>
     </div>
 </div>
+
+<simple-notifications></simple-notifications>
+
+<ng-template #nextTemplate let-disabled="disabled" let-currentPage="currentPage">
+    <i class='simple-icon-arrow-right'></i>
+</ng-template>
+<ng-template #prevTemplate let-disabled="disabled" let-currentPage="currentPage">
+    <i class='simple-icon-arrow-left'></i>
+</ng-template>
 
 
