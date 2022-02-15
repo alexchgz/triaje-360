@@ -62,6 +62,16 @@ export class ViewExerciseComponent implements OnInit {
     );
   }
 
+  showStudentModal(user? : Usuario): void {
+    if(user) {
+      console.log(user.uid);
+      // this.addNewModalRef.show(subject.uid);
+    } else {
+      // this.addNewModalRef.show();
+      console.log('NO HAY USUARIO');
+    }
+  }
+
   changeDisplayMode(mode): void {
     this.displayMode = mode;
   }

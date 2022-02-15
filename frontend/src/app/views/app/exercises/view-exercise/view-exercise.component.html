@@ -2,7 +2,47 @@
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
-        <p>view-exercise LIST works!</p>
+        <!-- <p>view-exercise LIST works!</p> -->
+
+        <!-- SI NO HAY RESULTADOS -->
+        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="d-flex flex-grow-1 min-width-zero">
+                <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    No hay alumnos asignados a la asignatura
+                </div>
+            </div>
+        </div>
+
+        <!-- SI HAY RESULTADOS -->
+        <div *ngIf="totalItem > 0" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <!-- LABEL CAMPOS -->
+            <div class="card-dashborad mb-3 d-flex flex-grow-1 min-width-zero">
+                <div class="tc card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <span class="nombre title-card list-item-heading mb-0 truncate w-xs-100">
+                        <span>Apellidos, Nombre</span>
+                      </span>
+                      <span class="email title-card list-item-heading mb-0 w-xs-100">
+                          <span>Email</span>
+                      </span>
+                </div>
+            </div>
+
+            <!-- MOSTRAR RESULTADOS -->
+            <div [ngClass]="{'card d-flex flex-row mb-3': true}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+                <div class="d-flex flex-grow-1 min-width-zero">
+                    <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                        <a class="nombre list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
+                          {{p.usuario.apellidos}}, {{p.usuario.nombre}}
+                        </a>
+                        <p class="email mb-0 text-muted text-small w-xs-100">{{p.usuario.email}}</p>
+    
+                        <i class="simple-icon-eye" data-toggle="tooltip" data-placement="bottom" title="Ver Registros Alumno" (click)="showStudentModal(p.usuario)"></i>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </div>
 
     <div class="col-12 list" *ngIf="displayMode==='thumb'">

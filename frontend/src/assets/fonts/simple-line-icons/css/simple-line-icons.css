@@ -861,6 +861,13 @@
 
 .simple-icon-eye:before {
     content: "\e087";
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #145388;
+    color: white;
+    padding: .4em;
+    border-radius: 50px;
+    border-color: #145388;
 }
 
 .simple-icon-flag:before {
