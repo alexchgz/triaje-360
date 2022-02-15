@@ -1,7 +1,7 @@
 // RUTA BASE: /api/ejercicios
 
 const { Router } = require('express');
-const { getEjercicios, crearEjercicio, actualizarEjercicio, borrarEjercicio } = require('../controllers/ejercicios');
+const { getEjercicios, getAlumnosEjercicio, crearEjercicio, actualizarEjercicio, borrarEjercicio } = require('../controllers/ejercicios');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
@@ -18,6 +18,17 @@ router.get('/', [
     check('userId', 'Desde debe ser una cadena de texto').optional().isString(),
     validarCampos
 ], getEjercicios);
+
+router.get('/alumnos', [
+    validarJWT,
+    // comprobamos campos opcionales
+    check('idEjercicio', 'El id debe ser válido').isMongoId(),
+    check('pageSize', 'Desde debe ser un número').optional().isNumeric(),
+    check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
+    check('asignatura', 'Desde debe ser una cadena de texto').optional().isString(),
+    check('userId', 'Desde debe ser una cadena de texto').optional().isString(),
+    validarCampos
+], getAlumnosEjercicio);
 
 router.post('/', [
     validarJWT,

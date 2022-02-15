@@ -274,8 +274,9 @@ export class DataListComponent implements OnInit {
     this.router.navigateByUrl("/app/dashboards/all/subjects/add-exercise");
   }
 
-  toViewExercise(): void {
+  toViewExercise(uid: number): void {
     console.log('Vemos el ejercicio');
+    this.sender.idExercise = uid;
     this.router.navigate(['/app/dashboards/all/exercises/view-exercise']);
   }
 

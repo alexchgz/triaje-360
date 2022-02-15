@@ -108,4 +108,27 @@ export class EjercicioService {
 
   }
 
+  // METODO OBTENER ALUMNOS DE LOS EJERCICIOS
+  getExerciseStudents(exerciseId: number, pageSize?: number, currentPage?: number, subject?: string, userId?: string) {
+    const url = environment.base_url + '/ejercicios/alumnos';
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    let params = new HttpParams();
+    params = params.append('idEjercicio', exerciseId.toString());
+    if(pageSize || currentPage || subject || userId){
+      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+      if(subject) { params = params.append('asignatura', subject + ''); }
+      if(userId) { params = params.append('userId', userId + ''); }
+    }
+
+    // console.log(params);
+
+    return this.http.get(url, { headers, params });
+
+  }
+
 }

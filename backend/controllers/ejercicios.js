@@ -262,6 +262,71 @@ const getEjercicios = async(req, res = response) => {
     }
 }
 
+const getAlumnosEjercicio = async(req, res = response) => {
+
+    var ObjectId = require('mongodb').ObjectID;
+    // recogemos un parametro para poder buscar tambien por id
+    const idEjercicio = req.query.idEjercicio;
+    const currentPage = Number(req.query.currentPage);
+    const pageSize = Number(req.query.pageSize) || 0;
+    const desde = (currentPage - 1) * pageSize;
+    const asignatura = req.query.asignatura;
+    const userId = req.query.userId;
+
+    // Solo puede crear asignaturas un admin
+    const token = req.header('x-token');
+
+    try {
+        // console.log('Estoy');
+        var ejercicio, alumnosEjercicio;
+
+        if (infoToken(token).rol === 'ROL_ADMIN' || infoToken(token).rol === 'ROL_PROFESOR') {
+
+            ejercicio = await Ejercicio.findById(idEjercicio).populate('curso', '-__v')
+            .populate({
+                path: 'asignatura',
+                populate: {
+                    path: 'alumnos',
+                    populate: {
+                        path: 'usuario',
+                        select: 'nombre apellidos email'
+                    }
+                },
+            });
+            // ejercicio = this.getEjercicios(idEjercicio);
+            // console.log(ejercicio);
+            alumnosEjercicio = ejercicio.asignatura.alumnos;
+            // console.log(alumnosEjercicio);
+
+        } else {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No dispones de acceso para ver los alumnos'
+            });
+        }
+
+        res.json({
+            ok: true,
+            msg: 'Alumnos del Ejercicio obtenidos',
+            alumnosEjercicio,
+            pageSize,
+            currentPage,
+            // recogemos los datos de la página para mostrarlos en la respuesta
+            page: {
+                desde,
+                currentPage,
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            ok: false,
+            msg: 'error obteniendo alumnos del ejercicio'
+        })
+    }
+}
+
 const crearEjercicio = async(req, res = response) => {
 
     const { asignatura, ...object } = req.body;
@@ -404,4 +469,4 @@ const borrarEjercicio = async(req, res = response) => {
 }
 
 // exportamos las funciones
-module.exports = { getEjercicios, crearEjercicio, actualizarEjercicio, borrarEjercicio };
+module.exports = { getEjercicios, getAlumnosEjercicio, crearEjercicio, actualizarEjercicio, borrarEjercicio };
