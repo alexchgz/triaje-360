@@ -45,7 +45,7 @@ export class EjercicioService {
     let params = new HttpParams();
     params = params.append('id', id + '');
 
-    console.log(params);
+    // console.log(params);
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);

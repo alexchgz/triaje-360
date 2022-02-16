@@ -6,11 +6,27 @@
                 <span aria-hidden="true">&times;</span>
               </button>
         </div>
-        <h7 class="modal-subtitle pull-left">Intentos de Alejandro Chica para el Ejercicio 1</h7>
+        <h7 class="modal-subtitle pull-left" *ngIf="dataUsuario!=undefined && dataEjercicio!=undefined">Intentos de {{dataUsuario.nombre}} {{dataUsuario.apellidos}} para el Ejercicio: {{dataEjercicio.nombre}}</h7>
     </div>
     <div class="modal-body">
         <div class="card">
-            <p>Aquí van los registros de intentos</p>
+            <p class="font-weight-bold">Intentos Realizados: {{registros.length}}</p>
+            <!-- <p class="font-weight-bold" *ngIf="dataEjercicio!=undefined">Intentos Restantes: {{dataEjercicio.max_intentos-registros.length}}</p> -->
+            <p *ngIf="registros.length == 0">Aún no hay intentos realizados de este alumno para este ejercicio</p>
+            <table *ngIf="registros.length > 0" class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Intento</th>
+                        <th scope="col">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let p of registros; index as indexOfelement;">
+                    <tr>
+                        <td>Intento Nº {{indexOfelement+1}}</td>
+                        <td>{{p.fecha_ejecucion}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="modal-footer">
@@ -18,3 +34,5 @@
         <!-- <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button> -->
     </div>
 </ng-template>
+<simple-notifications></simple-notifications>
+
