@@ -86,7 +86,7 @@ export class ListPageHeaderComponent implements OnInit {
     this.getComponent();
     // console.log(this.itemOptionRoles);
     // console.log(this.itemSubject);
-    console.log('EJERCICIO:',this.sender.idExercise);
+    // console.log('EJERCICIO:',this.sender.idExercise);
   }
 
   getComponent(): void {
