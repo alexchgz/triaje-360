@@ -125,6 +125,7 @@ export class ShowStudentRegisterModalComponent implements OnInit {
 
   closeModal(): void {
     this.modalRef.hide();
+    this.sender.idExercise = undefined;
   }
 
 }

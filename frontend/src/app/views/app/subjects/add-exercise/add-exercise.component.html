@@ -1,10 +1,12 @@
-<div class="top-right-button-container text-zero">
+<!-- <div class="top-right-button-container text-zero">
     <button class="top-right-button btn btn-primary btn-lg mr-1" (click)="goBack()">VOLVER</button>
-</div>
+</div> -->
 
-<div class="modal-header">
+<app-list-page-header></app-list-page-header>
+
+<!-- <div class="modal-header">
     <h4 class="modal-title pull-left">{{'pages.add-new-exercise-title' | translate}}</h4>
-</div>
+</div> -->
 
 <form class="form-horizontal m-t-20" [formGroup]="formData" (ngSubmit)="checkDate()">
     <div class="modal-body">

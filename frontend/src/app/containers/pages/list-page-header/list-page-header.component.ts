@@ -10,6 +10,7 @@ import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { Profesor } from '../../../models/profesor.model';
 import { SenderService } from '../../../data/sender.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-page-header',
@@ -40,10 +41,10 @@ export class ListPageHeaderComponent implements OnInit {
   @Input() showSchoolYears = false;
   @Input() showRoles = false;
   @Input() showSubjects = false;
-  @Input() showOrderBy = true;
+  @Input() showOrderBy = false;
   @Input() showSearch = true;
   @Input() showItemsPerPage = true;
-  @Input() showDisplayMode = true;
+  @Input() showDisplayMode = false;
   @Input() displayMode = 'list';
   @Input() selectAllState = '';
   @Input() itemsPerPage = 10;
@@ -73,7 +74,7 @@ export class ListPageHeaderComponent implements OnInit {
 
   @ViewChild('search') search: any;
   constructor(private cursoService: CursoService, private asignaturaService: AsignaturaService, private router: Router, private sender: SenderService,
-    private auth: AuthService) { }
+    private auth: AuthService, private location: Location) { }
 
   ngOnInit(): void {
     // this.userRole = getUserRole();
@@ -84,16 +85,29 @@ export class ListPageHeaderComponent implements OnInit {
     // console.log(this.userId);
     this.getComponent();
     // console.log(this.itemOptionRoles);
-    console.log(this.itemSubject);
+    // console.log(this.itemSubject);
+    console.log('EJERCICIO:',this.sender.idExercise);
   }
 
   getComponent(): void {
     let splitUrl = this.router.url.split("/", 6);
     // console.log(splitUrl);
     if(splitUrl[splitUrl.length-2] == "subjects") {
-      this.component = 'subjects';
-      this.showSchoolYears = true;
-      this.loadSchoolYears();
+      if(splitUrl[splitUrl.length-1] == 'data-list') {
+        this.component = 'subjects';
+        this.showSchoolYears = true;
+        this.loadSchoolYears();
+      } else {
+
+        this.component = 'add-edit-exercise';
+        if(this.sender.idExercise == undefined) {
+          this.title = 'Añadir Ejercicio';
+          this.titleBreadcrumb = 'Añadir Ejercicio';
+        } else {
+          this.title = 'Editar Ejercicio';
+          this.titleBreadcrumb = 'Editar Ejercicio';
+        }
+      }
     }
     else if(splitUrl[splitUrl.length-2] == "users") {
       this.component = 'users';
@@ -245,5 +259,9 @@ export class ListPageHeaderComponent implements OnInit {
       }
     }
 
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
