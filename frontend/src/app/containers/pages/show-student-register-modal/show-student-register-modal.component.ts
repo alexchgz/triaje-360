@@ -9,12 +9,15 @@ import { UsuarioService } from 'src/app/data/usuario.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
+import { DatePipe } from '@angular/common';
+
 
 
 @Component({
   selector: 'app-show-student-register-modal',
   templateUrl: './show-student-register-modal.component.html',
-  styleUrls: ['./show-student-register-modal.component.scss']
+  styleUrls: ['./show-student-register-modal.component.scss'],
+  providers: [DatePipe]
 })
 export class ShowStudentRegisterModalComponent implements OnInit {
 
@@ -35,7 +38,7 @@ export class ShowStudentRegisterModalComponent implements OnInit {
 
   constructor(private modalService: BsModalService, private auth: AuthService, private sender: SenderService,
     private ejerciciosUsuarioService: EjerciciosUsuarioService, private usuarioService: UsuarioService, private ejercicioService: EjercicioService,
-    private notifications: NotificationsService) { }
+    private notifications: NotificationsService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.userRole = this.auth.rol;
@@ -93,10 +96,12 @@ export class ShowStudentRegisterModalComponent implements OnInit {
   getExerciseUserRegister(alumno:number, ejercicio: number): void {
     this.ejerciciosUsuarioService.getUserExercises(alumno.toString(), ejercicio.toString())
         .subscribe( data => {
-          // console.log('Registros de Alumno en Ejercicio obtenidos');
 
           this.registros = data['ejerciciosUsuario'];
           // console.log(this.registros);
+          if(this.registros.length!=0) {
+            this.changeDateFormat();
+          }
 
         }, (err) => {
 
@@ -108,6 +113,14 @@ export class ShowStudentRegisterModalComponent implements OnInit {
 
           return;
       });
+  }
+
+  changeDateFormat(): void {
+    for(let i = 0; i < this.registros.length; i++) {
+      this.registros[i].fecha_ejecucion = this.datePipe.transform(this.registros[i].fecha_ejecucion, 'dd/MM/yyyy HH:mm:ss');
+      // console.log(this.registros[i].fecha_ejecucion);
+    }
+
   }
 
   closeModal(): void {
