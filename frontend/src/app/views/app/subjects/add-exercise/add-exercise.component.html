@@ -8,7 +8,7 @@
     <h4 class="modal-title pull-left">{{'pages.add-new-exercise-title' | translate}}</h4>
 </div> -->
 
-<form class="form-horizontal m-t-20" [formGroup]="formData" (ngSubmit)="checkDate()">
+<form class="form-horizontal m-t-20 card card-body" [formGroup]="formData" (ngSubmit)="checkDate()">
     <div class="modal-body">
         <div *ngIf="subject" id="asignatura">
             <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>

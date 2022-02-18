@@ -32,10 +32,16 @@
                 <label>{{ 'pages.user-password' | translate }}</label>
                 <input type="password" class="form-control" formControlName="password" placeholder="" required>
             </div>
-            <div class="mt-4">
+            <!-- Diferenciamos para marcar el campo DISBALED o NO -->
+            <div *ngIf="user!=undefined" class="mt-4">
                 <label>{{ 'pages.school-year-active' | translate }}</label>
                 <input type="checkbox" class="form-control" formControlName="activo" placeholder="">
             </div>
+            <div *ngIf="user==undefined" class="mt-4">
+                <label>{{ 'pages.school-year-active' | translate }}</label>
+                <input type="checkbox" class="form-control" formControlName="activo" placeholder="" disabled>
+            </div>
+            <!--  -->
             <div class="mt-2">
                 <label>{{ 'pages.user-role' | translate }}</label>
                 <label class="w-100">

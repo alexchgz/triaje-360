@@ -30,6 +30,7 @@ export class AddNewUserModalComponent {
   endOfTheList = false;
   schoolYears: Curso[];
   user: Usuario;
+  cb = true;
 
   // FORM
   private formSubmited = false;
@@ -39,7 +40,7 @@ export class AddNewUserModalComponent {
     email: ['', [Validators.required]],
     password: ['', [Validators.required]],
     rol: ['', [Validators.required]],
-    activo: ['', Validators.required]
+    activo: ['', [Validators.requiredTrue]]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
@@ -54,7 +55,12 @@ export class AddNewUserModalComponent {
 
     if(id) {
       this.getUser(id);
+    } else {
+      // SI VAMOS A CREAR UNO NUEVO ACTIVO == TRUE
+      this.formData.get('activo').setValue(true);
     }
+
+    
     this.modalRef = this.modalService.show(this.template, this.config);
     this.getSchoolYears();
   }
