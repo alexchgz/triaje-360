@@ -91,10 +91,12 @@ export class ViewExerciseComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
+    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, event.page, this.itemSubject, this.userId);
     // this.loadExercises(this.itemsPerPage, event.page, this.itemSubject, this.userId);
   }
 
   itemsPerPageChange(perPage: number): void {
+    this.loadExerciseStudents(this.exerciseId, perPage, 1, this.itemSubject, this.userId);
     // this.loadExercises(perPage, 1, this.itemSubject, this.userId);
   }
 

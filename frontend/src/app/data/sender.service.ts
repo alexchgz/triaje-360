@@ -9,6 +9,8 @@ export class SenderService {
   public idSubjectExercise: number;
   public idExercise: number;
   public idUser: string;
+  public showMsgAddEx = false;
+  public showMsgEditEx = false;
 
   constructor() { }
 }

@@ -53,35 +53,6 @@ export class DataListComponent implements OnInit {
     this.cargarUsuarios(this.itemsPerPage, this.currentPage, this.itemRol, this.search);
   }
 
-  // loadData(pageSize: number = 10, currentPage: number = 1, search: string = '', orderBy: string = ''): void {
-  //   this.itemsPerPage = pageSize;
-  //   this.currentPage = currentPage;
-  //   this.search = search;
-  //   this.orderBy = orderBy;
-
-  //   this.apiService.getProducts(pageSize, currentPage, search, orderBy).subscribe(
-  //     data => {
-  //       if (data.status) {
-  //         this.isLoading = false;
-  //         this.data = data.data.map(x => {
-  //           return {
-  //             ...x,
-  //             img: x.img.replace('/img/', '/img/products/')
-  //           };
-  //         });
-  //         this.totalItem = data.totalItem;
-  //         this.totalPage = data.totalPage;
-  //         this.setSelectAllState();
-  //       } else {
-  //         this.endOfTheList = true;
-  //       }
-  //     },
-  //     error => {
-  //       this.isLoading = false;
-  //     }
-  //   );
-  // }
-
   cargarUsuarios(pageSize: number, currentPage: number, role: string, search: string): void {
 
     this.itemsPerPage = pageSize;

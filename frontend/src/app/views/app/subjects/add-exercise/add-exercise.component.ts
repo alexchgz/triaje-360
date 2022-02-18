@@ -185,32 +185,17 @@ export class AddExerciseComponent implements OnInit {
   }
 
   createExercise(): void {
-    // console.log('Envío formulario');
 
     this.formSubmited = true;
     if (this.formData.invalid) { console.log(this.formData.invalid )}
-
-    // var today = new Date();
-    // console.log(today);
-    // var todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
-    // console.log(todayString);
-    // var desde = this.formData.get('desde').value
-    // console.log(desde);
-
-    // if(desde < today) {
-    //   console.log('La fecha de inicio no puede ser anterior a hoy');
-    // }
 
     if(this.exercise) {
       console.log(this.exercise);
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
-          // console.log(this.formData.get('asignatura').value);
-          // console.log('Ejercicio actualizado');
-          this.router.navigateByUrl('app/dashboards/all/exercises/data-list');
-          // let idUser = localStorage.getItem('uid');
-          // this.dataList.loadExercises(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemSubject, idUser);
-          // this.closeModal();
+
+          this.sender.showMsgEditEx = true;
+          this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
 
           this.notifications.create('Ejercicio editado', 'Se ha editado el Ejercicio correctamente', NotificationType.Info, {
             theClass: 'outline primary',
@@ -229,16 +214,14 @@ export class AddExerciseComponent implements OnInit {
           return;
       });
     } else {
-      // console.log(this.formData);
-      // creamos el ejercicio
+    
       this.ejercicioService.createExercise(this.formData.value)
         .subscribe( res => {
-          console.log('Ejercicio creado');
+          // console.log('Ejercicio creado');
           this.exercise = res['ejercicio'];
-          // console.log(this.exercise);
+          this.sender.showMsgAddEx = true;
 
-          // console.log(this.formData.get('asignatura').value);
-          console.log(this.subject)
+          // console.log(this.subject);
           if(this.subject == undefined) {
             // si no había asignatura tenemos que obtener la del formulario para actualizarla
             this.asignaturaService.getSubject(this.formData.get('asignatura').value).subscribe(
