@@ -80,13 +80,8 @@
                     <p class="mb-0 text-muted text-small w-20 w-xs-100">{{p.hasta}}</p>
                     <p *ngIf="userRole!=2" class="mb-0 text-muted text-small w-20 w-xs-100">{{p.max_intentos}}</p>
                     <p *ngIf="userRole==2" class="mb-0 text-muted text-small w-20 w-xs-100">{{p.max_intentos-p.intentos}}</p>
-                    <!-- <div *ngFor="let q of data[i].intentos">
-                        <p class="mb-0 text-muted text-small w-20 w-xs-100">{{q.fecha_ejecucion}}</p>
-                    </div> -->
 
-                    <!-- <i class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p._id)"></i> -->
-                    <i *ngIf="p.intentos!=undefined && (p.max_intentos > p.intentos) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p._id)"></i>
-                    <i *ngIf="p.intentos!=undefined && (p.max_intentos <= p.intentos) && userRole==2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="maxAttempts()"></i>
+                    <i *ngIf="p.intentos!=undefined && userRole==2 && inTime(p._id)" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p)"></i>
 
                     <!-- <i class="simple-icon-pencil" (click)="showAddNewModal(p)"></i> -->
                     <div *ngIf="userRole==0" class="options">

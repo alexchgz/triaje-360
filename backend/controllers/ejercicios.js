@@ -235,12 +235,25 @@ const getEjercicios = async(req, res = response) => {
 
         // console.log(ejercicios);
         // console.log('vamos a devolver ejercicio');
+        let ejerciciosEnTiempo = [];
+        let now = new Date();
+        // console.log('DATE:', now);
+        for(let i=0; i<ejercicios.length; i++) {
+            if(now < ejercicios[i].hasta) {
+                console.log(ejercicios[i].hasta);
+                // console.log('SE PUEDE HACER EL EJERCICIO');
+                ejerciciosEnTiempo.push(ejercicios[i]._id);
+            }
+        }
+
+        // console.log(ejerciciosEnTiempo);
 
         res.json({
             ok: true,
             msg: 'Ejercicios obtenidos',
             ejercicios,
             totalEjercicios,
+            ejerciciosEnTiempo,
             // ejerciciosUsuario,
             // totalEjerciciosUsuario,
             pageSize,

@@ -28,6 +28,7 @@ export class DataListComponent implements OnInit {
   selectAllState = '';
   selected: Ejercicio[] = [];
   data: Ejercicio[] = [];
+  exercisesInTime: string[] = [];
   currentPage = 1;
   itemsPerPage = 10;
   search = '';
@@ -70,6 +71,7 @@ export class DataListComponent implements OnInit {
     this.itemSubject = this.sender.idSubject;
 
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+    // this.dateIn();
 
     this.sender.idSubjectExercise = undefined;
     this.sender.idExercise = undefined;
@@ -86,10 +88,12 @@ export class DataListComponent implements OnInit {
           // console.log(data);
           this.isLoading = false;
           this.data = data['ejercicios'];
+          this.exercisesInTime = data['ejerciciosEnTiempo'];
           console.log(data['ejercicios']);
           // this.ejerciciosUsuario = data['ejerciciosUsuario'];
 
           this.changeDateFormat();
+          // this.exerciseInTime();
           // console.log(this.data);
           this.totalItem = data['totalEjercicios'];
           // this.totalEjerciciosUsuario = data['totalEjerciciosUsuario'];
@@ -280,9 +284,13 @@ export class DataListComponent implements OnInit {
     this.router.navigate(['/app/dashboards/all/exercises/view-exercise']);
   }
 
-  createUserExercise(idE: string): void {
+  createUserExercise(exercise: Ejercicio): void {
 
-    this.ejerciciosUsuarioService.createUserExercise(this.userId, idE)
+    if(exercise.max_intentos <= exercise['intentos']) {
+      this.maxAttempts();
+    } else {
+
+      this.ejerciciosUsuarioService.createUserExercise(this.userId, exercise['_id'])
         .subscribe( res => {
           console.log('Registro de Ejercicio creado');
           //this.router.navigateByUrl('app/dashboards/all/users/data-list');
@@ -304,6 +312,7 @@ export class DataListComponent implements OnInit {
 
           return;
       });
+    }
   }
 
   getEjerciciosUsuario(idE: string): number {
@@ -342,27 +351,27 @@ export class DataListComponent implements OnInit {
     });
   }
 
-  dateIn(hasta: string): boolean {
-    const now = new Date();
+  inTime(id: string): boolean {
+    let isInTime = false;
 
-    if(new Date(hasta).getTime() < now.getTime()) {
-      return true;
+    if(this.exercisesInTime.includes(id)) {
+      isInTime = true;
     }
 
-    return false;
+    return isInTime;
 
   }
 
-  // changeOrderBy(item: any): void {
-  //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
+    // METODO ANTIGUO -> SE LLAMABA DESDE EL HTML
+  // dateIn(hasta: string): boolean {
+  //   const now = new Date();
+
+  //   if(new Date(hasta).getTime() < now.getTime()) {
+  //     return true;
+  //   }
+
+  //   return false;
+
   // }
 
-  // searchKeyUp(event): void {
-  //   const val = event.target.value.toLowerCase().trim();
-  //   this.loadData(this.itemsPerPage, 1, val, this.orderBy);
-  // }
-
-  // onContextMenuClick(action: string, item: IProduct): void {
-  //   console.log('onContextMenuClick -> action :  ', action, ', item.title :', item.title);
-  // }
 }

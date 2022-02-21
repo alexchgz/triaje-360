@@ -21,7 +21,7 @@ const initDB = async() => {
             });
 
             await defaultUser.save();
-            console.log('Se ha creado Usuario por Defecto con Email: default@gmail.com y Contraseña: 1234');
+            console.log('Se ha creado Usuario por Defecto con Email: default@ua.es y Contraseña: 1234');
         }
     } catch (error) {
         console.log(error);

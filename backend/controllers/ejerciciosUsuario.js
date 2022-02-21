@@ -55,7 +55,7 @@ const getEjerciciosUsuario = async(req, res = response) => {
 
 const crearEjercicioUsuario = async(req, res = response) => {
 
-    console.log(req.body);
+    // console.log(req.body);
     const { idUsuario, idEjercicio, ...object } = req.body;
     // const idUsuario = req.query.idUsuario;
     // const idEjercicio = req.query.idEjercicio;
@@ -71,31 +71,33 @@ const crearEjercicioUsuario = async(req, res = response) => {
     }
 
     try {
-        // console.log('aaaa');
         // comprobamos que el usuario existe
-        // const existeUsuario = await Usuario.findById(idUsuario);
-        // if (!existeUsuario) {
-        //     return res.status(400).json({
-        //         ok: false,
-        //         msg: 'El usuario no existe'
-        //     });
-        // }
-
-        // console.log('eeeee');
+        const existeUsuario = await Usuario.findById(idUsuario);
+        if (!existeUsuario) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El usuario no existe'
+            });
+        }
 
         // comprobamos que el ejercicio existe
-        // const existeEjercicio = await Ejercicio.findById(idEjercicio);
-        // if (!existeEjercicio) {
-        //     return res.status(400).json({
-        //         ok: false,
-        //         msg: 'El ejercicio no existe'
-        //     });
-        // }
+        const existeEjercicio = await Ejercicio.findById(idEjercicio);
+        if (!existeEjercicio) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El ejercicio no existe'
+            });
+        }
 
-        // console.log('eehhhe');
+        let now = new Date();
+        if(now > existeEjercicio.hasta) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'La fecha límite para realizar el Ejercicio ha sido superada'
+            });
+        }
 
         // si existe la almacenamos
-        // object.asignatura = asignatura;
         object.idUsuario = idUsuario;
         object.idEjercicio = idEjercicio;
         const ejercicioUsuario = new EjerciciosUsuario(object);
