@@ -41,9 +41,12 @@
             <input type="date" class="form-control" formControlName="hasta" placeholder="" min="{{tomorrowString}}" required>
             <!-- <input type="date" class="form-control" formControlName="hasta" placeholder="" required> -->
         </div>
-        <div class="mt-2" id="intentos">
+        <div id="pre-intentos">
             <label>{{ 'pages.exercise-max-attempts' | translate }}</label>
-            <input type="number" class="form-control" formControlName="max_intentos" value="3" placeholder="" required>
+            <div id="intentos">
+                <input type="range" class="form-control" formControlName="range_max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, true)">
+                <input type="number" class="form-control" formControlName="max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, false)" required>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

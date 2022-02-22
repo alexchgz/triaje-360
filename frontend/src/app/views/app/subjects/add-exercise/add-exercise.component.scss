@@ -1,3 +1,4 @@
+
 .form-horizontal>div>div {
     margin-bottom: 1em;
 }
@@ -5,11 +6,12 @@
 #asignatura {
     width: 40%;
     margin-right: 0;
+    // float: left;
 }
 
 #nombre {
     width: 40%;
-    margin-right: 0;
+    float: left;
 }
 
 #descripcion {
@@ -17,18 +19,40 @@
     min-height: 2em;
 }
 
+textarea {
+    resize: none;
+}
+
 #desde {
-    width: 40%;
+    float: left;
+    margin-right: 3%;
 }
 
 #hasta {
-    width: 40%;
+    float: left;
+    margin-right: 3%;
 }
 
 .modal-footer {
-    justify-content: left;
+    justify-content: center;
 }
 
-.modal-footer>#danger {
-    margin-left: 12%;
+// .modal-footer>#danger {
+//     margin-left: 12%;
+// }
+
+#pre-intentos {
+    margin-top: 1.55em;
+}
+
+#intentos>input, input[type="date"] {
+    width: auto;
+}
+
+#intentos>input {
+    float: left;
+}
+
+#intentos>input[type="number"] {
+    margin-left: .5em;
 }

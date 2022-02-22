@@ -41,7 +41,8 @@ export class AddExerciseComponent implements OnInit {
     desde: ['', [Validators.required]],
     hasta: ['', [Validators.required]],
     asignatura: ['', [Validators.required]],
-    max_intentos: ['', [Validators.required]]
+    max_intentos: [1, [Validators.required]],
+    range_max_intentos: [1]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
@@ -345,6 +346,14 @@ export class AddExerciseComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  changeValue(e, inputRange): void {
+    if(inputRange) {
+      this.formData.get('max_intentos').setValue(e);
+    } else {
+      this.formData.get('range_max_intentos').setValue(e);
+    }
   }
 
 }
