@@ -60,6 +60,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           .split('/')
           .slice(0, path.split('/').length - paramtersLen);
         this.currentUrl = pathArr.join('/');
+        // console.log('CURRENT URL:',this.currentUrl);
       });
 
     router.events
@@ -101,8 +102,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   findParentInPath(path): any {
+    // console.log('PATH:', path);
     const foundedMenuItem = this.menuItems.find((x) => x.to === path);
     if (!foundedMenuItem) {
+      if(path == '/app/dashboards/all/subjects/add-exercise' || path == '/app/dashboards/all/exercises/view-exercise') {
+        return path;
+      }
+    
       if (path.split('/').length > 1) {
         const pathArr = path.split('/');
         return this.findParentInPath(
@@ -303,5 +309,33 @@ export class SidebarComponent implements OnInit, OnDestroy {
             !x.roles || (x.roles && x.roles.includes(this.currentUser.role))
         )
       : [];
+  }
+
+  itemIsInclude(item): boolean {
+    let isInclude = false;
+
+    if(this.selectedParentMenu == '/app/dashboards/all/subjects/add-exercise') {
+      const path = this.router.url.split('?')[0];
+      const pathArr = path.split('/');
+            
+      if(pathArr[pathArr.length-2] == 'subjects' && item.label == 'menu.exercises') {
+        isInclude = true;
+      } else {
+        isInclude = false;
+      }
+    }
+
+    if(this.selectedParentMenu == '/app/dashboards/all/exercises/view-exercise') {
+      const path = this.router.url.split('?')[0];
+      const pathArr = path.split('/');
+            
+      if(pathArr[pathArr.length-2] == 'exercises' && item.label == 'menu.exercises') {
+        isInclude = true;
+      } else {
+        isInclude = false;
+      }
+    }
+
+    return isInclude;
   }
 }

@@ -3,7 +3,7 @@
         <perfect-scrollbar class="scroll" [config]="{suppressScrollX: true}">
             <ul class="list-unstyled">
                 <li *ngFor="let item of filteredMenuItems(menuItems)"
-                    [ngClass]="{'active': (selectedParentMenu === item.to && viewingParentMenu === '') || viewingParentMenu === item.to}">
+                    [ngClass]="{'active': ((selectedParentMenu === item.to || itemIsInclude(item)) && viewingParentMenu === '') || viewingParentMenu === item.to}">
                     <a *ngIf="item.newWindow" [href]="item.to" rel="noopener noreferrer" target="_blank">
                         <i [ngClass]="item.icon"></i>{{item.label | translate}}</a>
                     <a *ngIf="!item.newWindow && item.subs &&  item.subs.length>0"
