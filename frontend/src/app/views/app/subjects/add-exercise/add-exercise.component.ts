@@ -71,8 +71,9 @@ export class AddExerciseComponent implements OnInit {
       this.uidEx = this.sender.idExercise;
     }
 
-    // console.log(this.sender.idSubjectExercise);
-    // console.log(this.sender.idExercise);
+    // console.log('SUBJECT:',this.sender.idSubject);
+    // console.log('SUBJECT EXERCISE:',this.sender.idSubjectExercise);
+    // console.log('EXERCISE:',this.sender.idExercise);
 
     if(this.uid == undefined && this.uidEx == undefined) {
       // console.log('eeee');
@@ -165,7 +166,11 @@ export class AddExerciseComponent implements OnInit {
         timeOut: 6000,
         showProgressBar: false
       });
-    } else {
+    } 
+    else if (!this.formData.dirty){
+      this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+    }
+    else {
       const desde = new Date(this.formData.get('desde').value);
       const hasta = new Date(this.formData.get('hasta').value);
 
@@ -197,7 +202,7 @@ export class AddExerciseComponent implements OnInit {
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
 
-          this.sender.showMsgEditEx = true;
+          if(this.formData.dirty) { this.sender.showMsgEditEx = true; }
           this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
 
           this.notifications.create('Ejercicio editado', 'Se ha editado el Ejercicio correctamente', NotificationType.Info, {

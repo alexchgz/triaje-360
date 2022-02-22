@@ -89,7 +89,7 @@ export class DataListComponent implements OnInit {
           this.isLoading = false;
           this.data = data['ejercicios'];
           this.exercisesInTime = data['ejerciciosEnTiempo'];
-          console.log(data['ejercicios']);
+          // console.log(data['ejercicios']);
           // this.ejerciciosUsuario = data['ejerciciosUsuario'];
 
           this.changeDateFormat();
@@ -165,6 +165,7 @@ export class DataListComponent implements OnInit {
   subjectChange(subject: Asignatura): void {
     //console.log(year.uid);
     this.itemSubject = subject.uid.toString();
+    this.sender.idSubject = subject.uid.toString();
     console.log(this.itemSubject);
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }

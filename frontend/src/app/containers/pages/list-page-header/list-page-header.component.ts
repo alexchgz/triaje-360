@@ -204,6 +204,8 @@ export class ListPageHeaderComponent implements OnInit {
   onAddNewItem(): void {
     if(this.component == 'exercises') {
       this.router.navigate(['app/dashboards/all/subjects/add-exercise']);
+      this.sender.idSubject = undefined;
+      this.sender.idSubjectExercise = undefined;
     } else {
       this.addNewItem.emit(null);
     }

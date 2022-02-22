@@ -31,7 +31,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.cancel' | translate }}</button>
-            <button type="submit" class="btn btn-primary float-right" [disabled]="formData.invalid">{{ 'pages.submit' | translate}}</button>
+            <button type="submit" class="btn btn-primary float-right" [disabled]="!(formData.valid && formData.dirty)">{{ 'pages.submit' | translate}}</button>
         </div>
     </form>
 </ng-template>
