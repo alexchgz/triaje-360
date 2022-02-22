@@ -40,7 +40,8 @@ export class AddNewUserModalComponent {
     email: ['', [Validators.required]],
     password: ['', [Validators.required]],
     rol: ['', [Validators.required]],
-    activo: ['', [Validators.requiredTrue]]
+    activo: [{value: true, disabled: true}, [Validators.required]]
+    // activo: ['', [Validators.requiredTrue]]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
@@ -92,7 +93,10 @@ export class AddNewUserModalComponent {
     console.log('Envío formulario');
 
     this.formSubmited = true;
-    if (this.formData.invalid) { console.log(this.formData.invalid )}
+    if (this.formData.invalid) { 
+      console.log(this.formData.invalid );
+      return;
+    }
 
     if(this.user) {
       this.usuarioService.updateUser(this.formData.value, this.user.uid)

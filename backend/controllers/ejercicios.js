@@ -240,7 +240,6 @@ const getEjercicios = async(req, res = response) => {
         // console.log('DATE:', now);
         for(let i=0; i<ejercicios.length; i++) {
             if(now < ejercicios[i].hasta) {
-                console.log(ejercicios[i].hasta);
                 // console.log('SE PUEDE HACER EL EJERCICIO');
                 ejerciciosEnTiempo.push(ejercicios[i]._id);
             }

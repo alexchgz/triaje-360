@@ -30,7 +30,7 @@ export class AddNewSchoolYearModalComponent {
   public formData=this.fb.group({
     nombre: ['', [Validators.required]],
     nombrecorto: ['', [Validators.required]],
-    activo: ['', [Validators.required]]
+    activo: ['']
   });
 
 
@@ -54,7 +54,7 @@ export class AddNewSchoolYearModalComponent {
     console.log('Envío formulario');
 
     this.formSubmited = true;
-    if (this.formData.invalid) { console.log(this.formData.invalid )}
+    if (this.formData.invalid) { return; }
 
     if(this.schoolYear) {
       this.cursoService.updateSchoolYear(this.formData.value, this.schoolYear.uid)

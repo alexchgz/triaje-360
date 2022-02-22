@@ -38,7 +38,7 @@
         </div>
         <div class="mt-2" id="hasta">
             <label>{{ 'pages.exercise-to' | translate }}</label>
-            <input type="date" class="form-control" formControlName="hasta" placeholder="" min="{{todayString}}" required>
+            <input type="date" class="form-control" formControlName="hasta" placeholder="" min="{{tomorrowString}}" required>
             <!-- <input type="date" class="form-control" formControlName="hasta" placeholder="" required> -->
         </div>
         <div class="mt-2" id="descripcion">
@@ -48,7 +48,7 @@
     </div>
     <div class="modal-footer">
         <button (click)="goBack()" id="danger" class="btn btn-outline-primary float-right">{{ 'pages.cancel' | translate}}</button>
-        <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
+        <button type="submit" class="btn btn-primary float-right" [disabled]="formData.invalid">{{ 'pages.submit' | translate}}</button>
     </div>
 </form>
 <simple-notifications></simple-notifications>

@@ -32,14 +32,14 @@
                 <label>{{ 'pages.user-password' | translate }}</label>
                 <input type="password" class="form-control" formControlName="password" placeholder="" required>
             </div>
-            <!-- Diferenciamos para marcar el campo DISBALED o NO -->
+            <!-- Diferenciamos para marcar el campo DISABLED o NO -->
             <div *ngIf="user!=undefined" class="mt-4">
                 <label>{{ 'pages.school-year-active' | translate }}</label>
                 <input type="checkbox" class="form-control" formControlName="activo" placeholder="">
             </div>
             <div *ngIf="user==undefined" class="mt-4">
                 <label>{{ 'pages.school-year-active' | translate }}</label>
-                <input type="checkbox" class="form-control" formControlName="activo" placeholder="" disabled>
+                <input type="checkbox" class="form-control" formControlName="activo" placeholder="">
             </div>
             <!--  -->
             <div class="mt-2">
@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.cancel' | translate }}</button>
-            <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button>
+            <button type="submit" class="btn btn-primary float-right" [disabled]="formData.invalid">{{ 'pages.submit' | translate}}</button>
         </div>
     </form>
 </ng-template>

@@ -86,7 +86,7 @@ export class AddNewSubjectModalComponent {
     console.log('Envío formulario');
 
     this.formSubmited = true;
-    if (this.formData.invalid) { console.log(this.formData.invalid )}
+    if (this.formData.invalid) { return; }
 
     if(this.subject) {
       console.log(this.formData.value);

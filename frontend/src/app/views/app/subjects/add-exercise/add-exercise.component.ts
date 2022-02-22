@@ -31,6 +31,7 @@ export class AddExerciseComponent implements OnInit {
   uidEx: number;
   totalItem: 0;
   todayString: string;
+  tomorrowString: string;
 
   // FORM
   private formSubmited = false;
@@ -51,13 +52,15 @@ export class AddExerciseComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // para comprobar la fecha de hoy en el input
+    // para comprobar la fecha de hoy y mañana en el input
     var today = new Date();
-    console.log(today);
+    var tomorrow = new Date(today.getTime() + 24*60*60*1000);
+    // console.log(today);
     this.todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
+    this.tomorrowString = this.datePipe.transform(tomorrow, 'yyyy-MM-dd');
     // console.log(this.todayString);
     this.formData.get('desde').setValue(this.todayString);
-    this.formData.get('hasta').setValue(this.todayString);
+    this.formData.get('hasta').setValue(this.tomorrowString);
 
     if(this.sender.idSubjectExercise) {
       this.uid = this.sender.idSubjectExercise;
@@ -187,7 +190,7 @@ export class AddExerciseComponent implements OnInit {
   createExercise(): void {
 
     this.formSubmited = true;
-    if (this.formData.invalid) { console.log(this.formData.invalid )}
+    if (this.formData.invalid) { return; }
 
     if(this.exercise) {
       console.log(this.exercise);

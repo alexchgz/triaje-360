@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm: NgForm;
-  emailModel = 'admin@gmail.com';
+  emailModel = 'default@gmail.com';
   passwordModel = '';
 
   buttonDisabled = false;
