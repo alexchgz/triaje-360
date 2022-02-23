@@ -9,7 +9,7 @@
         <div class="card">
             <tabset class="card-tabs">
                 <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
-                    <div class="d-inline-block">
+                    <div class="d-inline-block derecha">
                         <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                             <input #val type="text" class="form-control" placeholder="Buscar" (keyup)="buscarProfes(val.value)">
                         </div>
@@ -19,18 +19,18 @@
                     <table *ngIf="profesoresAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col">Email</th>
-                                <th scope="col">Nombre</th>
+                                <th class="t-email" scope="col">Email</th>
+                                <th class="t-nombre" scope="col">Nombre</th>
                                 <!-- <th scope="col">Apellidos</th> -->
-                                <th *ngIf="userRole == 0" scope="col">Eliminar</th>
+                                <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of profesoresAsignados">
                             <tr>
-                                <td>{{p.email}}</td>
-                                <td>{{p.apellidos}}, {{p.nombre}}</td>
+                                <td class="t-email">{{p.email}}</td>
+                                <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="userRole == 0" class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -39,24 +39,24 @@
                     <table *ngIf="userRole == 0 && profesoresNoAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col">Email</th>
-                                <th scope="col">Nombre</th>
+                                <th class="t-email" scope="col">Email</th>
+                                <th class="t-nombre" scope="col">Nombre</th>
                                 <!-- <th scope="col">Apellidos</th> -->
-                                <th scope="col">Añadir</th>
+                                <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of profesoresNoAsignados">
                             <tr>
-                                <td>{{p.email}}</td>
-                                <td>{{p.apellidos}}, {{p.nombre}}</td>
+                                <td class="t-email">{{p.email}}</td>
+                                <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="p.activo" class="icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
+                                <td *ngIf="p.activo" class="t-icono icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
                 </tab>
                 <tab heading="{{'pages.students-title' | translate}}" class="card-body">
-                    <div class="d-inline-block">
+                    <div class="d-inline-block derecha">
                         <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                             <input #val2 type="text" class="form-control" placeholder="Buscar" (keyup)="buscarAlumnos(val2.value)">
                         </div>
@@ -66,18 +66,18 @@
                     <table *ngIf="alumnosAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col">Email</th>
-                                <th scope="col">Nombre</th>
+                                <th class="t-email" scope="col">Email</th>
+                                <th class="t-nombre" scope="col">Nombre</th>
                                 <!-- <th scope="col">Apellidos</th> -->
-                                <th *ngIf="userRole == 0" scope="col">Eliminar</th>
+                                <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of alumnosAsignados">
                             <tr>
-                                <td>{{p.email}}</td>
-                                <td>{{p.apellidos}}, {{p.nombre}}</td>
+                                <td class="t-email">{{p.email}}</td>
+                                <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="userRole == 0" class="icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -87,42 +87,22 @@
                     <table *ngIf="userRole == 0 && alumnosNoAsignados.length > 0" class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col">Email</th>
-                                <th scope="col">Nombre</th>
+                                <th class="t-email" scope="col">Email</th>
+                                <th class="t-nombre" scope="col">Nombre</th>
                                 <!-- <th scope="col">Apellidos</th> -->
-                                <th scope="col">Añadir</th>
+                                <th class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let p of alumnosNoAsignados">
                             <tr>
-                                <td>{{p.email}}</td>
-                                <td>{{p.apellidos}}, {{p.nombre}}</td>
+                                <td class="t-email">{{p.email}}</td>
+                                <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td class="icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
+                                <td class="t-icono icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
                             </tr>
                         </tbody>
                     </table>
                 </tab>
-                <!-- <tab heading="{{'pages.exercises-title' | translate}}" class="card-body">
-                    <p class="font-weight-bold">Lista Ejercicios</p>
-
-                    <table class="table table-borderless">
-                      <thead>
-                          <tr>
-                              <th scope="col">Email</th>
-                              <th scope="col">Nombre</th>
-                              <th scope="col">Apellidos</th>
-                          </tr>
-                      </thead>
-                      <tbody *ngFor="let p of alumnos">
-                          <tr>
-                              <td>{{p.email}}</td>
-                              <td>{{p.nombre}}</td>
-                              <td>{{p.apellidos}}</td>
-                          </tr>
-                      </tbody>
-                  </table>
-                </tab> -->
             </tabset>
         </div>
     </div>
