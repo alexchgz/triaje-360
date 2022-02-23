@@ -18,52 +18,22 @@
         <!-- asihda -->
 
         <div *ngIf="totalItem > 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
-            <div class="card-dashborad d-flex flex-grow-1 min-width-zero">
-                <div *ngIf="userRole == 0" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
-                    <span class="codigo title-card list-item-heading mb-0">
+            <div class="card-dashboard d-flex flex-grow-1 min-width-zero">
+                <div class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
+                    <span class="codigo title-card list-item-heading mb-0 w-10 w-xs-100">
                         <span>Código</span>
                     </span>
-                    <span class="nombre title-card list-item-heading mb-0">
+                    <span class="nombre title-card list-item-heading mb-0 w-xs-100">
                         <span>Nombre</span>
                     </span>
-                    <span class="curso title-card list-item-heading mb-0">
-                        <span>Curso A.</span>
+                    <span class="curso title-card list-item-heading mb-0 w-xs-100">
+                        <span>Curso</span>
                     </span>
-                    <span class="datos title-card list-item-heading mb-0">
+                    <span class="datos title-card list-item-heading mb-0 w-xs-100">
                         <span>Datos</span>
                     </span>
-                    <span class="opciones list-item-heading mb-0">
-                        <span></span>
-                    </span>
-                </div>
-
-                <div *ngIf="userRole == 1" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
-                    <span class="codigo2 title-card list-item-heading mb-0">
-                    <span>Código</span>
-                    </span>
-                    <span class="nombre2 title-card list-item-heading mb-0">
-                      <span>Nombre</span>
-                    </span>
-                    <span class="curso2 title-card list-item-heading mb-0">
-                      <span>Curso A.</span>
-                    </span>
-                    <span class="datos2 title-card list-item-heading mb-0">
-                      <span>Datos</span>
-                    </span>
-                </div>
-
-                <div *ngIf="userRole == 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
-                    <span class="codigo3 title-card list-item-heading mb-0">
-                  <span>Código</span>
-                    </span>
-                    <span class="nombre3 title-card list-item-heading mb-0">
-                    <span>Nombre</span>
-                    </span>
-                    <span class="curso3 title-card list-item-heading mb-0">
-                    <span>Curso A.</span>
-                    </span>
-                    <span class="datos3 title-card list-item-heading mb-0">
-                    <span>Datos</span>
+                    <span class="acciones title-card list-item-heading mb-0 w-xs-100">
+                        <span>Acciones</span>
                     </span>
                 </div>
 
@@ -72,29 +42,41 @@
         </div>
 
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index">
-            <div class="d-flex flex-grow-1 min-width-zero">
+            <div class="d-flex flex-grow-1 min-width-zero atc">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                    <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
-                      {{p.nombrecorto}} ({{ p.codigo }})
-                    </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.nombre}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.curso.nombrecorto}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">Ejercicios: {{p.ejercicios.length}}</p>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">Profesores: {{p.profesores.length}}</p>
-                    <p *ngIf="userRole == 0 || userRole == 1" class="mb-0 text-muted text-small w-15 w-xs-100">Alumnos: {{p.alumnos.length}}</p>
-                    <!-- <i *ngIf="userRole == 0" class="simple-icon-plus" [routerLink]="['/app/dashboards/all/subjects/add-exercise/', p.uid]"></i> -->
-                    <i *ngIf="userRole == 0" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Añadir Ejercicio" (click)="toCreateExercise(p.uid)"></i>
-                    <!-- <i class="simple-icon-notebook ml-3" [routerLink]="['/app/dashboards/all/exercises/data-list/', p.uid]"></i> -->
-                    <i class="simple-icon-notebook ml-3" data-toggle="tooltip" data-placement="bottom" title="Ver Ejercicios" (click)="toExercises(p.uid)"></i>
-                    <i *ngIf="userRole != 2" class="simple-icon-user ml-3" data-toggle="tooltip" data-placement="bottom" title="Gestionar Asignatura" (click)="showManageModal(p)"></i>
-                    <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Asignatura" (click)="showAddNewModal(p)"></i>
-                    <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Asignatura" (click)="dropSubject(p)"></i>
+                    <!-- INFO -->
+                    <div class="codigo">
+                        <a class="list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
+                            {{p.nombrecorto}} ({{ p.codigo }})
+                        </a>
+                    </div>
+                    <div class="nombre">
+                        <p class="mb-0 text-muted text-small w-xs-100">{{p.nombre}}</p>
+                    </div>
+                    <div class="curso">
+                        <p class="mb-0 text-muted text-small w-xs-100">{{p.curso.nombrecorto}}</p>
+                    </div>
+                    <!-- DATOS -->
+                    <div class="datos atc d-flex mb-0 text-muted text-small w-xs-100">
+                        <p class="mb-0 text-muted text-small">Ejercicios: {{p.ejercicios.length}}</p>
+                        <p class="mb-0 text-muted text-small">Profesores: {{p.profesores.length}}</p>
+                        <p *ngIf="userRole == 0 || userRole == 1" class="mb-0 text-muted text-small">Alumnos: {{p.alumnos.length}}</p>
+                    </div>
+
+                    <!-- ACCIONES -->
+                    <div class="acciones atc d-flex mb-0 text-muted text-small w-xs-100">
+                        <i *ngIf="userRole == 0" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Añadir Ejercicio" (click)="toCreateExercise(p.uid)"></i>
+                        <i class="simple-icon-notebook ml-3" data-toggle="tooltip" data-placement="bottom" title="Ver Ejercicios" (click)="toExercises(p.uid)"></i>
+                        <i *ngIf="userRole != 2" class="simple-icon-user ml-3" data-toggle="tooltip" data-placement="bottom" title="Gestionar Asignatura" (click)="showManageModal(p)"></i>
+                        <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Asignatura" (click)="showAddNewModal(p)"></i>
+                        <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Asignatura" (click)="dropSubject(p)"></i>
+                    </div>
 
                 </div>
                 <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-          <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
-            (change)="onSelect(p)">
-          <label class="custom-control-label" [for]="'customCheck'+i"></label>
+                    <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                    (change)="onSelect(p)">
+                    <label class="custom-control-label" [for]="'customCheck'+i"></label>
                 </label>
             </div>
         </div>

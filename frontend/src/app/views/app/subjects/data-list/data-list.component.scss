@@ -1,3 +1,8 @@
+
+.block {
+    display: inline-block;
+}
+
 .tc {
     padding: 1em 1.75em;
 }
@@ -8,6 +13,12 @@
     border: 3px solid transparent;
     border-radius: 10px;
     box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
+    text-align: center;
+    width: 100%;
+}
+
+.atc {
+    text-align: center !important;
 }
 
 .title-card {
@@ -22,28 +33,31 @@
     border-radius: 20px;
 }
 
-.card-dashborad {
-    text-align: left;
-}
-
 .codigo {
-    width: 25.8% !important;
+    width: 10% !important;
 }
 
 .nombre {
-    width: 10.5% !important;
+    width: 20% !important;
 }
 
 .curso {
-    width: 21% !important;
+    width: 10% !important;
 } 
 
 .datos {
-    width: 14%;
+    width: 35%;
+    justify-content: center;
 }
 
-.opciones {
-    width: 14%;
+.datos>p {
+    padding: 0 1em;
+}
+
+.acciones {
+    width: 25%;
+    justify-content: center;
+    // float: right;
 }
 
 .codigo2 {
