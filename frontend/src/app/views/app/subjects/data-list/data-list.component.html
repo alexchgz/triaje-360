@@ -69,15 +69,21 @@
                         <i class="simple-icon-notebook ml-3" data-toggle="tooltip" data-placement="bottom" title="Ver Ejercicios" (click)="toExercises(p.uid)"></i>
                         <i *ngIf="userRole != 2" class="simple-icon-user ml-3" data-toggle="tooltip" data-placement="bottom" title="Gestionar Asignatura" (click)="showManageModal(p)"></i>
                         <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Asignatura" (click)="showAddNewModal(p)"></i>
-                        <i *ngIf="userRole == 0" class="simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Asignatura" (click)="dropSubject(p)"></i>
+                        <i *ngIf="userRole == 0" class="last-icon simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Asignatura" (click)="dropSubject(p)"></i>
+                        <!-- CHECKBOX SELECCIONAR -->
+                        <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                            <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                            (change)="onSelect(p)">
+                            <label class="custom-control-label" [for]="'customCheck'+i"></label>
+                        </label>
                     </div>
-
                 </div>
-                <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                <!-- CHECKBOX SELECCIONAR -->
+                <!-- <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                     <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
                     (change)="onSelect(p)">
                     <label class="custom-control-label" [for]="'customCheck'+i"></label>
-                </label>
+                </label> -->
             </div>
         </div>
     </div>
