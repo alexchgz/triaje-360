@@ -43,7 +43,6 @@ export class DataListComponent implements OnInit {
   totalEjerciciosUsuario = 0;
   ejerciciosUsuario: EjerciciosUsuario[] = [];
 
-  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,

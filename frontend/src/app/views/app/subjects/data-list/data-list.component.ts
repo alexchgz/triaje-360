@@ -36,7 +36,6 @@ export class DataListComponent implements OnInit {
   userRole: number;
   userId: string;
 
-  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSubjectModalComponent;
   @ViewChild('manageModalRef', { static: true }) manageModalRef: ManageSubjectModalComponent;
 

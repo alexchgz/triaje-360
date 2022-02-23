@@ -29,7 +29,6 @@ export class DataListComponent implements OnInit {
   // itemYear = 0;
   itemRol = '';
 
-  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewUserModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private usuarioService: UsuarioService, private notifications: NotificationsService, public sender: SenderService) {

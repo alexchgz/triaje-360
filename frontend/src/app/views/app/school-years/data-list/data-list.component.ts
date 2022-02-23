@@ -30,7 +30,6 @@ export class DataListComponent implements OnInit {
   // @Output puedeActivo = true;
   // puedeActivo = true;
 
-  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
   constructor(private hotkeysService: HotkeysService, private cursoService: CursoService, private notifications: NotificationsService, public sender: SenderService) {

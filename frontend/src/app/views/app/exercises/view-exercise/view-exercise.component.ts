@@ -28,7 +28,6 @@ export class ViewExerciseComponent implements OnInit {
   itemSubject = '';
   data: Usuario[] = [];
 
-  @ViewChild('basicMenu') public basicMenu: ContextMenuComponent;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: ShowStudentRegisterModalComponent;
 
   constructor(private sender: SenderService, private auth: AuthService, private ejercicioService: EjercicioService) { }

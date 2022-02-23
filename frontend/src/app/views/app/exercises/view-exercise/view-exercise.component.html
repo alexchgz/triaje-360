@@ -6,7 +6,7 @@
         <!-- <p>view-exercise LIST works!</p> -->
 
         <!-- SI NO HAY RESULTADOS -->
-        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     No hay alumnos asignados a la asignatura
@@ -15,7 +15,7 @@
         </div>
 
         <!-- SI HAY RESULTADOS -->
-        <div *ngIf="totalItem > 0" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div *ngIf="totalItem > 0">
             <!-- LABEL CAMPOS -->
             <div class="card-dashborad mb-3 d-flex flex-grow-1 min-width-zero">
                 <div class="tc card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
@@ -31,7 +31,7 @@
             </div>
 
             <!-- MOSTRAR RESULTADOS -->
-            <div [ngClass]="{'card d-flex flex-row mb-3': true}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div [ngClass]="{'card d-flex flex-row mb-3': true}" *ngFor="let p of data; let i=index">
                 <div class="d-flex flex-grow-1 min-width-zero">
                     <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                         <a class="nombre list-item-heading mb-0 truncate w-xs-100" href="javascript:;">

@@ -2,22 +2,11 @@
     (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)" (subjectChange)="subjectChange($event)" [selected]="selected" (dropExercises)="dropExercises($event)">
 </app-list-page-header>
 <app-add-new-exercise-modal #addNewModalRef></app-add-new-exercise-modal>
-<!-- <context-menu #basicMenu>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('copy',$event.item)">
-    <i class="simple-icon-docs mr-1"></i> <span>Copy</span>
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('move-to-archive',$event.item)">
-    <i class="simple-icon-drawer mr-1"></i> <span>Move to archive</span>
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('delete',$event.item)">
-    <i class="simple-icon-trash mr-1"></i><span>Delete</span>
-  </ng-template>
-</context-menu> -->
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
 
-        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     No hay resultados relacionados con la búsqueda.
@@ -25,7 +14,7 @@
             </div>
         </div>
 
-        <div *ngIf="totalItem > 0" [ngClass]="{'card d-flex flex-row mb-3': true}" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div *ngIf="totalItem > 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
             <div class="card-dashborad d-flex flex-grow-1 min-width-zero">
                 <div *ngIf="userRole != 2" class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
                     <span class="nombre title-card list-item-heading mb-0">
@@ -69,7 +58,7 @@
         </div>
 
 
-        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <a class="list-item-heading mb-0 truncate w-25 w-xs-100" href="javascript:;" (click)="toViewExercise(p.uid)">
@@ -106,7 +95,7 @@
     </div>
 
     <div class="col-12 list" *ngIf="displayMode==='thumb'">
-        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index">
             <a class="d-flex" href="javascript:;">
                 <img [src]="p.img" [alt]="p.title" class="list-thumbnail responsive border-0 card-img-left" />
             </a>
@@ -132,7 +121,7 @@
 
     <div class="col-12 list" *ngIf="displayMode==='image'">
         <div class="row">
-            <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu" [contextMenuSubject]="p">
+            <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4" *ngFor="let p of data; let i=index">
                 <div [ngClass]="{'card': true, 'active':isSelected(p)}">
                     <div class="position-relative">
                         <a href="javascript:;"><img class="card-img-top" [src]="p.img" [alt]="p.title"></a>
