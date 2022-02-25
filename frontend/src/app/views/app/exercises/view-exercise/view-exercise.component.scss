@@ -4,6 +4,7 @@
     border: 3px solid transparent;
     border-radius: 10px;
     box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
+    text-align: center;
 }
 
 .title-card {
@@ -14,19 +15,29 @@
     background-color: #145388;
     color: white;
     padding: .15rem .4em;
-    border: 2px solid white;
-    border-radius: 20px;
+    border-bottom: 1.5px solid white;
+    // border-radius: 20px;
+}
+
+.atc {
+    text-align: center !important;
+}
+
+.atc>div>.nombre, .tc>.nombre {
+    text-align: left !important;
+    padding-left: 1em;
 }
 
 .nombre {
-    width: 40% !important;
+    width: 25% !important;
 }
 
 .email {
-    width: 60% !important;
+    width: 50% !important;
 }
 
-.options {
-    margin-right: .5em;
-    padding: .5em;
+.acciones {
+    width: 25%;
+    justify-content: center;
+    // float: right;
 }
