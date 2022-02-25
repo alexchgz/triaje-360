@@ -27,6 +27,7 @@ router.get('/alumnos', [
     check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
     check('asignatura', 'Desde debe ser una cadena de texto').optional().isString(),
     check('userId', 'Desde debe ser una cadena de texto').optional().isString(),
+    check('texto', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getAlumnosEjercicio);
 

@@ -1,4 +1,6 @@
-<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)"></app-list-page-header>
+<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" 
+(changeDisplayMode)="changeDisplayMode($event)" (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)" 
+(searchKeyUp)="searchKeyUp($event)"></app-list-page-header>
 <app-show-student-register-modal #addNewModalRef></app-show-student-register-modal>
 
 <div class="row">
@@ -36,9 +38,9 @@
                 <div class="d-flex flex-grow-1 min-width-zero atc">
                     <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                         <a class="nombre list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
-                          {{p.usuario.apellidos}}, {{p.usuario.nombre}}
+                            {{p.apellidos}}, {{p.nombre}}
                         </a>
-                        <p class="email mb-0 text-muted text-small w-xs-100">{{p.usuario.email}}</p>
+                        <p class="email mb-0 text-muted text-small w-xs-100">{{p.email}}</p>
     
                         <i class="acciones simple-icon-eye w-xs-100" data-toggle="tooltip" data-placement="bottom" title="Ver Registros Alumno" (click)="showStudentModal(p.usuario)"></i>
 

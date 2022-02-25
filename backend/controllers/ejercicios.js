@@ -1,5 +1,6 @@
 const Ejercicio = require('../models/ejercicios');
 const Asignatura = require('../models/asignaturas');
+const Usuario = require('../models/usuarios');
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 
 const { response } = require('express');
@@ -7,6 +8,7 @@ const validator = require('validator');
 
 const { infoToken } = require('../helpers/infotoken');
 const ejerciciosUsuario = require('../models/ejerciciosUsuario');
+const usuarios = require('../models/usuarios');
 
 const getEjercicios = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -285,6 +287,14 @@ const getAlumnosEjercicio = async(req, res = response) => {
     const asignatura = req.query.asignatura;
     const userId = req.query.userId;
 
+    let texto = req.query.texto;
+    // console.log(texto);
+    let textoBusqueda = '';
+    if (texto) {
+        textoBusqueda = new RegExp(texto, 'i');
+        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
+    }
+
     // Solo puede crear asignaturas un admin
     const token = req.header('x-token');
 
@@ -305,10 +315,32 @@ const getAlumnosEjercicio = async(req, res = response) => {
                     }
                 },
             });
-            // ejercicio = this.getEjercicios(idEjercicio);
-            // console.log(ejercicio);
+            
             alumnosEjercicio = ejercicio.asignatura.alumnos;
             // console.log(alumnosEjercicio);
+            
+            let alumnosEjercicioFiltrados = [];
+            if(texto != undefined) {
+                let alumnosFiltrados = [];
+                alumnosFiltrados = await Usuario.find({ rol: 'ROL_ALUMNO', $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
+                .populate('curso', '-__v');
+
+                for(let i=0; i<alumnosFiltrados.length; i++) {
+                    for(let j=0; j<alumnosEjercicio.length; j++) {
+                        if(alumnosFiltrados[i]._id.equals(alumnosEjercicio[j].usuario._id)) {
+                            alumnosEjercicioFiltrados.push(alumnosFiltrados[i]);
+
+                        }
+                    }
+                }
+    
+            } else {
+                for(let i=0; i<alumnosEjercicio.length; i++) {
+                    alumnosEjercicioFiltrados.push(alumnosEjercicio[i].usuario);
+                }
+            }
+
+            alumnosEjercicio = alumnosEjercicioFiltrados;
 
         } else {
             return res.status(400).json({

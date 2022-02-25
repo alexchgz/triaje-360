@@ -43,7 +43,7 @@ const getCursos = async(req, res = response) => {
                     // consulta con los parametros establecidos
                     Curso.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
                     // consulta para obtener el numero total de usuarios
-                    Curso.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
+                    Curso.countDocuments({ $or: [{ nombre: textoBusqueda }, { nombrecorto: textoBusqueda }] })
                 ]);
             }
             else {

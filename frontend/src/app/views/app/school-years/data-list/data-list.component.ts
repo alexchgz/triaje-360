@@ -48,10 +48,10 @@ export class DataListComponent implements OnInit {
     this.sender.idSubject = undefined;
     this.sender.idSubjectExercise = undefined;
     this.sender.idExercise = undefined;
-    this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
+    this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, '');
   }
 
-  loadSchoolYears(pageSize: number, currentPage: number, schoolYear: number, search: string): void {
+  loadSchoolYears(pageSize: number, currentPage: number, schoolYear: number, search?: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;

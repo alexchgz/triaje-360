@@ -18,6 +18,7 @@ export class ViewExerciseComponent implements OnInit {
   itemsPerPage = 10;
   currentPage = 1;
   selectAllState = '';
+  search = '';
   totalItem = 0;
   isLoading: boolean;
   endOfTheList = false;
@@ -38,21 +39,21 @@ export class ViewExerciseComponent implements OnInit {
     this.itemSubject = this.sender.idSubject;
     this.exerciseId = this.sender.idExercise;
 
-    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, this.currentPage, this.itemSubject, this.userId, '');
   }
 
-  loadExerciseStudents(exerciseId: number, pageSize: number, currentPage: number, subject: string, userId: string): void {
+  loadExerciseStudents(exerciseId: number, pageSize: number, currentPage: number, subject: string, userId: string, search: string): void {
 
     // console.log(this.userRole);
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.ejercicioService.getExerciseStudents(exerciseId, pageSize, currentPage, subject, userId).subscribe(
+    this.ejercicioService.getExerciseStudents(exerciseId, pageSize, currentPage, subject, userId, search).subscribe(
       data => {
         if (data['ok']) {
           // console.log(data);
           this.isLoading = false;
           this.data = data['alumnosEjercicio'];
-          console.log(data['alumnosEjercicio']);
+          // console.log(data['alumnosEjercicio']);
 
           this.totalItem = this.data.length;
           
@@ -90,13 +91,20 @@ export class ViewExerciseComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, event.page, this.itemSubject, this.userId);
+    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, event.page, this.itemSubject, this.userId, this.search);
     // this.loadExercises(this.itemsPerPage, event.page, this.itemSubject, this.userId);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.loadExerciseStudents(this.exerciseId, perPage, 1, this.itemSubject, this.userId);
+    this.loadExerciseStudents(this.exerciseId, perPage, 1, this.itemSubject, this.userId, this.search);
     // this.loadExercises(perPage, 1, this.itemSubject, this.userId);
+  }
+
+  searchKeyUp(val: string): void {
+    // const val = event.target.value.toLowerCase().trim();
+    // console.log(val);
+    this.search = val;
+    this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, this.currentPage, this.itemSubject, this.userId, this.search);
   }
 
 }
