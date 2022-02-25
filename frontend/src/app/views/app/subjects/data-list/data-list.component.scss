@@ -61,6 +61,14 @@
     // float: right;
 }
 
+.up>i {
+    transform: translateY(6px);
+}
+
+.acciones>label {
+    transform: translateY(4px);
+}
+
 .last-icon {
     padding-right: 3em;
 }

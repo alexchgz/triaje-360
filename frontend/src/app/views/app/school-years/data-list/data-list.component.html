@@ -30,14 +30,17 @@
         <div *ngIf="totalItem > 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
             <div class="card-dashborad d-flex flex-grow-1 min-width-zero">
                 <div class="tc card-body align-self-center d-flex flex-column flex-md-row min-width-zero align-items-md-center">
-                    <span class="nombre title-card list-item-heading mb-0">
-                  <span>Nombre</span>
+                    <span class="nombre title-card list-item-heading mb-0 w-xs-100">
+                        <span>Nombre</span>
                     </span>
-                    <span class="curso title-card list-item-heading mb-0">
-                    <span>Curso</span>
+                    <span class="curso title-card list-item-heading mb-0 w-xs-100">
+                        <span>Curso</span>
                     </span>
-                    <span class="activo title-card list-item-heading mb-0">
-                    <span>Activo</span>
+                    <span class="activo title-card list-item-heading mb-0 w-xs-100">
+                        <span>Activo</span>
+                    </span>
+                    <span class="acciones title-card list-item-heading mb-0 w-xs-100">
+                        <span>Acciones</span>
                     </span>
                 </div>
             </div>
@@ -47,29 +50,33 @@
         </div>
 
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index">
-            <div class="d-flex flex-grow-1 min-width-zero">
+            <div class="d-flex flex-grow-1 min-width-zero atc">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                    <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
+                    <a class="nombre list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
                       {{p.nombre}}
                     </a>
-                    <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.nombrecorto}}</p>
-                    <ng-template *ngIf="p.activo then active else noActive"> </ng-template>
-                    <!-- <ng-template #active>
-                        <a class="mb-0 text-muted text-small w-30 w-xs-100">Activo</a>
-                    </ng-template>
-                    <ng-template #noActive>
-                        <p class="mb-0 text-muted text-small w-30 w-xs-100">No Activo</p>
-                    </ng-template> -->
-                    <i class="w-30 w-xs-100 simple-icon-check" *ngIf="p.activo"></i>
-                    <i class="w-30 w-xs-100 simple-icon-close" *ngIf="!p.activo"></i>
-                    <i class="simple-icon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar Curso Académico" (click)="showAddNewModal(p)"></i>
-                    <i class="simple-icon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar Curso Académico" (click)="dropSchoolYear(p)"></i>
+                    <p class="curso mb-0 text-muted text-small w-xs-100">{{p.nombrecorto}}</p>
+                    <ng-template *ngIf="p.activo then active else noActive"> </ng-template>                   
+                    <i class="activo w-xs-100 simple-icon-check" *ngIf="p.activo"></i>
+                    <i class="activo w-xs-100 simple-icon-close" *ngIf="!p.activo"></i>
+                    <!-- ACCIONES -->
+                    <div class="acciones atc d-flex mb-0 text-muted text-small w-xs-100">
+                        <i class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Curso Académico" (click)="showAddNewModal(p)"></i>
+                        <i class="last-icon simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Curso Académico" (click)="dropSchoolYear(p)"></i>
+                        <!-- CHECKBOX SELECCIONAR -->
+                        <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                            <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                                (change)="onSelect(p)">
+                            <label class="custom-control-label" [for]="'customCheck'+i"></label>
+                        </label>
+                    </div>
+
                 </div>
-                <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-          <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
-            (change)="onSelect(p)">
-          <label class="custom-control-label" [for]="'customCheck'+i"></label>
-                </label>
+                <!-- <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                    <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                        (change)="onSelect(p)">
+                    <label class="custom-control-label" [for]="'customCheck'+i"></label>
+                </label> -->
             </div>
         </div>
     </div>

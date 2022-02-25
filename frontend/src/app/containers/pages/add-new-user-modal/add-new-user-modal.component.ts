@@ -40,7 +40,8 @@ export class AddNewUserModalComponent {
     email: ['', [Validators.required]],
     password: ['', [Validators.required]],
     rol: ['', [Validators.required]],
-    activo: [{value: true, disabled: true}, [Validators.required]]
+    activo: ['']
+    // activo: [{value: true, disabled: true}, [Validators.required]]
     // activo: ['', [Validators.requiredTrue]]
   });
 

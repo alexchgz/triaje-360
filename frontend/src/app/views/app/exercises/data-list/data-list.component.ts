@@ -362,16 +362,12 @@ export class DataListComponent implements OnInit {
 
   }
 
-    // METODO ANTIGUO -> SE LLAMABA DESDE EL HTML
-  // dateIn(hasta: string): boolean {
-  //   const now = new Date();
-
-  //   if(new Date(hasta).getTime() < now.getTime()) {
-  //     return true;
-  //   }
-
-  //   return false;
-
-  // }
+  exerciseDisabled(): void {
+    this.notifications.create('Error', 'La realización de este Ejercicio ya no está disponible', NotificationType.Error, {
+      theClass: 'outline primary',
+      timeOut: 5000,
+      showProgressBar: false
+    });
+  }
 
 }

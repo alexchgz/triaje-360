@@ -12,6 +12,7 @@ input[type="checkbox"] {
     border: 3px solid transparent;
     border-radius: 10px;
     box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
+    text-align: center;
 }
 
 .title-card {
@@ -22,22 +23,49 @@ input[type="checkbox"] {
     background-color: #145388;
     color: white;
     padding: .15rem .4em;
-    border: 2px solid white;
-    border-radius: 20px;
+    border-bottom: 1.5px solid white;
+    // border-radius: 20px;
+}
+
+.atc {
+    text-align: center !important;
+}
+
+.atc>div>.nombre, .tc>.nombre {
+    text-align: left !important;
+    padding-left: 1em;
 }
 
 .nombre {
-    width: 42% !important;
+    width: 35% !important;
 }
 
 .email {
-    width: 16% !important;
+    width: 20% !important;
 }
 
 .rol {
-    width: 14% !important;
+    width: 15% !important;
 }
 
 .activo {
     width: 15% !important;
+}
+
+.acciones {
+    width: 20%;
+    justify-content: center;
+    // float: right;
+}
+
+.acciones>i {
+    transform: translateY(6px);
+}
+
+.acciones>label {
+    transform: translateY(4px);
+}
+
+.last-icon {
+    padding-right: 3em;
 }

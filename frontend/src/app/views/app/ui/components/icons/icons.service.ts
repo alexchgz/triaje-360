@@ -39,6 +39,7 @@ export class IconsService {
     'simple-icon-check',
     'simple-icon-clock',
     'simple-icon-plus',
+    'simple-icon-plus-disabled',
     'simple-icon-minus',
     'simple-icon-close',
     'simple-icon-event',
