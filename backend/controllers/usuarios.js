@@ -63,13 +63,6 @@ const getUsuarios = async(req, res) => {
                         // consulta para obtener el numero total de usuarios
                         Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
                     ]);
-                } else if (role == null) {
-                    [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
-                        // consulta para obtener el numero total de usuarios
-                        Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
-                    ]);
                 } else {
                     // usamos Promise.all para realizar las consultas de forma paralela
                     [usuarios, totalUsuarios] = await Promise.all([
@@ -89,13 +82,6 @@ const getUsuarios = async(req, res) => {
                     [usuarios, totalUsuarios] = await Promise.all([
                         // consulta con los parametros establecidos
                         Usuario.find({}, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                        // consulta para obtener el numero total de usuarios
-                        Usuario.countDocuments()
-                    ]);
-                } else if (role == null) {
-                    [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        Usuario.find({}, 'nombre apellidos email rol curso activo').populate('curso', '-__v'),
                         // consulta para obtener el numero total de usuarios
                         Usuario.countDocuments()
                     ]);

@@ -16,7 +16,7 @@ export class CursoService {
 
   // ******* PETICIONES CURSOS *********
 
-  getSchoolYears(pageSize?: number, currentPage?: number, schoolYear?: number) {
+  getSchoolYears(pageSize?: number, currentPage?: number, schoolYear?: number, search?: string) {
     const url = environment.base_url + '/cursos';
     const token = localStorage.getItem('token');
 
@@ -29,17 +29,13 @@ export class CursoService {
       if(currentPage) { params = params.append('currentPage', currentPage + ''); }
       if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
     }
-    //console.log(url);
-    //console.log(token);
+    if(search) {
+      // console.log(search);
+      params = params.append('texto', search + '');
+    }
+
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: ISchoolYearResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
+      
   }
 
   getSchoolYear(id: number) {

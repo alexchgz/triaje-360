@@ -15,6 +15,7 @@ router.get('/', [
     check('id', 'El id debe ser válido').optional().isMongoId(),
     check('pageSize', 'Desde debe ser un número').optional().isNumeric(),
     check('currentPage', 'Desde debe ser un número').optional().isNumeric(),
+    check('texto', 'Desde debe ser un objeto').optional().isString(),
     validarCampos
 ], getCursos);
 

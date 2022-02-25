@@ -9,16 +9,19 @@ const { infoToken } = require('../helpers/infotoken');
 
 // funciones
 const getCursos = async(req, res = response) => {
-    // parametros para la paginacion ->
-    // si no es un numero lo pone a 0
-    // const desde = Number(req.query.desde) || 0;
-    // cantidad de registros que vamos a mostrar por pagina
-    // const registropp = Number(process.env.DOCSPERPAGE);
-    // recogemos un parametro para poder buscar tambien por id
+    
     const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
+
+    let texto = req.query.texto;
+    // console.log(texto);
+    let textoBusqueda = '';
+    if (texto) {
+        textoBusqueda = new RegExp(texto, 'i');
+        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
+    }
 
     try {
         var cursos, totalCursos;
@@ -34,13 +37,23 @@ const getCursos = async(req, res = response) => {
 
         } else { // si no nos pasan el id
 
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [cursos, totalCursos] = await Promise.all([
-                // consulta con los parametros establecidos
-                Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
-                // consulta para obtener el numero total de usuarios
-                Curso.countDocuments()
-            ]);
+            if(texto != undefined) {
+                // usamos Promise.all para realizar las consultas de forma paralela
+                [cursos, totalCursos] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Curso.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+                    // consulta para obtener el numero total de usuarios
+                    Curso.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
+                ]);
+            }
+            else {
+                [cursos, totalCursos] = await Promise.all([
+                    // consulta con los parametros establecidos
+                    Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
+                    // consulta para obtener el numero total de usuarios
+                    Curso.countDocuments()
+                ]);
+            }
 
         }
 

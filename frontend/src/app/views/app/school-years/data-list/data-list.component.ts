@@ -48,32 +48,20 @@ export class DataListComponent implements OnInit {
     this.sender.idSubject = undefined;
     this.sender.idSubjectExercise = undefined;
     this.sender.idExercise = undefined;
-    this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+    this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
   }
 
-  loadSchoolYears(pageSize: number, currentPage: number, schoolYear: number): void {
+  loadSchoolYears(pageSize: number, currentPage: number, schoolYear: number, search: string): void {
 
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
-    this.cursoService.getSchoolYears(pageSize, currentPage, schoolYear).subscribe(
+    this.cursoService.getSchoolYears(pageSize, currentPage, schoolYear, search).subscribe(
       data => {
         if (data['ok']) {
           //console.log(data.usuarios);
           this.isLoading = false;
-          this.data = data['cursos'].map(x => {
-            return {
-              ...x,
-              // img: x.img.replace('/img/', '/img/products/')
-            };
-          });
+          this.data = data['cursos'];
 
-          // comprobacion de los cursos para ver si hay alguno activo ya
-          // for(let i = 0; i < this.data.length && this.puedeActivo; i++) {
-          //   if(this.data[i].activo) {
-          //     this.puedeActivo = false;
-          //   }
-          // }
-          // console.log(data.totalUsuarios);
           this.totalItem = data['totalCursos'];
           //console.log(this.totalItem);
           //this.totalPage = data.totalPage;
@@ -133,11 +121,11 @@ export class DataListComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.loadSchoolYears(this.itemsPerPage, event.page, this.itemYear);
+    this.loadSchoolYears(this.itemsPerPage, event.page, this.itemYear, this.search);
   }
 
   itemsPerPageChange(perPage: number): void {
-    this.loadSchoolYears(perPage, 1, this.itemYear);
+    this.loadSchoolYears(perPage, 1, this.itemYear, this.search);
   }
 
   dropSchoolYears(years: Curso[]): void {
@@ -145,7 +133,7 @@ export class DataListComponent implements OnInit {
     for(let i=0; i<years.length; i++){
       this.cursoService.dropSchoolYear(years[i].uid).subscribe(
         data => {
-          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
 
           this.notifications.create('Cursos Académicos eliminados', 'Se han eliminado los Cursos Académicos correctamente', NotificationType.Info, {
             theClass: 'outline primary',
@@ -172,7 +160,7 @@ export class DataListComponent implements OnInit {
     console.log(year);
       this.cursoService.dropSchoolYear(year.uid).subscribe(
         data => {
-          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear);
+          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
 
           this.notifications.create('Curso Académico eliminado', 'Se ha eliminado el Curso Académico correctamente', NotificationType.Info, {
             theClass: 'outline primary',
@@ -192,6 +180,13 @@ export class DataListComponent implements OnInit {
         }
       );
 
+  }
+
+  searchKeyUp(val: string): void {
+    // const val = event.target.value.toLowerCase().trim();
+    // console.log(val);
+    this.search = val;
+    this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
   }
 
   // changeOrderBy(item: any): void {

@@ -125,6 +125,9 @@ export class ListPageHeaderComponent implements OnInit {
         this.titleBreadcrumb = 'Ver Ejercicio';
       }
     }
+    else {
+      this.component = 'school-years';
+    }
   }
 
   loadSchoolYears(): void {

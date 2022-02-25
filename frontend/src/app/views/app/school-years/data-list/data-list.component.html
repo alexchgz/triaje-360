@@ -1,19 +1,7 @@
 <app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[5,10,25]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)" [selected]="selected" (dropUsers)="dropSchoolYears($event)">
+    (itemsPerPageChange)="itemsPerPageChange($event)" [selected]="selected" (dropUsers)="dropSchoolYears($event)" (searchKeyUp)="searchKeyUp($event)">
 </app-list-page-header>
 <app-add-new-school-year-modal #addNewModalRef></app-add-new-school-year-modal>
-
-<!-- <context-menu #basicMenu>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('copy',$event.item)">
-    <i class="simple-icon-docs mr-1"></i> <span>Copy</span>
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('move-to-archive',$event.item)">
-    <i class="simple-icon-drawer mr-1"></i> <span>Move to archive</span>
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="onContextMenuClick('delete',$event.item)">
-    <i class="simple-icon-trash mr-1"></i><span>Delete</span>
-  </ng-template>
-</context-menu> -->
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
