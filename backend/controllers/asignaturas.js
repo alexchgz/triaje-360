@@ -1,10 +1,13 @@
 const Asignatura = require('../models/asignaturas');
 const Curso = require('../models/cursos');
 const Usuario = require('../models/usuarios');
+const Ejercicio = require('../models/ejercicios');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const { infoToken } = require('../helpers/infotoken');
+const { deleteEjercicio } = require('../helpers/deleteEjercicio');
+// const { borrarEjercicio } = require('./ejercicios');
 
 const getAsignaturas = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -532,6 +535,14 @@ const borrarAsignatura = async(req, res = response) => {
             });
         }
 
+        if(existeAsignatura.ejercicios.length > 0) {
+            for(let i=0; i<existeAsignatura.ejercicios.length; i++) {
+                deleteEjercicio(existeAsignatura.ejercicios[i].ejercicio).then(borrarEjercicio => {
+                    console.log('Ejercicio eliminado:', borrarEjercicio);
+                });
+            }
+        }
+        
         const resultado = await Asignatura.findByIdAndRemove(uid);
 
         res.json({

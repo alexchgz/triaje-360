@@ -6,6 +6,8 @@ const { validator } = require('validator');
 const Curso = require('../models/cursos');
 
 const { infoToken } = require('../helpers/infotoken');
+const { helperAsignatura } = require('../helpers/helperAsignatura');
+// const { borrarAsignatura } = require('./asignaturas');
 
 // funciones
 const getCursos = async(req, res = response) => {
@@ -219,8 +221,13 @@ const borrarCurso = async(req, res = response) => {
             });
         }
 
+        helperAsignatura(existeCurso._id).then(borrarAsignatura => {
+            console.log('Asignatura eliminada:', borrarAsignatura);
+        });
+
         // si se ha superado la comprobacion, eliminamos el curso
         const curso = await Curso.findByIdAndRemove(uid);
+        
         res.json({
             ok: true,
             msg: 'Curso borrado',
