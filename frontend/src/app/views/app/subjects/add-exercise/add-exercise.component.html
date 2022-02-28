@@ -5,7 +5,7 @@
     <div class="modal-body">
         <div *ngIf="subject" id="asignatura">
             <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
-            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required>
+            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required disabled>
         </div>
         <div *ngIf="!subject" id="asignatura" class="mt-2">
             <label>{{ 'pages.exercise-subject' | translate }}</label>

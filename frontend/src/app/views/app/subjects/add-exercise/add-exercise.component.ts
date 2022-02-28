@@ -82,7 +82,7 @@ export class AddExerciseComponent implements OnInit {
     } else {
 
       // DESHABILITAMOS CAMPO 'ASIGNATURA'
-      this.formData.controls['asignatura'].disable();
+      // this.formData.controls['asignatura'].disable(); -> no se puede crear el ejercicio
 
       // si tenemos el id del ejercicio --> editar
       if(this.uidEx != null) {
