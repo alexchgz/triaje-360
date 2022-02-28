@@ -1,18 +1,11 @@
-<!-- <div class="top-right-button-container text-zero">
-    <button class="top-right-button btn btn-primary btn-lg mr-1" (click)="goBack()">VOLVER</button>
-</div> -->
 
 <app-list-page-header></app-list-page-header>
-
-<!-- <div class="modal-header">
-    <h4 class="modal-title pull-left">{{'pages.add-new-exercise-title' | translate}}</h4>
-</div> -->
 
 <form class="form-horizontal m-t-20 card card-body" [formGroup]="formData" (ngSubmit)="checkDate()">
     <div class="modal-body">
         <div *ngIf="subject" id="asignatura">
             <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
-            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required disabled="disabled">
+            <input type="text" class="form-control" formControlName="asignatura" placeholder="" required>
         </div>
         <div *ngIf="!subject" id="asignatura" class="mt-2">
             <label>{{ 'pages.exercise-subject' | translate }}</label>

@@ -81,18 +81,18 @@ export class AddExerciseComponent implements OnInit {
       this.getSubjects();
     } else {
 
-      console.log(this.uidEx);
-      // this.formData.get('uid').setValue(this.uid);
+      // DESHABILITAMOS CAMPO 'ASIGNATURA'
+      this.formData.controls['asignatura'].disable();
+
       // si tenemos el id del ejercicio --> editar
       if(this.uidEx != null) {
         this.ejercicioService.getExercise(this.uidEx).subscribe(
           data => {
-            console.log(data);
             if (data['ok']) {
               // console.log(data);
               this.isLoading = false;
               this.exercise = data['ejercicios'];
-              console.log(data['ejercicios']);
+              // console.log(data['ejercicios']);
               this.totalItem = data['totalEjercicios'];
               this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
               this.formData.get('nombre').setValue(this.exercise.nombre);
@@ -110,7 +110,7 @@ export class AddExerciseComponent implements OnInit {
         );
       }
 
-      console.log(this.uid);
+      // console.log(this.uid);
       this.loadSubjectData(this.uid);
     }
 
@@ -142,10 +142,10 @@ export class AddExerciseComponent implements OnInit {
     this.asignaturaService.getSubject(uid).subscribe(
       data => {
         if (data['ok']) {
-          console.log(data['asignaturas']);
+          // console.log(data['asignaturas']);
           this.subject = data['asignaturas'];
           // this.formData.get('asignatura').disable();
-          this.formData.get('asignatura').setValue(this.subject.uid)
+          this.formData.get('asignatura').setValue(this.subject.uid);
         } else {
           this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
           this.endOfTheList = true;
@@ -175,8 +175,8 @@ export class AddExerciseComponent implements OnInit {
       const desde = new Date(this.formData.get('desde').value);
       const hasta = new Date(this.formData.get('hasta').value);
 
-      console.log(desde.getTime());
-      console.log(hasta.getTime());
+      // console.log(desde.getTime());
+      // console.log(hasta.getTime());
 
       if(desde.getTime() <= hasta.getTime()) {
         // console.log('menor o igual');
@@ -199,7 +199,7 @@ export class AddExerciseComponent implements OnInit {
     if (this.formData.invalid) { return; }
 
     if(this.exercise) {
-      console.log(this.exercise);
+      // console.log(this.exercise);
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
 
@@ -236,7 +236,7 @@ export class AddExerciseComponent implements OnInit {
             this.asignaturaService.getSubject(this.formData.get('asignatura').value).subscribe(
               data => {
                 if (data['ok']) {
-                  console.log(data['asignaturas']);
+                  // console.log(data['asignaturas']);
                   this.subject = data['asignaturas'];
                   // this.formData.get('asignatura').disable();
 
@@ -284,7 +284,7 @@ export class AddExerciseComponent implements OnInit {
               }
             );
           }
-          console.log(this.subject);
+          // console.log(this.subject);
 
           // y lo añadimos a la lista de ejercicios de la asignatura
             // generamos primer id para el ejercicio
@@ -345,6 +345,8 @@ export class AddExerciseComponent implements OnInit {
   }
 
   goBack(): void {
+    this.sender.idSubject = undefined;
+    console.log('SS:', this.sender.idSubject);
     this.location.back();
   }
 

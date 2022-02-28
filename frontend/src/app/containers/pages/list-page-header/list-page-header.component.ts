@@ -121,8 +121,8 @@ export class ListPageHeaderComponent implements OnInit {
         this.loadSubjects();
       } else {
         this.component = 'view-exercises';
-        this.title = 'Ver Ejercicio';
-        this.titleBreadcrumb = 'Ver Ejercicio';
+        this.title = 'Ver Alumnos Ejercicio';
+        this.titleBreadcrumb = 'Ver Alumnos Ejercicio';
       }
     }
     else {
@@ -267,6 +267,9 @@ export class ListPageHeaderComponent implements OnInit {
   }
 
   goBack(): void {
+    if(this.sender.idSubject != undefined) {
+      this.sender.idSubject = undefined;
+    }
     this.location.back();
   }
 }
