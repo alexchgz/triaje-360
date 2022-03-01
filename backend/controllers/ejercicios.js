@@ -9,6 +9,7 @@ const validator = require('validator');
 const { infoToken } = require('../helpers/infotoken');
 const ejerciciosUsuario = require('../models/ejerciciosUsuario');
 const usuarios = require('../models/usuarios');
+const { deleteEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
 
 const getEjercicios = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -494,6 +495,11 @@ const borrarEjercicio = async(req, res = response) => {
                 msg: 'El ejercicio no existe'
             });
         }
+
+        // eliminamos registros del ejercicio antes de eliminarlo
+        deleteEjerciciosUsuario(existeEjercicio._id).then(borrarEjerciciosUsuario => {
+            console.log('Ejercicios Usuario eliminados:', borrarEjerciciosUsuario);
+        });
 
         const resultado = await Ejercicio.findByIdAndRemove(uid);
 

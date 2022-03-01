@@ -6,7 +6,7 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const { infoToken } = require('../helpers/infotoken');
-const { deleteEjercicio } = require('../helpers/deleteEjercicio');
+const { deleteEjercicio } = require('../helpers/hEjercicio');
 // const { borrarEjercicio } = require('./ejercicios');
 
 const getAsignaturas = async(req, res = response) => {
