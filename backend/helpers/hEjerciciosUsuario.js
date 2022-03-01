@@ -1,23 +1,36 @@
 //Promesa si va bien devuelve resolve si va mal devuelve rejectconst 
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 const Ejercicio = require('../models/ejercicios');
+const Usuario = require('../models/usuarios');
 
 // eliminar registro
-const deleteEjerciciosUsuario = async(idEjercicio) => {
+const deleteEjerciciosUsuario = async(id) => {
 
-    const uid = idEjercicio;
+    const uid = id;
 
     try {
-        // Comprobamos si existe el item que queremos borrar
+        // Comprobamos si existe el item que queremos borrar y si es un ejercicio
         const existeEjercicio = await Ejercicio.findById(uid);
-        if (!existeEjercicio) {
+        const existeUsuario = await Usuario.findById(uid);
+        // console.log('EJ:', existeEjercicio);
+        // console.log('USU:', existeUsuario);
+        if (!existeEjercicio && !existeUsuario) {
             return false;
         }
 
-        // buscamos los registros que coincidan con el ejercicio
-        const registros = await EjerciciosUsuario.find({
-            idEjercicio: uid
-        });
+
+        let registros = [];
+        if(existeEjercicio) {
+            // buscamos los registros que coincidan con el ejercicio
+            registros = await EjerciciosUsuario.find({
+                idEjercicio: uid
+            });
+        } else if(existeUsuario) {
+            registros = await EjerciciosUsuario.find({
+                idUsuario: uid
+            });
+        }
+
         // console.log('REG:', registros);
         if(registros.length > 0) {
             for(let i=0; i<registros.length;i++) {

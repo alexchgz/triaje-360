@@ -1,8 +1,11 @@
 const Usuario = require('../models/usuarios');
+const { EjerciciosUsuario } = require('../models/ejerciciosUsuario');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const { infoToken } = require('../helpers/infotoken');
+const { deleteEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
+const { updateAsignatura } = require('../helpers/hAsignatura');
 
 const getUsuarios = async(req, res) => {
 
@@ -414,6 +417,20 @@ const borrarUsuario = async(req, res) => {
                 msg: 'El usuario no existe'
             });
         }
+
+        // console.log('usu:', existeUsuario);
+
+            // antes de eliminar el usuario
+        // 1. eliminamos registros de ejercicio asociados al usuario
+        if(existeUsuario.rol == 'ROL_ALUMNO') {
+            await deleteEjerciciosUsuario(existeUsuario._id).then(borrarEjerciciosUsuario => {
+                console.log('Ejercicios Usuario eliminados:', borrarEjerciciosUsuario);
+            });
+        }
+        // 2. actualizamos asignatura quitando al usuario
+        await updateAsignatura(existeUsuario._id, existeUsuario.rol).then(actualizarAsignaturasUsuario => {
+            console.log('Asignaturas Usuario actualizadas:', actualizarAsignaturasUsuario);
+        });
 
         // si existe lo eliminamos
         const resultado = await Usuario.findByIdAndRemove(uid);
