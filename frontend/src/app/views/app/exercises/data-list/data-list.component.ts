@@ -82,6 +82,7 @@ export class DataListComponent implements OnInit {
           // console.log(data);
           this.isLoading = false;
           this.data = data['ejercicios'];
+          console.log('EJERS:', this.data);
           this.exercisesInTime = data['ejerciciosEnTiempo'];
           // console.log(data['ejercicios']);
           // this.ejerciciosUsuario = data['ejerciciosUsuario'];

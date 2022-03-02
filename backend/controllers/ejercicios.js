@@ -143,11 +143,17 @@ const getEjercicios = async(req, res = response) => {
 
                     // 3. Obtenemos intentos de esos ejercicios
                     listaPeticiones = [];
+                    console.log('user:', userId);
                     ejercicios.map(ejer=> {
                         // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
-                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 'idEjercicio': ejer._id }));
+                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 
+                            $and: [
+                                { 'idEjercicio': ejer._id },
+                                { 'idUsuario': userId }
+                            ]
+                        }));
                     });
-
+                    console.log('lista intentos:', listaPeticiones);
                     resultados = await Promise.all(listaPeticiones);
 
                     // 4. Creamos el objeto con los atributos deseados para la respuesta
@@ -221,7 +227,12 @@ const getEjercicios = async(req, res = response) => {
                     listaPeticiones = [];
                     ejercicios.map(ejer=> {
                         // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
-                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 'idEjercicio': ejer._id }));
+                        listaPeticiones.push(EjerciciosUsuario.countDocuments({ 
+                            $and: [
+                                { 'idEjercicio': ejer._id },
+                                { 'idUsuario': userId }
+                            ]
+                        }));
                     });
 
                     resultados = await Promise.all(listaPeticiones);
