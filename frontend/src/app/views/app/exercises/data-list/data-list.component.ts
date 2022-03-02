@@ -8,7 +8,6 @@ import { Asignatura } from '../../../../models/asignatura.model';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { getUserRole } from 'src/app/utils/util';
 import data from '../../../../constants/menu';
 import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';

@@ -46,7 +46,7 @@ const deleteAsignatura = async(idCurso) => {
 }
 
 // actualizar asignaturas en las que estuvieran el usuario/ejercicio
-const updateAsignatura = async(id, rol) => {
+const updateAsignatura = async(id, rol, ejercicio) => {
 
     const uid = id;
 
@@ -55,8 +55,9 @@ const updateAsignatura = async(id, rol) => {
         // Comprobamos si existe el item que queremos borrar y si es un ejercicio o un usuario
         const existeEjercicio = await Ejercicio.findById(uid);
         const existeUsuario = await Usuario.findById(uid);
+        const existeAsignatura = await Asignatura.findById(uid);
         
-        if (!existeEjercicio && !existeUsuario) {
+        if (!existeEjercicio && !existeUsuario && !existeAsignatura) {
             return false;
         }
 
@@ -92,6 +93,17 @@ const updateAsignatura = async(id, rol) => {
                 }
             );
             console.log('res:', resultado);
+        }
+
+        // si es una asignatura
+        else if(existeAsignatura) {
+            if(ejercicio) {
+                const resultado = await Asignatura.updateOne(
+                    { _id: uid },
+                    { $push: { 'ejercicios': ejercicio }}
+                );
+                console.log('res:', resultado);
+            }
         }
 
         return true;

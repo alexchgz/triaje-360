@@ -402,6 +402,13 @@ const crearEjercicio = async(req, res = response) => {
         // si existe la almacenamos
         object.asignatura = asignatura;
         const ejercicio = new Ejercicio(object);
+
+        // actualizamos la asignatura incluyendo el ejercicio
+        await updateAsignatura(existeAsignatura._id, '', ejercicio).then(actualizarAsignaturaEjercicio => {
+            console.log('Asignatura con Ejercicio actualizada:', actualizarAsignaturaEjercicio);
+        });
+
+        // guardamos el ejercicio
         await ejercicio.save();
 
         res.json({
