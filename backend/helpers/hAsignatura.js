@@ -98,9 +98,10 @@ const updateAsignatura = async(id, rol, ejercicio) => {
         // si es una asignatura
         else if(existeAsignatura) {
             if(ejercicio) {
+                var ObjectId = require('mongodb').ObjectID;
                 const resultado = await Asignatura.updateOne(
                     { _id: uid },
-                    { $push: { 'ejercicios': ejercicio }}
+                    { $push: { 'ejercicios': { 'ejercicio': ejercicio } } }
                 );
                 console.log('res:', resultado);
             }
