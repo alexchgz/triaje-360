@@ -6,6 +6,7 @@ import { Curso } from '../../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { SenderService } from '../../../../data/sender.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -187,6 +188,29 @@ export class DataListComponent implements OnInit {
     // console.log(val);
     this.search = val;
     this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
+  }
+
+  confirmDelete(curso: Curso): void {
+    // this.dropExercise(ejercicio);
+    console.log('Entro en la funcion');
+    Swal.fire({
+      title: 'Eliminar Curso',
+      text: '¿Estás seguro de que quieres eliminar el Curso?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.dropSchoolYear(curso);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
+    });
   }
 
   // changeOrderBy(item: any): void {

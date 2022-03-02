@@ -58,7 +58,7 @@
                         <i *ngIf="p.intentos!=undefined && p.intentos<p.max_intentos && userRole==2 && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p)"></i>
                         <i *ngIf="userRole==2 && (p.intentos>=p.max_intentos || !inTime(p._id))" class="simple-icon-plus-disabled ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="exerciseDisabled()"></i>
                         <i *ngIf="userRole==0" class="sr simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
-                        <i *ngIf="userRole==0" class="last-icon sr simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="dropExercise(p)"></i>
+                        <i *ngIf="userRole==0" class="last-icon sr simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="confirmDelete(p)"></i>
                         <!-- CHECKBOX SELECCIONAR -->
                         <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                             <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"

@@ -14,6 +14,7 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { EjerciciosUsuarioService } from '../../../../data/ejerciciosUsuario.service';
 import { EjerciciosUsuario } from '../../../../models/ejerciciosUsuario.model';
 import { AuthService } from 'src/app/shared/auth.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -328,6 +329,29 @@ export class DataListComponent implements OnInit {
       theClass: 'outline primary',
       timeOut: 5000,
       showProgressBar: false
+    });
+  }
+
+  confirmDelete(ejercicio: Ejercicio): void {
+    // this.dropExercise(ejercicio);
+    console.log('Entro en la funcion');
+    Swal.fire({
+      title: 'Eliminar Ejercicio',
+      text: '¿Estás seguro de que quieres eliminar el Ejercicio?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.dropExercise(ejercicio);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
     });
   }
 

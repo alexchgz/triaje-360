@@ -54,7 +54,7 @@
                     <!-- ACCIONES -->
                     <div class="acciones atc d-flex mb-0 text-muted text-small w-xs-100">
                         <i class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Usuario" (click)="showAddNewModal(p)"></i>
-                        <i class="last-icon simple-icon-trash ml-3 mb-0" data-toggle="tooltip" data-placement="bottom" title="Eliminar Usuario" (click)="dropUser(p)"></i>
+                        <i class="last-icon simple-icon-trash ml-3 mb-0" data-toggle="tooltip" data-placement="bottom" title="Eliminar Usuario" (click)="confirmDelete(p)"></i>
                         <!-- CHECKBOX SELECCIONAR -->
                         <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                             <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"

@@ -7,6 +7,7 @@ import { UsuarioService } from '../../../../data/usuario.service';
 import { Curso } from '../../../../models/curso.model';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { SenderService } from '../../../../data/sender.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-data-list',
@@ -207,6 +208,29 @@ export class DataListComponent implements OnInit {
         }
       );
 
+  }
+
+  confirmDelete(usuario: Usuario): void {
+    // this.dropExercise(ejercicio);
+    console.log('Entro en la funcion');
+    Swal.fire({
+      title: 'Eliminar Usuario',
+      text: '¿Estás seguro de que quieres eliminar el Usuario?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.dropUser(usuario);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
+    });
   }
 
   // changeOrderBy(item: any): void {

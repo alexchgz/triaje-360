@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { SenderService } from '../../../../data/sender.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { AuthService } from 'src/app/shared/auth.service';
+import Swal from 'sweetalert2';
 // import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
@@ -255,6 +256,29 @@ export class DataListComponent implements OnInit {
   toCreateExercise(uid: string): void {
     this.sender.idSubject = uid;
     this.router.navigate(['/app/dashboards/all/subjects/add-exercise']);
+  }
+
+  confirmDelete(asignatura: Asignatura): void {
+    // this.dropExercise(ejercicio);
+    console.log('Entro en la funcion');
+    Swal.fire({
+      title: 'Eliminar Asignatura',
+      text: '¿Estás seguro de que quieres eliminar la Asignatura?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.dropSubject(asignatura);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
+    });
   }
 
   // addExercise(subject: Asignatura) {
