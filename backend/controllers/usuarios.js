@@ -418,9 +418,7 @@ const borrarUsuario = async(req, res) => {
             });
         }
 
-        // console.log('usu:', existeUsuario);
-
-            // antes de eliminar el usuario
+        // ANTES DE ELIMINAR AL USUARIO
         // 1. eliminamos registros de ejercicio asociados al usuario
         if(existeUsuario.rol == 'ROL_ALUMNO') {
             await deleteEjerciciosUsuario(existeUsuario._id).then(borrarEjerciciosUsuario => {

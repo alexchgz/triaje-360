@@ -7,7 +7,6 @@ const { deleteEjercicio } = require('./hEjercicio');
 const deleteAsignatura = async(idCurso) => {
 
     const uid = idCurso;
-    // console.log('idC:', uid);
 
     try {
 
@@ -15,8 +14,6 @@ const deleteAsignatura = async(idCurso) => {
         const a = await Asignatura.find({
             curso: uid
         });
-
-        // console.log('A:', a);
 
         // si se encuentran asignaturas borramos los ejercicios de las mismas
         if(a.length > 0) {
@@ -53,48 +50,25 @@ const updateAsignatura = async(idUsuario, rol) => {
     // console.log('idC:', uid);
 
     try {
-        let asignaturasUsuario = [];
         if(rol == 'ROL_ALUMNO') {
             // buscamos las asignaturas asociadas al usuario
-            asignaturasUsuario = await Asignatura.find({
-                'alumnos.usuario': uid
-            });
-            console.log('A:', asignaturasUsuario);
-
-            if(asignaturasUsuario.length > 0) {
-                await Asignatura.updateMany(
-                    { 'alumnos.usuario': uid },
-                    {
-                        $pull: { 'alumnos': { 'usuario': uid } }
-                    }
-                );
-            }
-
-            // COMPROBACION
-            asignaturasUsuario = await Asignatura.find({
-                'alumnos.usuario': uid
-            });
-            console.log('A2:', asignaturasUsuario);
+            const resultado = await Asignatura.updateMany(
+                { 'alumnos.usuario': uid },
+                {
+                    $pull: { 'alumnos': { 'usuario': uid } }
+                }
+            );
+            console.log('res:', resultado);
+        } else if(rol == 'ROL_PROFESOR') {
+            // buscamos las asignaturas asociadas al usuario
+            const resultado = await Asignatura.updateMany(
+                { 'profesores.usuario': uid },
+                {
+                    $pull: { 'profesores': { 'usuario': uid } }
+                }
+            );
+            console.log('res:', resultado);
         }
-
-
-        // si se encuentran asignaturas borramos los ejercicios de las mismas
-        // if(a.length > 0) {
-        //     for(let i=0; i<a.length; i++) {
-        //         if(a[i].ejercicios.length > 0) {
-        //             for(let j=0; j<a[i].ejercicios.length; j++) {
-        //                 deleteEjercicio(a[i].ejercicios[j].ejercicio).then(borrarEjercicio => {
-        //                     console.log('Ejercicio eliminado:', borrarEjercicio);
-        //                 });
-        //             }
-        //         }
-        //     }
-        // }
-
-        // Lo eliminamos y devolvemos la asignatura eliminada
-        // const resultado = await Asignatura.deleteMany({
-        //     curso: uid
-        // });
 
         return true;
     } catch (error) {
