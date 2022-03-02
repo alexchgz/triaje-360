@@ -9,11 +9,10 @@ const deleteEjerciciosUsuario = async(id) => {
     const uid = id;
 
     try {
-        // Comprobamos si existe el item que queremos borrar y si es un ejercicio
+        // Comprobamos si existe el item que queremos borrar y si es un ejercicio o un usuario
         const existeEjercicio = await Ejercicio.findById(uid);
         const existeUsuario = await Usuario.findById(uid);
-        // console.log('EJ:', existeEjercicio);
-        // console.log('USU:', existeUsuario);
+        
         if (!existeEjercicio && !existeUsuario) {
             return false;
         }

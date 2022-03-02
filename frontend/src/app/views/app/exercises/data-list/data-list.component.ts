@@ -198,7 +198,6 @@ export class DataListComponent implements OnInit {
       this.ejercicioService.dropExercise(exercise.uid).subscribe(
         data => {
           this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
-          this.dropExerciseFromSubject(exercise);
 
           this.notifications.create('Ejercicio eliminado', 'Se ha eliminado el Ejercicio correctamente', NotificationType.Info, {
             theClass: 'outline primary',
@@ -231,40 +230,6 @@ export class DataListComponent implements OnInit {
     //   this.ejerciciosUsuario[j].fechaEjecucion = this.datePipe.transform(this.ejerciciosUsuario[j].fechaEjecucion, 'dd/MM/yyyy');
     // }
 
-  }
-
-  dropExerciseFromSubject(ejercicio: Ejercicio): void {
-    // console.log(ejercicio);
-    if(ejercicio) {
-      this.asignaturaService.getSubject(ejercicio.asignatura._id).subscribe(
-        data => {
-          if (data['ok']) {
-
-            // console.log(data['asignaturas']);
-            for(let i = 0; i < data['asignaturas']['ejercicios'].length; i++) {
-              if(data['asignaturas']['ejercicios'][i]['ejercicio'] == ejercicio.uid) {
-                data['asignaturas']['ejercicios'].splice(i, 1);
-              }
-            }
-
-            this.asignaturaService.updateSubject(data['asignaturas'], data['asignaturas'].uid).subscribe( res => {
-              console.log('Asignatura actualizada');
-              // mensaje modal
-
-            }, (err) => {
-              return;
-            });
-
-            console.log(data['asignaturas']);
-          } else {
-            this.endOfTheList = true;
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
-    }
   }
 
   toEditExercise(e: Ejercicio): void {

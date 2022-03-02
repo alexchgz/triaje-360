@@ -10,6 +10,8 @@ const { infoToken } = require('../helpers/infotoken');
 const ejerciciosUsuario = require('../models/ejerciciosUsuario');
 const usuarios = require('../models/usuarios');
 const { deleteEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
+const { updateAsignatura } = require('../helpers/hAsignatura');
+
 
 const getEjercicios = async(req, res = response) => {
     // parametros para la paginacion ->
@@ -497,10 +499,16 @@ const borrarEjercicio = async(req, res = response) => {
         }
 
         // eliminamos registros del ejercicio antes de eliminarlo
-        deleteEjerciciosUsuario(existeEjercicio._id).then(borrarEjerciciosUsuario => {
+        await deleteEjerciciosUsuario(existeEjercicio._id).then(borrarEjerciciosUsuario => {
             console.log('Ejercicios Usuario eliminados:', borrarEjerciciosUsuario);
         });
 
+        // actualizamos la asignatura del ejercicio
+        await updateAsignatura(existeEjercicio._id).then(actualizarAsignaturaEjercicio => {
+            console.log('Asignatura Ejercicio actualizada:', actualizarAsignaturaEjercicio);
+        });
+
+        // despues eliminamos el ejercicio
         const resultado = await Ejercicio.findByIdAndRemove(uid);
 
         res.json({
