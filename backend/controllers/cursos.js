@@ -7,7 +7,6 @@ const Curso = require('../models/cursos');
 
 const { infoToken } = require('../helpers/infotoken');
 const { deleteAsignatura } = require('../helpers/hAsignatura');
-// const { borrarAsignatura } = require('./asignaturas');
 
 // funciones
 const getCursos = async(req, res = response) => {
@@ -83,9 +82,42 @@ const getCursos = async(req, res = response) => {
     }
 }
 
+const getCursoActivo = async(req, res = response) => {
+
+    // Solo puede obtener cursos un admin
+    const token = req.header('x-token');
+    // lo puede actualizar un administrador o el propio usuario del token
+    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener cursos',
+        });
+    }
+
+    try {
+        var cursoActivo;
+
+        cursoActivo = await Curso.find({ activo: true });
+
+        res.json({
+            ok: true,
+            msg: 'Curso Activo obtenidos',
+            cursoActivo
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            ok: false,
+            msg: 'error obteniendo cursos'
+        });
+    }
+}
+
 const crearCurso = async(req, res = response) => {
 
     const { nombre, nombrecorto } = req.body;
+    const idDesactivar = req.query.idDesactivar;
 
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
@@ -116,6 +148,27 @@ const crearCurso = async(req, res = response) => {
             });
         }
 
+        // además comprobamos si tenemos que desactivar otro curso
+        if(idDesactivar) {
+            // comprobamos si existe el curso a desactivar
+            const existeCursoDesactivar = await Curso.findById(idDesactivar);
+            if (!existeCursoDesactivar) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'El curso a desactivar no existe'
+                });
+            }
+
+            const sendData = {
+                nombre: existeCursoDesactivar.nombre,
+                nombrecorto: existeCursoDesactivar.nombrecorto,
+                activo: false
+            }
+
+            // actualizamos el curso con activo = false
+            const cursoDesactivar = await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
+        }
+
         // creamos el curso  y lo almacenamos los datos en la BBDD
         const curso = new Curso(req.body);
         await curso.save();
@@ -138,6 +191,7 @@ const actualizarCurso = async(req, res = response) => {
 
     const { nombre, nombrecorto } = req.body;
     const uid = req.params.id;
+    const idDesactivar = req.query.idDesactivar;
 
     // Solo puede actualizar cursos un admin
     const token = req.header('x-token');
@@ -176,6 +230,27 @@ const actualizarCurso = async(req, res = response) => {
                 ok: false,
                 msg: 'El nombre corto ya existe para otro curso'
             });
+        }
+
+        // además comprobamos si tenemos que desactivar otro curso
+        if(idDesactivar) {
+            // comprobamos si existe el curso a desactivar
+            const existeCursoDesactivar = await Curso.findById(idDesactivar);
+            if (!existeCursoDesactivar) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'El curso a desactivar no existe'
+                });
+            }
+
+            const sendData = {
+                nombre: existeCursoDesactivar.nombre,
+                nombrecorto: existeCursoDesactivar.nombrecorto,
+                activo: false
+            }
+
+            // actualizamos el curso con activo = false
+            const cursoDesactivar = await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
         }
 
         // si se han superado todas la comprobaciones, actualizamos el curso
@@ -221,7 +296,7 @@ const borrarCurso = async(req, res = response) => {
             });
         }
 
-        deleteAsignatura(existeCurso._id).then(borrarAsignatura => {
+        await deleteAsignatura(existeCurso._id).then(borrarAsignatura => {
             console.log('Asignatura eliminada:', borrarAsignatura);
         });
 
@@ -245,4 +320,4 @@ const borrarCurso = async(req, res = response) => {
 }
 
 // exportamos las funciones 
-module.exports = { getCursos, crearCurso, actualizarCurso, borrarCurso };
+module.exports = { getCursos, getCursoActivo, crearCurso, actualizarCurso, borrarCurso };

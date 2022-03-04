@@ -49,14 +49,17 @@ export class CursoService {
     //console.log(url);
     //console.log(token);
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: ISingleSchoolYearResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
+  }
+
+  getSchoolYearActivo() {
+    const url = environment.base_url + '/cursos/activo';
+    const token = localStorage.getItem('token');
+
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+    //console.log(url);
+    //console.log(token);
+    return this.http.get(url, { headers });
   }
 
   dropSchoolYear(uid: number) {
@@ -71,9 +74,10 @@ export class CursoService {
     return this.http.delete(url, { headers });
   }
 
-  createSchoolYear(data: Curso) {
-    console.log(data);
-    const url = environment.base_url + '/cursos';
+  createUpdateSchoolYear(data: Curso, id:any, idDesactivar?: number) {
+    console.log(idDesactivar);
+    let url;
+    
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
@@ -90,24 +94,18 @@ export class CursoService {
       "activo": activo
     }
 
-    return this.http.post(url, sendData, { headers });
-
-  }
-
-  updateSchoolYear(data: Curso, id: number) {
-    console.log(data);
-    const url = environment.base_url + '/cursos/' + id;
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
-
-    const sendData = {
-      "nombre": data['nombre'],
-      "nombrecorto": data['nombrecorto'],
-      "activo": data['activo']
+    let params = new HttpParams();
+    if(idDesactivar) {
+      params = params.append('idDesactivar', idDesactivar + '');
     }
-
-    return this.http.put(url, sendData, { headers });
+    
+    if(id != '') {
+      url = environment.base_url + '/cursos/' + id;
+      return this.http.put(url, sendData, { headers, params });
+    } else {
+      url = environment.base_url + '/cursos';
+      return this.http.post(url, sendData, { headers, params });
+    }
 
   }
 

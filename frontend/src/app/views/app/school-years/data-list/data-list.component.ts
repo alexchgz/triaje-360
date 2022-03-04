@@ -192,7 +192,6 @@ export class DataListComponent implements OnInit {
 
   confirmDelete(curso: Curso): void {
     // this.dropExercise(ejercicio);
-    console.log('Entro en la funcion');
     Swal.fire({
       title: 'Eliminar Curso',
       text: '¿Estás seguro de que quieres eliminar el Curso?',

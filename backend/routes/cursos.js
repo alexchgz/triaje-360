@@ -1,7 +1,7 @@
 // RUTA BASE: /api/cursos
 
 const { Router } = require('express');
-const { getCursos, crearCurso, actualizarCurso, borrarCurso } = require('../controllers/cursos');
+const { getCursos, getCursoActivo, crearCurso, actualizarCurso, borrarCurso } = require('../controllers/cursos');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
@@ -19,11 +19,18 @@ router.get('/', [
     validarCampos
 ], getCursos);
 
+router.get('/activo', [
+    validarJWT,
+    // comprobamos campos opcionales
+    validarCampos
+], getCursoActivo);
+
 router.post('/', [
     validarJWT,
     check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
     check('nombrecorto', 'El argumento nombrecorto es obligatorio').not().isEmpty().trim(),
     check('activo', 'El estado debe ser true o false').isBoolean(),
+    check('idDesactivar', 'El identificador no es válido').optional().isMongoId(),
     validarCampos
 ], crearCurso);
 
@@ -31,9 +38,9 @@ router.put('/:id', [
     validarJWT,
     check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
     check('nombrecorto', 'El argumento nombrecorto es obligatorio').not().isEmpty().trim(),
-    check('id', 'El identificador no es válido').isMongoId(),
-    // opcionales
     check('activo', 'El estado debe ser true o false').isBoolean(),
+    check('id', 'El identificador no es válido').isMongoId(),
+    check('idDesactivar', 'El identificador no es válido').optional().isMongoId(),
     validarCampos
 ], actualizarCurso);
 
