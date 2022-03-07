@@ -1,57 +1,58 @@
 // librerias
 const { response } = require('express');
-const { validator } = require('validator');
 
 // modelo
 const Curso = require('../models/cursos');
 
+// helpers
 const { infoToken } = require('../helpers/infotoken');
 const { deleteAsignatura } = require('../helpers/hAsignatura');
 
 // funciones
 const getCursos = async(req, res = response) => {
     
+    // parametros
     const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
-
+        // preparamos para buscar por texto
     let texto = req.query.texto;
-    // console.log(texto);
     let textoBusqueda = '';
     if (texto) {
         textoBusqueda = new RegExp(texto, 'i');
-        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
+    }
+
+    // Comprobamos roles
+    const token = req.header('x-token');
+
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener cursos',
+        });
     }
 
     try {
         var cursos, totalCursos;
 
         if (id) { // si nos pasan un id
-            // usamos Promise.all para realizar las consultas de forma paralela
             [cursos, totalCursos] = await Promise.all([
-                // buscamos por el id
                 Curso.findById(id),
-                // consulta para obtener el numero total de cursos
                 Curso.countDocuments()
             ]);
 
         } else { // si no nos pasan el id
-
+            // segun si tenemos busqueda por texto o no
             if(texto != undefined) {
-                // usamos Promise.all para realizar las consultas de forma paralela
                 [cursos, totalCursos] = await Promise.all([
-                    // consulta con los parametros establecidos
                     Curso.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
-                    // consulta para obtener el numero total de usuarios
                     Curso.countDocuments({ $or: [{ nombre: textoBusqueda }, { nombrecorto: textoBusqueda }] })
                 ]);
             }
             else {
                 [cursos, totalCursos] = await Promise.all([
-                    // consulta con los parametros establecidos
                     Curso.find({}, 'nombre nombrecorto activo').skip(desde).limit(pageSize),
-                    // consulta para obtener el numero total de usuarios
                     Curso.countDocuments()
                 ]);
             }
@@ -65,12 +66,6 @@ const getCursos = async(req, res = response) => {
             totalCursos,
             pageSize,
             currentPage,
-            // recogemos los datos de la página para mostrarlos en la respuesta
-            page: {
-                desde,
-                currentPage,
-                totalCursos
-            }
         });
 
     } catch (error) {
@@ -83,6 +78,7 @@ const getCursos = async(req, res = response) => {
 }
 
 const getCursoActivo = async(req, res = response) => {
+    // FUNCION PARA COMPROBAR SI YA EXISTE ALGUN CURSO ACTIVO
 
     // Solo puede obtener cursos un admin
     const token = req.header('x-token');
@@ -121,7 +117,7 @@ const crearCurso = async(req, res = response) => {
 
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+    // lo puede actualizar un administrador
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
@@ -149,6 +145,7 @@ const crearCurso = async(req, res = response) => {
         }
 
         // además comprobamos si tenemos que desactivar otro curso
+            // si el nuevo curso es activo hay que actualizar el anterior activo
         if(idDesactivar) {
             // comprobamos si existe el curso a desactivar
             const existeCursoDesactivar = await Curso.findById(idDesactivar);
@@ -166,7 +163,7 @@ const crearCurso = async(req, res = response) => {
             }
 
             // actualizamos el curso con activo = false
-            const cursoDesactivar = await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
+            await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
         }
 
         // creamos el curso  y lo almacenamos los datos en la BBDD
@@ -195,7 +192,7 @@ const actualizarCurso = async(req, res = response) => {
 
     // Solo puede actualizar cursos un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+    // lo puede actualizar un administrador
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
@@ -250,7 +247,7 @@ const actualizarCurso = async(req, res = response) => {
             }
 
             // actualizamos el curso con activo = false
-            const cursoDesactivar = await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
+            await Curso.findByIdAndUpdate(idDesactivar, sendData, { new: true });
         }
 
         // si se han superado todas la comprobaciones, actualizamos el curso
@@ -277,7 +274,7 @@ const borrarCurso = async(req, res = response) => {
 
     // Solo puede borrar cursos un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+    // lo puede actualizar un administrador
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
@@ -296,6 +293,7 @@ const borrarCurso = async(req, res = response) => {
             });
         }
 
+        // eliminamos las asignaturas asociadas al curso
         await deleteAsignatura(existeCurso._id).then(borrarAsignatura => {
             console.log('Asignatura eliminada:', borrarAsignatura);
         });

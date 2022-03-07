@@ -14,6 +14,12 @@ const getAsignaturas = async(req, res = response) => {
     const desde = (currentPage - 1) * pageSize || 0;
     const schoolYear = req.query.schoolYear;
     const userId = req.query.userId;
+    // preparamos texto para buscar
+    let texto = req.query.texto;
+    let textoBusqueda = '';
+    if (texto) {
+        textoBusqueda = new RegExp(texto, 'i');
+    }
 
     // Solo puede crear asignaturas un admin
     const token = req.header('x-token');
@@ -48,6 +54,8 @@ const getAsignaturas = async(req, res = response) => {
                 // consulta para obtener el numero total de usuarios
                 Asignatura.countDocuments()
             ]);
+
+            // ademas de obtener la asignatura tenemos que obtener los profesores/alumnos
 
         } else { // si no nos pasan el id
 

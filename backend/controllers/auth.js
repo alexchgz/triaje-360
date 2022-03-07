@@ -46,7 +46,7 @@ const token = async(req, res = response) => {
     }
 }
 
-// declaramos funcioan para el login
+// declaramos funcion para el login
 const login = async(req, res = response) => {
 
     // obtenemos el email y la password

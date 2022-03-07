@@ -9,32 +9,23 @@ const { updateAsignatura } = require('../helpers/hAsignatura');
 
 const getUsuarios = async(req, res) => {
 
-    // parametros para la paginacion ->
-    // si no es un numero lo pone a 0
-    //const desde = Number(req.query.desde) || 0;
-    // cantidad de registros que vamos a mostrar por pagina
-    //const registropp = Number(process.env.DOCSPERPAGE);
+    // parametros
+    const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize);
     const desde = (currentPage - 1) * pageSize;
     const role = req.query.role;
-    // console.log(schoolYear);
-    //const schoolYear = "612a911cd5e8413c68f28e14";
 
+    // preparamos texto para buscar
     let texto = req.query.texto;
-    // console.log(texto);
     let textoBusqueda = '';
     if (texto) {
         textoBusqueda = new RegExp(texto, 'i');
-        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
     }
-
-    // recogemos un parametro para poder buscar tambien por id
-    const id = req.query.id;
 
     // Solo puede obtener usuarios un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+    // pueden obtener usuarios admin y profesores
     if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
         return res.status(400).json({
             ok: false,
@@ -46,11 +37,8 @@ const getUsuarios = async(req, res) => {
         var usuarios, totalUsuarios;
 
         if (id) { // si nos pasan un id
-            // usamos Promise.all para realizar las consultas de forma paralela
             [usuarios, totalUsuarios] = await Promise.all([
-                // buscamos por el id
                 Usuario.findById(id).populate('curso', '-__v'),
-                // consulta para obtener el numero total de usuarios
                 Usuario.countDocuments()
             ]);
 
@@ -58,52 +46,36 @@ const getUsuarios = async(req, res) => {
 
             if (texto != undefined) {
 
-                if (role == '' || role == null) {
-                    // usamos Promise.all para realizar las consultas de forma paralela
+                if (!role) {
                     [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                        // consulta para obtener el numero total de usuarios
                         Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
                     ]);
                 } else {
-                    // usamos Promise.all para realizar las consultas de forma paralela
                     [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-
-                        // consulta para obtener el numero total de usuarios
-                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }).countDocuments()
-                        // Usuario.countDocuments({})
+                        Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role })
                     ]);
                 }
 
             } else {
 
-                if (role == '' || role == null) {
-                    // usamos Promise.all para realizar las consultas de forma paralela
+                if (!role) {
                     [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Usuario.find({}, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                        // consulta para obtener el numero total de usuarios
                         Usuario.countDocuments()
                     ]);
                 } else {
-                    // usamos Promise.all para realizar las consultas de forma paralela
                     [usuarios, totalUsuarios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Usuario.find({ rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-
-                        // consulta para obtener el numero total de usuarios
-                        Usuario.find({ rol: role }).countDocuments()
-                        // Usuario.countDocuments({})
+                        Usuario.countDocuments({ rol: role })
                     ]);
                 }
 
             }
 
         }
-        // console.log(usuarios);
+        
         res.json({
             ok: true,
             msg: 'Usuarios obtenidos',
@@ -111,12 +83,6 @@ const getUsuarios = async(req, res) => {
             totalUsuarios,
             pageSize,
             currentPage,
-            // recogemos los datos de la página para mostrarlos en la respuesta
-            page: {
-                desde,
-                currentPage,
-                totalUsuarios
-            }
         });
 
     } catch (error) {
@@ -131,11 +97,9 @@ const getUsuarios = async(req, res) => {
 const getProfesores = async(req, res) => {
 
     let texto = req.query.texto;
-    // console.log(texto);
     let textoBusqueda = '';
     if (texto) {
         textoBusqueda = new RegExp(texto, 'i');
-        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
     }
 
     let profesAsignados;
@@ -152,9 +116,6 @@ const getProfesores = async(req, res) => {
             ids[i] = ids[i].trim();
         }
     }
-
-    // console.log(profesAgregados);
-    // console.log(ids);
 
     try {
         // console.log('entro');

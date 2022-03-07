@@ -46,25 +46,19 @@ export class AsignaturaService {
       // );
   }
 
-  getSubject(id: number) {
+  getSubject(id: number, search?:string) {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
     let params = new HttpParams();
     params = params.append('id', id + '');
+    if(search) {
+      params = params.append('texto', search + '');
+    }
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: ISingleSubjectResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
   }
 
   dropSubject(uid: number) {

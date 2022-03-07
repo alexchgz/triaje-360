@@ -2,7 +2,6 @@ const Ejercicio = require('../models/ejercicios');
 const Usuario = require('../models/usuarios');
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 const { response } = require('express');
-const validator = require('validator');
 
 const { infoToken } = require('../helpers/infotoken');
 
@@ -10,9 +9,8 @@ const { infoToken } = require('../helpers/infotoken');
 const getEjerciciosUsuario = async(req, res = response) => {
     const idUsuario = req.query.idUsuario;
     const idEjercicio = req.query.idEjercicio;
-    // console.log(req.query.userId);
 
-    // Solo puede crear asignaturas un admin
+    // comprobamos roles
     const token = req.header('x-token');
 
     if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
@@ -25,12 +23,9 @@ const getEjerciciosUsuario = async(req, res = response) => {
     try {
         var ejerciciosUsuario, totalEjerciciosUsuario;
 
-        if (idUsuario && idEjercicio) { // si nos pasan un id
-            // usamos Promise.all para realizar las consultas de forma paralela
+        if (idUsuario && idEjercicio) { // si tenemos id de usuario y ejercicio
             [ejerciciosUsuario, totalEjerciciosUsuario] = await Promise.all([
-                // consulta con los parametros establecidos
                 EjerciciosUsuario.find({ idUsuario, idEjercicio }),
-                // consulta para obtener el numero total de usuarios
                 EjerciciosUsuario.countDocuments()
             ]);
 
@@ -55,18 +50,15 @@ const getEjerciciosUsuario = async(req, res = response) => {
 
 const crearEjercicioUsuario = async(req, res = response) => {
 
-    // console.log(req.body);
     const { idUsuario, idEjercicio, ...object } = req.body;
-    // const idUsuario = req.query.idUsuario;
-    // const idEjercicio = req.query.idEjercicio;
 
-    // Solo puede crear ejercicios un admin o un profesor
+    // Solo puede realizar ejercicios un alumno
     const token = req.header('x-token');
     // lo puede actualizar un administrador o un profesor
-    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
+    if (!(infoToken(token).rol === 'ROL_ALUMNO')) {
         return res.status(400).json({
             ok: false,
-            msg: 'No tiene permisos para crear registros de ejercicios',
+            msg: 'Solo los alumnos pueden crear registros de ejercicios',
         });
     }
 
@@ -89,6 +81,7 @@ const crearEjercicioUsuario = async(req, res = response) => {
             });
         }
 
+        // comprobamos que la fecha de realizacion está dentro de la disponible para el ejercicio
         let now = new Date();
         if(now > existeEjercicio.hasta) {
             return res.status(400).json({

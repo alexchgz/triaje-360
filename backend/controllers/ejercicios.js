@@ -4,44 +4,38 @@ const Usuario = require('../models/usuarios');
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 
 const { response } = require('express');
-const validator = require('validator');
 
 const { infoToken } = require('../helpers/infotoken');
-const ejerciciosUsuario = require('../models/ejerciciosUsuario');
-const usuarios = require('../models/usuarios');
 const { deleteEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
 const { updateAsignatura } = require('../helpers/hAsignatura');
 
 
 const getEjercicios = async(req, res = response) => {
-    // parametros para la paginacion ->
-    // si no es un numero lo pone a 0
-    // const desde = Number(req.query.desde) || 0;
-    // cantidad de registros que vamos a mostrar por pagina
-    // const registropp = Number(process.env.DOCSPERPAGE);
-
+    // parametros
     var ObjectId = require('mongodb').ObjectID;
-    // recogemos un parametro para poder buscar tambien por id
     const id = req.query.id;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
     const asignatura = req.query.asignatura;
     const userId = req.query.userId;
-    // console.log(req.query.id);
 
-    // Solo puede crear asignaturas un admin
+    // Comprobamos roles
     const token = req.header('x-token');
 
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos para obtener cursos',
+        });
+    }
+
     try {
-        // console.log('Estoy');
+        
         var ejercicios, totalEjercicios;
         var asignaturas, totalAsignaturas;
-        // var ejerciciosUsuario, intentosPorEjercicioUsuario, registrosPorEjercicioUsuario;
 
         if (id) { // si nos pasan un id
-            // console.log('entro');
-            // usamos Promise.all para realizar las consultas de forma paralela
             [ejercicios, totalEjercicios] = await Promise.all([
                 // buscamos por el id
                 Ejercicio.findById(id).populate('curso', '-__v')
@@ -49,39 +43,30 @@ const getEjercicios = async(req, res = response) => {
                     path: 'asignatura',
                     select: 'nombre nombrecorto profesores alumnos'
                 }),
-                // consulta para obtener el numero total de ejercicios
                 Ejercicio.countDocuments()
             ]);
 
-            // console.log(ejercicios);
-
         } else { // si no nos pasan el id
 
-
-            if (asignatura == 0 || asignatura == null) {
-                // console.log('aaaa');
+            if (!asignatura) {
+                // ADMIN
                 if (infoToken(token).rol === 'ROL_ADMIN') {
-                    // usamos Promise.all para realizar las consultas de forma paralela
+                    
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Ejercicio
                         .find({}).skip(desde).limit(pageSize).populate('curso', '-__v')
                         .populate({
                             path: 'asignatura',
                             select: 'nombre nombrecorto profesores alumnos'
                         }),
-
-                        // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({})
                     ]);
                 }
 
                 // PROFESORES
                 if (infoToken(token).rol === 'ROL_PROFESOR') {
-
-                    // 1. Obetenemos asiganturas
+                    // 1. Obetenemos asiganturas del profesor
                     [asignaturas, totalAsignaturas] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Asignatura.find({ 'profesores.usuario': userId }).populate('curso', '-__v')
                         .populate({
                             path: 'profesores.usuario',
@@ -91,7 +76,6 @@ const getEjercicios = async(req, res = response) => {
                             path: 'alumnos.usuario',
                             select: 'rol nombre'
                         }),
-                        // consulta para obtener el numero total de usuarios
                         Asignatura.countDocuments({ 'profesores.usuario': userId })
                     ]);
 
@@ -102,20 +86,15 @@ const getEjercicios = async(req, res = response) => {
                                 path: 'asignatura',
                                 select: 'nombre nombrecorto profesores alumnos'
                             }), 
-
-                            // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: { $in: asignaturas } })
                     ]);
 
-                    // console.log(ejercicios);
                 }
 
                 // ALUMNOS
                 if (infoToken(token).rol === 'ROL_ALUMNO') {
-
-                    // 1. Obetenemos asiganturas
+                    // 1. Obetenemos asiganturas del alumno
                     [asignaturas, totalAsignaturas] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Asignatura.find({ 'alumnos.usuario': userId }).populate('curso', '-__v')
                         .populate({
                             path: 'profesores.usuario',
@@ -125,7 +104,6 @@ const getEjercicios = async(req, res = response) => {
                             path: 'alumnos.usuario',
                             select: 'rol nombre'
                         }),
-                        // consulta para obtener el numero total de usuarios
                         Asignatura.countDocuments({ 'alumnos.usuario': userId })
                     ]);
 
@@ -136,8 +114,6 @@ const getEjercicios = async(req, res = response) => {
                             path: 'asignatura',
                             select: 'nombre nombrecorto profesores alumnos'
                         }), 
-
-                        // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: { $in: asignaturas } })
                     ]);
 
@@ -145,7 +121,6 @@ const getEjercicios = async(req, res = response) => {
                     listaPeticiones = [];
                     console.log('user:', userId);
                     ejercicios.map(ejer=> {
-                        // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
                         listaPeticiones.push(EjerciciosUsuario.countDocuments({ 
                             $and: [
                                 { 'idEjercicio': ejer._id },
@@ -153,7 +128,7 @@ const getEjercicios = async(req, res = response) => {
                             ]
                         }));
                     });
-                    console.log('lista intentos:', listaPeticiones);
+                    
                     resultados = await Promise.all(listaPeticiones);
 
                     // 4. Creamos el objeto con los atributos deseados para la respuesta
@@ -162,19 +137,14 @@ const getEjercicios = async(req, res = response) => {
                         devolver.push({...ejercicios[i]._doc, intentos: resultados[i]});
                     }
 
-                    // console.log(devolver);
                     ejercicios = devolver;
-                    // console.log(totalEjercicios);
+                    
                 }
 
             } else {
-        
-                // TO DO: comprobamos que el alumnos tenga la asignatura
-
+                // ADMIN
                 if (infoToken(token).rol === 'ROL_ADMIN') {
-                    // usamos Promise.all para realizar las consultas de forma paralela
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
                         Ejercicio
                         .find({ asignatura: asignatura })
                         .skip(desde).limit(pageSize)
@@ -183,31 +153,20 @@ const getEjercicios = async(req, res = response) => {
                             path: 'asignatura',
                             select: 'nombre nombrecorto profesores alumnos'
                         }),
-
-                        // consulta para obtener el numero total de usuarios
                         Ejercicio.countDocuments({ asignatura: asignatura })
                     ]);
-
                 }
 
                 // PROFESORES
                 if (infoToken(token).rol === 'ROL_PROFESOR') {
-                    // usamos Promise.all para realizar las consultas de forma paralela
                     [ejercicios, totalEjercicios] = await Promise.all([
-                        // consulta con los parametros establecidos
-                        // Ejercicio.find({ asignatura: asignatura, 'asignatura.profesores.usuario': userId }).skip(desde).limit(pageSize).populate('curso', '-__v')
                         Ejercicio.find({ asignatura: asignatura }).skip(desde).limit(pageSize).populate('curso', '-__v')
                         .populate({
                             path: 'asignatura',
                             select: 'nombre nombrecorto profesores alumnos'
                         }),
-
-                        // consulta para obtener el numero total de usuarios
-                        // Ejercicio.countDocuments({ asignatura: asignatura, 'asignatura.profesores.usuario': userId })
                         Ejercicio.countDocuments({ asignatura: asignatura })
                     ]);
-                    // console.log('voy');
-                    // console.log(ejercicios);
                 }
 
                 // ALUMNOS
@@ -226,7 +185,6 @@ const getEjercicios = async(req, res = response) => {
                     // 2. Obtenemos intentos de esos ejercicios
                     listaPeticiones = [];
                     ejercicios.map(ejer=> {
-                        // variable = EjerciciosUsuario.countDocuments({ 'idEjercicio: ejer._id });
                         listaPeticiones.push(EjerciciosUsuario.countDocuments({ 
                             $and: [
                                 { 'idEjercicio': ejer._id },
@@ -249,19 +207,15 @@ const getEjercicios = async(req, res = response) => {
             }
         }
 
-        // console.log(ejercicios);
-        // console.log('vamos a devolver ejercicio');
+        // sacamos lista de los ejercicios que están a tiempo de realizarse
         let ejerciciosEnTiempo = [];
         let now = new Date();
-        // console.log('DATE:', now);
+
         for(let i=0; i<ejercicios.length; i++) {
             if(now < ejercicios[i].hasta) {
-                // console.log('SE PUEDE HACER EL EJERCICIO');
                 ejerciciosEnTiempo.push(ejercicios[i]._id);
             }
         }
-
-        // console.log(ejerciciosEnTiempo);
 
         res.json({
             ok: true,
@@ -269,16 +223,8 @@ const getEjercicios = async(req, res = response) => {
             ejercicios,
             totalEjercicios,
             ejerciciosEnTiempo,
-            // ejerciciosUsuario,
-            // totalEjerciciosUsuario,
             pageSize,
             currentPage,
-            // recogemos los datos de la página para mostrarlos en la respuesta
-            page: {
-                desde,
-                currentPage,
-                totalEjercicios
-            }
         });
 
     } catch (error) {
@@ -291,33 +237,35 @@ const getEjercicios = async(req, res = response) => {
 }
 
 const getAlumnosEjercicio = async(req, res = response) => {
-
     var ObjectId = require('mongodb').ObjectID;
-    // recogemos un parametro para poder buscar tambien por id
     const idEjercicio = req.query.idEjercicio;
     const currentPage = Number(req.query.currentPage);
     const pageSize = Number(req.query.pageSize) || 0;
     const desde = (currentPage - 1) * pageSize;
-    const asignatura = req.query.asignatura;
-    const userId = req.query.userId;
-
+    
+    // preparamos para buscar por texto 
     let texto = req.query.texto;
-    // console.log(texto);
     let textoBusqueda = '';
     if (texto) {
         textoBusqueda = new RegExp(texto, 'i');
-        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
     }
 
-    // Solo puede crear asignaturas un admin
+    // Comprobamos roles
     const token = req.header('x-token');
 
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No tiene permisos',
+        });
+    }
+
     try {
-        // console.log('Estoy');
+
         var ejercicio, alumnosEjercicio;
 
         if (infoToken(token).rol === 'ROL_ADMIN' || infoToken(token).rol === 'ROL_PROFESOR') {
-
+            // obtenemos el ejercicio con los datos de los alumnos
             ejercicio = await Ejercicio.findById(idEjercicio).populate('curso', '-__v')
             .populate({
                 path: 'asignatura',
@@ -329,11 +277,11 @@ const getAlumnosEjercicio = async(req, res = response) => {
                     }
                 },
             });
-            
+            // nos quedamos con los alumnos del ejercicio
             alumnosEjercicio = ejercicio.asignatura.alumnos;
-            // console.log(alumnosEjercicio);
-            
+
             let alumnosEjercicioFiltrados = [];
+            // si tenemos texto filtramos los alumnos por ese texto
             if(texto != undefined) {
                 let alumnosFiltrados = [];
                 alumnosFiltrados = await Usuario.find({ rol: 'ROL_ALUMNO', $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
@@ -347,7 +295,7 @@ const getAlumnosEjercicio = async(req, res = response) => {
                         }
                     }
                 }
-    
+            // si no devolvemos todos los alumnos del ejercicio
             } else {
                 for(let i=0; i<alumnosEjercicio.length; i++) {
                     alumnosEjercicioFiltrados.push(alumnosEjercicio[i].usuario);
@@ -369,11 +317,6 @@ const getAlumnosEjercicio = async(req, res = response) => {
             alumnosEjercicio,
             pageSize,
             currentPage,
-            // recogemos los datos de la página para mostrarlos en la respuesta
-            page: {
-                desde,
-                currentPage,
-            }
         });
 
     } catch (error) {

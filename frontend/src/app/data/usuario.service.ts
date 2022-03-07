@@ -95,8 +95,7 @@ export class UsuarioService {
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.get(url, { headers, params });
   }
 
