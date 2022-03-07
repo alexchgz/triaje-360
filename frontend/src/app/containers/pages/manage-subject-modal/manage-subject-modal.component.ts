@@ -75,10 +75,8 @@ export class ManageSubjectModalComponent implements OnInit {
     this.idTeachers = [];
     this.idStudents = [];
     this.data = [];
-
     this.getSubject(id);
-    // this.getUsers();
-    // this.getTeachers();
+    
     this.modalRef = this.modalService.show(this.template, this.config);
   }
 
@@ -86,26 +84,17 @@ export class ManageSubjectModalComponent implements OnInit {
     this.asignaturaService.getSubject(id).subscribe(
       data => {
         if (data['ok']) {
-          // console.log(data['asignaturas']);
+          console.log(data);
           this.asignatura = data['asignaturas'];
-          // console.log(this.asignatura);
+          console.log(this.asignatura);
 
-          if(this.asignatura.profesores.length > 0) {
-            for(let i = 0; i < this.asignatura.profesores.length; i++) {
-              this.idTeachers.push(this.asignatura.profesores[i].usuario._id);
-            }
-          }
+          this.profesoresAsignados = data['profesoresAsignados'];
+          this.profesoresNoAsignados = data['profesoresNoAsignados'];
+          this.alumnosAsignados = data['alumnosAsignados'];
+          this.alumnosNoAsignados = data['alumnosNoAsignados'];
 
-          if(this.asignatura.alumnos.length > 0) {
-            for(let j = 0; j < this.asignatura.alumnos.length; j++) {
-              this.idStudents.push(this.asignatura.alumnos[j].usuario._id);
-            }
-          }
-
-          // console.log(this.idTeachers);
-          // console.log(this.idStudents);
-          this.getTeachers();
-          this.getStudents();
+          // this.getTeachers();
+          // this.getStudents();
 
         } else {
           this.endOfTheList = true;
@@ -123,13 +112,7 @@ export class ManageSubjectModalComponent implements OnInit {
         if (data['ok']) {
           console.log(data['usuarios']);
           this.isLoading = false;
-          this.data = data['usuarios'].map(x => {
-            return {
-              ...x,
-              // img: x.img.replace('/img/', '/img/products/')
-            };
-          });
-          // this.sortRoles();
+          this.data = data['usuarios'];
         } else {
           this.endOfTheList = true;
         }
@@ -145,7 +128,7 @@ export class ManageSubjectModalComponent implements OnInit {
     this.usuarioService.getTeachers(this.idTeachers, search).subscribe(
       data => {
         if (data['ok']) {
-          // console.log(data['profesoresAsignados']);
+          console.log(data['profesoresAsignados']);
           // console.log(data['profesoresNoAsignados']);
           this.isLoading = false;
           this.profesoresAsignados = data['profesoresAsignados'];
@@ -189,11 +172,7 @@ export class ManageSubjectModalComponent implements OnInit {
   }
 
   closeModal(): void {
-    // console.log('entro aqui');
-
     // actualizamos la asignatura con las nuevas listas
-    console.log(getUserRole());
-    // if(getUserRole() == 0) {
     if(this.userRole == 0) {
       this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid).subscribe( res => {
         console.log('Asignatura actualizada');
@@ -205,14 +184,6 @@ export class ManageSubjectModalComponent implements OnInit {
     }
 
     this.modalRef.hide();
-    // this.asignatura = undefined;
-    // this.profesoresAsignados = [];
-    // this.profesoresNoAsignados = [];
-    // this.alumnosAsignados = [];
-    // this.alumnosNoAsignados = [];
-    // this.idTeachers = [];
-    // this.idStudents = [];
-    // this.data = [];
 
   }
 

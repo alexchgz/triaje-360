@@ -45,7 +45,9 @@ const getAsignaturas = async(req, res = response) => {
         }
         // si no nos lo pasan -> selector de asignaturas para crear ejercicio
 
-        var asignaturas, totalAsignaturas;
+        var asignaturas, totalAsignaturas, 
+            idsProfesoresAsignados=[], profesoresAsignados=[], profesoresNoAsignados=[], 
+            idsAlumnosAsignados=[], alumnosAsignados=[], alumnosNoAsignados=[];
         
         if (id) { // si nos pasan un id
             [asignaturas, totalAsignaturas] = await Promise.all([
@@ -55,7 +57,33 @@ const getAsignaturas = async(req, res = response) => {
                 Asignatura.countDocuments()
             ]);
 
-            // ademas de obtener la asignatura tenemos que obtener los profesores/alumnos
+            // ademas de obtener la asignatura tenemos que obtener los profesores/alumnos que no estan en la asignatura
+            // para poder gestionar los usuarios de una asignatura
+                // almacenamos los profesores asignados
+            if(asignaturas.profesores.length > 0) {
+                for(let i = 0; i < asignaturas.profesores.length; i++) {
+                  profesoresAsignados.push(asignaturas.profesores[i].usuario);
+                  idsProfesoresAsignados.push(asignaturas.profesores[i].usuario._id);
+                }
+            }
+                // almacenamos los alumnos asignados
+            if(asignaturas.alumnos.length > 0) {
+                for(let j = 0; j < asignaturas.alumnos.length; j++) {
+                  alumnosAsignados.push(asignaturas.alumnos[j].usuario);
+                  idsAlumnosAsignados.push(asignaturas.alumnos[j].usuario._id);
+                }
+            }
+
+            [profesoresNoAsignados, alumnosNoAsignados] = await Promise.all([
+                // consulta para profesores NO asignados a la asignatura
+                Usuario.find({ activo: true, rol: "ROL_PROFESOR", _id: { $nin: idsProfesoresAsignados } }, 'nombre apellidos email rol curso activo')
+                .sort({ apellidos: 1, nombre: 1 })
+                .populate('curso', '-__v'),
+                // consulta para profesores NO asignados a la asignatura
+                Usuario.find({ activo: true, rol: "ROL_ALUMNO", _id: { $nin: idsAlumnosAsignados } }, 'nombre apellidos email rol curso activo')
+                .sort({ apellidos: 1, nombre: 1 })
+                .populate('curso', '-__v')
+            ]);
 
         } else { // si no nos pasan el id
 
@@ -189,6 +217,10 @@ const getAsignaturas = async(req, res = response) => {
             msg: 'Asignaturas obtenidas',
             asignaturas,
             totalAsignaturas,
+            profesoresAsignados,
+            profesoresNoAsignados,
+            alumnosAsignados,
+            alumnosNoAsignados,
             pageSize,
             currentPage,
         });

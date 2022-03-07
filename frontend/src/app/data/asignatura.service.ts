@@ -36,22 +36,16 @@ export class AsignaturaService {
     //console.log(url);
     //console.log(token);
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: ISubjectResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
+
   }
 
-  getSubject(id: number, search?:string) {
+  getSubject(id: number, roln?:number, search?:string) {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
     let params = new HttpParams();
     params = params.append('id', id + '');
-    if(search) {
+    if(roln && search) {
+      params = params.append('roln', roln + '');
       params = params.append('texto', search + '');
     }
 
