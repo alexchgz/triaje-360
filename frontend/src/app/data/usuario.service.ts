@@ -98,14 +98,6 @@ export class UsuarioService {
     //console.log(url);
     //console.log(token);
     return this.http.get(url, { headers, params });
-      // .pipe(
-      //   map((res: ISingleUserResponse) => {
-      //     return res;
-      //   }),
-      //   catchError(errorRes => {
-      //     return throwError(errorRes);
-      //   })
-      // );
   }
 
   createUser(data: Usuario) {

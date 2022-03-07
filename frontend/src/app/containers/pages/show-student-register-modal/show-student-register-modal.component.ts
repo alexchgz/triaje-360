@@ -59,7 +59,7 @@ export class ShowStudentRegisterModalComponent implements OnInit {
     this.usuarioService.getUser(alumno)
         .subscribe( data => {
           // console.log('Registros de Alumno en Ejercicio obtenidos');
-
+          // console.log('DATA:', data);
           this.dataUsuario = data['usuarios'];
           // console.log(this.dataUsuario);
         }, (err) => {

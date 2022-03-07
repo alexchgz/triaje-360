@@ -35,7 +35,7 @@ const getUsuarios = async(req, res) => {
     // Solo puede obtener usuarios un admin
     const token = req.header('x-token');
     // lo puede actualizar un administrador o el propio usuario del token
-    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
         return res.status(400).json({
             ok: false,
             msg: 'No tiene permisos para obtener usuarios',
