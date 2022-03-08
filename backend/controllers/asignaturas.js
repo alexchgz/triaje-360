@@ -4,6 +4,7 @@ const Usuario = require('../models/usuarios');
 const { response } = require('express');
 const { infoToken } = require('../helpers/infotoken');
 const { deleteEjercicio } = require('../helpers/hEjercicio');
+const { updateAsignatura } = require('../helpers/hAsignatura');
 
 const getAsignaturas = async(req, res = response) => {
 
@@ -308,6 +309,10 @@ const actualizarAsignatura = async(req, res = response) => {
 
     const { curso, profesores } = req.body;
     const uid = req.params.id;
+    // parametros para la gestion de asignatura
+    const rol = req.query.rol;
+    const idUsu = req.query.idUsu;
+    const accion = req.query.accion;
 
     // Solo puede actualizar asignaturas un admin
     const token = req.header('x-token');
@@ -339,40 +344,55 @@ const actualizarAsignatura = async(req, res = response) => {
             });
         }
 
-        // comprobamos los profesores
-        let profesInsertar = []; // para limpiar los campos
-
-        if (profesores) {
-            let profesBusqueda = []; // para buscar los profesores
-
-            const listaProfes = profesores.map(registro => {
-                if (registro.usuario) {
-                    profesBusqueda.push(registro.usuario);
-                    profesInsertar.push(registro);
-                }
+        // comprobamos si se trata de gestionar una asignatura
+        if(rol && idUsu && accion) {
+            const asignatura = await updateAsignatura(uid, '', '', rol, idUsu, accion).then(actualizarAsignatura => {
+                console.log('Asignatura actualizada:', actualizarAsignatura);
             });
-
-            // comprobamos que existan y que están bien pasados
-            const existenProfes = await Usuario.find().where('_id').in(profesBusqueda);
-            if (existenProfes.length != profesBusqueda.length) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'Alguno de los profesores no existe o está duplicado'
-                });
-            }
-
-            // si se han pasado todos los filtros actualizamos la asignatura
-            const object = req.body;
-            object.profesores = profesInsertar;
-            const asignatura = await Asignatura.findByIdAndUpdate(uid, object, { new: true });
-
-
             res.json({
                 ok: true,
                 msg: 'Asignatura actualizada',
                 asignatura
             });
+        // si es una actualizacion normal
+        } else {
+            // comprobamos los profesores
+            let profesInsertar = []; // para limpiar los campos
+
+            if (profesores) {
+                let profesBusqueda = []; // para buscar los profesores
+
+                const listaProfes = profesores.map(registro => {
+                    if (registro.usuario) {
+                        profesBusqueda.push(registro.usuario);
+                        profesInsertar.push(registro);
+                    }
+                });
+
+                // comprobamos que existan y que están bien pasados
+                const existenProfes = await Usuario.find().where('_id').in(profesBusqueda);
+                if (existenProfes.length != profesBusqueda.length) {
+                    return res.status(400).json({
+                        ok: false,
+                        msg: 'Alguno de los profesores no existe o está duplicado'
+                    });
+                }
+
+                // si se han pasado todos los filtros actualizamos la asignatura
+                const object = req.body;
+                object.profesores = profesInsertar;
+                const asignatura = await Asignatura.findByIdAndUpdate(uid, object, { new: true });
+
+
+                res.json({
+                    ok: true,
+                    msg: 'Asignatura actualizada',
+                    asignatura
+                });
+            }
         }
+
+        
 
     } catch (error) {
         console.log(error);

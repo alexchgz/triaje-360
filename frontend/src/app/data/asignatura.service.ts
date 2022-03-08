@@ -88,40 +88,19 @@ export class AsignaturaService {
 
   }
 
-  updateSubject(data: Object, id: number) {
+  updateSubject(data: Object, id: number, rol?: string, idUsu?: number, accion?: string) {
 
     const url = environment.base_url + '/asignaturas/' + id;
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
-    // console.log(data['profesores']);
-    for(let i=0; i<data['profesores'].length; i++){
-      // console.log(data['profesores'][i]['usuario']['uid']);
-      if(data['profesores'][i]['usuario']['uid'])
-        data['profesores'][i]['usuario'] = data['profesores'][i]['usuario']['uid'];
-
-        // console.log(data['profesores'][i]);
+    let params = new HttpParams();
+    if(rol && idUsu && accion) {
+      params = params.append('rol', rol);
+      params = params.append('idUsu', idUsu + '');
+      params = params.append('accion', accion);
     }
-
-    for(let j=0; j<data['alumnos'].length; j++){
-      // console.log(data['profesores'][i]['usuario']['uid']);
-      if(data['alumnos'][j]['usuario']['uid'])
-        data['alumnos'][j]['usuario'] = data['alumnos'][j]['usuario']['uid'];
-
-        // console.log(data['profesores'][i]);
-    }
-
-    // console.log(data['ejercicios']);
-    for(let k=0; k<data['ejercicios'].length; k++){
-      // console.log(data['profesores'][i]['usuario']['uid']);
-      // console.log(data['ejercicios'][k]);
-      if(data['ejercicios'][k]['ejercicio']['uid']) {
-        data['ejercicios'][k]['ejercicio'] = data['ejercicios'][k]['ejercicio']['uid'];
-      }
-        // console.log(data['profesores'][i]);
-    }
-    // console.log(data['ejercicios']);
 
     const sendData = {
       "nombre": data['nombre'],
@@ -135,7 +114,7 @@ export class AsignaturaService {
 
     // console.log(sendData);
 
-    return this.http.put(url, sendData, { headers });
+    return this.http.put(url, sendData, { headers, params });
 
   }
 

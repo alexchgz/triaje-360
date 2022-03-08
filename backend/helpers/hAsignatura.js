@@ -45,8 +45,8 @@ const deleteAsignatura = async(idCurso) => {
 
 }
 
-// actualizar asignaturas en las que estuvieran el usuario/ejercicio
-const updateAsignatura = async(id, rol, ejercicio) => {
+// actualizar asignaturas en las que estuvieran el usuario/ejercicio o gestionar asignatura
+const updateAsignatura = async(id, rol, ejercicio, rolGestionar, idUsu, accion) => {
 
     const uid = id;
 
@@ -97,13 +97,57 @@ const updateAsignatura = async(id, rol, ejercicio) => {
 
         // si es una asignatura
         else if(existeAsignatura) {
-            if(ejercicio) {
+            if(ejercicio != '' && ejercicio != undefined) {
                 var ObjectId = require('mongodb').ObjectID;
                 const resultado = await Asignatura.updateOne(
                     { _id: uid },
                     { $push: { 'ejercicios': { 'ejercicio': ejercicio } } }
                 );
                 console.log('res:', resultado);
+            } else {
+                // si tenemos estos parametros estamos gestionando una asignatura
+                if(rolGestionar && idUsu && accion) {
+                    // ASIGNAR PROFESOR
+                    if(rolGestionar == 'ROL_PROFESOR' && accion == 'asignar') {
+                        const resultado = await Asignatura.updateMany(
+                            { _id: uid },
+                            {
+                                $push: { 'profesores': { 'usuario': idUsu } }
+                            }
+                        );
+                        console.log('res:', resultado);
+                    }
+                    // DESASIGNAR PROFESOR
+                    else if(rolGestionar == 'ROL_PROFESOR' && accion == 'desasignar') {
+                        const resultado = await Asignatura.updateMany(
+                            { _id: uid },
+                            {
+                                $pull: { 'profesores': { 'usuario': idUsu } }
+                            }
+                        );
+                        console.log('res:', resultado);
+                    }
+                    // ASIGNAR ALUMNO
+                    else if(rolGestionar == 'ROL_ALUMNO' && accion == 'asignar') {
+                        const resultado = await Asignatura.updateMany(
+                            { _id: uid },
+                            {
+                                $push: { 'alumnos': { 'usuario': idUsu } }
+                            }
+                        );
+                        console.log('res:', resultado);
+                    }
+                    // DESASIGNAR ALUMNO
+                    else if(rolGestionar == 'ROL_ALUMNO' && accion == 'desasignar') {
+                        const resultado = await Asignatura.updateMany(
+                            { _id: uid },
+                            {
+                                $pull: { 'alumnos': { 'usuario': idUsu } }
+                            }
+                        );
+                        console.log('res:', resultado);
+                    }
+                }
             }
         }
 

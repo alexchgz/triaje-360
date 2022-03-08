@@ -30,7 +30,7 @@
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="manage(p, 'desasignar')"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -50,7 +50,7 @@
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="p.activo" class="t-icono icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
+                                <td *ngIf="p.activo" class="t-icono icono"><i class="simple-icon-plus" (click)="manage(p, 'asignar')"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -77,7 +77,7 @@
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="disassign(p)"></i></td>
+                                <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="manage(p, 'desasignar')"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,7 +98,7 @@
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
                                 <!-- <td>{{p.apellidos}}</td> -->
-                                <td class="t-icono icono"><i class="simple-icon-plus" (click)="assign(p)"></i></td>
+                                <td class="t-icono icono"><i class="simple-icon-plus" (click)="manage(p, 'asignar')"></i></td>
                             </tr>
                         </tbody>
                     </table>
