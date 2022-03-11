@@ -1,11 +1,10 @@
-//Promesa si va bien devuelve resolve si va mal devuelve rejectconst 
 const Asignatura = require('../models/asignaturas');
 const Ejercicio = require('../models/ejercicios');
 const Usuario = require('../models/usuarios');
 const { deleteEjercicio } = require('./hEjercicio');
 
-// eliminar curso, comprobando si tiene una asignatura asociada
-//si la tiene, eliminar la asignatura
+// eliminar asignatura tras curso, comprobando si tiene ejercicios asociados
+//si los tiene, eliminar los ejercicios
 const deleteAsignatura = async(idCurso) => {
 
     const uid = idCurso;

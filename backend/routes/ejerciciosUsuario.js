@@ -19,8 +19,6 @@ router.get('/', [
 
 router.post('/', [
     validarJWT,
-    // check('idUsuario', 'El id debe ser válido').optional().isMongoId(),
-    // check('idEjercicio', 'El id debe ser válido').optional().isMongoId(),
     validarCampos
 ], crearEjercicioUsuario);
 

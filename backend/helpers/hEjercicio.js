@@ -1,14 +1,10 @@
-//Promesa si va bien devuelve resolve si va mal devuelve rejectconst 
 const Ejercicio = require('../models/ejercicios');
 const { deleteEjerciciosUsuario } = require('./hEjerciciosUsuario');
-const { EjerciciosUsuario } = require('../models/ejerciciosUsuario');
 
-// eliminar producto, comprobando si tiene una oferta asociada
-//si la tiene, quitar la oferta al usuario, eliminar la oferta y eliminar el producto
+// eliminar ejercicio, comprobando si tiene registros asociados
 const deleteEjercicio = async(idEjercicio) => {
 
     const uid = idEjercicio;
-    // console.log('idE:', uid);
 
     try {
         // Comprobamos si existe el item que queremos borrar

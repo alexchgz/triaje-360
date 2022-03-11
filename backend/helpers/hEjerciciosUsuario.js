@@ -1,4 +1,3 @@
-//Promesa si va bien devuelve resolve si va mal devuelve rejectconst 
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
 const Ejercicio = require('../models/ejercicios');
 const Usuario = require('../models/usuarios');
@@ -30,15 +29,11 @@ const deleteEjerciciosUsuario = async(id) => {
             });
         }
 
-        // console.log('REG:', registros);
         if(registros.length > 0) {
             for(let i=0; i<registros.length;i++) {
                 await EjerciciosUsuario.findByIdAndRemove(registros[i]._id);
             }
         }
-    
-        // Lo eliminamos y devolvemos el registro recien eliminado
-        // const resultado = await EjerciciosUsuario.findByIdAndRemove(uid);
 
         return true;
     } catch (error) {
