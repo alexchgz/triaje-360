@@ -31,10 +31,3 @@ app.use('/api/ejerciciosUsuario', require('./routes/ejerciciosUsuario'));
 app.listen(process.env.PORT, () => {
     console.log('Servidor corriendo en el puerto', process.env.PORT, '...');
 });
-
-// app.get('/', (req, res) => {
-//     res.json({
-//         ok: true,
-//         msg: 'Respuesta'
-//     });
-// });
