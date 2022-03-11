@@ -10,9 +10,6 @@ import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-lis
 import { getUserRole } from 'src/app/utils/util';
 import { AuthService } from 'src/app/shared/auth.service';
 
-const mongoose = require('mongoose');
-const bson = require('bson');
-
 @Component({
   selector: 'app-manage-subject-modal',
   templateUrl: './manage-subject-modal.component.html',
@@ -31,14 +28,10 @@ export class ManageSubjectModalComponent implements OnInit {
     { label: 'Desserts', value: 'strawberry' }
   ];
   data: Usuario[] = [];
-  idTeachers: number[] = [];
-  idStudents: number[] = [];
   profesoresNoAsignados: Usuario[] = [];
   profesoresAsignados: Usuario[] = [];
-  idsProfesoresAsignados: number[] = [];
   alumnosAsignados: Usuario[] = [];
   alumnosNoAsignados: Usuario[] = [];
-  idsAlumnosAsignados: number[] = [];
   asignatura: Asignatura;
   isLoading: boolean;
   endOfTheList = false;
@@ -72,8 +65,6 @@ export class ManageSubjectModalComponent implements OnInit {
     this.profesoresNoAsignados = [];
     this.alumnosAsignados = [];
     this.alumnosNoAsignados = [];
-    this.idTeachers = [];
-    this.idStudents = [];
     this.data = [];
     this.getSubject(id);
     
@@ -122,12 +113,35 @@ export class ManageSubjectModalComponent implements OnInit {
 
   }
 
-  buscarProfes(val: string): void {
-    // this.getTeachers(val);
-  }
+  buscarUsuarios(val: string, rol: string): void {
+    
+    var usuarios = [];
+    if(rol == 'ROL_PROFESOR') {
+      usuarios = this.profesoresAsignados;
+    } else {
+      usuarios = this.alumnosAsignados;
+    }
 
-  buscarAlumnos(val: string): void {
-    // this.getStudents(val);
+    if(val == '') {
+      this.getSubject(this.asignatura.uid);
+    } else {
+      this.usuarioService.getUsers(undefined, undefined, rol, val, usuarios).subscribe( res => {
+        console.log('Alumnos traídos');
+        if(res['ok']) {
+
+          if(rol == 'ROL_PROFESOR') {
+            this.profesoresAsignados = res['usuariosAsignados'];
+            this.profesoresNoAsignados = res['usuariosNoAsignados'];
+          } else {
+            this.alumnosAsignados = res['usuariosAsignados'];
+            this.alumnosNoAsignados = res['usuariosNoAsignados'];
+          }
+        
+        }
+      }, (err) => {
+        return;
+      });
+    }
   }
 
 }

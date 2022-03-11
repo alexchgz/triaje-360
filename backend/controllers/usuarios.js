@@ -15,6 +15,17 @@ const getUsuarios = async(req, res) => {
     const pageSize = Number(req.query.pageSize);
     const desde = (currentPage - 1) * pageSize;
     const role = req.query.role;
+    const idsUsuAsignados = req.query.idsUsuAsignados;
+    console.log(idsUsuAsignados);
+    if(idsUsuAsignados) {
+        var ids = [];
+
+        ids = idsUsuAsignados.split(",");
+        for (let i = 0; i < ids.length; i++) {
+                ids[i] = ids[i].trim();
+        }
+        
+    }
 
     // preparamos texto para buscar
     let texto = req.query.texto;
@@ -34,7 +45,8 @@ const getUsuarios = async(req, res) => {
     }
 
     try {
-        var usuarios, totalUsuarios;
+        var usuarios, totalUsuarios,
+        usuariosAsignados, usuariosNoAsignados; // variables para la búsqueda en gestion de asignaturas
 
         if (id) { // si nos pasan un id
             [usuarios, totalUsuarios] = await Promise.all([
@@ -52,10 +64,25 @@ const getUsuarios = async(req, res) => {
                         Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] })
                     ]);
                 } else {
-                    [usuarios, totalUsuarios] = await Promise.all([
-                        Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
-                        Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role })
-                    ]);
+                    if(!idsUsuAsignados) {
+                        [usuarios, totalUsuarios] = await Promise.all([
+                            Usuario.find({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role }, 'nombre apellidos email rol curso activo').skip(desde).limit(pageSize).populate('curso', '-__v'),
+                            Usuario.countDocuments({ $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }], rol: role })
+                        ]);
+                    } else {
+                        // en este caso -> busqueda de usuarios en gestionar asignatura
+                        [usuariosAsignados, usuariosNoAsignados] = await Promise.all([
+                            // consulta para usuarios asignados a la asignatura
+                            Usuario.find({ rol: role, _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
+                            .sort({ apellidos: 1, nombre: 1 })
+                            .populate('curso', '-__v'),
+                            // consulta para profesores NO asignados a la asignatura
+                            Usuario.find({ activo: true, rol: role, _id: { $nin: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
+                            .sort({ apellidos: 1, nombre: 1 })
+                            .populate('curso', '-__v'),
+            
+                        ]);
+                    }
                 }
 
             } else {
@@ -80,6 +107,8 @@ const getUsuarios = async(req, res) => {
             ok: true,
             msg: 'Usuarios obtenidos',
             usuarios,
+            usuariosAsignados, 
+            usuariosNoAsignados,
             totalUsuarios,
             pageSize,
             currentPage,
@@ -90,164 +119,6 @@ const getUsuarios = async(req, res) => {
         res.status(400).json({
             ok: false,
             msg: 'error obteniendo usuarios'
-        })
-    }
-}
-
-const getProfesores = async(req, res) => {
-
-    let texto = req.query.texto;
-    let textoBusqueda = '';
-    if (texto) {
-        textoBusqueda = new RegExp(texto, 'i');
-    }
-
-    let profesAsignados;
-    if (req.query.idProfesores) {
-        profesAsignados = req.query.idProfesores;
-    }
-    // console.log(profesAsignados);
-    let ids = [];
-
-    if (profesAsignados) {
-        ids = profesAsignados.split(",");
-
-        for (let i = 0; i < ids.length; i++) {
-            ids[i] = ids[i].trim();
-        }
-    }
-
-    try {
-        // console.log('entro');
-        var profesoresAsignados, profesoresNoAsignados;
-
-        if (texto != undefined) {
-            [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
-                // consulta para profesores asignados a la asignatura
-                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-                // consulta para profesores NO asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_PROFESOR", _id: { $nin: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-
-            ]);
-        } else {
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [profesoresAsignados, profesoresNoAsignados] = await Promise.all([
-                // consulta para profesores asignados a la asignatura
-                Usuario.find({ rol: "ROL_PROFESOR", _id: { $in: ids } }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-                // consulta para profesores NO asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_PROFESOR", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-
-            ]);
-        }
-
-
-        // console.log(profesoresAsignados);
-        // console.log(profesoresNoAsignados);
-        // }
-        // console.log(usuarios);
-        res.json({
-            ok: true,
-            msg: 'Profesores obtenidos',
-            profesoresAsignados,
-            profesoresNoAsignados
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({
-            ok: false,
-            msg: 'error obteniendo profesores'
-        })
-    }
-}
-
-const getAlumnos = async(req, res) => {
-
-    let texto = req.query.texto;
-    // console.log(texto);
-    let textoBusqueda = '';
-    if (texto) {
-        textoBusqueda = new RegExp(texto, 'i');
-        //console.log('texto', texto, ' textoBusqueda', textoBusqueda);
-    }
-
-    let alumAsignados;
-    if (req.query.idAlumnos) {
-        alumAsignados = req.query.idAlumnos;
-    }
-    // console.log(profesAsignados);
-    let ids = [];
-
-    if (alumAsignados) {
-        ids = alumAsignados.split(",");
-
-        for (let i = 0; i < ids.length; i++) {
-            ids[i] = ids[i].trim();
-        }
-    }
-
-    // Solo puede obtener alumnos un admin o un profesor
-    const token = req.header('x-token');
-    // lo puede obtener un administrador o un profesor
-    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
-        return res.status(400).json({
-            ok: false,
-            msg: 'No tiene permisos para obtener alumnos',
-        });
-    }
-
-    try {
-        var alumnosAsignados, alumnosNoAsignados;
-
-        if (texto != undefined) {
-            [alumnosAsignados, alumnosNoAsignados] = await Promise.all([
-                // consulta para profesores asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_ALUMNO", _id: { $in: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-                // consulta para profesores NO asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_ALUMNO", _id: { $nin: ids }, $or: [{ nombre: textoBusqueda }, { email: textoBusqueda }, { apellidos: textoBusqueda }] }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-
-            ]);
-        } else {
-            // usamos Promise.all para realizar las consultas de forma paralela
-            [alumnosAsignados, alumnosNoAsignados] = await Promise.all([
-                // consulta para profesores asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_ALUMNO", _id: { $in: ids } }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-                // consulta para profesores NO asignados a la asignatura
-                Usuario.find({ activo: true, rol: "ROL_ALUMNO", _id: { $nin: ids } }, 'nombre apellidos email rol curso activo')
-                .sort({ apellidos: 1, nombre: 1 })
-                .populate('curso', '-__v'),
-
-            ]);
-        }
-
-        // }
-        // console.log(usuarios);
-        res.json({
-            ok: true,
-            msg: 'Alumnos obtenidos',
-            alumnosAsignados,
-            alumnosNoAsignados
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({
-            ok: false,
-            msg: 'error obteniendo alumnos'
         })
     }
 }
@@ -411,4 +282,4 @@ const borrarUsuario = async(req, res) => {
 }
 
 // Exportamos el modulo
-module.exports = { getUsuarios, getProfesores, getAlumnos, crearUsuario, actualizarUsuario, borrarUsuario };
+module.exports = { getUsuarios, crearUsuario, actualizarUsuario, borrarUsuario };

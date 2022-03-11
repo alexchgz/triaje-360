@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { throwError, of, Observable } from 'rxjs';
-import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../shared/auth.service';
@@ -20,9 +19,10 @@ export class UsuarioService {
 
   // ******* PETICIONES USARIOS *********
 
-  getUsers(pageSize?: number, currentPage?: number, role?: string, search?: string) {
+  getUsers(pageSize?: number, currentPage?: number, role?: string, search?: string, usuariosAsignados?: Usuario[]) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
+    var idsUsuariosAsignados = [];
     let params = new HttpParams();
     if(pageSize || currentPage || role){
       if(pageSize) params = params.append('pageSize', pageSize + '');
@@ -30,8 +30,17 @@ export class UsuarioService {
       if(role) params = params.append('role', role + '');
     }
     if(search) {
-      // console.log(search);
       params = params.append('texto', search + '');
+    }
+
+    // pasamos a la peticion solo los ids, no los usuarios enteros
+    if(usuariosAsignados.length > 0) {
+      for(let i=0; i<usuariosAsignados.length; i++) {
+        idsUsuariosAsignados.push(usuariosAsignados[i].uid);
+      }
+      console.log(usuariosAsignados);
+      params = params.append('idsUsuAsignados', idsUsuariosAsignados.join(', '));
+      console.log('params:', params);
     }
 
     // console.log(params);
