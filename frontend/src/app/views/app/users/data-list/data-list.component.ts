@@ -63,16 +63,10 @@ export class DataListComponent implements OnInit {
         if (data['ok']) {
           console.log(data['usuarios']);
           this.isLoading = false;
-          this.data = data['usuarios'].map(x => {
-            return {
-              ...x,
-              // img: x.img.replace('/img/', '/img/products/')
-            };
-          });
-          // console.log(data.totalUsuarios);
+          this.data = data['usuarios'];
           this.totalItem = data['totalUsuarios'];
-          //console.log(this.totalItem);
-          //this.totalPage = data.totalPage;
+          console.log(this.totalItem);
+
           this.setSelectAllState();
         } else {
           this.endOfTheList = true;

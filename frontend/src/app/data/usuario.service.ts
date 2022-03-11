@@ -34,63 +34,17 @@ export class UsuarioService {
     }
 
     // pasamos a la peticion solo los ids, no los usuarios enteros
-    if(usuariosAsignados.length > 0) {
+    if(usuariosAsignados) {
       for(let i=0; i<usuariosAsignados.length; i++) {
         idsUsuariosAsignados.push(usuariosAsignados[i].uid);
       }
-      console.log(usuariosAsignados);
       params = params.append('idsUsuAsignados', idsUsuariosAsignados.join(', '));
-      console.log('params:', params);
     }
 
     // console.log(params);
 
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-
-    return this.http.get(url, { headers, params });
-
-  }
-
-  getTeachers(idTeachers: Array<number>, search?: string) {
-
-    // console.log(idTeachers);
-    const url = environment.base_url + '/usuarios/profesores';
-    const token = localStorage.getItem('token');
-
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
-
-    let params = new HttpParams();
-    if(idTeachers.length > 0) {
-      params = params.append('idProfesores', idTeachers.join(', '));
-    }
-    if(search) {
-      params = params.append('texto', search + '');
-    }
-
-    console.log(idTeachers);
-    // console.log(params);
-
-    return this.http.get(url, { headers, params });
-
-  }
-
-  getStudents(idStudents: Array<number>, search?: string) {
-
-    // console.log(idStudents);
-    const url = environment.base_url + '/usuarios/alumnos';
-    const token = localStorage.getItem('token');
-
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
-
-    let params = new HttpParams();
-    params = params.append('idAlumnos', idStudents.join(', '));
-    // console.log(params);
-    if(search) {
-      params = params.append('texto', search + '');
-    }
 
     return this.http.get(url, { headers, params });
 

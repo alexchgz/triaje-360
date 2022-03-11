@@ -15,8 +15,8 @@ const getUsuarios = async(req, res) => {
     const pageSize = Number(req.query.pageSize);
     const desde = (currentPage - 1) * pageSize;
     const role = req.query.role;
+
     const idsUsuAsignados = req.query.idsUsuAsignados;
-    console.log(idsUsuAsignados);
     if(idsUsuAsignados) {
         var ids = [];
 
@@ -24,7 +24,6 @@ const getUsuarios = async(req, res) => {
         for (let i = 0; i < ids.length; i++) {
                 ids[i] = ids[i].trim();
         }
-        
     }
 
     // preparamos texto para buscar
