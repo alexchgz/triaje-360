@@ -1,8 +1,6 @@
 const Usuario = require('../models/usuarios');
-const { EjerciciosUsuario } = require('../models/ejerciciosUsuario');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
-
 const { infoToken } = require('../helpers/infotoken');
 const { deleteEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
 const { updateAsignatura } = require('../helpers/hAsignatura');
@@ -128,7 +126,7 @@ const crearUsuario = async(req, res = response) => {
 
     // Solo puede crear usuarios un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
@@ -180,7 +178,7 @@ const actualizarUsuario = async(req, res) => {
 
     // Solo puede actualizar usuarios un admin
     const token = req.header('x-token');
-    // lo puede actualizar un administrador o el propio usuario del token
+    
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
