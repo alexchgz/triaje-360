@@ -1,6 +1,6 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { DatePipe, Location } from '@angular/common';
@@ -19,8 +19,6 @@ const bson = require('bson');
 })
 export class AddExerciseComponent implements OnInit {
 
-  isLoading: boolean;
-  endOfTheList = false;
   exercise: Ejercicio;
   subject: Asignatura;
   subjects: Asignatura[];
@@ -45,7 +43,7 @@ export class AddExerciseComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
-    private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
+    private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
     private notifications: NotificationsService) { }
 
   ngOnInit(): void {
@@ -78,8 +76,6 @@ export class AddExerciseComponent implements OnInit {
         this.ejercicioService.getExercise(this.uidEx).subscribe(
           data => {
             if (data['ok']) {
-              // console.log(data);
-              this.isLoading = false;
               this.exercise = data['ejercicios'];
               // colocamos valores del ejercicio en formulario
               this.totalItem = data['totalEjercicios'];
@@ -89,12 +85,16 @@ export class AddExerciseComponent implements OnInit {
               this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
               this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
               this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
-            } else {
-              this.endOfTheList = true;
             }
           },
           error => {
-            this.isLoading = false;
+            this.notifications.create('Error', 'No se pudo obtener el ejercicio', NotificationType.Error, {
+              theClass: 'outline primary',
+              timeOut: 6000,
+              showProgressBar: false
+            });
+
+            return;
           }
         );
       }
@@ -109,14 +109,17 @@ export class AddExerciseComponent implements OnInit {
     this.asignaturaService.getSubjects().subscribe(
       data => {
         if (data['ok']) {
-          this.isLoading = false;
           this.subjects = data['asignaturas'];
-        } else {
-          this.endOfTheList = true;
         }
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se han podidio obtener las Asignaturas', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
@@ -127,13 +130,17 @@ export class AddExerciseComponent implements OnInit {
         if (data['ok']) {
           this.subject = data['asignaturas'];
           this.formData.get('asignatura').setValue(this.subject.uid);
-        } else {
-          this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
-          this.endOfTheList = true;
         }
       },
       error => {
-        this.isLoading = false;
+        this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
+        this.notifications.create('Error', 'No se han podidio obtener los datos de la Asignatura', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
@@ -142,7 +149,6 @@ export class AddExerciseComponent implements OnInit {
 
     this.formSubmited = true;
     if (this.formData.invalid) {
-      console.log(this.formData.invalid );
       this.notifications.create('Error al crear ejercicio', 'Existen errores en el formulario. No se pudo crear el ejercicio', NotificationType.Error, {
         theClass: 'outline primary',
         timeOut: 6000,
@@ -220,7 +226,6 @@ export class AddExerciseComponent implements OnInit {
 
   goBack(): void {
     this.sender.idSubject = undefined;
-    console.log('SS:', this.sender.idSubject);
     this.location.back();
   }
 
