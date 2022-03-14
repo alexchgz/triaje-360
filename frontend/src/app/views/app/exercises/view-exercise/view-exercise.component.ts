@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ContextMenuComponent } from 'ngx-contextmenu';
-
 import { SenderService } from 'src/app/data/sender.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { AuthService } from 'src/app/shared/auth.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { ShowStudentRegisterModalComponent } from 'src/app/containers/pages/show-student-register-modal/show-student-register-modal.component';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-view-exercise',
@@ -17,12 +16,8 @@ export class ViewExerciseComponent implements OnInit {
   displayMode = 'list';
   itemsPerPage = 10;
   currentPage = 1;
-  selectAllState = '';
   search = '';
   totalItem = 0;
-  isLoading: boolean;
-  endOfTheList = false;
-
   userRole: number;
   userId: string;
   exerciseId: number;
@@ -31,7 +26,8 @@ export class ViewExerciseComponent implements OnInit {
 
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: ShowStudentRegisterModalComponent;
 
-  constructor(private sender: SenderService, private auth: AuthService, private ejercicioService: EjercicioService) { }
+  constructor(private sender: SenderService, private auth: AuthService, private ejercicioService: EjercicioService,
+    private notifications: NotificationsService) { }
 
   ngOnInit(): void {
     this.userRole = this.auth.rol;
@@ -44,65 +40,49 @@ export class ViewExerciseComponent implements OnInit {
 
   loadExerciseStudents(exerciseId: number, pageSize: number, currentPage: number, subject: string, userId: string, search: string): void {
 
-    // console.log(this.userRole);
     this.itemsPerPage = pageSize;
     this.currentPage = currentPage;
     this.ejercicioService.getExerciseStudents(exerciseId, pageSize, currentPage, subject, userId, search).subscribe(
-      data => {
-        if (data['ok']) {
-          // console.log(data);
-          this.isLoading = false;
-          this.data = data['alumnosEjercicio'];
-          // console.log(data['alumnosEjercicio']);
-
-          this.totalItem = this.data.length;
-          
-        } else {
-          this.endOfTheList = true;
-        }
+      data => {        
+        this.data = data['alumnosEjercicio'];
+        this.totalItem = this.data.length;
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se han podido cargar los Ejercicios del Alumno', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
 
   showStudentModal(user? : Usuario): void {
     if(user) {
-      console.log(user.uid);
       this.addNewModalRef.show(user.uid);
     } else {
-      // this.addNewModalRef.show();
-      console.log('NO HAY USUARIO');
+      this.notifications.create('Error', 'No se han podido cargar los registros del Ejercicio por el Alumno', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+
+      return;
     }
   }
 
-  changeDisplayMode(mode): void {
-    this.displayMode = mode;
-  }
-
-  selectAllChange($event): void {
-    // if ($event.target.checked) {
-    //   this.selected = [...this.data];
-    // } else {
-    //   this.selected = [];
-    // }
-    // this.setSelectAllState();
-  }
-
+  // LIST PAGE HEADER METHODS
   pageChanged(event: any): void {
     this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, event.page, this.itemSubject, this.userId, this.search);
-    // this.loadExercises(this.itemsPerPage, event.page, this.itemSubject, this.userId);
   }
 
   itemsPerPageChange(perPage: number): void {
     this.loadExerciseStudents(this.exerciseId, perPage, 1, this.itemSubject, this.userId, this.search);
-    // this.loadExercises(perPage, 1, this.itemSubject, this.userId);
   }
 
   searchKeyUp(val: string): void {
-    // const val = event.target.value.toLowerCase().trim();
-    // console.log(val);
     this.search = val;
     this.loadExerciseStudents(this.exerciseId, this.itemsPerPage, this.currentPage, this.itemSubject, this.userId, this.search);
   }

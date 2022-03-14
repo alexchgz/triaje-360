@@ -1,11 +1,9 @@
-<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" 
-(changeDisplayMode)="changeDisplayMode($event)" (selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)" 
-(searchKeyUp)="searchKeyUp($event)"></app-list-page-header>
+<app-list-page-header [itemOptionsPerPage]="[10,25,50]" [itemsPerPage]="itemsPerPage"
+(itemsPerPageChange)="itemsPerPageChange($event)" (searchKeyUp)="searchKeyUp($event)"></app-list-page-header>
 <app-show-student-register-modal #addNewModalRef></app-show-student-register-modal>
 
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
-        <!-- <p>view-exercise LIST works!</p> -->
 
         <!-- SI NO HAY RESULTADOS -->
         <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
@@ -49,14 +47,6 @@
             </div>
             
         </div>
-    </div>
-
-    <div class="col-12 list" *ngIf="displayMode==='thumb'">
-        <p>view-exercise THUMB works!</p>
-    </div>
-
-    <div class="col-12 list" *ngIf="displayMode==='image'">
-        <p>view-exercise IMAGE works!</p>
     </div>
 
     <div class="col-12">
