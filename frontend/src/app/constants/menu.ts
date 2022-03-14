@@ -13,13 +13,6 @@ export interface IMenuItem {
 }
 
 const data: IMenuItem[] = [
-  // {
-  //   icon: 'iconsminds-shop-4',
-  //   label: 'menu.dashboards',
-  //   to: `${adminRoot}/dashboards/all`,
-  //   roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student],
-  //   subs: [],
-  // },
   {
     icon: 'iconsminds-digital-drawing',
     label: 'menu.schoolYears',

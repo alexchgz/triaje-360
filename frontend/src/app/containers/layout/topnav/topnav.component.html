@@ -28,14 +28,14 @@
       </span>
         </div> -->
 
-        <div class="btn-group ml-2" dropdown *ngIf="!isSingleLang">
+        <!-- <div class="btn-group ml-2" dropdown *ngIf="!isSingleLang">
             <button dropdownToggle type="button" class="language-button dropdown-toggle btn btn-light btn-sm">
         {{currentLanguage | uppercase}} <span class="caret"></span>
       </button>
             <ul *dropdownMenu class="dropdown-menu" role="menu">
                 <li role="menuitem" *ngFor="let item of languages" (click)="onLanguageChange(item)"><a class="dropdown-item" href="javascript:;">{{item.label}}</a></li>
             </ul>
-        </div>
+        </div> -->
 
         <!-- <a class="btn btn-sm btn-outline-primary ml-2 d-none d-xl-inline-block" [href]="buyUrl" target="_blank">&nbsp;BUY&nbsp;</a> -->
     </div>
@@ -55,47 +55,9 @@
                 </div>
             </div>
 
-            <!-- <div class="position-relative d-none d-sm-inline-block">
-                <div dropdown>
-                    <button dropdownToggle type="button" class="header-icon btn btn-empty">
-            <i class="simple-icon-grid"></i>
-          </button>
-                    <div *dropdownMenu class="dropdown-menu dropdown-menu-right mt-3" role="menu" aria-labelledby="button-basic" id="iconMenuDropdown">
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-equalizer d-block"></i>
-                            <span>Settings</span>
-                        </a>
-
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-male-female d-block"></i>
-                            <span>Users</span>
-                        </a>
-
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-puzzle d-block"></i>
-                            <span>Components</span>
-                        </a>
-
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-bar-chart-4 d-block"></i>
-                            <span>Profits</span>
-                        </a>
-
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-file d-block"></i>
-                            <span>Surveys</span>
-                        </a>
-
-                        <a href="javascript:;" class="icon-menu-item">
-                            <i class="iconsminds-suitcase d-block"></i>
-                            <span>Tasks</span>
-                        </a>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="position-relative d-inline-block">
 
+            <!-- NOTIFICACIONES -->
                 <!-- <div dropdown>
                     <button id="button-basic" dropdownToggle type="button" id="notificationButton" class="header-icon btn btn-empty">
             <i class="simple-icon-bell"></i>
@@ -164,7 +126,7 @@
             <button class="btn btn-empty p-0" type="button" dropdownToggle>
         <span class="name">{{displayName}}</span>
         <span>
-          <img alt="Profile Picture" src="/assets/img/profiles/l-1.jpg" />
+          <img alt="Profile Picture" src="/assets/img/profiles/blank-avatar.png" />
         </span>
       </button>
 
@@ -174,7 +136,7 @@
                 <a class="dropdown-item c-pointer">History</a>
                 <a class="dropdown-item c-pointer">Support</a>
                 <li class="divider dropdown-divider"></li> -->
-                <a class="dropdown-item c-pointer" (click)="onSignOut()">Sign out</a>
+                <a class="dropdown-item c-pointer" (click)="onSignOut()">Cerrar Sesión</a>
             </div>
         </div>
 

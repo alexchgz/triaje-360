@@ -6,8 +6,6 @@ import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { getThemeColor, setThemeColor, getUserRole } from 'src/app/utils/util';
-import { SenderService } from '../../../data/sender.service';
-import { auth } from 'firebase';
 
 @Component({
   selector: 'app-topnav',
@@ -32,13 +30,11 @@ export class TopnavComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private langService: LangService,
-    private sender: SenderService
   ) {
     this.languages = this.langService.supportedLanguages;
     this.currentLanguage = this.langService.languageShorthand;
     this.isSingleLang = this.langService.isSingleLang;
     this.isDarkModeActive = getThemeColor().indexOf('dark') > -1 ? true : false;
-    // this.userRole = getUserRole();
     this.userRole = authService.rol;
   }
 
@@ -132,14 +128,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
   onSignOut(): void {
     this.authService.signOut();
     this.router.navigate(['/user/login']);
-
-    // this.authService.signOut().subscribe(() => {
-    //   localStorage.removeItem('token');
-    //   localStorage.removeItem('rol');
-    //   localStorage.removeItem('uid');
-    //   this.sender.idUser = undefined;
-    //   this.router.navigate(['/user/login']);
-    // });
   }
 
   searchKeyUp(event: KeyboardEvent): void {
