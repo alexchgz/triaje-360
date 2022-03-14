@@ -122,11 +122,11 @@ export class ManageSubjectModalComponent implements OnInit {
         if(res['ok']) {
 
           if(rol == 'ROL_PROFESOR') {
-            this.profesoresAsignados = res['usuariosAsignados'];
-            this.profesoresNoAsignados = res['usuariosNoAsignados'];
+            this.profesoresAsignados = res['usuariosAsignados'] || [];
+            this.profesoresNoAsignados = res['usuariosNoAsignados'] || [];
           } else {
-            this.alumnosAsignados = res['usuariosAsignados'];
-            this.alumnosNoAsignados = res['usuariosNoAsignados'];
+            this.alumnosAsignados = res['usuariosAsignados'] || [];
+            this.alumnosNoAsignados = res['usuariosNoAsignados'] || [];
           }
         
         }
