@@ -11,8 +11,6 @@ import { Usuario } from 'src/app/models/usuario.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { DatePipe } from '@angular/common';
 
-
-
 @Component({
   selector: 'app-show-student-register-modal',
   templateUrl: './show-student-register-modal.component.html',
@@ -58,12 +56,8 @@ export class ShowStudentRegisterModalComponent implements OnInit {
   getUser(alumno: number): void {
     this.usuarioService.getUser(alumno)
         .subscribe( data => {
-          // console.log('Registros de Alumno en Ejercicio obtenidos');
-          // console.log('DATA:', data);
           this.dataUsuario = data['usuarios'];
-          // console.log(this.dataUsuario);
         }, (err) => {
-
           this.notifications.create('Error', 'No se han podido obtener los datos del Alumno', NotificationType.Error, {
             theClass: 'outline primary',
             timeOut: 4000,
@@ -77,13 +71,10 @@ export class ShowStudentRegisterModalComponent implements OnInit {
   getExercise(ejercicio: number): void {
     this.ejercicioService.getExercise(ejercicio)
         .subscribe( data => {
-          // console.log('Registros de Alumno en Ejercicio obtenidos');
-
           this.dataEjercicio = data['ejercicios'];
-          // console.log(this.dataEjercicio);
         }, (err) => {
 
-          this.notifications.create('Error', 'No se han podido obtener los datos del Alumno', NotificationType.Error, {
+          this.notifications.create('Error', 'No se han podido obtener los datos del Ejercicio', NotificationType.Error, {
             theClass: 'outline primary',
             timeOut: 4000,
             showProgressBar: false
@@ -98,11 +89,9 @@ export class ShowStudentRegisterModalComponent implements OnInit {
         .subscribe( data => {
 
           this.registros = data['ejerciciosUsuario'];
-          // console.log(this.registros);
           if(this.registros.length!=0) {
             this.changeDateFormat();
           }
-
         }, (err) => {
 
           this.notifications.create('Error', 'No se han podido obtener los registros del Alumno en el Ejercicio', NotificationType.Error, {
@@ -118,7 +107,6 @@ export class ShowStudentRegisterModalComponent implements OnInit {
   changeDateFormat(): void {
     for(let i = 0; i < this.registros.length; i++) {
       this.registros[i].fecha_ejecucion = this.datePipe.transform(this.registros[i].fecha_ejecucion, 'dd/MM/yyyy HH:mm:ss');
-      // console.log(this.registros[i].fecha_ejecucion);
     }
 
   }

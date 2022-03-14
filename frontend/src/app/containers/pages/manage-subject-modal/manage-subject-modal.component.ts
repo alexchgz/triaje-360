@@ -5,10 +5,9 @@ import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { Usuario } from '../../../models/usuario.model';
 import { Asignatura } from '../../../models/asignatura.model';
 import { FormBuilder, Validators } from '@angular/forms';
-import { id } from '@swimlane/ngx-datatable';
 import { DataListComponent } from 'src/app/views/app/subjects/data-list/data-list.component';
-import { getUserRole } from 'src/app/utils/util';
 import { AuthService } from 'src/app/shared/auth.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-manage-subject-modal',
@@ -22,19 +21,13 @@ export class ManageSubjectModalComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  categories = [
-    { label: 'Cakes', value: 'chocolate' },
-    { label: 'Cupcakes', value: 'vanilla' },
-    { label: 'Desserts', value: 'strawberry' }
-  ];
+
   data: Usuario[] = [];
   profesoresNoAsignados: Usuario[] = [];
   profesoresAsignados: Usuario[] = [];
   alumnosAsignados: Usuario[] = [];
   alumnosNoAsignados: Usuario[] = [];
   asignatura: Asignatura;
-  isLoading: boolean;
-  endOfTheList = false;
   userRole: number;
   val: string;
 
@@ -51,10 +44,9 @@ export class ManageSubjectModalComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private asignaturaService: AsignaturaService, private usuarioService: UsuarioService, private fb: FormBuilder,
-    private dataList: DataListComponent, private auth: AuthService) { }
+    private dataList: DataListComponent, private auth: AuthService, private notifications: NotificationsService) { }
 
   ngOnInit(): void {
-    // this.userRole = getUserRole();
     this.userRole = this.auth.rol;
   }
 
@@ -74,22 +66,20 @@ export class ManageSubjectModalComponent implements OnInit {
   getSubject(id: number): void {
     this.asignaturaService.getSubject(id).subscribe(
       data => {
-        if (data['ok']) {
-          console.log(data);
           this.asignatura = data['asignaturas'];
-          console.log(this.asignatura);
-
           this.profesoresAsignados = data['profesoresAsignados'];
           this.profesoresNoAsignados = data['profesoresNoAsignados'];
           this.alumnosAsignados = data['alumnosAsignados'];
           this.alumnosNoAsignados = data['alumnosNoAsignados'];
-
-        } else {
-          this.endOfTheList = true;
-        }
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se ha podido obtener la Asignatura', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
@@ -101,15 +91,18 @@ export class ManageSubjectModalComponent implements OnInit {
 
   manage(u: Usuario, accion: string): void {
 
-    this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid, u.rol, u.uid, accion).subscribe( res => {
-      console.log('Asignatura actualizada');
-      // mensaje modal
+    this.asignaturaService.updateSubject(this.asignatura, this.asignatura.uid, u.rol, u.uid, accion).subscribe( res => {      
       this.getSubject(this.asignatura.uid);
+
     }, (err) => {
+      this.notifications.create('Error', 'No se ha podido actualizar la Asignatura', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+
       return;
     });
-
-    console.log( this.asignatura );
 
   }
 
@@ -126,7 +119,6 @@ export class ManageSubjectModalComponent implements OnInit {
       this.getSubject(this.asignatura.uid);
     } else {
       this.usuarioService.getUsers(undefined, undefined, rol, val, usuarios).subscribe( res => {
-        console.log('Alumnos traídos');
         if(res['ok']) {
 
           if(rol == 'ROL_PROFESOR') {
@@ -139,6 +131,12 @@ export class ManageSubjectModalComponent implements OnInit {
         
         }
       }, (err) => {
+        this.notifications.create('Error', 'No se han podido filtrar los Usuarios', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+  
         return;
       });
     }

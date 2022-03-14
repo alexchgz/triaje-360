@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddNewExerciseModalComponent } from 'src/app/containers/pages/add-new-exercise-modal/add-new-exercise-modal.component';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Ejercicio } from '../../../../models/ejercicio.model';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Asignatura } from '../../../../models/asignatura.model';
-import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import data from '../../../../constants/menu';
@@ -43,9 +40,7 @@ export class DataListComponent implements OnInit {
   totalEjerciciosUsuario = 0;
   ejerciciosUsuario: EjerciciosUsuario[] = [];
 
-  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewExerciseModalComponent;
-
-  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService, private asignaturaService: AsignaturaService,
+  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService,
     private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService,
     private ejerciciosUsuarioService: EjerciciosUsuarioService, private auth: AuthService) {
     this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
@@ -110,15 +105,6 @@ export class DataListComponent implements OnInit {
     this.displayMode = mode;
   }
 
-  showAddNewModal(subject? : Asignatura): void {
-    if(subject) {
-      // console.log(subject.uid);
-      this.addNewModalRef.show(subject.uid);
-    } else {
-      this.addNewModalRef.show();
-    }
-  }
-
   isSelected(p: Ejercicio): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
@@ -159,9 +145,14 @@ export class DataListComponent implements OnInit {
   }
 
   subjectChange(subject: Asignatura): void {
-    //console.log(year.uid);
-    this.itemSubject = subject.uid.toString();
-    this.sender.idSubject = subject.uid.toString();
+    if(subject.uid == undefined) {
+      this.itemSubject = undefined;
+      this.sender.idSubject = undefined;
+    } else {
+      this.itemSubject = subject.uid.toString();
+      this.sender.idSubject = subject.uid.toString();
+    }
+    
     console.log(this.itemSubject);
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
   }

@@ -1,7 +1,6 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DataListComponent } from 'src/app/views/app/users/data-list/data-list.component';
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/data/usuario.service';
@@ -26,8 +25,7 @@ export class AddNewUserModalComponent {
     { label: 'Profesor', value: 'ROL_PROFESOR' },
     { label: 'Alumno', value: 'ROL_ALUMNO' }
   ];
-  isLoading: boolean;
-  endOfTheList = false;
+
   schoolYears: Curso[];
   user: Usuario;
   cb = true;
@@ -41,14 +39,12 @@ export class AddNewUserModalComponent {
     password: ['', [Validators.required]],
     rol: ['', [Validators.required]],
     activo: ['']
-    // activo: [{value: true, disabled: true}, [Validators.required]]
-    // activo: ['', [Validators.requiredTrue]]
   });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private usuarioService: UsuarioService, private cursoService: CursoService, private fb: FormBuilder,
-     private router: Router , private dataList: DataListComponent, private notifications: NotificationsService) { }
+    private dataList: DataListComponent, private notifications: NotificationsService) { }
 
   show(id? : number): void {
 
@@ -61,7 +57,6 @@ export class AddNewUserModalComponent {
       // SI VAMOS A CREAR UNO NUEVO ACTIVO == TRUE
       this.formData.get('activo').setValue(true);
     }
-
     
     this.modalRef = this.modalService.show(this.template, this.config);
     this.getSchoolYears();
@@ -70,40 +65,31 @@ export class AddNewUserModalComponent {
   getSchoolYears() {
     this.cursoService.getSchoolYears().subscribe(
       data => {
-        if (data['ok']) {
-          //console.log(data.usuarios);
-          this.isLoading = false;
-          this.schoolYears = data['cursos'].map(x => {
-            return {
-              ...x,
-              // img: x.img.replace('/img/', '/img/products/')
-            };
-          });
-          //console.log(this.itemOptionsYears);
-        } else {
-          this.endOfTheList = true;
-        }
+        this.schoolYears = data['cursos'];
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se han podido obtener los Cursos Académicos', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
 
   createUser(): void {
-    console.log('Envío formulario');
 
     this.formSubmited = true;
     if (this.formData.invalid) { 
-      console.log(this.formData.invalid );
       return;
     }
 
     if(this.user) {
+      // SI TENEMOS USUARIO -> ACTUALIZAMOS
       this.usuarioService.updateUser(this.formData.value, this.user.uid)
         .subscribe( res => {
-          console.log('Usuario creado');
-          //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
 
@@ -124,10 +110,9 @@ export class AddNewUserModalComponent {
           return;
       });
     } else {
+      // SI NO -> CREAMOS
       this.usuarioService.createUser(this.formData.value)
         .subscribe( res => {
-          console.log('Usuario creado');
-          //this.router.navigateByUrl('app/dashboards/all/users/data-list');
           this.dataList.cargarUsuarios(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemRol, this.dataList.search);
           this.closeModal();
 
@@ -152,7 +137,6 @@ export class AddNewUserModalComponent {
   }
 
   loadUserData() {
-    console.log(this.user);
     if(this.user) {
       this.formData.get('nombre').setValue(this.user.nombre);
       this.formData.get('apellidos').setValue(this.user.apellidos);
@@ -160,32 +144,29 @@ export class AddNewUserModalComponent {
       this.formData.get('password').setValue('');
       this.formData.get('rol').setValue(this.user.rol);
       this.formData.get('activo').setValue(this.user.activo);
-      // this.formData.get('curso').setValue(this.user.curso.nombrecorto);
     }
   }
 
   getUser(id: number): void {
-
     this.usuarioService.getUser(id).subscribe(
       data => {
-        if (data['ok']) {
-          console.log(data['usuarios']);
-          this.user = data['usuarios'];
-          this.loadUserData();
-        } else {
-          this.endOfTheList = true;
-        }
+        this.user = data['usuarios'];
+        this.loadUserData();      
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se ha podido obtener el Usuario', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
 
   closeModal(): void {
     this.modalRef.hide();
-    // this.formData.reset();
-    // this.user = undefined;
   }
 
 }

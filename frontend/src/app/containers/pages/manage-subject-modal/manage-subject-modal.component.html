@@ -8,6 +8,7 @@
     <div class="modal-body">
         <div class="card">
             <tabset class="card-tabs">
+                <!-- PROFESORES -->
                 <tab heading="{{'pages.teachers-title' | translate}}" class="card-body">
                     <div class="d-inline-block derecha">
                         <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
@@ -21,7 +22,6 @@
                             <tr>
                                 <th class="t-email" scope="col">Email</th>
                                 <th class="t-nombre" scope="col">Nombre</th>
-                                <!-- <th scope="col">Apellidos</th> -->
                                 <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
@@ -29,7 +29,6 @@
                             <tr>
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
-                                <!-- <td>{{p.apellidos}}</td> -->
                                 <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="manage(p, 'desasignar')"></i></td>
                             </tr>
                         </tbody>
@@ -41,7 +40,6 @@
                             <tr>
                                 <th class="t-email" scope="col">Email</th>
                                 <th class="t-nombre" scope="col">Nombre</th>
-                                <!-- <th scope="col">Apellidos</th> -->
                                 <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
@@ -49,12 +47,12 @@
                             <tr>
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
-                                <!-- <td>{{p.apellidos}}</td> -->
                                 <td *ngIf="p.activo" class="t-icono icono"><i class="simple-icon-plus" (click)="manage(p, 'asignar')"></i></td>
                             </tr>
                         </tbody>
                     </table>
                 </tab>
+                <!-- ALUMNOS -->
                 <tab heading="{{'pages.students-title' | translate}}" class="card-body">
                     <div class="d-inline-block derecha">
                         <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
@@ -68,7 +66,6 @@
                             <tr>
                                 <th class="t-email" scope="col">Email</th>
                                 <th class="t-nombre" scope="col">Nombre</th>
-                                <!-- <th scope="col">Apellidos</th> -->
                                 <th *ngIf="userRole == 0" class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
@@ -76,7 +73,6 @@
                             <tr>
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
-                                <!-- <td>{{p.apellidos}}</td> -->
                                 <td *ngIf="userRole == 0" class="t-icono icono"><i class="simple-icon-minus" (click)="manage(p, 'desasignar')"></i></td>
                             </tr>
                         </tbody>
@@ -89,7 +85,6 @@
                             <tr>
                                 <th class="t-email" scope="col">Email</th>
                                 <th class="t-nombre" scope="col">Nombre</th>
-                                <!-- <th scope="col">Apellidos</th> -->
                                 <th class="t-icono" scope="col"></th>
                             </tr>
                         </thead>
@@ -97,7 +92,6 @@
                             <tr>
                                 <td class="t-email">{{p.email}}</td>
                                 <td class="t-nombre">{{p.apellidos}}, {{p.nombre}}</td>
-                                <!-- <td>{{p.apellidos}}</td> -->
                                 <td class="t-icono icono"><i class="simple-icon-plus" (click)="manage(p, 'asignar')"></i></td>
                             </tr>
                         </tbody>
@@ -108,6 +102,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.close' | translate }}</button>
-        <!-- <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button> -->
     </div>
 </ng-template>
+<simple-notifications></simple-notifications>

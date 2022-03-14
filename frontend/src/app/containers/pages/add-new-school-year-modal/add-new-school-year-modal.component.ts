@@ -21,8 +21,6 @@ export class AddNewSchoolYearModalComponent {
     ignoreBackdropClick: true,
     class: 'modal-right'
   };
-  isLoading: boolean;
-  endOfTheList = false;
   schoolYear: Curso;
 
   // FORM
@@ -65,7 +63,6 @@ export class AddNewSchoolYearModalComponent {
 
     this.cursoService.createUpdateSchoolYear(this.formData.value, curso)
         .subscribe( res => {
-          console.log('Curso Académico Creado o Actualizado');
           this.dataList.loadSchoolYears(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);
           this.closeModal();
 
@@ -89,7 +86,6 @@ export class AddNewSchoolYearModalComponent {
   }
 
   loadSchoolYearData() {
-    // console.log(this.schoolYear);
     if(this.schoolYear) {
       this.formData.get('nombre').setValue(this.schoolYear.nombre);
       this.formData.get('nombrecorto').setValue(this.schoolYear.nombrecorto);
@@ -101,25 +97,23 @@ export class AddNewSchoolYearModalComponent {
 
     this.cursoService.getSchoolYear(id).subscribe(
       data => {
-        if (data['ok']) {
-          // console.log(data['cursos']);
-          this.schoolYear = data['cursos'];
-          this.loadSchoolYearData();
-        } else {
-          this.endOfTheList = true;
-        }
+        this.schoolYear = data['cursos'];
+        this.loadSchoolYearData();
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se ha podido obtener el Curso Académico', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
       }
     );
   }
 
   closeModal(): void {
-    console.log('entro aqui');
     this.modalRef.hide();
-    // this.formData.reset();
-    // this.schoolYear = undefined;
   }
 
   existeCursoActivo(): void {
@@ -129,22 +123,23 @@ export class AddNewSchoolYearModalComponent {
     } else {
       this.cursoService.getSchoolYearActivo().subscribe(
         data => {
-          if (data['ok']) {
-            // console.log(data['cursoActivo']);
-            // SI EXISTE PREGUNTAMOS QUE SE QUIERE HACER
-            if(data['cursoActivo']) {
-              this.msgCursoActivo(data['cursoActivo']);
-            }
-            else {
-              // SI NO TENEMOS YA UN CURSO ACTIVO LO CREAMOS
-              this.createUpdateSchoolYear();
-            }
-          } else {
-            this.endOfTheList = true;
+          // SI EXISTE PREGUNTAMOS QUE SE QUIERE HACER
+          if(data['cursoActivo']) {
+            this.msgCursoActivo(data['cursoActivo']);
+          }
+          else {
+            // SI NO TENEMOS YA UN CURSO ACTIVO LO CREAMOS
+            this.createUpdateSchoolYear();
           }
         },
         error => {
-          this.isLoading = false;
+          this.notifications.create('Error', 'No se ha podido obtener el Curso Académico activo', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
         }
       );
     }
@@ -163,16 +158,16 @@ export class AddNewSchoolYearModalComponent {
       confirmButtonText: `Confirmar`,
       denyButtonText: `Cancelar`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+
       if (result.isConfirmed) {
-        
+
         let idCurso: any;
         if(this.schoolYear) { 
-          idCurso = this.schoolYear.uid
+          idCurso = this.schoolYear.uid;
         } else {
           idCurso = '';
         }
-        // this.cursoService.updateSchoolYearActive(curso[0].uid, this.formData.value, idCurso).subscribe( res => {
+        
         this.cursoService.createUpdateSchoolYear( this.formData.value, idCurso, curso[0].uid).subscribe( res => {
   
           this.dataList.loadSchoolYears(this.dataList.itemsPerPage, this.dataList.currentPage, this.dataList.itemYear);

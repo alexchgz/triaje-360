@@ -14,7 +14,6 @@
             <p *ngIf="dataEjercicio!=undefined" class="font-weight-bold">Intentos Restantes: {{dataEjercicio.max_intentos - registros.length}}</p>
         </div>
         <div class="card card-body">
-            <!-- <p class="font-weight-bold" *ngIf="dataEjercicio!=undefined">Intentos Restantes: {{dataEjercicio.max_intentos-registros.length}}</p> -->
             <p *ngIf="registros.length == 0">Aún no hay intentos realizados de este alumno para este ejercicio</p>
             <table *ngIf="registros.length > 0" class="table table-borderless">
                 <thead>
@@ -34,7 +33,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="closeModal()">{{'pages.close' | translate }}</button>
-        <!-- <button type="submit" class="btn btn-primary float-right">{{ 'pages.submit' | translate}}</button> -->
     </div>
 </ng-template>
 <simple-notifications></simple-notifications>
