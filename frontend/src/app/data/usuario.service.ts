@@ -5,7 +5,7 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { throwError, of, Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../shared/auth.service';
@@ -23,28 +23,26 @@ export class UsuarioService {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
     var idsUsuariosAsignados = [];
-    let params = new HttpParams();
-    if(pageSize || currentPage || role){
-      if(pageSize) params = params.append('pageSize', pageSize + '');
-      if(currentPage) params = params.append('currentPage', currentPage + '');
-      if(role) params = params.append('role', role + '');
-    }
-    if(search) {
-      params = params.append('texto', search + '');
-    }
 
-    // pasamos a la peticion solo los ids, no los usuarios enteros
+    // HEADERS
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    // PARAMS
+    let params = new HttpParams();
+    if(pageSize) params = params.append('pageSize', pageSize + '');
+    if(currentPage) params = params.append('currentPage', currentPage + '');
+    if(role) params = params.append('role', role + '');
+    if(search) { params = params.append('texto', search + ''); }
+
+    // si tenemos usuarios asignados -> gestionar asignatura
     if(usuariosAsignados) {
+      // pasamos a la peticion solo los ids, no los usuarios enteros
       for(let i=0; i<usuariosAsignados.length; i++) {
         idsUsuariosAsignados.push(usuariosAsignados[i].uid);
       }
       params = params.append('idsUsuAsignados', idsUsuariosAsignados.join(', '));
     }
-
-    // console.log(params);
-
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
 
     return this.http.get(url, { headers, params });
 
@@ -53,19 +51,23 @@ export class UsuarioService {
   getUser(id: number) {
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
-    let params = new HttpParams();
-    params = params.append('id', id + '');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
+
+    // PARAMS
+    let params = new HttpParams();
+    params = params.append('id', id + '');
     
     return this.http.get(url, { headers, params });
   }
 
   createUser(data: Usuario) {
-
     const url = environment.base_url + '/usuarios';
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
@@ -84,9 +86,10 @@ export class UsuarioService {
   }
 
   updateUser(data: Usuario, id: number) {
-
     const url = environment.base_url + '/usuarios/' + id;
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
@@ -104,14 +107,13 @@ export class UsuarioService {
   }
 
   dropUser(uid: number) {
-    console.log(uid);
     const url = environment.base_url + '/usuarios/' + uid;
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.delete(url, { headers });
   }
 

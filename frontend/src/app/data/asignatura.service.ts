@@ -4,12 +4,8 @@ import {
   HttpParams,
   HttpHeaders
 } from '@angular/common/http';
-import { map, catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Asignatura } from '../models/asignatura.model';
 import { environment } from '../../environments/environment';
-import data from './cakes';
 
 @Injectable({ providedIn: 'root' })
 export class AsignaturaService {
@@ -20,28 +16,25 @@ export class AsignaturaService {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
 
+    // PARAMS
     let params = new HttpParams();
-    if(pageSize || currentPage || schoolYear || userId){
-      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
-      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
-      if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
-      if(userId) { params = params.append('userId', userId + ''); }
-    }
-    // console.log(params);
-    // params = params.append('search', search);
-    // params = params.append('orderBy', orderBy);
+    if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+    if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+    if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
+    if(userId) { params = params.append('userId', userId + ''); }
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.get(url, { headers, params });
-
   }
 
   getSubject(id: number, roln?:number, search?:string) {
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
+
+    // PARAMS
     let params = new HttpParams();
     params = params.append('id', id + '');
     if(roln && search) {
@@ -49,6 +42,7 @@ export class AsignaturaService {
       params = params.append('texto', search + '');
     }
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
     
@@ -60,10 +54,10 @@ export class AsignaturaService {
     const url = environment.base_url + '/asignaturas/' + uid;
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.delete(url, { headers });
   }
 
@@ -71,9 +65,12 @@ export class AsignaturaService {
 
     const url = environment.base_url + '/asignaturas';
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // DATA
     const sendData = {
       "nombre": data['nombre'],
       "nombrecorto": data['nombrecorto'],
@@ -92,9 +89,12 @@ export class AsignaturaService {
 
     const url = environment.base_url + '/asignaturas/' + id;
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // PARAMS
     let params = new HttpParams();
     if(rol && idUsu && accion) {
       params = params.append('rol', rol);
@@ -102,6 +102,7 @@ export class AsignaturaService {
       params = params.append('accion', accion);
     }
 
+    // DATA
     const sendData = {
       "nombre": data['nombre'],
       "nombrecorto": data['nombrecorto'],
@@ -111,8 +112,6 @@ export class AsignaturaService {
       "alumnos": data['alumnos'],
       "ejercicios": data['ejercicios']
     }
-
-    // console.log(sendData);
 
     return this.http.put(url, sendData, { headers, params });
 

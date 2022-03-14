@@ -1,4 +1,3 @@
-import { Curso } from './curso.model';
 
 export class Usuario {
 

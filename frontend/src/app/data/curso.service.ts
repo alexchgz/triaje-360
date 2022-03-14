@@ -4,9 +4,6 @@ import {
   HttpParams,
   HttpHeaders
 } from '@angular/common/http';
-import { map, catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { emailsMatch } from '../containers/form-validations/custom.validators';
 import { Curso } from '../models/curso.model';
 import { environment } from '../../environments/environment';
 
@@ -20,19 +17,16 @@ export class CursoService {
     const url = environment.base_url + '/cursos';
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // PARAMS
     let params = new HttpParams();
-    if(pageSize || currentPage || schoolYear){
-      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
-      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
-      if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
-    }
-    if(search) {
-      // console.log(search);
-      params = params.append('texto', search + '');
-    }
+    if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+    if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+    if(schoolYear) { params = params.append('schoolYear', schoolYear + ''); }
+    if(search) { params = params.append('texto', search + ''); }
 
     return this.http.get(url, { headers, params });
       
@@ -41,13 +35,15 @@ export class CursoService {
   getSchoolYear(id: number) {
     const url = environment.base_url + '/cursos';
     const token = localStorage.getItem('token');
-    let params = new HttpParams();
-    params = params.append('id', id + '');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+
+    // PARAMS
+    let params = new HttpParams();
+    params = params.append('id', id + '');
+    
     return this.http.get(url, { headers, params });
   }
 
@@ -55,45 +51,45 @@ export class CursoService {
     const url = environment.base_url + '/cursos/activo';
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.get(url, { headers });
   }
 
   dropSchoolYear(uid: number) {
-    console.log(uid);
     const url = environment.base_url + '/cursos/' + uid;
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.delete(url, { headers });
   }
 
   createUpdateSchoolYear(data: Curso, id:any, idDesactivar?: number) {
-    console.log(idDesactivar);
     let url;
-    
     const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('x-token', token);
 
     let activo = false;
-
     if(data['activo']) {
       activo = true;
     }
 
+    // HEADERS
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    // DATA
     const sendData = {
       "nombre": data['nombre'],
       "nombrecorto": data['nombrecorto'],
       "activo": activo
     }
 
+    // PARAMS
     let params = new HttpParams();
     if(idDesactivar) {
       params = params.append('idDesactivar', idDesactivar + '');

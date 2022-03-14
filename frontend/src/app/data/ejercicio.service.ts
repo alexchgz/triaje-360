@@ -4,13 +4,8 @@ import {
   HttpParams,
   HttpHeaders
 } from '@angular/common/http';
-import { map, catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { emailsMatch } from '../containers/form-validations/custom.validators';
-import { Curso } from '../models/curso.model';
 import { Ejercicio } from '../models/ejercicio.model'
 import { environment } from '../../environments/environment';
-import { send } from 'process';
 
 @Injectable({ providedIn: 'root' })
 export class EjercicioService {
@@ -22,18 +17,16 @@ export class EjercicioService {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // PARAMS
     let params = new HttpParams();
-    if(pageSize || currentPage || subject || userId){
-      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
-      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
-      if(subject) { params = params.append('asignatura', subject + ''); }
-      if(userId) { params = params.append('userId', userId + ''); }
-    }
-
-    // console.log(params);
+    if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+    if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+    if(subject) { params = params.append('asignatura', subject + ''); }
+    if(userId) { params = params.append('userId', userId + ''); }
 
     return this.http.get(url, { headers, params });
 
@@ -42,37 +35,39 @@ export class EjercicioService {
   getExercise(id: number) {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
-    let params = new HttpParams();
-    params = params.append('id', id + '');
 
-    // console.log(params);
-
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
+
+    // PARAMS
+    let params = new HttpParams();
+    params = params.append('id', id + '');
 
     return this.http.get(url, { headers, params });
 
   }
 
   dropExercise(uid: number) {
-    // console.log(uid);
     const url = environment.base_url + '/ejercicios/' + uid;
     const token = localStorage.getItem('token');
 
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
-    //console.log(url);
-    //console.log(token);
+    
     return this.http.delete(url, { headers });
   }
 
   createExercise(data: Ejercicio) {
-    // console.log(data);
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // DATA
     const sendData = {
       "nombre": data['nombre'],
       "descripcion": data['descripcion'],
@@ -87,12 +82,14 @@ export class EjercicioService {
   }
 
   updateExercise(data: Object, id: number) {
-    console.log(data);
     const url = environment.base_url + '/ejercicios/' + id;
     const token = localStorage.getItem('token');
+
+    // HEADERS
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    // DATA
     const sendData = {
       "nombre": data['nombre'],
       "descripcion": data['descripcion'],
@@ -101,8 +98,6 @@ export class EjercicioService {
       "asignatura": data['asignatura'],
       "max_intentos": data['max_intentos']
     }
-
-    // console.log(sendData);
 
     return this.http.put(url, sendData, { headers });
 
@@ -118,18 +113,11 @@ export class EjercicioService {
 
     let params = new HttpParams();
     params = params.append('idEjercicio', exerciseId.toString());
-    if(pageSize || currentPage || subject || userId){
-      if(pageSize) { params = params.append('pageSize', pageSize + ''); }
-      if(currentPage) { params = params.append('currentPage', currentPage + ''); }
-      if(subject) { params = params.append('asignatura', subject + ''); }
-      if(userId) { params = params.append('userId', userId + ''); }
-    }
-    if(search) {
-      // console.log(search);
-      params = params.append('texto', search + '');
-    }
-
-    // console.log(params);
+    if(pageSize) { params = params.append('pageSize', pageSize + ''); }
+    if(currentPage) { params = params.append('currentPage', currentPage + ''); }
+    if(subject) { params = params.append('asignatura', subject + ''); }
+    if(userId) { params = params.append('userId', userId + ''); }
+    if(search) { params = params.append('texto', search + ''); }
 
     return this.http.get(url, { headers, params });
 
