@@ -37,7 +37,7 @@ export class DataListComponent implements OnInit {
   totalEjerciciosUsuario = 0;
   ejerciciosUsuario: EjerciciosUsuario[] = [];
 
-  constructor(private hotkeysService: HotkeysService, private ejercicioService: EjercicioService,
+  constructor(private ejercicioService: EjercicioService,
     private datePipe: DatePipe, private router: Router, public sender: SenderService, private notifications: NotificationsService,
     private ejerciciosUsuarioService: EjerciciosUsuarioService, private auth: AuthService) {
   }
@@ -226,10 +226,6 @@ export class DataListComponent implements OnInit {
   }
 
   // LIST PAGE HEADER METHODS
-  changeDisplayMode(mode): void {
-    this.displayMode = mode;
-  }
-
   isSelected(p: Ejercicio): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }

@@ -1,5 +1,6 @@
-<app-list-page-header [displayMode]="displayMode" [itemOptionsPerPage]="[5,10,25]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()" (selectAllChange)="selectAllChange($event)"
-    (itemsPerPageChange)="itemsPerPageChange($event)" [selected]="selected" (dropUsers)="dropSchoolYears($event)" (searchKeyUp)="searchKeyUp($event)">
+<app-list-page-header [itemOptionsPerPage]="[5,10,25]" [itemsPerPage]="itemsPerPage" [selectAllState]="selectAllState" (addNewItem)="showAddNewModal()" 
+(selectAllChange)="selectAllChange($event)" (itemsPerPageChange)="itemsPerPageChange($event)" [selected]="selected" (dropUsers)="dropSchoolYears($event)" 
+(searchKeyUp)="searchKeyUp($event)">
 </app-list-page-header>
 <app-add-new-school-year-modal #addNewModalRef></app-add-new-school-year-modal>
 

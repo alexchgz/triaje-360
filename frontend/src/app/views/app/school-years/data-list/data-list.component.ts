@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddNewSchoolYearModalComponent } from 'src/app/containers/pages/add-new-school-year-modal/add-new-school-year-modal.component';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Curso } from '../../../../models/curso.model';
 import { CursoService } from 'src/app/data/curso.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
@@ -23,27 +21,15 @@ export class DataListComponent implements OnInit {
   itemsPerPage = 5;
   search = '';
   orderBy = '';
-  isLoading: boolean;
-  endOfTheList = false;
   totalItem = 0;
   totalPage = 0;
   itemYear = 0;
-  // @Output puedeActivo = true;
-  // puedeActivo = true;
 
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddNewSchoolYearModalComponent;
 
-  constructor(private hotkeysService: HotkeysService, private cursoService: CursoService, private notifications: NotificationsService, public sender: SenderService) {
-    this.hotkeysService.add(new Hotkey('ctrl+a', (event: KeyboardEvent): boolean => {
-      this.selected = [...this.data];
-      return false;
-    }));
-    this.hotkeysService.add(new Hotkey('ctrl+d', (event: KeyboardEvent): boolean => {
-      this.selected = [];
-      return false;
-    }));
+  constructor(private cursoService: CursoService, private notifications: NotificationsService,
+    public sender: SenderService) {
   }
-
 
   ngOnInit(): void {
     this.sender.idSubject = undefined;
@@ -58,27 +44,18 @@ export class DataListComponent implements OnInit {
     this.currentPage = currentPage;
     this.cursoService.getSchoolYears(pageSize, currentPage, schoolYear, search).subscribe(
       data => {
-        if (data['ok']) {
-          //console.log(data.usuarios);
-          this.isLoading = false;
-          this.data = data['cursos'];
-
-          this.totalItem = data['totalCursos'];
-          //console.log(this.totalItem);
-          //this.totalPage = data.totalPage;
-          this.setSelectAllState();
-        } else {
-          this.endOfTheList = true;
-        }
+        this.data = data['cursos'];
+        this.totalItem = data['totalCursos'];
+        this.setSelectAllState();
       },
       error => {
-        this.isLoading = false;
+        this.notifications.create('Error', 'No se han podido cargar los Cursos Académicos', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
       }
     );
-  }
-
-  changeDisplayMode(mode): void {
-    this.displayMode = mode;
   }
 
   showAddNewModal(schoolYear? : Curso): void {
@@ -90,6 +67,80 @@ export class DataListComponent implements OnInit {
     }
   }
 
+  dropSchoolYears(years: Curso[]): void {
+    
+    for(let i=0; i<years.length; i++){
+      this.cursoService.dropSchoolYear(years[i].uid).subscribe(
+        data => {
+          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
+
+          this.notifications.create('Cursos Académicos eliminados', 'Se han eliminado los Cursos Académicos correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+        },
+        error => {
+
+          this.notifications.create('Error', 'No se han podido eliminar los Cursos Académicos', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
+        }
+      );
+    }
+  }
+
+  dropSchoolYear(year: Curso): void {
+
+    this.cursoService.dropSchoolYear(year.uid).subscribe(
+      data => {
+        this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
+
+        this.notifications.create('Curso Académico eliminado', 'Se ha eliminado el Curso Académico correctamente', NotificationType.Info, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+      },
+      error => {
+
+        this.notifications.create('Error', 'No se ha podido eliminar el Curso Académico', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
+  }
+
+  confirmDelete(curso: Curso): void {
+    Swal.fire({
+      title: 'Eliminar Curso',
+      text: '¿Estás seguro de que quieres eliminar el Curso?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dropSchoolYear(curso);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
+    });
+  }
+
+  // LIST PAGE HEADER METHODS
   isSelected(p: Curso): boolean {
     return this.selected.findIndex(x => x.uid === p.uid) > -1;
   }
@@ -129,99 +180,13 @@ export class DataListComponent implements OnInit {
     this.loadSchoolYears(perPage, 1, this.itemYear, this.search);
   }
 
-  dropSchoolYears(years: Curso[]): void {
-    //console.log(users);
-    for(let i=0; i<years.length; i++){
-      this.cursoService.dropSchoolYear(years[i].uid).subscribe(
-        data => {
-          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
-
-          this.notifications.create('Cursos Académicos eliminados', 'Se han eliminado los Cursos Académicos correctamente', NotificationType.Info, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
-
-        },
-        error => {
-
-          this.notifications.create('Error', 'No se han podido eliminar los Cursos Académicos', NotificationType.Error, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
-
-          this.isLoading = false;
-        }
-      );
-    }
-  }
-
-  dropSchoolYear(year: Curso): void {
-    console.log(year);
-      this.cursoService.dropSchoolYear(year.uid).subscribe(
-        data => {
-          this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
-
-          this.notifications.create('Curso Académico eliminado', 'Se ha eliminado el Curso Académico correctamente', NotificationType.Info, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
-        },
-        error => {
-
-          this.notifications.create('Error', 'No se ha podido eliminar el Curso Académico', NotificationType.Error, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
-
-          this.isLoading = false;
-        }
-      );
-
-  }
-
   searchKeyUp(val: string): void {
-    // const val = event.target.value.toLowerCase().trim();
-    // console.log(val);
     this.search = val;
     this.loadSchoolYears(this.itemsPerPage, this.currentPage, this.itemYear, this.search);
-  }
-
-  confirmDelete(curso: Curso): void {
-    // this.dropExercise(ejercicio);
-    Swal.fire({
-      title: 'Eliminar Curso',
-      text: '¿Estás seguro de que quieres eliminar el Curso?',
-      icon: 'warning',
-      showDenyButton: true,
-      iconColor: '#145388',
-      confirmButtonColor: '#145388',
-      denyButtonColor: '#145388',
-      confirmButtonText: `Sí`,
-      denyButtonText: `No`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.dropSchoolYear(curso);
-      } else if (result.isDenied) {
-        Swal.close();
-      }
-    });
   }
 
   // changeOrderBy(item: any): void {
   //   this.loadData(this.itemsPerPage, 1, this.search, item.value);
   // }
 
-  // searchKeyUp(event): void {
-  //   const val = event.target.value.toLowerCase().trim();
-  //   this.loadData(this.itemsPerPage, 1, val, this.orderBy);
-  // }
-
-  // onContextMenuClick(action: string, item: IProduct): void {
-  //   console.log('onContextMenuClick -> action :  ', action, ', item.title :', item.title);
-  // }
 }
