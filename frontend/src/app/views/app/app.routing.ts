@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BlankPageComponent } from './blank-page/blank-page.component';
-import { SchoolYearsComponent } from './school-years/school-years.component';
-import { SchoolYearsModule } from './school-years/school-years.module';
-import { SubjectsModule } from './subjects/subjects.module';
 import { UserRole } from '../../shared/auth.roles';
 
 const routes: Routes = [
@@ -20,19 +17,6 @@ const routes: Routes = [
             (m) => m.DashboardsModule
           ),
           data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
-      },
-      {
-        path: 'applications',
-        loadChildren: () =>
-          import('./applications/applications.module').then(
-            (m) => m.ApplicationsModule
-          ),
-      },
-      {
-        path: 'pages',
-        loadChildren: () =>
-          import('./pages/pages.module').then((m) => m.PagesModule),
-
       },
       {
         path: 'school-years',
@@ -59,15 +43,10 @@ const routes: Routes = [
           data: { roles: [UserRole.Admin, UserRole.Teacher, UserRole.Student] },
       },
       {
-        path: 'ui',
-        loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
-      },
-      {
         path: 'menu',
         loadChildren: () =>
           import('./menu/menu.module').then((m) => m.MenuModule),
-      },
-      { path: 'blank-page', component: BlankPageComponent },
+      }
     ],
   },
 ];
