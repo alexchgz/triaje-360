@@ -9,7 +9,6 @@ import { AuthGuard } from '../shared/auth.guard';
 import { UserRole } from '../shared/auth.roles';
 import { LoginComponent } from './user/login/login.component';
 import { NoauthGuard } from '../shared/noauth.guard';
-import { Auth2Guard } from '../shared/auth2.guard';
 
 const adminRoot = environment.adminRoot.substr(1); // path cannot start with a slash
 

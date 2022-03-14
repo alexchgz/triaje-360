@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { UsuarioService } from '../data/usuario.service';
 
@@ -19,10 +18,7 @@ export class NoauthGuard implements CanActivate, CanActivateChild {
               .pipe(
                 tap( resp => {
                   if (!resp) {
-
                     this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
-
-                    //this.router.navigateByUrl('/dashboard');
                   }
                 })
               );
@@ -35,10 +31,7 @@ export class NoauthGuard implements CanActivate, CanActivateChild {
               .pipe(
                 tap( resp => {
                   if (!resp) {
-
                     this.router.navigateByUrl('/app/dashboards/all/subjects/data-list');
-
-                    //this.router.navigateByUrl('/dashboard');
                   }
                 })
               );
