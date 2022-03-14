@@ -1,5 +1,4 @@
 import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/shared/auth.service.ts';
 
 export const getThemeColor = () => {
     let color = environment.defaultColor;
