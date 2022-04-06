@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { Ejercicio } from '../../../../models/ejercicio.model';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Asignatura } from '../../../../models/asignatura.model';
@@ -11,7 +10,7 @@ import { EjerciciosUsuarioService } from '../../../../data/ejerciciosUsuario.ser
 import { EjerciciosUsuario } from '../../../../models/ejerciciosUsuario.model';
 import { AuthService } from 'src/app/shared/auth.service';
 import Swal from 'sweetalert2';
-
+import * as Marzipano from 'marzipano';
 
 @Component({
   selector: 'app-data-list',
@@ -49,6 +48,33 @@ export class DataListComponent implements OnInit {
     this.sender.idSubjectExercise = undefined;
     this.sender.idExercise = undefined;
     this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
+    this.marzipano();
+  }
+
+  marzipano(): void {
+    var panoElement = document.getElementById('pano');
+    var viewerOpts = {
+      controls: {
+        mouseViewMode: 'drag'
+      }
+    };
+
+    var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
+
+    var levels = [
+      { tileSize: 512, size: 512 },
+      { tileSize: 512, size: 1024 }
+    ];
+
+    var geometry = new Marzipano.CubeGeometry(levels);
+    var source = Marzipano.ImageUrlSource.fromString("tiles/{z}/{f}/{y}/{x}.jpg");
+    var view = new Marzipano.RectilinearView();
+
+    var scene = viewer.createScene({
+      source: source,
+      geometry: geometry,
+      view: view
+    });
   }
 
   loadExercises(pageSize: number, currentPage: number, subject: string, userId: string): void {
