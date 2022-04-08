@@ -6,8 +6,6 @@
 <div class="row">
     <div class="col-12 list" *ngIf="displayMode==='list'">
 
-        <div id="pano"></div>
-
         <div *ngIf="totalItem == 0" [ngClass]="{'card d-flex flex-row mb-3': true}">
             <div class="d-flex flex-grow-1 min-width-zero">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
@@ -55,13 +53,14 @@
                     <p *ngIf="userRole!=2" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos}}</p>
                     <p *ngIf="userRole==2" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos-p.intentos}}</p>
 
-                    <!-- ACCIONES -->
+                    
                     <div [className]="userRole==0 ? 'acciones atc up d-flex mb-0 text-muted text-small w-xs-100' : 'acciones atc d-flex mb-0 text-muted text-small w-xs-100'">
                         <i *ngIf="p.intentos!=undefined && p.intentos<p.max_intentos && userRole==2 && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p)"></i>
                         <i *ngIf="userRole==2 && (p.intentos>=p.max_intentos || !inTime(p._id))" class="simple-icon-plus-disabled ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="exerciseDisabled()"></i>
                         <i *ngIf="userRole==0" class="sr simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
                         <i *ngIf="userRole==0" class="last-icon sr simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="confirmDelete(p)"></i>
-                        <!-- CHECKBOX SELECCIONAR -->
+                        <!-- <i *ngIf="userRole==0" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="marzipanoScene()"></i> -->
+                        
                         <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                             <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
                                 (change)="onSelect(p)">
@@ -86,3 +85,61 @@
 <ng-template #prevTemplate let-disabled="disabled" let-currentPage="currentPage">
     <i class='simple-icon-arrow-left'></i>
 </ng-template>
+
+<!-- <div id="pano"></div>
+
+<div id="sceneList">
+    <ul class="scenes">
+      
+        <a href="javascript:void(0)" class="scene" data-id="0-r0010362">
+          <li class="text">R0010362</li>
+        </a>
+      
+        <a href="javascript:void(0)" class="scene" data-id="1-r0010355">
+          <li class="text">R0010355</li>
+        </a>
+      
+        <a href="javascript:void(0)" class="scene" data-id="2-r0010442">
+          <li class="text">R0010442</li>
+        </a>
+      
+    </ul>
+  </div>
+  
+  <div id="titleBar">
+    <h1 class="sceneName"></h1>
+  </div>
+
+  <a href="javascript:void(0)" id="autorotateToggle">
+    <img class="icon off" src="././././assets/img/marzipano/play.png">
+    <img class="icon on" src="././././assets/img/marzipano/pause.png">
+  </a>
+  
+  <a href="javascript:void(0)" id="fullscreenToggle">
+    <img class="icon off" src="././././assets/img/marzipano/fullscreen.png">
+    <img class="icon on" src="././././assets/img/marzipano/windowed.png">
+  </a>
+  
+  <a href="javascript:void(0)" id="sceneListToggle">
+    <img class="icon off" src="././././assets/img/marzipano/expand.png">
+    <img class="icon on" src="././././assets/img/marzipano/collapse.png">
+  </a>
+  
+  <a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
+    <img class="icon" src="././././assets/img/marzipano/up.png">
+  </a>
+  <a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
+    <img class="icon" src="././././assets/img/marzipano/down.png">
+  </a>
+  <a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
+    <img class="icon" src="././././assets/img/marzipano/left.png">
+  </a>
+  <a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
+    <img class="icon" src="././././assets/img/marzipano/right.png">
+  </a>
+  <a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
+    <img class="icon" src="././././assets/img/marzipano/plus.png">
+  </a>
+  <a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
+    <img class="icon" src="././././assets/img/marzipano/minus.png">
+  </a> -->
