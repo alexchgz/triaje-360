@@ -658,6 +658,10 @@ export class DataListComponent implements OnInit {
     this.router.navigate(['/app/dashboards/all/exercises/view-exercise']);
   }
 
+  toDoExercise(): void {
+    this.router.navigate(['/app/dashboards/all/exercises/do-exercise'])
+  }
+
   createUserExercise(exercise: Ejercicio): void {
 
     // comprobamos el numero de intentos del usuario en ese ejercicio
