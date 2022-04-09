@@ -119,7 +119,7 @@ const getEjercicios = async(req, res = response) => {
 
                     // 3. Obtenemos intentos de esos ejercicios
                     listaPeticiones = [];
-                    console.log('user:', userId);
+                    // console.log('user:', userId);
                     ejercicios.map(ejer=> {
                         listaPeticiones.push(EjerciciosUsuario.countDocuments({ 
                             $and: [
