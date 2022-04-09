@@ -24,7 +24,7 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-
+import { WizardsContainersModule } from 'src/app/containers/wizard/wizards.containers.module';
 @NgModule({
   declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, SubjectsComponent, DetailsAltComponent, AddExerciseComponent],
   imports: [
@@ -32,6 +32,7 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     SubjectsRoutingModule,
     ComponentsCarouselModule,
     LayoutContainersModule,
+    WizardsContainersModule,
     PagesContainersModule,
     ComponentsCardsModule,
     ComponentsChartModule,

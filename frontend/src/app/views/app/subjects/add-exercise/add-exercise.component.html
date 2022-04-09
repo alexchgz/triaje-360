@@ -1,7 +1,11 @@
 
 <app-list-page-header></app-list-page-header>
 
-<form class="form-horizontal m-t-20 card card-body" [formGroup]="formData" (ngSubmit)="checkDate()">
+<!-- <form class="form-horizontal m-t-20 card card-body" [formGroup]="formData" (ngSubmit)="checkDate()"> -->
+    <app-wizard-end-step></app-wizard-end-step>
+<!-- </form> -->
+
+<!-- <form class="form-horizontal m-t-20 card card-body" [formGroup]="formData" (ngSubmit)="checkDate()">
     <div class="modal-body">
         <div *ngIf="subject" id="asignatura">
             <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
@@ -44,5 +48,5 @@
         <button (click)="goBack()" id="danger" class="btn btn-outline-primary float-right">{{ 'pages.cancel' | translate}}</button>
         <button type="submit" class="btn btn-primary float-right" [disabled]="!(formData.valid && formData.dirty)">{{ 'pages.submit' | translate}}</button>
     </div>
-</form>
+</form> -->
 <simple-notifications></simple-notifications>
