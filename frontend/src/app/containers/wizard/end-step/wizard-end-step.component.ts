@@ -12,6 +12,7 @@ import { Ejercicio } from 'src/app/models/ejercicio.model';
 @Component({
   selector: 'app-wizard-end-step',
   templateUrl: './wizard-end-step.component.html',
+  styleUrls: ['./wizard-end-step.component.scss'],
   providers: [DatePipe]
 })
 export class WizardEndStepComponent implements OnInit {
