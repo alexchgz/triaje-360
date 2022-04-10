@@ -69,36 +69,7 @@ export class DataListComponent implements OnInit {
         });
       }
     );
-    
-    // COMPROBAMOS SI VENIMOS DE AÑADIR O CREAR EJERCICIO PARA EL MODAL
-    this.showMsgEx();
 
-  }
-
-  showMsgEx(): void {
-
-    if(this.sender.showMsgAddEx) {
-
-      this.notifications.create('Ejercicio creado', 'Se ha añadido el Ejercicio a la Asigantura correctamente', NotificationType.Info, {
-        theClass: 'outline primary',
-        timeOut: 5000,
-        showProgressBar: false
-      });
-      setTimeout(()=>{
-        this.sender.showMsgAddEx = false;
-      }, 6000);
-
-    } 
-    else if(this.sender.showMsgEditEx) {
-      this.notifications.create('Ejercicio editado', 'Se ha editado el Ejercicio correctamente', NotificationType.Info, {
-        theClass: 'outline primary',
-        timeOut: 5000,
-        showProgressBar: false
-      });
-      setTimeout(()=>{
-        this.sender.showMsgEditEx = false;
-      }, 6000);
-    }
   }
 
   dropSubjects(subjects: Asignatura[]): void {

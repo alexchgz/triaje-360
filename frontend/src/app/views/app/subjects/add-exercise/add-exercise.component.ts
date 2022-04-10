@@ -186,8 +186,6 @@ export class AddExerciseComponent implements OnInit {
     if(this.exercise) {
       this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
         .subscribe( res => {
-          // si el formulario se ha modificado
-          if(this.formData.dirty) { this.sender.showMsgEditEx = true; }
           this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
 
         }, (err) => {
@@ -205,8 +203,6 @@ export class AddExerciseComponent implements OnInit {
       this.ejercicioService.createExercise(this.formData.value)
         .subscribe( res => {
           this.exercise = res['ejercicio'];
-          this.sender.showMsgAddEx = true;
-
           this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
 
         }, (err) => {
