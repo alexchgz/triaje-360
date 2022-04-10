@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule as FormsModuleAngular } from '@angular/forms';
+import { FormsModule as FormsModuleAngular, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ArchwizardModule } from 'angular-archwizard';
 
@@ -21,6 +21,7 @@ import { WizardBasicComponent } from './basic/wizard-basic.component';
   imports: [
     CommonModule,
     FormsModuleAngular,
+    ReactiveFormsModule,
     TranslateModule,
     ArchwizardModule
   ],
