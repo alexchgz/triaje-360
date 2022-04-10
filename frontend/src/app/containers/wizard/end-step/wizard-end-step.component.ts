@@ -1,21 +1,13 @@
-import { Component, OnInit, Output, Input} from '@angular/core';
-import { Asignatura } from 'src/app/models/asignatura.model';
-import { AddExerciseComponent } from 'src/app/views/app/subjects/add-exercise/add-exercise.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-wizard-end-step',
   templateUrl: './wizard-end-step.component.html'
 })
-export class WizardEndStepComponent implements OnInit {
+export class WizardEndStepComponent {
 
-  subject: Asignatura;
 
-  constructor(private addExComponent: AddExerciseComponent) { }
-  
-  ngOnInit(): void {
-    console.log('1:', this.subject);
-  }
-
+  constructor() { }
 
 
 }
