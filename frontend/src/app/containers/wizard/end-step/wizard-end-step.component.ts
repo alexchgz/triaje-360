@@ -8,6 +8,7 @@ import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { SenderService } from 'src/app/data/sender.service';
 import { Asignatura } from 'src/app/models/asignatura.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
+declare var $:any;
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -25,6 +26,7 @@ export class WizardEndStepComponent implements OnInit {
   totalItem: 0;
   todayString: string;
   tomorrowString: string;
+  imgsSelect: string[] = [];
 
   // FORM
   private formSubmited = false;
@@ -232,5 +234,30 @@ export class WizardEndStepComponent implements OnInit {
     this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
   }
 
+
+  selectImgs(src) {
+    // console.log(src);
+    let esta = false;
+    for(let i=0; i<this.imgsSelect.length && !esta; i++) {
+      if(src == this.imgsSelect[i]) {
+        this.imgsSelect.splice(i, 1);
+        esta = true;
+      }
+    }
+
+    if(!esta) {
+      this.imgsSelect.push(src);
+      console.log(this.imgsSelect);
+    }
+
+    var element = document.querySelector('[src="'+ src +'"]');
+    if(element.parentElement.classList.contains('noSelected')) {
+      element.parentElement.className = 'selected';
+    }
+    else {
+      element.parentElement.className = 'noSelected';
+    }
+    
+  }
 
 }

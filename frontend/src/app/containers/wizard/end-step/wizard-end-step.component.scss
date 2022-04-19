@@ -1,53 +1,56 @@
 
-// .form-horizontal>div>div {
-//     margin-bottom: 1em;
-// }
+.gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 90%;
+    margin: 0 auto;
+}
 
-// #asignatura {
-//     width: 40%;
-//     margin-right: 0;
-// }
+    .gallery label {
+        height: 150px;
+        width: 225px;
+        margin: 20px;
+        border-radius: 5px;
+        overflow: hidden;
+        // box-shadow: 0 3px 5px #145388;
+    }
 
-// #nombre {
-//     width: 40%;
-//     float: left;
-// }
+        .gallery label img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
 
-// #descripcion {
-//     width: 40%;
-//     min-height: 2em;
-// }
+        // .gallery label img:hover {
+        //     transform: scale(1.1);
+        // }
 
-// textarea {
-//     resize: none;
-// }
+.simple-icon-check::before {
+    background-color: #145388;
+    color: #fff;
+    padding: 0em;
+    border-radius: 50px;
+    border-color: #fff;
+}
 
-// #desde {
-//     float: left;
-//     margin-right: 3%;
-// }
+.selected {
+    border: 5px solid #145388;
+}
 
-// #hasta {
-//     float: left;
-//     margin-right: 3%;
-// }
+.selected .simple-icon-check {
+    display: block;
+    position: absolute;
+    transform: translate(175px, -130px);
+    color: #145388;
+}
 
-// .modal-footer {
-//     justify-content: center;
-// }
+.noSelected {
+    border: none;
+}
 
-// #pre-intentos {
-//     margin-top: 1.55em;
-// }
-
-// #intentos>input, input[type="date"] {
-//     width: auto;
-// }
-
-// #intentos>input {
-//     float: left;
-// }
-
-// #intentos>input[type="number"] {
-//     margin-left: .5em;
-// }
+.noSelected .simple-icon-check {
+    display: none;
+    color: #145388;
+}

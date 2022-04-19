@@ -1,4 +1,4 @@
-<h5 class="mb-4">{{ 'wizard.last-end' | translate }}</h5>
+<!-- <h5 class="mb-4">{{ 'wizard.last-end' | translate }}</h5> -->
 <div class="card mb-5">
   <div class="card-body">
     <aw-wizard >
@@ -48,15 +48,50 @@
             <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
           </div>
         </aw-wizard-step>
+
         <aw-wizard-step stepTitle="{{ 'wizard.step-name-2' | translate }}" style="min-height: 120px;">
-          <div class="form-group">
-            <label>{{ 'forms.email' | translate }}</label>
-            <input type="text" class="form-control" name="email">
+
+          <div class="gallery">
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-1.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-1.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
+
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-2.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-2.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
+
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-3.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-3.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
+
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-4.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-4.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
+
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-5.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-5.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
+
+            <label class="noSelected">
+              <img src="../../../../assets/img/marzipano360/R360-6.JPG" (click)='selectImgs("../../../../assets/img/marzipano360/R360-6.JPG")'>
+              <i class="simple-icon-check"></i>
+            </label>
           </div>
+
           <div class="text-center">
             <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
             <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
           </div>
+
+          <!-- <div class="form-group">
+            <label>{{ 'forms.email' | translate }}</label>
+            <input type="text" class="form-control" name="email">
+          </div> -->
         </aw-wizard-step>
         <aw-wizard-step stepTitle="{{ 'wizard.step-name-3' | translate }}" style="min-height: 120px;">
           <div class="form-group">
