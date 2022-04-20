@@ -1,10 +1,14 @@
 
-.gallery {
+h3 {
+    width: 100%;
+    text-align: center;
+}
+
+.gallery, .imgsSelected {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 90%;
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
 }
 
     .gallery label {
@@ -26,6 +30,20 @@
         // .gallery label img:hover {
         //     transform: scale(1.1);
         // }
+
+    .imgsSelected label {
+        height: 100px;
+        width: 150px;
+        margin: 20px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+        .imgsSelected label img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
 
 .simple-icon-check::before {
     background-color: #145388;
@@ -53,4 +71,40 @@
 .noSelected .simple-icon-check {
     display: none;
     color: #145388;
+}
+
+.simple-icon-arrow-right-circle {
+    display: block;
+    position: absolute;
+    transform: translate(125px, -30px);
+    cursor: pointer;
+}
+.simple-icon-arrow-left-circle {
+    display: block;
+    position: absolute;
+    transform: translate(5px, -30px);
+    cursor: pointer;
+}
+.simple-icon-arrow-right-circle::before, .simple-icon-arrow-left-circle::before {
+    background-color: #145388;
+    color: #fff;
+    padding: 0em;
+    border-radius: 50px;
+    border-color: #fff;
+    font-size: 20px;
+}
+
+.simple-icon-close {
+    display: block;
+    position: absolute;
+    transform: translate(125px, -92px);
+    cursor: pointer;
+}
+.simple-icon-close::before {
+    background-color: #de2f18;
+    color: #fff;
+    padding: 0em;
+    border-radius: 50px;
+    border-color: #fff;
+    font-size: 20px;
 }

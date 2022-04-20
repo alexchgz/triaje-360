@@ -247,7 +247,7 @@ export class WizardEndStepComponent implements OnInit {
 
     if(!esta) {
       this.imgsSelect.push(src);
-      console.log(this.imgsSelect);
+      // console.log(this.imgsSelect);
     }
 
     var element = document.querySelector('[src="'+ src +'"]');
@@ -258,6 +258,29 @@ export class WizardEndStepComponent implements OnInit {
       element.parentElement.className = 'noSelected';
     }
     
+  }
+
+  unselectImg(src, pos) { 
+    // eliminamos la ruta del array
+    this.imgsSelect.splice(pos, 1);
+
+    // cambiamos la clase de la geleria
+    var element = document.querySelector('[src="'+ src +'"]');
+    element.parentElement.className = 'noSelected';
+
+    console.log('SEL:', this.imgsSelect);
+  }
+
+  moveImgL(src, pos) { 
+    this.imgsSelect.splice(pos, 1);
+    this.imgsSelect.splice(pos-1, 0, src);
+    console.log('SEL:', this.imgsSelect);
+  }
+
+  moveImgR(src, pos) { 
+    this.imgsSelect.splice(pos, 1);
+    this.imgsSelect.splice(pos+1, 0, src);
+    console.log('SEL:', this.imgsSelect);
   }
 
 }

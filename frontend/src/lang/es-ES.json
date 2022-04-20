@@ -772,6 +772,8 @@
         "validation": "Validación",
         "basic": "Básico",
         "last-end": "Último Paso Final",
+        "first-step": "Datos Generales",
+        "second-step": "Selección Imágenes",
         "done": "Hecho",
         "finish": "Finalizar",
         "icons": "Íconos",
