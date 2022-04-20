@@ -19,9 +19,118 @@ export class DoExerciseComponent implements OnInit {
     // var screenfull = window.screenfull;
     var data = {
       "scenes": [
+        // {
+        //   "id": "0-r0010362",
+        //   "name": "R0010362",
+        //   "levels": [
+        //     {
+        //       "tileSize": 256,
+        //       "size": 256,
+        //       "fallbackOnly": true
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 512
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 1024
+        //     }
+        //   ],
+        //   "faceSize": 896,
+        //   "initialViewParameters": {
+        //     "yaw": 0.6055223935490552,
+        //     "pitch": -0.01992316828963503,
+        //     "fov": 1.3687812585745385
+        //   },
+        //   "linkHotspots": [
+        //     {
+        //       "yaw": -0.3048205232822383,
+        //       "pitch": 0.13273023062821565,
+        //       "rotation": 4.71238898038469,
+        //       "target": "1-r0010355"
+        //     }
+        //   ],
+        //   "infoHotspots": [
+        //     {
+        //       "yaw": 0.27690254020700955,
+        //       "pitch": 0.08942986117396678,
+        //       "title": "Info",
+        //       "text": "Hotspot Info"
+        //     }
+        //   ]
+        // },
+        // {
+        //   "id": "1-r0010355",
+        //   "name": "R0010355",
+        //   "levels": [
+        //     {
+        //       "tileSize": 256,
+        //       "size": 256,
+        //       "fallbackOnly": true
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 512
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 1024
+        //     }
+        //   ],
+        //   "faceSize": 896,
+        //   "initialViewParameters": {
+        //     "pitch": 0,
+        //     "yaw": 0,
+        //     "fov": 1.5707963267948966
+        //   },
+        //   "linkHotspots": [
+        //     {
+        //       "yaw": -0.3048205232822383,
+        //       "pitch": 0.13273023062821565,
+        //       "rotation": 4.71238898038469,
+        //       "target": "2-r0010442"
+        //     }
+        //   ],
+        //   "infoHotspots": []
+        // },
+        // {
+        //   "id": "2-r0010442",
+        //   "name": "R0010442",
+        //   "levels": [
+        //     {
+        //       "tileSize": 256,
+        //       "size": 256,
+        //       "fallbackOnly": true
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 512
+        //     },
+        //     {
+        //       "tileSize": 512,
+        //       "size": 1024
+        //     }
+        //   ],
+        //   "faceSize": 896,
+        //   "initialViewParameters": {
+        //     "yaw": -1.0006674819595993,
+        //     "pitch": 0.0473607522179762,
+        //     "fov": 1.3687812585745385
+        //   },
+        //   "linkHotspots": [
+        //     {
+        //       "yaw": -0.3048205232822383,
+        //       "pitch": 0.13273023062821565,
+        //       "rotation": 4.71238898038469,
+        //       "target": "I-0001"
+        //     }
+        //   ],
+        //   "infoHotspots": []
+        // },
         {
-          "id": "0-r0010362",
-          "name": "R0010362",
+          "id": "I-0001",
+          "name": "Imagen 1",
           "levels": [
             {
               "tileSize": 256,
@@ -32,85 +141,10 @@ export class DoExerciseComponent implements OnInit {
               "tileSize": 512,
               "size": 512
             },
-            {
-              "tileSize": 512,
-              "size": 1024
-            }
-          ],
-          "faceSize": 896,
-          "initialViewParameters": {
-            "yaw": 0.6055223935490552,
-            "pitch": -0.01992316828963503,
-            "fov": 1.3687812585745385
-          },
-          "linkHotspots": [
-            {
-              "yaw": -0.3048205232822383,
-              "pitch": 0.13273023062821565,
-              "rotation": 4.71238898038469,
-              "target": "1-r0010355"
-            }
-          ],
-          "infoHotspots": [
-            {
-              "yaw": 0.27690254020700955,
-              "pitch": 0.08942986117396678,
-              "title": "Info",
-              "text": "Hotspot Info"
-            }
-          ]
-        },
-        {
-          "id": "1-r0010355",
-          "name": "R0010355",
-          "levels": [
-            {
-              "tileSize": 256,
-              "size": 256,
-              "fallbackOnly": true
-            },
-            {
-              "tileSize": 512,
-              "size": 512
-            },
-            {
-              "tileSize": 512,
-              "size": 1024
-            }
-          ],
-          "faceSize": 896,
-          "initialViewParameters": {
-            "pitch": 0,
-            "yaw": 0,
-            "fov": 1.5707963267948966
-          },
-          "linkHotspots": [
-            {
-              "yaw": -0.3048205232822383,
-              "pitch": 0.13273023062821565,
-              "rotation": 4.71238898038469,
-              "target": "2-r0010442"
-            }
-          ],
-          "infoHotspots": []
-        },
-        {
-          "id": "2-r0010442",
-          "name": "R0010442",
-          "levels": [
-            {
-              "tileSize": 256,
-              "size": 256,
-              "fallbackOnly": true
-            },
-            {
-              "tileSize": 512,
-              "size": 512
-            },
-            {
-              "tileSize": 512,
-              "size": 1024
-            }
+            // {
+            //   "tileSize": 512,
+            //   "size": 1024
+            // }
           ],
           "faceSize": 896,
           "initialViewParameters": {
@@ -119,12 +153,6 @@ export class DoExerciseComponent implements OnInit {
             "fov": 1.3687812585745385
           },
           "linkHotspots": [
-            {
-              "yaw": -0.3048205232822383,
-              "pitch": 0.13273023062821565,
-              "rotation": 4.71238898038469,
-              "target": "0-r0010362"
-            }
           ],
           "infoHotspots": []
         }
@@ -161,7 +189,7 @@ export class DoExerciseComponent implements OnInit {
     var scenes = data.scenes.map(function(data) {
       var urlPrefix = "././././assets/img/tiles";
       var source = Marzipano.ImageUrlSource.fromString(
-        urlPrefix + "/" + data.id + "/{z}/{f}/{y}/{x}.jpg",
+        urlPrefix + "/" + data.id + "/{f}.png",
         { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.jpg" });
       var geometry = new Marzipano.CubeGeometry(data.levels);
 
@@ -233,16 +261,16 @@ export class DoExerciseComponent implements OnInit {
     }
 
     // Set handler for scene switch.
-    scenes.forEach(function(scene) {
-      var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
-      el.addEventListener('click', function() {
-        switchScene(scene);
-        // On mobile, hide scene list after selecting a scene.
-        if (document.body.classList.contains('mobile')) {
-          hideSceneList();
-        }
-      });
-    });
+    // scenes.forEach(function(scene) {
+    //   var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
+    //   el.addEventListener('click', function() {
+    //     switchScene(scene);
+    //     // On mobile, hide scene list after selecting a scene.
+    //     if (document.body.classList.contains('mobile')) {
+    //       hideSceneList();
+    //     }
+    //   });
+    // });
 
     // DOM elements for view controls.
     var viewUpElement = document.querySelector('#viewUp');
