@@ -32,9 +32,9 @@ h3 {
         // }
 
     .imgsSelected label {
-        height: 100px;
-        width: 150px;
-        margin: 20px;
+        height: 75px;
+        width: 200px;
+        margin: 15px;
         border-radius: 5px;
         overflow: hidden;
     }
@@ -60,7 +60,7 @@ h3 {
 .selected .simple-icon-check {
     display: block;
     position: absolute;
-    transform: translate(175px, -130px);
+    transform: translate(353px, -85px);
     color: #145388;
 }
 
@@ -76,13 +76,13 @@ h3 {
 .simple-icon-arrow-right-circle {
     display: block;
     position: absolute;
-    transform: translate(125px, -30px);
+    transform: translate(175px, -25px);
     cursor: pointer;
 }
 .simple-icon-arrow-left-circle {
     display: block;
     position: absolute;
-    transform: translate(5px, -30px);
+    transform: translate(5px, -25px);
     cursor: pointer;
 }
 .simple-icon-arrow-right-circle::before, .simple-icon-arrow-left-circle::before {
@@ -97,7 +97,7 @@ h3 {
 .simple-icon-close {
     display: block;
     position: absolute;
-    transform: translate(125px, -92px);
+    transform: translate(175px, -70px);
     cursor: pointer;
 }
 .simple-icon-close::before {

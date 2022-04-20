@@ -190,7 +190,7 @@ export class DoExerciseComponent implements OnInit {
       var urlPrefix = "././././assets/img/tiles";
       var source = Marzipano.ImageUrlSource.fromString(
         urlPrefix + "/" + data.id + "/{f}.png",
-        { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.jpg" });
+        { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.png" });
       var geometry = new Marzipano.CubeGeometry(data.levels);
 
       var limiter = Marzipano.RectilinearView.limit.traditional(data.faceSize, 100*Math.PI/180, 120*Math.PI/180);
