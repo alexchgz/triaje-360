@@ -1,7 +1,7 @@
 // RUTA BASE: /api/acciones
 
 const { Router } = require('express');
-const { getAcciones, crearAccion, editarAccion, borrarAccion } = require('../controllers/acciones');
+const { getAcciones, crearAccion, actualizarAccion, borrarAccion } = require('../controllers/acciones');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validar-campos');
 const { validarJWT } = require('../middleware/validar-jwt');
@@ -19,14 +19,14 @@ router.get('/', [
 router.post('/', [
     validarJWT,
     check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
-    check('tiempo', 'El argumento tiempo es obligatorio').not().isEmpty().trim(),
+    check('tiempo', 'El argumento tiempo es obligatorio').isNumeric(),
     validarCampos
 ], crearAccion);
 
 router.put('/:id', [
     validarJWT,
     check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
-    check('tiempo', 'El argumento tiempo es obligatorio').not().isEmpty().trim(),
+    check('tiempo', 'El argumento tiempo es obligatorio').isNumeric(),
     validarCampos
 ], actualizarAccion);
 

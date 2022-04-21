@@ -1,8 +1,7 @@
-// librerias
-const { response } = require('express');
 
-// helpers
+const { response } = require('express');
 const { infoToken } = require('../helpers/infotoken');
+const Accion = require('../models/acciones');
 
 // funciones
 const getAcciones = async(req, res = response) => {
