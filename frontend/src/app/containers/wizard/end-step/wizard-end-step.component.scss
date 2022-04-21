@@ -11,11 +11,19 @@ h3 {
     margin: 0 auto 2rem auto;
 }
 
+    .gallery p {
+        color: black;
+        position: absolute;
+        width: 400px;
+        text-align: center;
+        margin-top: 5px;
+    }
+
     .gallery label {
         height: 100px;
         width: 400px;
         margin: 20px;
-        border-radius: 5px;
+        border-radius: 3px;
         overflow: hidden;
         // box-shadow: 0 3px 5px #145388;
     }

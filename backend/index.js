@@ -28,6 +28,7 @@ app.use('/api/ejercicios', require('./routes/ejercicios'));
 app.use('/api/ejerciciosUsuario', require('./routes/ejerciciosUsuario'));
 app.use('/api/imagenes', require('./routes/imagenes'));
 app.use('/api/acciones', require('./routes/acciones'));
+app.use('/api/pacientes', require('./routes/pacientes'));
 
 // Abrimos la aplicacion en el puerto 3000
 app.listen(process.env.PORT, () => {

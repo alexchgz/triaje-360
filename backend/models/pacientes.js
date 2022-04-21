@@ -11,11 +11,11 @@ const PacienteSchema = Schema({
         default: true
     },
     color: {
-        type: string,
+        type: String,
         require: true,
     },
     img: {
-        type: string,
+        type: String,
         require: true,
     },
     acciones: [{

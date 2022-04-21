@@ -55,6 +55,7 @@
           <div class="gallery">
             <label class="noSelected" *ngFor="let p of imgs; let i=index">
               <img src={{urlPrefix+p.ruta}} (click)='selectImgs(p.ruta)'>
+              <p>{{p.descripcion}}</p>
               <i class="simple-icon-check"></i>
             </label>
           </div>
