@@ -30,7 +30,7 @@ const getImagenes = async(req, res = response) => {
 
         } else { // si no nos pasan el id
             [imagenes, totalImagenes] = await Promise.all([
-                Imagen.find({}, 'nombre tiempo'),
+                Imagen.find({}, 'nombre descripcion ruta'),
                 Imagen.countDocuments()
             ]);
             
@@ -55,7 +55,7 @@ const getImagenes = async(req, res = response) => {
 
 const crearImagen = async(req, res = response) => {
 
-    const { nombre, descripcion } = req.body;
+    const { nombre } = req.body;
 
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
@@ -97,7 +97,7 @@ const crearImagen = async(req, res = response) => {
 
 const actualizarImagen = async(req, res = response) => {
 
-    const { nombre, descripcion } = req.body;
+    const { nombre } = req.body;
     const uid = req.params.id;
 
     // Solo puede actualizar cursos un admin

@@ -9,6 +9,10 @@ const ImagenSchema = Schema({
     descripcion: {
         type: String,
         require: true,
+    },
+    ruta: {
+        type: String,
+        require: true,
     }
 }, { collection: 'imagenes' });
 

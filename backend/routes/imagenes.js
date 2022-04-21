@@ -18,15 +18,15 @@ router.get('/', [
 
 router.post('/', [
     validarJWT,
-    check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
-    check('descripcion', 'El argumento descripcion es obligatorio').not().isEmpty().trim(),
+    check('nombre', 'El argumento nombre es obligatorio').isString(),
+    check('descripcion', 'El argumento descripcion es obligatorio').isString(),
     validarCampos
 ], crearImagen);
 
 router.put('/:id', [
     validarJWT,
-    check('nombre', 'El argumento nombre es obligatorio').not().isEmpty().trim(),
-    check('descripcion', 'El argumento descripcion es obligatorio').not().isEmpty().trim(),
+    check('nombre', 'El argumento nombre es obligatorio').isString(),
+    check('descripcion', 'El argumento descripcion es obligatorio').isString(),
     validarCampos
 ], actualizarImagen);
 

@@ -13,6 +13,7 @@ export const environment = {
   schoolYearsRoot: '/app/school-years/data-list',
   apiUrl: 'https://api.coloredstrategies.com',
   base_url: 'http://localhost:3000/api',
+  prefix_url: '../../../../assets/img/tiles/',
   defaultMenuType: 'menu-default',
   subHiddenBreakpoint: 1440,
   menuHiddenBreakpoint: 768,

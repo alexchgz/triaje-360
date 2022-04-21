@@ -6,9 +6,12 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { SenderService } from 'src/app/data/sender.service';
+import { ImagenService } from 'src/app/data/imagen.service';
 import { Asignatura } from 'src/app/models/asignatura.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
-declare var $:any;
+import { Imagen } from 'src/app/models/imagen.model';
+import { environment } from 'src/environments/environment';
+// declare var $:any;
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -27,6 +30,8 @@ export class WizardEndStepComponent implements OnInit {
   todayString: string;
   tomorrowString: string;
   imgsSelect: string[] = [];
+  imgs: Imagen[];
+  urlPrefix: string = environment.prefix_url;
 
   // FORM
   private formSubmited = false;
@@ -44,7 +49,7 @@ export class WizardEndStepComponent implements OnInit {
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
-    private notifications: NotificationsService) { }
+    private notifications: NotificationsService, private imagenService: ImagenService) { }
 
   ngOnInit(): void {
     // para comprobar la fecha de hoy y mañana en el input
@@ -101,6 +106,29 @@ export class WizardEndStepComponent implements OnInit {
       // obtenemos datos de la asignatura
       this.loadSubjectData(this.uid);
     }
+
+    this.getImages();
+    console.log('pre:', this.urlPrefix);
+  }
+
+  getImages():void {
+    this.imagenService.getImages().subscribe(
+      data => {
+        if (data['ok']) {
+          this.imgs = data['imagenes'];
+          console.log(this.imgs);
+        }
+      },
+      error => {
+        this.notifications.create('Error', 'No se han podidio obtener las Imagenes', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
   }
 
   getSubjects() {
@@ -237,6 +265,7 @@ export class WizardEndStepComponent implements OnInit {
 
   selectImgs(src) {
     // console.log(src);
+    src = this.urlPrefix + src;
     let esta = false;
     for(let i=0; i<this.imgsSelect.length && !esta; i++) {
       if(src == this.imgsSelect[i]) {
