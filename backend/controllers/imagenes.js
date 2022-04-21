@@ -1,10 +1,10 @@
 
 const { response } = require('express');
 const { infoToken } = require('../helpers/infotoken');
-const Accion = require('../models/acciones');
+const Imagen = require('../models/imagenes');
 
 // funciones
-const getAcciones = async(req, res = response) => {
+const getImagenes = async(req, res = response) => {
     
     // parametros
     const id = req.query.id;
@@ -15,23 +15,23 @@ const getAcciones = async(req, res = response) => {
     if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
         return res.status(400).json({
             ok: false,
-            msg: 'No tiene permisos para obtener acciones',
+            msg: 'No tiene permisos para obtener imagenes',
         });
     }
 
     try {
-        var acciones, totalAcciones;
+        var imagenes, totalImagenes;
 
         if (id) { // si nos pasan un id
-            [acciones, totalAcciones] = await Promise.all([
-                Accion.findById(id),
-                Accion.countDocuments()
+            [imagenes, totalImagenes] = await Promise.all([
+                Imagen.findById(id),
+                Imagen.countDocuments()
             ]);
 
         } else { // si no nos pasan el id
-            [acciones, totalAcciones] = await Promise.all([
-                Accion.find({}, 'nombre tiempo'),
-                Accion.countDocuments()
+            [imagenes, totalImagenes] = await Promise.all([
+                Imagen.find({}, 'nombre tiempo'),
+                Imagen.countDocuments()
             ]);
             
 
@@ -39,24 +39,23 @@ const getAcciones = async(req, res = response) => {
 
         res.json({
             ok: true,
-            msg: 'Acciones obtenidas',
-            acciones,
-            totalAcciones,
+            msg: 'Imagenes obtenidas',
+            imagenes,
+            totalImagenes,
         });
 
     } catch (error) {
         console.log(error);
         res.status(400).json({
             ok: false,
-            msg: 'error obteniendo cursos'
+            msg: 'error obteniendo imagenes'
         })
     }
 }
 
-const crearAccion = async(req, res = response) => {
+const crearImagen = async(req, res = response) => {
 
-    const { nombre, tiempo } = req.body;
-    const idDesactivar = req.query.idDesactivar;
+    const { nombre, descripcion } = req.body;
 
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
@@ -64,41 +63,41 @@ const crearAccion = async(req, res = response) => {
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
-            msg: 'No tiene permisos para crear acciones',
+            msg: 'No tiene permisos para crear imagenes',
         });
     }
 
     try {
         // comprobamos si ya existe el nombre
-        const existeAccion = await Accion.findOne({ nombre });
-        if (existeAccion) {
+        const existeImagen = await Imagen.findOne({ nombre });
+        if (existeImagen) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El nombre ya existe para otra accion'
+                msg: 'El nombre ya existe para otra imagen'
             });
         }
 
         // creamos el curso  y lo almacenamos los datos en la BBDD
-        const accion = new Accion(req.body);
-        await accion.save();
+        const imagen = new Imagen(req.body);
+        await imagen.save();
 
         res.json({
             ok: true,
-            msg: 'Accion creada',
-            accion
+            msg: 'Imagen creada',
+            imagen
         });
     } catch (error) {
         console.log(error);
         return res.status(400).json({
             ok: false,
-            msg: 'Error al crear accion'
+            msg: 'Error al crear imagen'
         });
     }
 }
 
-const actualizarAccion = async(req, res = response) => {
+const actualizarImagen = async(req, res = response) => {
 
-    const { nombre, tiempo } = req.body;
+    const { nombre, descripcion } = req.body;
     const uid = req.params.id;
 
     // Solo puede actualizar cursos un admin
@@ -107,36 +106,36 @@ const actualizarAccion = async(req, res = response) => {
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
-            msg: 'No tiene permisos para actualizar cursos',
+            msg: 'No tiene permisos para actualizar imagenes',
         });
     }
 
     try {
 
         // comprobamos si el curso que se esta intentando actualizar existe
-        const existeAccion = await Accion.findById(uid);
-        if (!existeAccion) {
+        const existeImagen = await Imagen.findById(uid);
+        if (!existeImagen) {
             return res.status(400).json({
                 ok: false,
-                msg: 'La accion no existe'
+                msg: 'La imagen no existe'
             });
         }
 
         // comprobamos si ya existe el nombre
-        const existeNombre = await Accion.findOne({ nombre });
+        const existeNombre = await Imagen.findOne({ nombre });
         if (existeNombre && (existeNombre._id != uid)) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El nombre ya existe para otra accion'
+                msg: 'El nombre ya existe para otra imagen'
             });
         }
 
         // si se han superado todas la comprobaciones, actualizamos el curso
-        const accion = await Accion.findByIdAndUpdate(uid, req.body, { new: true });
+        const imagen = await Imagen.findByIdAndUpdate(uid, req.body, { new: true });
         res.json({
             ok: true,
-            msg: 'Accion actualizada',
-            accion
+            msg: 'Imagen actualizada',
+            imagen
         });
 
 
@@ -144,12 +143,12 @@ const actualizarAccion = async(req, res = response) => {
         console.log(error);
         res.status(400).json({
             ok: false,
-            msg: 'Error actualizando la accion'
+            msg: 'Error actualizando la imagen'
         });
     }
 }
 
-const borrarAccion = async(req, res = response) => {
+const borrarImagen = async(req, res = response) => {
 
     const uid = req.params.id;
 
@@ -159,29 +158,29 @@ const borrarAccion = async(req, res = response) => {
     if (!(infoToken(token).rol === 'ROL_ADMIN')) {
         return res.status(400).json({
             ok: false,
-            msg: 'No tiene permisos para borrar acciones',
+            msg: 'No tiene permisos para borrar imagenes',
         });
     }
 
     try {
 
         // comprobamos si el curso que se esta intentando eliminar existe
-        const existeAccion = await Accion.findById(uid);
-        if (!existeAccion) {
+        const existeImagen = await Imagen.findById(uid);
+        if (!existeImagen) {
             return res.status(400).json({
                 ok: false,
-                msg: 'La accion no existe'
+                msg: 'La imagen no existe'
             });
         }
 
 
         // si se ha superado la comprobacion, eliminamos el curso
-        const accion = await Accion.findByIdAndRemove(uid);
+        const imagen = await Imagen.findByIdAndRemove(uid);
         
         res.json({
             ok: true,
-            msg: 'Accion borrada',
-            accion
+            msg: 'Imagen borrada',
+            imagen
         });
 
 
@@ -189,10 +188,10 @@ const borrarAccion = async(req, res = response) => {
         console.log(error);
         res.status(400).json({
             ok: false,
-            msg: 'Error borrando la accion'
+            msg: 'Error borrando la imagen'
         });
     }
 }
 
 // exportamos las funciones 
-module.exports = { getAcciones, crearAccion, actualizarAccion, borrarAccion };
+module.exports = { getImagenes, crearImagen, actualizarImagen, borrarImagen };
