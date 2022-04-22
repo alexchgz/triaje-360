@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../shared/auth.service';
+import { Paciente } from '../models/paciente.model';
 
 @Injectable({ providedIn: 'root' })
 export class PacienteService {
@@ -44,5 +45,27 @@ export class PacienteService {
     
     return this.http.get(url, { headers, params });
   } 
+
+  createPatient(data: Paciente) {
+    const url = environment.base_url + '/pacientes';
+    const token = localStorage.getItem('token');
+
+    // HEADERS
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "descripcion": data['descripcion'],
+      "camina": data['camina'],
+      "color": data['color'],
+      "img": data['img'],
+      "acciones": data['acciones'],
+      "empeora": data['empeora'],
+      "tiempoEmpeora": data['tiempoEmpeora']
+    }
+
+    return this.http.post(url, sendData, { headers });
+
+  }
 
 }

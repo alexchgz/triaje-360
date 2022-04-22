@@ -1,17 +1,16 @@
-import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { DatePipe, Location } from '@angular/common';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { AsignaturaService } from 'src/app/data/asignatura.service';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { SenderService } from 'src/app/data/sender.service';
-import { ImagenService } from 'src/app/data/imagen.service';
 import { Asignatura } from 'src/app/models/asignatura.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
+import { ImagenService } from 'src/app/data/imagen.service';
 import { Imagen } from 'src/app/models/imagen.model';
 import { environment } from 'src/environments/environment';
-// declare var $:any;
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -29,9 +28,11 @@ export class WizardEndStepComponent implements OnInit {
   totalItem: 0;
   todayString: string;
   tomorrowString: string;
-  imgsSelect: string[] = [];
+  imgsSelect: Imagen[] = [];
+  imgsSelectId: any[] = [];
   imgs: Imagen[];
   urlPrefix: string = environment.prefix_url;
+  colours = ["Verde", "Amarillo", "Rojo", "Negro"];
 
   // FORM
   private formSubmited = false;
@@ -41,6 +42,7 @@ export class WizardEndStepComponent implements OnInit {
     desde: ['', [Validators.required]],
     hasta: ['', [Validators.required]],
     asignatura: ['', [Validators.required]],
+    imgs: [''],
     max_intentos: [1, [Validators.required]],
     range_max_intentos: [1]
   });
@@ -52,6 +54,21 @@ export class WizardEndStepComponent implements OnInit {
     private notifications: NotificationsService, private imagenService: ImagenService) { }
 
   ngOnInit(): void {
+    this.initData();
+
+    // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
+    if(this.uid == undefined && this.uidEx == undefined) {
+      this.getSubjects();
+    } else {
+      this.setSubject();
+    }
+
+    this.getImages();
+  }
+
+  // *************** DATA METHODS ***********************
+
+  initData(): void {
     // para comprobar la fecha de hoy y mañana en el input
     var today = new Date();
     var tomorrow = new Date(today.getTime() + 24*60*60*1000);
@@ -70,65 +87,6 @@ export class WizardEndStepComponent implements OnInit {
     if(this.sender.idExercise) {
       this.uidEx = this.sender.idExercise;
     }
-    // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
-    if(this.uid == undefined && this.uidEx == undefined) {
-      this.getSubjects();
-    } else {
-
-      // si tenemos el id del ejercicio --> editar
-      if(this.uidEx != null) {
-        this.ejercicioService.getExercise(this.uidEx).subscribe(
-          data => {
-            if (data['ok']) {
-              this.exercise = data['ejercicios'];
-              // colocamos valores del ejercicio en formulario
-              this.totalItem = data['totalEjercicios'];
-              this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
-              this.formData.get('nombre').setValue(this.exercise.nombre);
-              this.formData.get('descripcion').setValue(this.exercise.descripcion);
-              this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
-              this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
-              this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
-            }
-          },
-          error => {
-            this.notifications.create('Error', 'No se pudo obtener el ejercicio', NotificationType.Error, {
-              theClass: 'outline primary',
-              timeOut: 6000,
-              showProgressBar: false
-            });
-
-            return;
-          }
-        );
-      }
-
-      // obtenemos datos de la asignatura
-      this.loadSubjectData(this.uid);
-    }
-
-    this.getImages();
-    console.log('pre:', this.urlPrefix);
-  }
-
-  getImages():void {
-    this.imagenService.getImages().subscribe(
-      data => {
-        if (data['ok']) {
-          this.imgs = data['imagenes'];
-          console.log(this.imgs);
-        }
-      },
-      error => {
-        this.notifications.create('Error', 'No se han podidio obtener las Imagenes', NotificationType.Error, {
-          theClass: 'outline primary',
-          timeOut: 6000,
-          showProgressBar: false
-        });
-
-        return;
-      }
-    );
   }
 
   getSubjects() {
@@ -148,6 +106,40 @@ export class WizardEndStepComponent implements OnInit {
         return;
       }
     );
+  }
+
+  setSubject(): void {
+    // si tenemos el id del ejercicio --> editar
+    if(this.uidEx != null) {
+      this.ejercicioService.getExercise(this.uidEx).subscribe(
+        data => {
+          if (data['ok']) {
+            this.exercise = data['ejercicios'];
+            // colocamos valores del ejercicio en formulario
+            this.totalItem = data['totalEjercicios'];
+            this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
+            this.formData.get('nombre').setValue(this.exercise.nombre);
+            this.formData.get('descripcion').setValue(this.exercise.descripcion);
+            this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
+            this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
+            this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
+            this.formData.get('range_max_intentos').setValue(this.exercise.max_intentos);
+          }
+        },
+        error => {
+          this.notifications.create('Error', 'No se pudo obtener el ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
+        }
+      );
+    }
+
+    // obtenemos datos de la asignatura
+    this.loadSubjectData(this.uid);
   }
 
   loadSubjectData(uid: number) {
@@ -173,6 +165,7 @@ export class WizardEndStepComponent implements OnInit {
 
   checkDate(): void {
 
+    console.log('Entro');
     this.formSubmited = true;
     if (this.formData.invalid) {
       this.notifications.create('Error al crear ejercicio', 'Existen errores en el formulario. No se pudo crear el ejercicio', NotificationType.Error, {
@@ -207,6 +200,10 @@ export class WizardEndStepComponent implements OnInit {
 
     this.formSubmited = true;
     if (this.formData.invalid) { return; }
+
+    // obtenemos los id de las imágenes para enviarlas
+    this.getImagesId();
+    // this.formData.get('imgs').setValue(this.imgsSelect);
 
     // si tenemos ejercicio -> EDITAR
     if(this.exercise) {
@@ -263,23 +260,55 @@ export class WizardEndStepComponent implements OnInit {
   }
 
 
-  selectImgs(src) {
+  // **************** IMAGE METHODS ***************
+
+  getImages():void {
+    this.imagenService.getImages().subscribe(
+      data => {
+        if (data['ok']) {
+          this.imgs = data['imagenes'];
+          console.log(this.imgs);
+        }
+      },
+      error => {
+        this.notifications.create('Error', 'No se han podidio obtener las Imagenes', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
+  }
+
+  getImagesId(): void {
+    for(let i=0; i < this.imgsSelect.length; i++) {
+      this.imgsSelectId[i] = {
+        "img": this.imgsSelect[i].uid
+      }
+      
+    }
+    this.formData.get('imgs').setValue(this.imgsSelectId);
+    console.log(this.formData);
+  }
+
+  selectImgs(img: Imagen) {
     // console.log(src);
-    src = this.urlPrefix + src;
     let esta = false;
     for(let i=0; i<this.imgsSelect.length && !esta; i++) {
-      if(src == this.imgsSelect[i]) {
+      if(img == this.imgsSelect[i]) {
         this.imgsSelect.splice(i, 1);
         esta = true;
       }
     }
 
     if(!esta) {
-      this.imgsSelect.push(src);
+      this.imgsSelect.push(img);
       // console.log(this.imgsSelect);
     }
 
-    var element = document.querySelector('[src="'+ src +'"]');
+    var element = document.querySelector('[src="' + this.urlPrefix + img.ruta +'"]');
     if(element.parentElement.classList.contains('noSelected')) {
       element.parentElement.className = 'selected';
     }
@@ -289,12 +318,12 @@ export class WizardEndStepComponent implements OnInit {
     
   }
 
-  unselectImg(src, pos) { 
+  unselectImg(img, pos) { 
     // eliminamos la ruta del array
     this.imgsSelect.splice(pos, 1);
 
     // cambiamos la clase de la geleria
-    var element = document.querySelector('[src="'+ src +'"]');
+    var element = document.querySelector('[src="'+ img.ruta +'"]');
     element.parentElement.className = 'noSelected';
 
     console.log('SEL:', this.imgsSelect);
@@ -310,6 +339,13 @@ export class WizardEndStepComponent implements OnInit {
     this.imgsSelect.splice(pos, 1);
     this.imgsSelect.splice(pos+1, 0, src);
     console.log('SEL:', this.imgsSelect);
+  }
+
+
+  // ***************** PATIENT METHODS ********************
+
+  createPatient(): void {
+    console.log('CREO PACIENTE');
   }
 
 }

@@ -27,6 +27,12 @@ const EjercicioSchema = Schema({
         type: Number,
         require: true
     },
+    imgs: [{
+        img: {
+            type: Schema.Types.ObjectId,
+            ref: 'Imagen'
+        }
+    }],
 }, { collection: 'ejercicios' });
 
 // Modificamos Schema para que no aparezcan todos los datos

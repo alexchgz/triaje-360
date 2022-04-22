@@ -74,7 +74,8 @@ export class EjercicioService {
       "desde": data['desde'],
       "hasta": data['hasta'],
       "asignatura": data['asignatura'],
-      "max_intentos": data['max_intentos']
+      "max_intentos": data['max_intentos'],
+      "imgs": data['imgs']
     }
 
     return this.http.post(url, sendData, { headers });
@@ -96,7 +97,8 @@ export class EjercicioService {
       "desde": data['desde'],
       "hasta": data['hasta'],
       "asignatura": data['asignatura'],
-      "max_intentos": data['max_intentos']
+      "max_intentos": data['max_intentos'],
+      "imgs": data['imgs']
     }
 
     return this.http.put(url, sendData, { headers });

@@ -71,6 +71,7 @@ export class ManageSubjectModalComponent implements OnInit {
           this.profesoresNoAsignados = data['profesoresNoAsignados'];
           this.alumnosAsignados = data['alumnosAsignados'];
           this.alumnosNoAsignados = data['alumnosNoAsignados'];
+          console.log(this.asignatura);
       },
       error => {
         this.notifications.create('Error', 'No se ha podido obtener la Asignatura', NotificationType.Error, {

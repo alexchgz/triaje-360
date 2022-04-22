@@ -1,4 +1,5 @@
 import { Asignatura } from './asignatura.model';
+import { Imagen } from './imagen.model';
 
 export class Ejercicio {
 
@@ -8,5 +9,6 @@ export class Ejercicio {
                public desde: string,
                public hasta: string,
                public asignatura: Asignatura,
-               public max_intentos: number) {}
+               public max_intentos: number,
+               public imgs: Array< { img: Imagen, _id: number } >) {}
 }
