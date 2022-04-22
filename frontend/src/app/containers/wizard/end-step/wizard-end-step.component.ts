@@ -46,6 +46,15 @@ export class WizardEndStepComponent implements OnInit {
     max_intentos: [1, [Validators.required]],
     range_max_intentos: [1]
   });
+  public formDataPatient=this.fb.group({
+    descripcion: ['', [Validators.required]],
+    camina: ['', [Validators.required]],
+    color: ['', [Validators.required]],
+    img: ['', [Validators.required]],
+    acciones: ['', [Validators.required]],
+    empeora: ['', [Validators.required]],
+    tiempoEmpeora: ['']
+  });
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
@@ -114,6 +123,7 @@ export class WizardEndStepComponent implements OnInit {
         data => {
           if (data['ok']) {
             this.exercise = data['ejercicios'];
+            console.log(this.exercise);
             // colocamos valores del ejercicio en formulario
             this.totalItem = data['totalEjercicios'];
             this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
@@ -174,9 +184,9 @@ export class WizardEndStepComponent implements OnInit {
         showProgressBar: false
       });
     } 
-    else if (!this.formData.dirty){
-      this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
-    }
+    // else if (!this.formData.dirty){
+    //   this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+    // }
     else {
       const desde = new Date(this.formData.get('desde').value);
       const hasta = new Date(this.formData.get('hasta').value);
@@ -193,6 +203,9 @@ export class WizardEndStepComponent implements OnInit {
         });
       }
     }
+
+    // OCULTAMOS FORM1 Y MOSTRAMOS FORM2
+    // this.showPatientForm();
 
   }
 
@@ -258,6 +271,22 @@ export class WizardEndStepComponent implements OnInit {
     this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
   }
 
+  showPaso1(): void {
+    console.log('entro');
+    var p1 = document.querySelector('.paso1');
+    var p2 = document.querySelector('.show-paso2');
+    p1.className = 'show-paso1';
+    p2.className = 'paso2';
+  }
+
+  showPaso2(): void {
+    console.log('entro2');
+    var p1 = document.querySelector('.show-paso1');
+    var p2 = document.querySelector('.paso2');
+    p1.className = 'paso1';
+    p2.className = 'show-paso2';
+  }
+
 
   // **************** IMAGE METHODS ***************
 
@@ -266,7 +295,7 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.imgs = data['imagenes'];
-          console.log(this.imgs);
+          // console.log(this.imgs);
         }
       },
       error => {
@@ -289,7 +318,6 @@ export class WizardEndStepComponent implements OnInit {
       
     }
     this.formData.get('imgs').setValue(this.imgsSelectId);
-    console.log(this.formData);
   }
 
   getImagesRoutes(): void {
@@ -302,16 +330,11 @@ export class WizardEndStepComponent implements OnInit {
     for(let j=0; j<this.imgs.length; j++) {
       for(let k=0; k<this.imgsSelectId.length; k++) {
         if(this.imgs[j].uid == this.imgsSelectId[k]) {
-          console.log('COINCIDEN');
           // this.imgsSelect[k] = this.imgs[j];
           this.selectImgs(this.imgs[j]);
         }
       }
     }
-
-    console.log('IMG:', this.imgs);
-    console.log('IMGID:', this.imgsSelectId);
-    console.log('IMGS:', this.imgsSelect);
   }
 
   selectImgs(img: Imagen) {

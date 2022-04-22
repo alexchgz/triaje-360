@@ -116,3 +116,24 @@ h3 {
     border-color: #fff;
     font-size: 20px;
 }
+
+// FORMS
+.paso1 {
+    display: none !important;
+}
+.show-paso1 {
+    display: block !important;
+    width: 100%;
+    
+}
+.paso2 {
+    display: none !important;
+}
+.show-paso2 {
+    display: block !important;
+    width: 100%;
+}
+
+input[type="checkbox"] {
+    width: auto;
+}
