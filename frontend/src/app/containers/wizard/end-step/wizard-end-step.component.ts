@@ -55,6 +55,7 @@ export class WizardEndStepComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData();
+    this.getImages();
 
     // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
     if(this.uid == undefined && this.uidEx == undefined) {
@@ -62,8 +63,6 @@ export class WizardEndStepComponent implements OnInit {
     } else {
       this.setSubject();
     }
-
-    this.getImages();
   }
 
   // *************** DATA METHODS ***********************
@@ -124,6 +123,7 @@ export class WizardEndStepComponent implements OnInit {
             this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
             this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
             this.formData.get('range_max_intentos').setValue(this.exercise.max_intentos);
+            this.getImagesRoutes();
           }
         },
         error => {
@@ -203,7 +203,6 @@ export class WizardEndStepComponent implements OnInit {
 
     // obtenemos los id de las imágenes para enviarlas
     this.getImagesId();
-    // this.formData.get('imgs').setValue(this.imgsSelect);
 
     // si tenemos ejercicio -> EDITAR
     if(this.exercise) {
@@ -271,7 +270,7 @@ export class WizardEndStepComponent implements OnInit {
         }
       },
       error => {
-        this.notifications.create('Error', 'No se han podidio obtener las Imagenes', NotificationType.Error, {
+        this.notifications.create('Error', 'No se han podido obtener las Imagenes', NotificationType.Error, {
           theClass: 'outline primary',
           timeOut: 6000,
           showProgressBar: false
@@ -291,6 +290,28 @@ export class WizardEndStepComponent implements OnInit {
     }
     this.formData.get('imgs').setValue(this.imgsSelectId);
     console.log(this.formData);
+  }
+
+  getImagesRoutes(): void {
+    // this.imgsSelectId = this.exercise.imgs;
+
+    for(let i=0; i<this.exercise.imgs.length; i++) {
+      this.imgsSelectId[i] = this.exercise.imgs[i].img;
+    }
+
+    for(let j=0; j<this.imgs.length; j++) {
+      for(let k=0; k<this.imgsSelectId.length; k++) {
+        if(this.imgs[j].uid == this.imgsSelectId[k]) {
+          console.log('COINCIDEN');
+          // this.imgsSelect[k] = this.imgs[j];
+          this.selectImgs(this.imgs[j]);
+        }
+      }
+    }
+
+    console.log('IMG:', this.imgs);
+    console.log('IMGID:', this.imgsSelectId);
+    console.log('IMGS:', this.imgsSelect);
   }
 
   selectImgs(img: Imagen) {
