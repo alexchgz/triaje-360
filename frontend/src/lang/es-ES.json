@@ -756,6 +756,7 @@
         "bootstrap-hoverable": "Hoverable Rows"
     },
     "wizard": {
+        "add": "Añadir",
         "description": "Descripción",
         "walk": "Camina",
         "colour": "Color",

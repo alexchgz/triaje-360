@@ -137,3 +137,22 @@ h3 {
 input[type="checkbox"] {
     width: auto;
 }
+
+#acciones div {
+    display: flex;
+}
+
+    #acciones div label {
+        width: auto;
+        padding-right: 0em;
+    }
+
+    #acciones div p {
+        width: 150px;
+        margin-top: 12px;
+    }
+
+    #acciones div input[type="number"] {
+        width: 100px;
+        margin-bottom: .3em;
+    }

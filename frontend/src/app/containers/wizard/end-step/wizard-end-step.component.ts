@@ -11,6 +11,10 @@ import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { ImagenService } from 'src/app/data/imagen.service';
 import { Imagen } from 'src/app/models/imagen.model';
 import { environment } from 'src/environments/environment';
+import { PacienteService } from 'src/app/data/paciente.service';
+import { Paciente } from 'src/app/models/paciente.model';
+import { Accion } from 'src/app/models/accion.model';
+import { AccionService } from 'src/app/data/accion.service';
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -26,45 +30,49 @@ export class WizardEndStepComponent implements OnInit {
   uid: any;
   uidEx: number;
   totalItem: 0;
-  todayString: string;
-  tomorrowString: string;
+  todayString: string = '';
+  tomorrowString: string = '';
   imgsSelect: Imagen[] = [];
-  imgsSelectId: any[] = [];
+  // imgsSelectId: any[] = [];
   imgs: Imagen[];
   urlPrefix: string = environment.prefix_url;
   colours = ["Verde", "Amarillo", "Rojo", "Negro"];
+  patients: Paciente[] = [];
+  actions: Accion[] = [];
 
-  // FORM
-  private formSubmited = false;
-  public formData=this.fb.group({
-    nombre: ['', [Validators.required]],
-    descripcion: ['', [Validators.required]],
-    desde: ['', [Validators.required]],
-    hasta: ['', [Validators.required]],
-    asignatura: ['', [Validators.required]],
-    imgs: [''],
-    max_intentos: [1, [Validators.required]],
-    range_max_intentos: [1]
-  });
-  public formDataPatient=this.fb.group({
-    descripcion: ['', [Validators.required]],
-    camina: ['', [Validators.required]],
-    color: ['', [Validators.required]],
-    img: ['', [Validators.required]],
-    acciones: ['', [Validators.required]],
-    empeora: ['', [Validators.required]],
-    tiempoEmpeora: ['']
-  });
+  selectAllState = '';
+  selected: Accion[] = [];
+  dataEjercicio = {
+    "nombre": '',
+    "descripcion": '',
+    "desde": '',
+    "hasta": '',
+    "asignatura": undefined,
+    "imgs": [],
+    "max_intentos": 1,
+    "range_max_intentos": 1
+  }
+  dataPaciente = {
+    "descripcion": '',
+    "color": '',
+    "camina": true,
+    "acciones": [],
+    "img": '',
+    "empeora": false,
+    "tiempoEmpeora": undefined
+  }
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
-    private notifications: NotificationsService, private imagenService: ImagenService) { }
+    private notifications: NotificationsService, private imagenService: ImagenService, private pacienteService: PacienteService,
+    private accionService: AccionService) { }
 
   ngOnInit(): void {
     this.initData();
     this.getImages();
+    this.getActions();
 
     // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
     if(this.uid == undefined && this.uidEx == undefined) {
@@ -83,8 +91,10 @@ export class WizardEndStepComponent implements OnInit {
     this.todayString = this.datePipe.transform(today, 'yyyy-MM-dd');
     this.tomorrowString = this.datePipe.transform(tomorrow, 'yyyy-MM-dd');
     // colocamos fechas minimas en los input date
-    this.formData.get('desde').setValue(this.todayString);
-    this.formData.get('hasta').setValue(this.tomorrowString);
+    this.dataEjercicio.desde = this.todayString;
+    this.dataEjercicio.hasta = this.tomorrowString;
+
+    console.log('EJ:', this.dataEjercicio);
 
     // comprobamos Asignatura y Ejercicio
     if(this.sender.idSubjectExercise) {
@@ -126,13 +136,13 @@ export class WizardEndStepComponent implements OnInit {
             console.log(this.exercise);
             // colocamos valores del ejercicio en formulario
             this.totalItem = data['totalEjercicios'];
-            this.formData.get('asignatura').setValue(this.exercise.asignatura._id);
-            this.formData.get('nombre').setValue(this.exercise.nombre);
-            this.formData.get('descripcion').setValue(this.exercise.descripcion);
-            this.formData.get('desde').setValue(this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd'));
-            this.formData.get('hasta').setValue(this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd'));
-            this.formData.get('max_intentos').setValue(this.exercise.max_intentos);
-            this.formData.get('range_max_intentos').setValue(this.exercise.max_intentos);
+            this.dataEjercicio.asignatura = this.exercise.asignatura._id;
+            this.dataEjercicio.nombre = this.exercise.nombre;
+            this.dataEjercicio.descripcion = this.exercise.descripcion;
+            this.dataEjercicio.desde = this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd')
+            this.dataEjercicio.hasta = this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd')
+            this.dataEjercicio.max_intentos = this.exercise.max_intentos;
+            this.dataEjercicio.range_max_intentos = this.exercise.max_intentos;
             this.getImagesRoutes();
           }
         },
@@ -157,7 +167,7 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.subject = data['asignaturas'];
-          this.formData.get('asignatura').setValue(this.subject.uid);
+          this.dataEjercicio.asignatura = this.subject.uid;
         }
       },
       error => {
@@ -174,52 +184,32 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   checkDate(): void {
+    console.log(this.dataEjercicio);
+    const desde = new Date(this.dataEjercicio.desde);
+    const hasta = new Date(this.dataEjercicio.hasta);
 
-    console.log('Entro');
-    this.formSubmited = true;
-    if (this.formData.invalid) {
-      this.notifications.create('Error al crear ejercicio', 'Existen errores en el formulario. No se pudo crear el ejercicio', NotificationType.Error, {
+    if(desde.getTime() <= hasta.getTime()) {
+      // si los datos de las fechas son validos
+      this.createExercise();
+    } else {
+      // si hay algun error
+      this.notifications.create('Error en la fecha', 'La fecha "desde" no puede ser posterior a la fecha "hasta"', NotificationType.Error, {
         theClass: 'outline primary',
         timeOut: 6000,
         showProgressBar: false
       });
-    } 
-    // else if (!this.formData.dirty){
-    //   this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
-    // }
-    else {
-      const desde = new Date(this.formData.get('desde').value);
-      const hasta = new Date(this.formData.get('hasta').value);
-
-      if(desde.getTime() <= hasta.getTime()) {
-        // si los datos de las fechas son validos
-        this.createExercise();
-      } else {
-        // si hay algun error
-        this.notifications.create('Error en la fecha', 'La fecha "desde" no puede ser posterior a la fecha "hasta"', NotificationType.Error, {
-          theClass: 'outline primary',
-          timeOut: 6000,
-          showProgressBar: false
-        });
-      }
     }
-
-    // OCULTAMOS FORM1 Y MOSTRAMOS FORM2
-    // this.showPatientForm();
 
   }
 
   createExercise(): void {
-
-    this.formSubmited = true;
-    if (this.formData.invalid) { return; }
 
     // obtenemos los id de las imágenes para enviarlas
     this.getImagesId();
 
     // si tenemos ejercicio -> EDITAR
     if(this.exercise) {
-      this.ejercicioService.updateExercise(this.formData.value, this.exercise.uid)
+      this.ejercicioService.updateExercise(this.dataEjercicio, this.exercise.uid)
         .subscribe( res => {
           // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
 
@@ -235,7 +225,7 @@ export class WizardEndStepComponent implements OnInit {
       });
     } else {
       // no tenemos ejercicio -> CREAR
-      this.ejercicioService.createExercise(this.formData.value)
+      this.ejercicioService.createExercise(this.dataEjercicio)
         .subscribe( res => {
           this.exercise = res['ejercicio'];
           // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
@@ -262,9 +252,11 @@ export class WizardEndStepComponent implements OnInit {
 
   changeValue(e, inputRange): void {
     if(inputRange) {
-      this.formData.get('max_intentos').setValue(e);
+      // this.formData.get('max_intentos').setValue(e);
+      this.dataEjercicio.max_intentos = e;
     } else {
-      this.formData.get('range_max_intentos').setValue(e);
+      // this.formData.get('range_max_intentos').setValue(e);
+      this.dataEjercicio.range_max_intentos = e;
     }
   }
   toExercises(): void {
@@ -280,7 +272,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   showPaso2(): void {
-    console.log('entro2');
+    console.log('EJJ:', this.dataEjercicio);
     var p1 = document.querySelector('.show-paso1');
     var p2 = document.querySelector('.paso2');
     p1.className = 'paso1';
@@ -312,25 +304,23 @@ export class WizardEndStepComponent implements OnInit {
 
   getImagesId(): void {
     for(let i=0; i < this.imgsSelect.length; i++) {
-      this.imgsSelectId[i] = {
+      // this.imgsSelectId[i] = {
+      this.dataEjercicio.imgs[i] = {
         "img": this.imgsSelect[i].uid
       }
       
     }
-    this.formData.get('imgs').setValue(this.imgsSelectId);
   }
 
   getImagesRoutes(): void {
-    // this.imgsSelectId = this.exercise.imgs;
 
     for(let i=0; i<this.exercise.imgs.length; i++) {
-      this.imgsSelectId[i] = this.exercise.imgs[i].img;
+      this.dataEjercicio.imgs[i] = this.exercise.imgs[i].img;
     }
 
     for(let j=0; j<this.imgs.length; j++) {
-      for(let k=0; k<this.imgsSelectId.length; k++) {
-        if(this.imgs[j].uid == this.imgsSelectId[k]) {
-          // this.imgsSelect[k] = this.imgs[j];
+      for(let k=0; k<this.dataEjercicio.imgs.length; k++) {
+        if(this.imgs[j].uid == this.dataEjercicio.imgs[k]) {
           this.selectImgs(this.imgs[j]);
         }
       }
@@ -386,10 +376,82 @@ export class WizardEndStepComponent implements OnInit {
   }
 
 
+  // ***************** ACTIONS METHODS ********************
+
+  getActions(): void {
+    this.accionService.getActions().subscribe(
+      data => {
+        if (data['ok']) {
+          this.actions = data['acciones'];
+          console.log('Ac:', this.actions);
+        }
+      },
+      error => {
+        this.notifications.create('Error', 'No se han podido obtener las Acciones', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
+  }
+
+  isSelected(p: Accion): boolean {
+    return this.selected.findIndex(x => x.uid === p.uid) > -1;
+  }
+  onSelect(item: Accion): void {
+    if (this.isSelected(item)) {
+      this.selected = this.selected.filter(x => x.uid !== item.uid);
+    } else {
+      this.selected.push(item);
+    }
+    this.setSelectAllState();
+
+    // console.log('SELECT:', this.selected);
+  }
+
+  setSelectAllState(): void {
+    if (this.selected.length === this.actions.length) {
+      this.selectAllState = 'checked';
+    } else if (this.selected.length !== 0) {
+      this.selectAllState = 'indeterminate';
+    } else {
+      this.selectAllState = '';
+    }
+  }
+
+
   // ***************** PATIENT METHODS ********************
 
   createPatient(): void {
     console.log('CREO PACIENTE');
+    // this.dataPaciente.acciones = this.selected;
+    for(let i=0; i<this.selected.length; i++) {
+      this.dataPaciente.acciones[i] = {
+        "nombre": this.selected[i].nombre,
+        "tiempo": this.selected[i].tiempo
+      }
+    }
+    console.log(this.dataPaciente);
+    // this.pacienteService.getPatients().subscribe(
+    //   data => {
+    //     if (data['ok']) {
+    //       this.patients = data['pacientes'];
+    //       console.log(this.patients);
+    //     }
+    //   },
+    //   error => {
+    //     this.notifications.create('Error', 'No se han podido obtener los Pacientes', NotificationType.Error, {
+    //       theClass: 'outline primary',
+    //       timeOut: 6000,
+    //       showProgressBar: false
+    //     });
+
+    //     return;
+    //   }
+    // );
   }
 
 }

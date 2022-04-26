@@ -59,7 +59,7 @@ export class EjercicioService {
     return this.http.delete(url, { headers });
   }
 
-  createExercise(data: Ejercicio) {
+  createExercise(data: Object) {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
 
