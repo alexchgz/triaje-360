@@ -20,8 +20,8 @@ const PacienteSchema = Schema({
     },
     acciones: [{
         accion: {
-            type: Schema.Types.ObjectId,
-            ref: 'Accion'
+            nombre: String,
+            tiempo: Number
         }
     }],
     empeora: {

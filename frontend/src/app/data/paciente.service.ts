@@ -46,7 +46,7 @@ export class PacienteService {
     return this.http.get(url, { headers, params });
   } 
 
-  createPatient(data: Paciente) {
+  createPatient(data: Object) {
     const url = environment.base_url + '/pacientes';
     const token = localStorage.getItem('token');
 

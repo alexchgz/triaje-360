@@ -78,11 +78,13 @@ export class DataListComponent implements OnInit {
         data => {
           this.loadSubjects(this.itemsPerPage, this.currentPage, this.itemYear, this.userId);
 
-          this.notifications.create('Asignaturas eliminadas', 'Se han eliminado las Asignaturas', NotificationType.Info, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
+          if(i == subjects.length-1) {
+            this.notifications.create('Asignaturas eliminadas', 'Se han eliminado las Asignaturas', NotificationType.Info, {
+              theClass: 'outline primary',
+              timeOut: 6000,
+              showProgressBar: false
+            });
+          }
 
         },
         error => {

@@ -39,6 +39,7 @@ export class WizardEndStepComponent implements OnInit {
   colours = ["Verde", "Amarillo", "Rojo", "Negro"];
   patients: Paciente[] = [];
   actions: Accion[] = [];
+  actionsTime: number[] = [];
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -49,13 +50,14 @@ export class WizardEndStepComponent implements OnInit {
     "hasta": '',
     "asignatura": undefined,
     "imgs": [],
+    "pacientes": [],
     "max_intentos": 1,
     "range_max_intentos": 1
   }
   dataPaciente = {
     "descripcion": '',
     "color": '',
-    "camina": true,
+    "camina": false,
     "acciones": [],
     "img": '',
     "empeora": false,
@@ -263,22 +265,6 @@ export class WizardEndStepComponent implements OnInit {
     this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
   }
 
-  showPaso1(): void {
-    console.log('entro');
-    var p1 = document.querySelector('.paso1');
-    var p2 = document.querySelector('.show-paso2');
-    p1.className = 'show-paso1';
-    p2.className = 'paso2';
-  }
-
-  showPaso2(): void {
-    console.log('EJJ:', this.dataEjercicio);
-    var p1 = document.querySelector('.show-paso1');
-    var p2 = document.querySelector('.paso2');
-    p1.className = 'paso1';
-    p2.className = 'show-paso2';
-  }
-
 
   // **************** IMAGE METHODS ***************
 
@@ -383,7 +369,10 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.actions = data['acciones'];
-          console.log('Ac:', this.actions);
+          //almacenamos los tiempos de las acciones para resetearlos luego
+          for(let i=0; i<this.actions.length; i++) {
+            this.actionsTime[i] = this.actions[i].tiempo;
+          }
         }
       },
       error => {
@@ -426,32 +415,54 @@ export class WizardEndStepComponent implements OnInit {
   // ***************** PATIENT METHODS ********************
 
   createPatient(): void {
-    console.log('CREO PACIENTE');
-    // this.dataPaciente.acciones = this.selected;
+    
     for(let i=0; i<this.selected.length; i++) {
       this.dataPaciente.acciones[i] = {
-        "nombre": this.selected[i].nombre,
-        "tiempo": this.selected[i].tiempo
+        "accion": {
+          "nombre": this.selected[i].nombre,
+          "tiempo": this.selected[i].tiempo
+        }
       }
     }
-    console.log(this.dataPaciente);
-    // this.pacienteService.getPatients().subscribe(
-    //   data => {
-    //     if (data['ok']) {
-    //       this.patients = data['pacientes'];
-    //       console.log(this.patients);
-    //     }
-    //   },
-    //   error => {
-    //     this.notifications.create('Error', 'No se han podido obtener los Pacientes', NotificationType.Error, {
-    //       theClass: 'outline primary',
-    //       timeOut: 6000,
-    //       showProgressBar: false
-    //     });
+    
+    this.pacienteService.createPatient(this.dataPaciente).subscribe(
+      data => {
+        if (data['ok']) {
+          this.dataEjercicio.pacientes.push(data['paciente'].uid);
+          // console.log('Paciente:', data['paciente']);
+          // console.log('EJER:', this.dataEjercicio);
+          this.resetDataPaciente();
+        }
+      },
+      error => {
+        this.notifications.create('Error', 'No se ha podido crear el Paciente', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
 
-    //     return;
-    //   }
-    // );
+        return;
+      }
+    );
+  }
+
+  resetDataPaciente(): void {
+    console.log('entro');
+    this.dataPaciente.descripcion = '';
+    this.dataPaciente.color = '';
+    this.dataPaciente.camina = false;
+    this.dataPaciente.acciones = [];
+    this.dataPaciente.img = '';
+    this.dataPaciente.empeora = false;
+    this.dataPaciente.tiempoEmpeora = undefined;
+    this.selected = [];
+
+    // reseteamos tiempos acciones si se han cambiado
+    for(let i=0; i<this.actions.length; i++) {
+      if(this.actions[i].tiempo != this.actionsTime[i]) {
+        this.actions[i].tiempo = this.actionsTime[i];
+      }
+    }
   }
 
 }

@@ -84,11 +84,13 @@ export class DataListComponent implements OnInit {
         data => {
           this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
 
-          this.notifications.create('Ejercicios eliminados', 'Se han eliminado los Ejercicios correctamente', NotificationType.Info, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
+          if(i == exercises.length-1) {
+            this.notifications.create('Ejercicios eliminados', 'Se han eliminado los Ejercicios correctamente', NotificationType.Info, {
+              theClass: 'outline primary',
+              timeOut: 6000,
+              showProgressBar: false
+            });
+          }
 
         },
         error => {
