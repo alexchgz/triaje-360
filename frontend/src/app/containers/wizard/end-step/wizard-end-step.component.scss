@@ -170,3 +170,41 @@ input[type="checkbox"] {
         width: 100px;
         margin-bottom: .3em;
     }
+
+.pacientes {
+    margin-top: 1.5em;
+    display: table;
+    width: 100%;
+}
+.lista-pacientes, .configurar-pacientes {
+    display: table-cell;
+}
+
+.configurar-pacientes {
+    width: 55%;
+    padding-right: 3em;
+}
+
+.lista-pacientes {
+    width: 40%;
+}
+
+.lista {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1em;
+}
+
+    .lista div {
+        margin: 1em;
+    }
+
+    .lista p {
+        font-size: 1.1em !important;
+    }
+
+    .lista .simple-icon-close {
+        transform: translate(75px, -16px);
+    }
+    .lista .simple-icon-close::before {
+        font-size: 16px;
+    }

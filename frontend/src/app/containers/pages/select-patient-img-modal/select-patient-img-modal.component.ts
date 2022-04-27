@@ -43,7 +43,7 @@ export class SelectPatientImgModalComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.imagenes = data['imagenesPaciente'];
-          console.log(this.imagenes);
+          // console.log(this.imagenes);
         }
       },
       error => {

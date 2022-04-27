@@ -42,6 +42,7 @@ export class WizardEndStepComponent implements OnInit {
   patients: Paciente[] = [];
   actions: Accion[] = [];
   actionsTime: number[] = [];
+  listaPacientes: any[] = [];
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -99,7 +100,7 @@ export class WizardEndStepComponent implements OnInit {
     this.dataEjercicio.desde = this.todayString;
     this.dataEjercicio.hasta = this.tomorrowString;
 
-    console.log('EJ:', this.dataEjercicio);
+    // console.log('EJ:', this.dataEjercicio);
 
     // comprobamos Asignatura y Ejercicio
     if(this.sender.idSubjectExercise) {
@@ -138,7 +139,7 @@ export class WizardEndStepComponent implements OnInit {
         data => {
           if (data['ok']) {
             this.exercise = data['ejercicios'];
-            console.log(this.exercise);
+            // console.log(this.exercise);
             // colocamos valores del ejercicio en formulario
             this.totalItem = data['totalEjercicios'];
             this.dataEjercicio.asignatura = this.exercise.asignatura._id;
@@ -189,7 +190,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   checkDate(): void {
-    console.log(this.dataEjercicio);
+    // console.log(this.dataEjercicio);
     const desde = new Date(this.dataEjercicio.desde);
     const hasta = new Date(this.dataEjercicio.hasta);
 
@@ -426,12 +427,12 @@ export class WizardEndStepComponent implements OnInit {
           "tiempo": this.selected[i].tiempo
         }
       }
-    }
-    
+    }    
+
     this.pacienteService.createPatient(this.dataPaciente).subscribe(
       data => {
         if (data['ok']) {
-          this.dataEjercicio.pacientes.push(data['paciente'].uid);
+          this.dataEjercicio.pacientes.push(data['paciente']);
           // console.log('Paciente:', data['paciente']);
           // console.log('EJER:', this.dataEjercicio);
           this.resetDataPaciente();
@@ -447,6 +448,11 @@ export class WizardEndStepComponent implements OnInit {
         return;
       }
     );
+  }
+
+  deletePatient(i: number) {
+    console.log('Elimino Paciente');
+    this.dataEjercicio.pacientes.splice(i, 1);
   }
 
   resetDataPaciente(): void {
