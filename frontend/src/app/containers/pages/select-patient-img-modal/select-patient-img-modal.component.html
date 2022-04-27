@@ -1,0 +1,24 @@
+<ng-template #template>
+    <div class="modal-header">
+        <div class="header1">
+            <h4 class="modal-title pull-left">{{'pages.select-patient-img-modal-title' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="imagenes==undefined || imagenes.length == 0">No hay imágenes seleccionables</p>
+        <div class="imgs">
+            <label class="noSelected" *ngFor="let p of imagenes; let i=index">
+                <img src={{urlPrefixPacientes+p.ruta}} (click)='selectImg(p)'>
+                <i class="simple-icon-check"></i>
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">Cerrar</button>
+    </div>
+</ng-template>
+<simple-notifications></simple-notifications>
+

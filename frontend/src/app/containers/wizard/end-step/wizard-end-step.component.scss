@@ -4,7 +4,7 @@ h3 {
     text-align: center;
 }
 
-.gallery, .imgsSelected {
+.gallery, .imgsSelected, .mini-img {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -48,6 +48,20 @@ h3 {
     }
 
         .imgsSelected label img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+    .mini-img label {
+        height: 90px;
+        width: 90px;
+        margin: 15px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+        .mini-img label img {
             height: 100%;
             width: 100%;
             object-fit: cover;

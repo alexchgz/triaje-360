@@ -15,6 +15,7 @@ import { PacienteService } from 'src/app/data/paciente.service';
 import { Paciente } from 'src/app/models/paciente.model';
 import { Accion } from 'src/app/models/accion.model';
 import { AccionService } from 'src/app/data/accion.service';
+import { SelectPatientImgModalComponent } from 'src/app/containers/pages/select-patient-img-modal/select-patient-img-modal.component';
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -36,6 +37,7 @@ export class WizardEndStepComponent implements OnInit {
   // imgsSelectId: any[] = [];
   imgs: Imagen[];
   urlPrefix: string = environment.prefix_url;
+  urlPrefixPacientes: string = environment.prefix_urlPacientes;
   colours = ["Verde", "Amarillo", "Rojo", "Negro"];
   patients: Paciente[] = [];
   actions: Accion[] = [];
@@ -65,6 +67,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: SelectPatientImgModalComponent;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
@@ -463,6 +466,15 @@ export class WizardEndStepComponent implements OnInit {
         this.actions[i].tiempo = this.actionsTime[i];
       }
     }
+  }
+
+  showSelectPatientImgModal(): void {
+    this.addNewModalRef.show();
+  }
+
+  getImgSelect(e): void {
+    this.dataPaciente.img = e;
+    console.log('Select:', this.dataPaciente.img);
   }
 
 }

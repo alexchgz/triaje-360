@@ -1,4 +1,6 @@
 <!-- <h5 class="mb-4">{{ 'wizard.last-end' | translate }}</h5> -->
+<app-select-patient-img-modal #addNewModalRef (seleccionarImg)="getImgSelect($event)"></app-select-patient-img-modal>
+
 <div class="card mb-5">
   <div class="card-body">
     <aw-wizard >
@@ -115,7 +117,14 @@
           </div>
           <div class="mt-2" id="img">
             <label>{{ 'wizard.img' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="dataPaciente.img" placeholder="" required>
+            <!-- <input type="text" class="form-control" [(ngModel)]="dataPaciente.img" placeholder="" required> -->
+            <button type="button" (click)="showSelectPatientImgModal()">Seleccionar Imagen</button>
+            <input type="text" class="form-control" [(ngModel)]="dataPaciente.img" placeholder="" required disabled>
+            <div class="mini-img">
+              <label *ngIf="dataPaciente.img">
+                <img src={{urlPrefixPacientes+dataPaciente.img}}>
+              </label>
+            </div>
           </div>
           <div id="empeora">
             <label>{{ 'wizard.gets-worse' | translate }}</label>

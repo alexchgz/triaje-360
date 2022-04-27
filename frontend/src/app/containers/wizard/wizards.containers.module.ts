@@ -11,6 +11,8 @@ import { WizardIconsComponent } from './icons/wizard-icons.component';
 import { WizardVerticalComponent } from './vertical/wizard-vertical.component';
 import { WizardBasicComponent } from './basic/wizard-basic.component';
 
+import { PagesContainersModule } from 'src/app/containers/pages/pages.containers.module';
+
 @NgModule({
   declarations: [
     WizardBasicComponent,
@@ -25,7 +27,8 @@ import { WizardBasicComponent } from './basic/wizard-basic.component';
     ReactiveFormsModule,
     TranslateModule,
     ArchwizardModule,
-    NgSelectModule
+    NgSelectModule,
+    PagesContainersModule
   ],
   providers: [],
   exports: [

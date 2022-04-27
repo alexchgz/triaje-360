@@ -1,0 +1,70 @@
+
+.modal-header {
+    display: block;
+}
+
+.header1 {
+    display: flex;
+    margin-bottom: .3em;
+}
+
+.imgs {
+    display: flex;
+}
+
+p {
+    margin-right: 3em;
+}
+
+.imgs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto 2rem auto;
+}
+
+    .imgs label {
+        height: 90px;
+        width: 90px;
+        margin: 10px;
+        border-radius: 3px;
+        overflow: hidden;
+        // box-shadow: 0 3px 5px #145388;
+    }
+
+        .imgs label img {
+            height: 100%;
+            width: 100%;
+            padding: .5em;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+.simple-icon-check::before {
+    background-color: #145388;
+    color: #fff;
+    padding: 0em;
+    border-radius: 50px;
+    border-color: #fff;
+    font-size: 18px;
+}
+
+.selected {
+    border: 5px solid #145388;
+}
+
+.selected .simple-icon-check {
+    display: block;
+    position: absolute;
+    transform: translate(58px, -75px);
+    color: #145388;
+}
+
+.noSelected {
+    border: none;
+}
+
+.noSelected .simple-icon-check {
+    display: none;
+    color: #145388;
+}

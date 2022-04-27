@@ -42,6 +42,7 @@ import { AddNewSubjectModalComponent } from './add-new-subject-modal/add-new-sub
 import { ManageSubjectModalComponent } from './manage-subject-modal/manage-subject-modal.component';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { ShowStudentRegisterModalComponent } from './show-student-register-modal/show-student-register-modal.component';
+import { SelectPatientImgModalComponent } from './select-patient-img-modal/select-patient-img-modal.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { ShowStudentRegisterModalComponent } from './show-student-register-modal
     AddNewSchoolYearModalComponent,
     AddNewSubjectModalComponent,
     ManageSubjectModalComponent,
-    ShowStudentRegisterModalComponent
+    ShowStudentRegisterModalComponent,
+    SelectPatientImgModalComponent
   ],
   imports: [
     CommonModule,
@@ -118,7 +120,8 @@ import { ShowStudentRegisterModalComponent } from './show-student-register-modal
     ProductDetailCommentsComponent,
     ProductDetailInfoComponent,
     ProductDetailTabsComponent,
-    ShowStudentRegisterModalComponent
+    ShowStudentRegisterModalComponent,
+    SelectPatientImgModalComponent
   ]
 })
 export class PagesContainersModule { }

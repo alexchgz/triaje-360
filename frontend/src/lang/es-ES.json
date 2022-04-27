@@ -281,7 +281,8 @@
         "exercise-to": "Hasta",
         "exercise-subject": "Asignatura",
         "exercise-max-attempts": "Máximo de Intentos",
-        "show-student-register-modal-title": "Registro de Intentos"
+        "show-student-register-modal-title": "Registro de Intentos",
+        "select-patient-img-modal-title": "Seleccionar Imagen Paciente"
     },
     "chat": {
         "messages": "Mensajes",
