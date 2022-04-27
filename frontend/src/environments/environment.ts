@@ -14,6 +14,7 @@ export const environment = {
   apiUrl: 'https://api.coloredstrategies.com',
   base_url: 'http://localhost:3000/api',
   prefix_url: '/assets/img/tiles/',
+  prefix_urlPacientes: '/assets/img/pacientes/',
   defaultMenuType: 'menu-default',
   subHiddenBreakpoint: 1440,
   menuHiddenBreakpoint: 768,

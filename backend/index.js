@@ -27,6 +27,7 @@ app.use('/api/asignaturas', require('./routes/asignaturas'));
 app.use('/api/ejercicios', require('./routes/ejercicios'));
 app.use('/api/ejerciciosUsuario', require('./routes/ejerciciosUsuario'));
 app.use('/api/imagenes', require('./routes/imagenes'));
+app.use('/api/imagenesPaciente', require('./routes/imagenesPaciente'));
 app.use('/api/acciones', require('./routes/acciones'));
 app.use('/api/pacientes', require('./routes/pacientes'));
 
