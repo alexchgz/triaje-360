@@ -468,6 +468,11 @@ export class WizardEndStepComponent implements OnInit {
             // console.log('Paciente:', data['paciente']);
             console.log('EJER:', this.dataEjercicio.pacientes);
             this.resetDataPaciente();
+            this.notifications.create('Paciente creado', 'Se ha creado el Paciente correctamente y se ha añadido al Ejercicio', NotificationType.Info, {
+              theClass: 'outline primary',
+              timeOut: 6000,
+              showProgressBar: false
+            });
           }
         },
         error => {
@@ -508,6 +513,9 @@ export class WizardEndStepComponent implements OnInit {
 
   resetDataPaciente(): void {
     console.log('entro');
+    if(this.dataPaciente['uid']) {
+      this.dataPaciente['uid'] = undefined;
+    }
     this.dataPaciente.descripcion = '';
     this.dataPaciente.color = '';
     this.dataPaciente.camina = false;
@@ -517,6 +525,7 @@ export class WizardEndStepComponent implements OnInit {
     this.dataPaciente.tiempoEmpeora = undefined;
     this.selected = [];
     this.childrenImg = undefined;
+
 
     // reseteamos tiempos acciones si se han cambiado
     for(let i=0; i<this.actions.length; i++) {

@@ -129,7 +129,11 @@
             </div>
             <div id="empeora">
               <label>{{ 'wizard.gets-worse' | translate }}</label>
-              <input type="checkbox" class="form-control" [(ngModel)]="dataPaciente.empeora" placeholder="" required>
+              <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                <input type="checkbox" class="custom-control-input" [id]="dataPaciente.empeora" [(ngModel)]="dataPaciente.empeora" placeholder="" required>
+                <label class="custom-control-label" [for]="dataPaciente.empeora"></label>
+              </label>
+              <!-- <input type="checkbox" class="form-control" [(ngModel)]="dataPaciente.empeora" placeholder="" required> -->
             </div>
             <div id="tiempoEmpeora">
               <label>{{ 'wizard.time-gw' | translate }}</label>
@@ -145,8 +149,14 @@
             <div class="lista">
               <p *ngIf="dataEjercicio.pacientes.length == 0">Aún no hay Pacientes creados para el Ejercicio</p>
               <div *ngFor="let p of dataEjercicio.pacientes; let i=index">
-                <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="loadPatientData(p, i)">Paciente {{i+1}}</p>
-                <i class="simple-icon-close" (click)="deletePatient(i)"></i>
+                <div class="activo" *ngIf="dataPaciente.uid != undefined && dataPaciente.uid == p.uid">
+                  <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="resetPatientData()">Paciente {{i+1}}</p>
+                  <i class="simple-icon-close" (click)="deletePatient(i)"></i>
+                </div>
+                <div class="noActivo" *ngIf="dataPaciente.uid == undefined || dataPaciente.uid != p.uid">
+                  <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="loadPatientData(p, i)">Paciente {{i+1}}</p>
+                  <i class="simple-icon-close" (click)="deletePatient(i)"></i>
+                </div>
               </div>
             </div>
           </div>

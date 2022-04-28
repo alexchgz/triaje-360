@@ -191,11 +191,11 @@ input[type="checkbox"] {
 
 .lista {
     border: 1px solid rgba(0, 0, 0, 0.125);
-    padding: 1em;
+    padding: 0em;
 }
 
-    .lista div {
-        margin: 1em;
+    .lista div div {
+        padding: .5em;
     }
 
     .lista p {
@@ -204,11 +204,22 @@ input[type="checkbox"] {
 
     .lista .paciente {
         cursor: pointer;
+        margin: 0 .5em;
     }
 
     .lista .simple-icon-close {
-        transform: translate(75px, -16px);
+        transform: translate(450px, -15px);
     }
     .lista .simple-icon-close::before {
-        font-size: 16px;
+        font-size: 15px;
+        background-color: #fff;
+        color: #145388;
+    }
+
+.activo {
+    background-color: #145388;
+}
+
+    .activo p {
+        color: #fff !important;
     }
