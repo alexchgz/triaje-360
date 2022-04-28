@@ -10,10 +10,16 @@
     <div class="modal-body">
         <p *ngIf="imagenes==undefined || imagenes.length == 0">No hay imágenes seleccionables</p>
         <div class="imgs">
-            <label class="noSelected" *ngFor="let p of imagenes; let i=index">
-                <img src={{urlPrefixPacientes+p.ruta}} (click)='selectImg(p)'>
-                <i class="simple-icon-check"></i>
-            </label>
+            <div *ngFor="let p of imagenes; let i=index">
+                <label *ngIf="p.ruta != imagenSeleccionada" class="noSelected">
+                    <img src={{urlPrefixPacientes+p.ruta}} (click)='selectImg(p)'>
+                    <i class="simple-icon-check"></i>
+                </label>
+                <label *ngIf="p.ruta == imagenSeleccionada" class="selected">
+                    <img src={{urlPrefixPacientes+p.ruta}} (click)='selectImg(p)'>
+                    <i class="simple-icon-check"></i>
+                </label>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

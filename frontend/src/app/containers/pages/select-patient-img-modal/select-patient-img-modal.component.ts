@@ -60,26 +60,24 @@ export class SelectPatientImgModalComponent implements OnInit {
 
   selectImg(img: ImagenPaciente) {
   
-    if(this.imagenSeleccionada != undefined) {
+    if(this.imagenSeleccionada != undefined && img.ruta != this.imagenSeleccionada) {
       var unSelect = document.querySelector('[src="' + this.urlPrefixPacientes + this.imagenSeleccionada +'"]');
       unSelect.parentElement.className = 'noSelected';
     }
   
-    var element = document.querySelector('[src="' + this.urlPrefixPacientes + img.ruta +'"]');
-    console.log(element);
-    element.parentElement.className = 'selected';
-    this.imagenSeleccionada = img.ruta;
-    // this.seleccionarImg.emit(this.imagenSeleccionada);  
+    if(img.ruta != this.imagenSeleccionada) {
+      var element = document.querySelector('img[src="' + this.urlPrefixPacientes + img.ruta +'"]');
+      element.parentElement.className = 'selected';
+      this.imagenSeleccionada = img.ruta;
+    }
   }
 
   show() {
-    console.log(this.imagenSeleccionada);
     this.modalRef = this.modalService.show(this.template, this.config);
   }  
 
   closeModal(): void {
     this.seleccionarImg.emit(this.imagenSeleccionada); 
-    // this.imagenSeleccionada = undefined;
     this.modalRef.hide();
   }
 

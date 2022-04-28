@@ -480,7 +480,7 @@ export class WizardEndStepComponent implements OnInit {
 
   getImgSelect(e): void {
     this.dataPaciente.img = e;
-    console.log('Select:', this.dataPaciente.img);
+    // console.log('Select:', this.dataPaciente.img);
   }
 
 }
