@@ -44,6 +44,7 @@ export class WizardEndStepComponent implements OnInit {
   actionsTime: number[] = [];
   listaPacientes: any[] = [];
   childrenImg: string = undefined;
+  pacienteActivo: any = undefined;
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -491,10 +492,9 @@ export class WizardEndStepComponent implements OnInit {
 
   loadPatientData(paciente: Paciente, i: number): void {
     
-    console.log(paciente);
     this.childrenImg = paciente.img;
     this.dataPaciente = paciente;
-    console.log(this.dataPaciente);
+    // console.log(this.dataPaciente);
     this.selected = [];
     for(let i=0; i<this.actions.length; i++) {
       for(let j=0; j<this.dataPaciente.acciones.length; j++) {
@@ -504,10 +504,17 @@ export class WizardEndStepComponent implements OnInit {
         }
       }
     }
+    this.pacienteActivo = this.dataPaciente;
+    console.log(this.pacienteActivo);
+  
   }
 
   deletePatient(i: number) {
     console.log('Elimino Paciente');
+    if(this.dataEjercicio.pacientes[i].uid == this.dataPaciente['uid']) {
+      console.log('entro');
+      this.resetDataPaciente();
+    }
     this.dataEjercicio.pacientes.splice(i, 1);
   }
 
