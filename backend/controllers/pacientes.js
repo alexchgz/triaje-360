@@ -2,6 +2,7 @@
 const { response } = require('express');
 const { infoToken } = require('../helpers/infotoken');
 const Paciente = require('../models/pacientes');
+const { updateEjercicio } = require('../helpers/hEjercicio');
 
 // funciones
 const getPacientes = async(req, res = response) => {
@@ -55,6 +56,7 @@ const getPacientes = async(req, res = response) => {
 
 const crearPaciente = async(req, res = response) => {
 
+    const idEjercicio = req.query.exerciseId;
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
     // lo puede actualizar un administrador
@@ -69,7 +71,15 @@ const crearPaciente = async(req, res = response) => {
 
         // creamos el curso  y lo almacenamos los datos en la BBDD
         const paciente = new Paciente(req.body);
+
+        // actualizamos la asignatura incluyendo el ejercicio
+        await updateEjercicio(idEjercicio, paciente).then(actualizarPacientesEjercicio => {
+            console.log('Pacientes de Ejercicio actualizados:', actualizarPacientesEjercicio);
+        });
+
         await paciente.save();
+
+
 
         res.json({
             ok: true,

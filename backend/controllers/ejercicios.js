@@ -39,10 +39,8 @@ const getEjercicios = async(req, res = response) => {
             [ejercicios, totalEjercicios] = await Promise.all([
                 // buscamos por el id
                 Ejercicio.findById(id).populate('curso', '-__v')
-                .populate({
-                    path: 'asignatura',
-                    select: 'nombre nombrecorto profesores alumnos'
-                }),
+                .populate('asignatura', 'nombre nombrecorto profesores alumnos')
+                .populate('pacientes.paciente', '-__v'),
                 Ejercicio.countDocuments()
             ]);
 

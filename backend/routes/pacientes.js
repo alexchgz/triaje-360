@@ -25,6 +25,7 @@ router.post('/', [
     check('acciones', 'El argumento acciones es obligatorio').not().isEmpty(),
     check('empeora', 'El estado debe ser true o false').isBoolean(),
     check('tiempoEmpeora', 'El tiempo debe ser una cantidad').optional().isNumeric(),
+    check('exerciseId', 'Desde debe ser una cadena de texto').isString(),
     validarCampos
 ], crearPaciente);
 

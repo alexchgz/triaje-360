@@ -30,4 +30,32 @@ const deleteEjercicio = async(idEjercicio) => {
 
 
 }
-module.exports = { deleteEjercicio }
+
+// actualizar ejercicio con el nuevo paciente
+const updateEjercicio = async(idEjercicio, paciente) => {
+
+    const uid = idEjercicio;
+
+    try {
+        // Comprobamos si existe el item que queremos borrar
+        const existeEjercicio = await Ejercicio.findById(uid);
+        if (!existeEjercicio) {
+            return false;
+        }
+        
+        const resultado = await Ejercicio.updateOne(
+            { _id: uid },
+            { $push: { 'pacientes': { 'paciente': paciente } } }
+        );
+        console.log('res:', resultado);
+
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+
+    }
+
+
+}
+module.exports = { deleteEjercicio, updateEjercicio }

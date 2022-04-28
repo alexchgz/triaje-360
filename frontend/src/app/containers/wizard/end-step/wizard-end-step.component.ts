@@ -44,7 +44,6 @@ export class WizardEndStepComponent implements OnInit {
   actionsTime: number[] = [];
   listaPacientes: any[] = [];
   childrenImg: string = undefined;
-  pacienteActivo: any = undefined;
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -141,7 +140,7 @@ export class WizardEndStepComponent implements OnInit {
         data => {
           if (data['ok']) {
             this.exercise = data['ejercicios'];
-            // console.log(this.exercise);
+            console.log(this.exercise);
             // colocamos valores del ejercicio en formulario
             this.totalItem = data['totalEjercicios'];
             this.dataEjercicio.asignatura = this.exercise.asignatura._id;
@@ -152,6 +151,7 @@ export class WizardEndStepComponent implements OnInit {
             this.dataEjercicio.max_intentos = this.exercise.max_intentos;
             this.dataEjercicio.range_max_intentos = this.exercise.max_intentos;
             this.getImagesRoutes();
+            this.getExercisePatients();
           }
         },
         error => {
@@ -319,6 +319,14 @@ export class WizardEndStepComponent implements OnInit {
     }
   }
 
+  getExercisePatients() {
+    for(let i=0; i<this.exercise.pacientes.length; i++) {
+      this.dataEjercicio.pacientes[i] = this.exercise.pacientes[i].paciente;
+      this.dataEjercicio.pacientes[i].uid = this.dataEjercicio.pacientes[i]['_id'];
+    }
+    console.log('A:', this.dataEjercicio.pacientes);
+  }
+
   selectImgs(img: Imagen) {
     // console.log(src);
     let esta = false;
@@ -462,7 +470,7 @@ export class WizardEndStepComponent implements OnInit {
       });
     }
     else {
-      this.pacienteService.createPatient(this.dataPaciente).subscribe(
+      this.pacienteService.createPatient(this.dataPaciente, this.exercise.uid).subscribe(
         data => {
           if (data['ok']) {
             this.dataEjercicio.pacientes.push(data['paciente']);
@@ -494,7 +502,7 @@ export class WizardEndStepComponent implements OnInit {
     
     this.childrenImg = paciente.img;
     this.dataPaciente = paciente;
-    // console.log(this.dataPaciente);
+    console.log(this.dataPaciente);
     this.selected = [];
     for(let i=0; i<this.actions.length; i++) {
       for(let j=0; j<this.dataPaciente.acciones.length; j++) {
@@ -504,8 +512,6 @@ export class WizardEndStepComponent implements OnInit {
         }
       }
     }
-    this.pacienteActivo = this.dataPaciente;
-    console.log(this.pacienteActivo);
   
   }
 

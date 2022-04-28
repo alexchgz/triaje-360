@@ -33,6 +33,12 @@ const EjercicioSchema = Schema({
             ref: 'Imagen'
         }
     }],
+    pacientes: [{
+        paciente: {
+            type: Schema.Types.ObjectId,
+            ref: 'Paciente'
+        }
+    }]
 }, { collection: 'ejercicios' });
 
 // Modificamos Schema para que no aparezcan todos los datos
