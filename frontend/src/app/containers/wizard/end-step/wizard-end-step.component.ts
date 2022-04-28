@@ -44,6 +44,7 @@ export class WizardEndStepComponent implements OnInit {
   actionsTime: number[] = [];
   listaPacientes: any[] = [];
   childrenImg: string = undefined;
+  empeora: boolean = false;
 
   selectAllState = '';
   selected: Accion[] = [];
