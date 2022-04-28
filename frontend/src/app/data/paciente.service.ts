@@ -68,4 +68,26 @@ export class PacienteService {
 
   }
 
+  updatePatient(data: Object) {
+    const url = environment.base_url + '/pacientes/' + data['uid'];
+    const token = localStorage.getItem('token');
+
+    // HEADERS
+    let headers = new HttpHeaders();
+    headers = headers.append('x-token', token);
+
+    const sendData = {
+      "descripcion": data['descripcion'],
+      "camina": data['camina'],
+      "color": data['color'],
+      "img": data['img'],
+      "acciones": data['acciones'],
+      "empeora": data['empeora'],
+      "tiempoEmpeora": data['tiempoEmpeora']
+    }
+
+    return this.http.put(url, sendData, { headers });
+
+  }
+
 }

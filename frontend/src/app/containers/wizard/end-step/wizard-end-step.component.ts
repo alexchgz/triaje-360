@@ -43,6 +43,7 @@ export class WizardEndStepComponent implements OnInit {
   actions: Accion[] = [];
   actionsTime: number[] = [];
   listaPacientes: any[] = [];
+  childrenImg: string = undefined;
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -401,8 +402,6 @@ export class WizardEndStepComponent implements OnInit {
       this.selected.push(item);
     }
     this.setSelectAllState();
-
-    // console.log('SELECT:', this.selected);
   }
 
   setSelectAllState(): void {
@@ -427,27 +426,79 @@ export class WizardEndStepComponent implements OnInit {
           "tiempo": this.selected[i].tiempo
         }
       }
-    }    
+    }   
+    
+    if(this.dataPaciente['uid']) {
+      this.pacienteService.updatePatient(this.dataPaciente).subscribe( 
+        data => {
+          
+          let parar = false;
+          for(let i=0; i<this.dataEjercicio.pacientes.length && !parar; i++) {
+            if(this.dataEjercicio.pacientes[i].uid == data['paciente'].uid) {
+              this.dataEjercicio.pacientes[i] = data['paciente'];
+              parar = true;
+            }
+          }
 
-    this.pacienteService.createPatient(this.dataPaciente).subscribe(
-      data => {
-        if (data['ok']) {
-          this.dataEjercicio.pacientes.push(data['paciente']);
-          // console.log('Paciente:', data['paciente']);
-          // console.log('EJER:', this.dataEjercicio);
+          console.log('EJER:', this.dataEjercicio.pacientes);
           this.resetDataPaciente();
-        }
-      },
-      error => {
-        this.notifications.create('Error', 'No se ha podido crear el Paciente', NotificationType.Error, {
-          theClass: 'outline primary',
-          timeOut: 6000,
-          showProgressBar: false
-        });
 
-        return;
+          this.notifications.create('Paciente editado', 'Se ha editado el Paciente correctamente', NotificationType.Info, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+      }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar el Usuario', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
+      });
+    }
+    else {
+      this.pacienteService.createPatient(this.dataPaciente).subscribe(
+        data => {
+          if (data['ok']) {
+            this.dataEjercicio.pacientes.push(data['paciente']);
+            // console.log('Paciente:', data['paciente']);
+            console.log('EJER:', this.dataEjercicio.pacientes);
+            this.resetDataPaciente();
+          }
+        },
+        error => {
+          this.notifications.create('Error', 'No se ha podido crear el Paciente', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+  
+          return;
+        }
+      );
+    }
+
+  }
+
+  loadPatientData(paciente: Paciente, i: number): void {
+    
+    console.log(paciente);
+    this.childrenImg = paciente.img;
+    this.dataPaciente = paciente;
+    console.log(this.dataPaciente);
+    this.selected = [];
+    for(let i=0; i<this.actions.length; i++) {
+      for(let j=0; j<this.dataPaciente.acciones.length; j++) {
+        if(this.actions[i].nombre == this.dataPaciente.acciones[j].accion.nombre) {
+          this.actions[i].tiempo = this.dataPaciente.acciones[j].accion.tiempo;
+          this.onSelect(this.actions[i]);
+        }
       }
-    );
+    }
   }
 
   deletePatient(i: number) {
@@ -465,6 +516,7 @@ export class WizardEndStepComponent implements OnInit {
     this.dataPaciente.empeora = false;
     this.dataPaciente.tiempoEmpeora = undefined;
     this.selected = [];
+    this.childrenImg = undefined;
 
     // reseteamos tiempos acciones si se han cambiado
     for(let i=0; i<this.actions.length; i++) {
@@ -480,7 +532,12 @@ export class WizardEndStepComponent implements OnInit {
 
   getImgSelect(e): void {
     this.dataPaciente.img = e;
+    this.childrenImg = e;
     // console.log('Select:', this.dataPaciente.img);
+  }
+
+  resetChildrenImg() {
+    this.childrenImg = undefined;
   }
 
 }

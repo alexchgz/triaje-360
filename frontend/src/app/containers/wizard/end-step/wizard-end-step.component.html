@@ -1,5 +1,5 @@
 <!-- <h5 class="mb-4">{{ 'wizard.last-end' | translate }}</h5> -->
-<app-select-patient-img-modal #addNewModalRef (seleccionarImg)="getImgSelect($event)"></app-select-patient-img-modal>
+<app-select-patient-img-modal #addNewModalRef (seleccionarImg)="getImgSelect($event)" (resetParentImg)="resetChildrenImg()" [parentImg]="childrenImg"></app-select-patient-img-modal>
 
 <div class="card mb-5">
   <div class="card-body">
@@ -145,7 +145,7 @@
             <div class="lista">
               <p *ngIf="dataEjercicio.pacientes.length == 0">Aún no hay Pacientes creados para el Ejercicio</p>
               <div *ngFor="let p of dataEjercicio.pacientes; let i=index">
-                <p class="paciente mb-0 text-muted text-small w-xs-100">Paciente {{i+1}}</p>
+                <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="loadPatientData(p, i)">Paciente {{i+1}}</p>
                 <i class="simple-icon-close" (click)="deletePatient(i)"></i>
               </div>
             </div>

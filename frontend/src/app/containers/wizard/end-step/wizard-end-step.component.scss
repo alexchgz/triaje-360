@@ -202,6 +202,10 @@ input[type="checkbox"] {
         font-size: 1.1em !important;
     }
 
+    .lista .paciente {
+        cursor: pointer;
+    }
+
     .lista .simple-icon-close {
         transform: translate(75px, -16px);
     }

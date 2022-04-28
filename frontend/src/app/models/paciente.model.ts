@@ -6,7 +6,8 @@ export class Paciente {
                  public descripcion: string,
                  public camina: boolean,
                  public color: string,
-                 public acciones: Accion,
+                 public acciones: Array< { accion: Accion, _id: number } >,
+                 public img: string,
                  public empeora: boolean,
-                 public tiempoEmpeora?: number) {}
+                 public tiempoEmpeora: number) {}
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { SenderService } from 'src/app/data/sender.service';
 import { ImagenPacienteService } from 'src/app/data/imagenPaciente.service';
 import { ImagenPaciente } from 'src/app/models/imagenPaciente.model';
@@ -23,10 +23,12 @@ export class SelectPatientImgModalComponent implements OnInit {
   userRole: number;
   ejercicio: number;
   imagenes: ImagenPaciente[] = [];
-  imagenSeleccionada: String;
+  @Input() parentImg: string;
+  imagenSeleccionada: string;
   urlPrefixPacientes: string = environment.prefix_urlPacientes;
 
   @Output() seleccionarImg = new EventEmitter<String>();
+  @Output() resetParentImg = new EventEmitter();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private auth: AuthService, private sender: SenderService,
@@ -73,6 +75,10 @@ export class SelectPatientImgModalComponent implements OnInit {
   }
 
   show() {
+    // if(this.parentImg) {
+      this.imagenSeleccionada = this.parentImg;
+      this.resetParentImg.emit();
+    // }
     this.modalRef = this.modalService.show(this.template, this.config);
   }  
 
