@@ -151,7 +151,7 @@
               <p *ngIf="dataEjercicio.pacientes.length == 0">Aún no hay Pacientes creados para el Ejercicio</p>
               <div *ngFor="let p of dataEjercicio.pacientes; let i=index">
                 <div class="activo" *ngIf="dataPaciente.uid != undefined && dataPaciente.uid == p.uid">
-                  <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="loadPatientData(p, i)">Paciente {{i+1}}</p>
+                  <p class="paciente mb-0 text-muted text-small w-xs-100" (click)="createPatient()">Paciente {{i+1}}</p>
                   <i class="simple-icon-close" (click)="deletePatient(i)"></i>
                 </div>
                 <div class="noActivo" *ngIf="dataPaciente.uid == undefined || dataPaciente.uid != p.uid">
