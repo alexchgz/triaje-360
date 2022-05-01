@@ -9,12 +9,18 @@
         <h5 class="mb-3 mt-2">{{ 'wizard.first-step' | translate }}</h5>
         <div class="form-group">
           <div *ngIf="subject" id="asignatura">
-            <label>{{ 'pages.exercise-subject' | translate }}: {{ subject.nombre }}</label>
-            <input type="text" class="form-control" [(ngModel)]="dataEjercicio.asignatura" placeholder="" required disabled>
+            <label class="db">{{ 'pages.exercise-subject' | translate }}</label>
+            <!-- <input type="text" class="form-control" [(ngModel)]="dataEjercicio.asignatura" placeholder="" required disabled value=""> -->
+            <label>
+              <ng-select appearance="outline" [searchable]="false" class="form-control" name="asignatura" [(ngModel)]="dataEjercicio.asignatura" required disabled>
+                <ng-option [value]="dataEjercicio.asignatura">{{subject.nombrecorto}}
+                </ng-option>
+              </ng-select>
+            </label>
           </div>
           <div *ngIf="!subject" id="asignatura" class="mt-2">
-            <label>{{ 'pages.exercise-subject' | translate }}</label>
-            <label class="w-100">
+            <label class="db">{{ 'pages.exercise-subject' | translate }}</label>
+            <label>
               <ng-select appearance="outline" [searchable]="false" class="form-control" name="asignatura" [(ngModel)]="dataEjercicio.asignatura" required>
                 <ng-option *ngFor="let item of subjects" [value]="item.uid">{{item.nombrecorto}}
                 </ng-option>
@@ -23,13 +29,17 @@
             <!-- <input type="text" class="form-control" formControlName="asignatura" placeholder="" required> -->
           </div>
           <div id="nombre">
-            <label>{{ 'pages.exercise-name' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="dataEjercicio.nombre" placeholder="" required>
+            <label>
+              <label>{{ 'pages.exercise-name' | translate }}</label>
+              <input type="text" class="form-control" [(ngModel)]="dataEjercicio.nombre" placeholder="" required>
+            </label>
           </div>
           <div class="mt-2" id="descripcion">
             <label>{{ 'pages.exercise-description' | translate }}</label>
             <textarea type="text" class="form-control" [(ngModel)]="dataEjercicio.descripcion" placeholder="" required></textarea>
           </div>
+        <!-- </div>
+        <div class="form-group"> -->
           <div class="mt-2" id="desde">
             <label>{{ 'pages.exercise-from' | translate }}</label>
             <input type="date" class="form-control" [(ngModel)]="dataEjercicio.desde" placeholder="" min="{{todayString}}" required>
