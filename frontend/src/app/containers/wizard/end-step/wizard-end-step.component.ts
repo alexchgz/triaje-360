@@ -523,6 +523,8 @@ export class WizardEndStepComponent implements OnInit {
       this.resetDataPaciente();
     }
     this.dataEjercicio.pacientes.splice(i, 1);
+    this.exercise.pacientes.splice(i,1);
+    this.createExercise();
   }
 
   resetDataPaciente(): void {

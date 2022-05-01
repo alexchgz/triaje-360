@@ -90,6 +90,16 @@ export class EjercicioService {
     let headers = new HttpHeaders();
     headers = headers.append('x-token', token);
 
+    let pacs = [];
+    if(data['pacientes'].length > 0) {
+      for(let i=0; i<data['pacientes'].length; i++) {
+        pacs.push({
+          "paciente": data['pacientes'][i].uid
+        });
+      }
+      console.log('pacs:', pacs);
+    }
+
     // DATA
     const sendData = {
       "nombre": data['nombre'],
@@ -98,8 +108,11 @@ export class EjercicioService {
       "hasta": data['hasta'],
       "asignatura": data['asignatura'],
       "max_intentos": data['max_intentos'],
-      "imgs": data['imgs']
+      "imgs": data['imgs'],
+      "pacientes": pacs
     }
+
+    console.log('SD:', sendData);
 
     return this.http.put(url, sendData, { headers });
 
