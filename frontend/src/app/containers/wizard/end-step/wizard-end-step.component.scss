@@ -1,36 +1,61 @@
 
-h3 {
+h5 {
     width: 100%;
     text-align: center;
+    margin-bottom: 0 !important;
+}
+
+h3 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
 }
 
 input, textarea, .ng-select, .ng-select-container {
     border-radius: 25px !important;
 }
 
-#asignatura .ng-select {
+#asignatura .ng-select, #color .ng-select {
     padding: 0 !important;
     border: none;
 }
 
-.gallery, .imgsSelected, .mini-img {
+.gallery {
+    height: 260px;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.gallery, .imgsSelected {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin: 0 auto 2rem auto;
+    margin: 0rem auto 1rem auto;
+}
+
+.imgsSelected {
+    border-top: 1px solid #145388;
+    padding-top: .5rem;
+}
+
+.mini-img {
+    margin: -1.5rem .9rem 0 .9rem;
 }
 
     .gallery p {
         color: black;
         position: absolute;
-        width: 400px;
+        width: 320px;
         text-align: center;
         margin-top: 5px;
     }
 
+    .gallery .selected p {
+        margin-top: 10px;
+    }
+
     .gallery label {
-        height: 100px;
-        width: 400px;
+        height: 80px;
+        width: 320px;
         margin: 20px;
         border-radius: 3px;
         overflow: hidden;
@@ -65,9 +90,10 @@ input, textarea, .ng-select, .ng-select-container {
     .mini-img label {
         height: 90px;
         width: 90px;
-        margin: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.125);
         border-radius: 5px;
-        overflow: hidden;
+        // margin: 15px;
+        // overflow: hidden;
     }
 
         .mini-img label img {
@@ -82,6 +108,7 @@ input, textarea, .ng-select, .ng-select-container {
     padding: 0em;
     border-radius: 50px;
     border-color: #fff;
+    font-size: 26px;
 }
 
 .gallery .selected {
@@ -91,7 +118,7 @@ input, textarea, .ng-select, .ng-select-container {
 .selected .simple-icon-check {
     display: block;
     position: absolute;
-    transform: translate(353px, -85px);
+    transform: translate(280px, -65px);
     color: #145388;
 }
 
@@ -154,7 +181,7 @@ input[type="checkbox"] {
     }
 
     #acciones div p {
-        width: 150px;
+        width: 130px;
         margin-top: 12px;
     }
 
@@ -173,26 +200,34 @@ input[type="checkbox"] {
 }
 
 .configurar-pacientes {
-    width: 55%;
+    width: 65%;
     padding-right: 3em;
+    margin-bottom: 0 !important;
 }
 
 .lista-pacientes {
-    width: 40%;
+    width: 30%;
+    padding-right: 3em;
 }
 
 .lista {
     border: 1px solid rgba(0, 0, 0, 0.125);
-    padding: 0em;
+    border-radius: 15px;
+    height: 300px;
+    overflow-y: scroll;
+    position: relative;
 }
 
     .lista div div {
-        padding: .5em;
+        padding: .75em;
         display: flex;
+        border-radius: 10px;
     }
 
     .lista>p {
-        margin: .5rem;
+        margin: .75rem;
+        font-size: 1em !important;
+        color: #3e3e3e;
     }
 
     .lista p {
@@ -274,7 +309,7 @@ input[type="checkbox"] {
     padding-right: 3em;
 }
 
-    .form-group>#descripcion>textarea {
+    .form-group #descripcion>textarea {
         resize: none;
         min-height: 80px;
     }
@@ -301,6 +336,70 @@ input[type="checkbox"] {
     margin-left: 1em;
 }
 
+.form-group #acciones {
+    width: 35%;
+}
+
+.separated {
+    width: 60%;
+    padding-right: 3em;
+}
+
+.separated2 {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.separated2 #camina {
+    width: 20%;
+}
+
+.separated2 #color {
+    width: 80%;
+}
+
+.form-group #empeora {
+    width: 12%;
+}
+
+.form-group #tiempoEmpeora {
+    width: 51%;
+    padding-right: 3em;
+}
+
+.invisible {
+    display: none !important;
+}
+
+.img-content {
+    display: flex;
+}
+
+.img-content button {
+    max-height: 37px;
+}
+
+///////// SCROLLBAR /////////
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #145388;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #145388;
+// }
 
 ///////// INPUT RANGE /////////
 input[type=range] {
@@ -316,14 +415,14 @@ input[type=range] {
     width: 100%;
     height: 8px;
     cursor: pointer;
-    box-shadow: 1px 1px 1px #000000;
+    // box-shadow: 1px 1px 1px #000000;
     background: #145388;
     border-radius: 5px;
-    border: 1px solid #000000;
+    // border: 1px solid #000000;
   }
   input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #000000;
-    border: 1px solid #000000;
+    // box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #145388;
     height: 24px;
     width: 12px;
     border-radius: 5px;
@@ -339,14 +438,14 @@ input[type=range] {
     width: 100%;
     height: 10px;
     cursor: pointer;
-    box-shadow: 1px 1px 1px #000000;
+    // box-shadow: 1px 1px 1px #000000;
     background: #145388;
     border-radius: 5px;
-    border: 1px solid #000000;
+    // border: 1px solid #000000;
   }
   input[type=range]::-moz-range-thumb {
-    box-shadow: 1px 1px 1px #000000;
-    border: 1px solid #000000;
+    // box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #145388;
     height: 30px;
     width: 15px;
     border-radius: 5px;
@@ -363,20 +462,20 @@ input[type=range] {
   }
   input[type=range]::-ms-fill-lower {
     background: #145388;
-    border: 1px solid #000000;
+    // border: 1px solid #000000;
     border-radius: 10px;
-    box-shadow: 1px 1px 1px #000000;
+    // box-shadow: 1px 1px 1px #000000;
   }
   input[type=range]::-ms-fill-upper {
     background: #145388;
-    border: 1px solid #000000;
+    // border: 1px solid #000000;
     border-radius: 10px;
-    box-shadow: 1px 1px 1px #000000;
+    // box-shadow: 1px 1px 1px #000000;
   }
   input[type=range]::-ms-thumb {
     margin-top: 1px;
-    box-shadow: 1px 1px 1px #000000;
-    border: 1px solid #000000;
+    // box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #145388;
     height: 30px;
     width: 15px;
     border-radius: 5px;
