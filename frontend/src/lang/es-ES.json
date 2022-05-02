@@ -281,6 +281,7 @@
         "exercise-to": "Hasta",
         "exercise-subject": "Asignatura",
         "exercise-max-attempts": "Máximo de Intentos",
+        "exercise-limited-attempts": "¿Intentos Limitados?",
         "show-student-register-modal-title": "Registro de Intentos",
         "select-patient-img-modal-title": "Seleccionar Imagen Paciente"
     },

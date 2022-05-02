@@ -12,7 +12,7 @@
             <label class="db">{{ 'pages.exercise-subject' | translate }}</label>
             <!-- <input type="text" class="form-control" [(ngModel)]="dataEjercicio.asignatura" placeholder="" required disabled value=""> -->
             <label>
-              <ng-select appearance="outline" [searchable]="false" class="form-control" name="asignatura" [(ngModel)]="dataEjercicio.asignatura" required disabled>
+              <ng-select appearance="outline" [searchable]="false" class="form-control s-dis" name="asignatura" [(ngModel)]="dataEjercicio.asignatura" required disabled>
                 <ng-option [value]="dataEjercicio.asignatura">{{subject.nombrecorto}}
                 </ng-option>
               </ng-select>
@@ -50,10 +50,17 @@
             <!-- <input type="text" class="form-control" [(ngModel)]="dataEjercicio.descripcion" placeholder="" required> -->
           </div>
           <div id="pre-intentos">
-            <label>{{ 'pages.exercise-max-attempts' | translate }}</label>
+            <div id="intentos_limitados">
+              <label class="mb-0 mt-1">{{ 'pages.exercise-limited-attempts' | translate }}</label>
+              <label class="custom-control custom-checkbox mb-2 mt-1 align-self-center pr-4">
+                <input type="checkbox" class="custom-control-input" [id]="dataEjercicio.intentos_limitados" [(ngModel)]="dataEjercicio.intentos_limitados" placeholder="" required>
+                <label class="custom-control-label" [for]="dataEjercicio.intentos_limitados"></label>
+              </label>
+            </div>
+            <label class="db mb-0">{{ 'pages.exercise-max-attempts' | translate }}</label>
             <div id="intentos">
-              <input type="range" class="form-control" [(ngModel)]="dataEjercicio.range_max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, true)">
-              <input type="number" class="form-control" [(ngModel)]="dataEjercicio.max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, false)" required>
+              <input type="range" [(ngModel)]="dataEjercicio.range_max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, true)" [disabled]="!dataEjercicio.intentos_limitados">
+              <input type="number" class="form-control" [(ngModel)]="dataEjercicio.max_intentos" min="1" max="10" value="1" (input)="changeValue($event.target.value, false)" [disabled]="!dataEjercicio.intentos_limitados">
             </div>
           </div>
         </div>

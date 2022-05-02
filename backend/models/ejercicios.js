@@ -23,9 +23,12 @@ const EjercicioSchema = Schema({
         ref: 'Asignatura',
         require: true
     },
-    max_intentos: {
-        type: Number,
+    intentos_limitados: {
+        type: Boolean,
         require: true
+    },
+    max_intentos: {
+        type: Number
     },
     imgs: [{
         img: {

@@ -159,7 +159,7 @@ export class DataListComponent implements OnInit {
   createUserExercise(exercise: Ejercicio): void {
 
     // comprobamos el numero de intentos del usuario en ese ejercicio
-    if(exercise.max_intentos <= exercise['intentos']) {
+    if(exercise['intentos_limitados'] && exercise.max_intentos <= exercise['intentos']) {
       this.maxAttempts();
     } else {
       this.ejerciciosUsuarioService.createUserExercise(this.userId, exercise['_id'])

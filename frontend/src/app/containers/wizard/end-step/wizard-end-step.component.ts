@@ -56,6 +56,7 @@ export class WizardEndStepComponent implements OnInit {
     "asignatura": undefined,
     "imgs": [],
     "pacientes": [],
+    "intentos_limitados": false,
     "max_intentos": 1,
     "range_max_intentos": 1
   }

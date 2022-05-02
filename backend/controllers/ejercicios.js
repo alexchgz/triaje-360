@@ -373,7 +373,7 @@ const crearEjercicio = async(req, res = response) => {
         console.log(error);
         res.status(400).json({
             ok: false,
-            msg: 'Error creando asignatura'
+            msg: 'Error creando ejercicio'
         });
     }
 }

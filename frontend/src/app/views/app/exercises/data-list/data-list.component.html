@@ -50,17 +50,19 @@
                     <p class="asignatura mb-0 text-muted w-xs-100">{{p.asignatura.nombrecorto}}</p>
                     <p class="desde mb-0 text-muted text-small w-xs-100">{{p.desde}}</p>
                     <p class="hasta mb-0 text-muted text-small w-xs-100">{{p.hasta}}</p>
-                    <p *ngIf="userRole!=2" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos}}</p>
-                    <p *ngIf="userRole==2" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos-p.intentos}}</p>
+                    <p *ngIf="userRole!=2 && p.intentos_limitados" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos}}</p>
+                    <p *ngIf="userRole!=2 && !p.intentos_limitados" class="intentos no-intentos mb-0 text-muted text-small w-xs-100">&infin;</p>
+                    <p *ngIf="userRole==2 && p.intentos_limitados" class="intentos mb-0 text-muted text-small w-xs-100">{{p.max_intentos-p.intentos}}</p>
+                    <p *ngIf="userRole==2 && !p.intentos_limitados" class="intentos no-intentos mb-0 text-muted text-small w-xs-100">&infin;</p>
+                    
 
                     
                     <div [className]="userRole==0 ? 'acciones atc up d-flex mb-0 text-muted text-small w-xs-100' : 'acciones atc d-flex mb-0 text-muted text-small w-xs-100'">
-                        <!-- <i *ngIf="p.intentos!=undefined && p.intentos<p.max_intentos && userRole==2 && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p)"></i> -->
-                          <i *ngIf="p.intentos!=undefined && p.intentos<p.max_intentos && userRole==2 && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="toDoExercise()"></i>
-                        <i *ngIf="userRole==2 && (p.intentos>=p.max_intentos || !inTime(p._id))" class="simple-icon-plus-disabled ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="exerciseDisabled()"></i>
+                        <i *ngIf="userRole==2 && p.intentos!=undefined && (!p.intentos_limitados || p.intentos<p.max_intentos) && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="createUserExercise(p)"></i>
+                        <!-- <i *ngIf="userRole==2 && p.intentos!=undefined && (!p.intentos_limitados || p.intentos<p.max_intentos) && inTime(p._id)" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="toDoExercise()"></i> -->
+                        <i *ngIf="userRole==2 && p.intentos_limitados && (p.intentos>=p.max_intentos || !inTime(p._id))" class="simple-icon-plus-disabled ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="exerciseDisabled()"></i>
                         <i *ngIf="userRole==0" class="sr simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Ejercicio" (click)="toEditExercise(p)"></i>
                         <i *ngIf="userRole==0" class="last-icon sr simple-icon-trash ml-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Ejercicio" (click)="confirmDelete(p)"></i>
-                        <!-- <i *ngIf="userRole==0" class="simple-icon-plus ml-3" data-toggle="tooltip" data-placement="bottom" title="Hacer Ejercicio" (click)="marzipanoScene()"></i> -->
                         
                         <label *ngIf="userRole == 0" class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                             <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"

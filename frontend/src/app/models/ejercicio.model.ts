@@ -10,6 +10,7 @@ export class Ejercicio {
                public desde: string,
                public hasta: string,
                public asignatura: Asignatura,
+               public intentos_limitados: boolean,
                public max_intentos: number,
                public imgs: Array< { img: Imagen, _id: number } >,
                public pacientes: Array< { paciente: Paciente, _id: number } >) {}
