@@ -4736,6 +4736,10 @@ div.error:not(.simple-notification) {
   box-shadow: initial !important;
 }
 
+#asignatura .ng-select .ng-select-container {
+  border-radius: 25px !important;
+}
+
 .ng-select.ng-select-focused .ng-select-container {
   outline: initial !important;
   box-shadow: initial !important;

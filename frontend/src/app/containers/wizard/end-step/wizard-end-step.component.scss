@@ -4,6 +4,15 @@ h3 {
     text-align: center;
 }
 
+input, textarea, .ng-select, .ng-select-container {
+    border-radius: 25px !important;
+}
+
+#asignatura .ng-select {
+    padding: 0 !important;
+    border: none;
+}
+
 .gallery, .imgsSelected, .mini-img {
     display: flex;
     justify-content: center;
@@ -245,64 +254,69 @@ input[type="checkbox"] {
 //     display: flex;
 // }
 
-// .form-group {
-//     display: table;
-//     width: 100%;
-// }
+.form-group {
+    display: table;
+    width: 100%;
+}
 
-// .form-group>div {
-//     display: table-cell;
-//     vertical-align: top;
-// }
+.form-group>div {
+    display: table-cell;
+    vertical-align: top;
+}
 
-// .form-group>div label {
-//     display: block;
-// }
+.form-group>div label {
+    display: block;
+}
 
-// .form-group>#asignatura {
-//     width: 15%;
-//     padding-right: 3em;
-// }
+.form-group>#asignatura {
+    width: 15%;
+    padding-right: 3em;
+}
 
     #asignatura>.db {
         width: 100%;
     }
 
-// .form-group>#nombre {
-//     width: 40%;
-//     padding-right: 3em;
-// }
+.form-group>#nombre {
+    width: 40%;
+    padding-right: 3em;
+}
 
 //     .form-group>#nombre label label {
 //         margin-bottom: 1.3em;
 //     }
 
-// .form-group>#descripcion {
-//     width: 40%;
-//     padding-right: 3em;
-// }
+.form-group>#descripcion {
+    width: 58%;
+    padding-right: 3em;
+}
 
-// .form-group>#desde {
-//     width: 20%;
-//     padding-right: 3em;
-// }
+    .form-group>#descripcion>textarea {
+        resize: none;
+        line-height: 2.5;
+    }
 
-// .form-group>#hasta {
-//     width: 20%;
-//     padding-right: 3em;
-// }
+.form-group>#desde {
+    width: 20%;
+    padding-right: 3em;
+}
 
-// .form-group #pre-intentos {
-//     display: block;
-//     padding-right: 3em;
-// }
-// .form-group #intentos {
-//     display: flex;
-// }
-// .form-group #intentos input[type="number"] {
-//     width: auto;
-//     margin-left: 1em;
-// }
+.form-group>#hasta {
+    width: 20%;
+    padding-right: 3em;
+}
+
+.form-group #pre-intentos {
+    display: block;
+    padding-right: 3em;
+}
+.form-group #intentos {
+    display: flex;
+}
+.form-group #intentos input[type="number"] {
+    width: auto;
+    margin-left: 1em;
+}
 
 
 
