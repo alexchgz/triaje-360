@@ -21,6 +21,9 @@ p {
     justify-content: center;
     flex-wrap: wrap;
     margin: 0 auto 2rem auto;
+    height: 200px;
+    position: relative;
+    overflow-y: scroll;
 }
 
     .imgs label {
@@ -68,3 +71,21 @@ p {
     display: none;
     color: #145388;
 }
+
+///////// SCROLLBAR /////////
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  //   background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #145388;
+    border-radius: 10px;
+  }

@@ -83,12 +83,14 @@
         
         <div class="imgsSelected">
           <h5>Imágenes Seleccionadas</h5>
-          <label *ngFor="let p of imgsSelect; let i=index">
-            <img src={{urlPrefix+p.ruta}}>
-            <i class="simple-icon-close" (click)="unselectImg(p, i)"></i>
-            <i *ngIf="i>0" class="simple-icon-arrow-left-circle" (click)="moveImgL(p, i)"></i>
-            <i *ngIf="i<imgsSelect.length-1" class="simple-icon-arrow-right-circle" (click)="moveImgR(p, i)"></i>
-          </label>
+          <div class="is">
+            <label *ngFor="let p of imgsSelect; let i=index">
+              <img src={{urlPrefix+p.ruta}}>
+              <i class="simple-icon-close" (click)="unselectImg(p, i)"></i>
+              <i *ngIf="i>0" class="simple-icon-arrow-left-circle" (click)="moveImgL(p, i)"></i>
+              <i *ngIf="i<imgsSelect.length-1" class="simple-icon-arrow-right-circle" (click)="moveImgR(p, i)"></i>
+            </label>
+          </div>
         </div>
 
         <div class="text-center mt-2">

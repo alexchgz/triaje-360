@@ -32,9 +32,18 @@ input, textarea, .ng-select, .ng-select-container {
     margin: 0rem auto 1rem auto;
 }
 
+.is, .paso .locate-patients {
+    text-align: center;
+    width: 1100px;
+    position: relative;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
 .imgsSelected {
     border-top: 1px solid #145388;
     padding-top: .5rem;
+    margin-top: 1rem;
 }
 
 .mini-img {
@@ -386,6 +395,10 @@ input[type="checkbox"] {
     position: relative;
 }
 
+.paso .locate-patients {
+    display: block !important;
+}
+
 .label-img-selected {
     margin: 0 auto;
 }
@@ -410,7 +423,7 @@ input[type="checkbox"] {
     position:absolute;
     top: 0;
     width: 100%;
-    height: 62%;
+    height: 60%;
 }
 
 table {
@@ -428,6 +441,7 @@ table {
 ///////// SCROLLBAR /////////
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 /* Track */
@@ -534,4 +548,10 @@ input[type=range] {
   input[type=range]:focus::-ms-fill-upper {
     background: #145388;
   }
+
+  @media (min-width: 1680px) {
+    .paso .tabla{
+        height: 66%;
+    }
+}
   

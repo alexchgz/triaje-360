@@ -153,8 +153,9 @@ export class WizardEndStepComponent implements OnInit {
             this.dataEjercicio.asignatura = this.exercise.asignatura._id;
             this.dataEjercicio.nombre = this.exercise.nombre;
             this.dataEjercicio.descripcion = this.exercise.descripcion;
-            this.dataEjercicio.desde = this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd')
-            this.dataEjercicio.hasta = this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd')
+            this.dataEjercicio.desde = this.datePipe.transform(this.exercise.desde, 'yyyy-MM-dd');
+            this.dataEjercicio.hasta = this.datePipe.transform(this.exercise.hasta, 'yyyy-MM-dd');
+            this.dataEjercicio.intentos_limitados = this.exercise.intentos_limitados;
             this.dataEjercicio.max_intentos = this.exercise.max_intentos;
             this.dataEjercicio.range_max_intentos = this.exercise.max_intentos;
             this.getImagesRoutes();
