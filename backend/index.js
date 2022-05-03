@@ -30,6 +30,7 @@ app.use('/api/imagenes', require('./routes/imagenes'));
 app.use('/api/imagenesPaciente', require('./routes/imagenesPaciente'));
 app.use('/api/acciones', require('./routes/acciones'));
 app.use('/api/pacientes', require('./routes/pacientes'));
+app.use('/api/pacienteEjercicio', require('./routes/pacienteEjercicio'));
 
 // Abrimos la aplicacion en el puerto 3000
 app.listen(process.env.PORT, () => {
