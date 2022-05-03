@@ -379,6 +379,52 @@ input[type="checkbox"] {
     max-height: 37px;
 }
 
+
+/// UBICAR PACIENTES /////
+
+.paso {
+    position: relative;
+}
+
+.label-img-selected {
+    margin: 0 auto;
+}
+
+        .label-img-selected>label>img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+.locate-patients label {
+    cursor: pointer;
+}
+
+.locate-patients .selected {
+    border: 5px solid #145388;
+}
+
+.paso .tabla{
+    position:absolute;
+    top: 0;
+    width: 100%;
+    height: 62%;
+}
+
+table {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+    .celda {
+        border: 1px solid #145388;
+    }
+
+
+
 ///////// SCROLLBAR /////////
 ::-webkit-scrollbar {
   width: 10px;

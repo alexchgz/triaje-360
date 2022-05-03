@@ -34,6 +34,7 @@ export class WizardEndStepComponent implements OnInit {
   todayString: string = '';
   tomorrowString: string = '';
   imgsSelect: Imagen[] = [];
+  imgSelected: Imagen;
   // imgsSelectId: any[] = [];
   imgs: Imagen[];
   urlPrefix: string = environment.prefix_url;
@@ -47,6 +48,8 @@ export class WizardEndStepComponent implements OnInit {
   empeora: boolean = false;
   intentos_limitados: boolean = false;
   camina: boolean = false;
+  tableX: string[] = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+  tableY: string[] = ['', '', '', ''];
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -361,7 +364,7 @@ export class WizardEndStepComponent implements OnInit {
     this.imgsSelect.splice(pos, 1);
 
     // cambiamos la clase de la geleria
-    var element = document.querySelector('[src="'+ img.ruta +'"]');
+    var element = document.querySelector('[src="'+ this.urlPrefix + img.ruta +'"]');
     element.parentElement.className = 'noSelected';
 
     console.log('SEL:', this.imgsSelect);
@@ -428,7 +431,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
 
-  // ***************** PATIENT METHODS ********************
+  // ***************** CONFIGURE PATIENT METHODS ********************
 
   createPatient(): void {
     
@@ -566,6 +569,29 @@ export class WizardEndStepComponent implements OnInit {
 
   resetChildrenImg() {
     this.childrenImg = undefined;
+  }
+
+  // ***************** LOCATE PATIENT METHODS ********************
+  setImgSelected(i: Imagen) {
+    if(this.imgSelected == undefined) {
+      var element = document.querySelector('[src="'+ this.urlPrefix + i.ruta +'"]');
+      element.parentElement.className = 'selected';
+    }
+    else if(this.imgSelected != i) {
+      // cambiamos la clase de las imagenes
+      var element = document.querySelector('[src="'+ this.urlPrefix + this.imgSelected.ruta +'"]');
+      element.parentElement.className = 'noSelected';
+      var element2 = document.querySelector('[src="'+ this.urlPrefix + i.ruta +'"]');
+      element2.parentElement.className = 'selected';
+    } 
+
+    this.imgSelected = i;
+    // console.log(this.imgSelected);
+
+  }
+
+  locatePatient(x: number, y: number) {
+    console.log('(',x,',',y,')');
   }
 
 }

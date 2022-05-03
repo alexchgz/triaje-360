@@ -197,8 +197,43 @@
         <div class="text-center mt-3">
           <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
           <!-- <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button> -->
-          <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+          <button type="button" class="btn btn-primary" (click)="setImgSelected(imgsSelect[0])" awNextStep>{{ 'wizard.next' | translate }}</button>
         </div>
+      </aw-wizard-step>
+
+      <aw-wizard-step stepTitle="{{ 'wizard.fourth-step' | translate }}" style="min-height: 120px;"> 
+        <h3 class="mb-2">{{ 'wizard.fourth-step' | translate }}</h3> 
+        <div class="paso">
+          <div class="label-img-selected">
+            <label *ngIf="imgSelected">
+              <img src="{{urlPrefix + imgSelected.ruta}}">
+            </label>
+          </div>
+
+          <div *ngIf="imgsSelect.length > 0 && imgSelected!= undefined" class="imgsSelected locate-patients">
+            <!-- <h5>Imágenes Seleccionadas</h5> -->
+            <label *ngFor="let p of imgsSelect; let i=index">
+              <img *ngIf="p.ruta == imgSelected.ruta" class="selected" src={{urlPrefix+p.ruta}} (click)="setImgSelected(p)">
+              <img *ngIf="p.ruta != imgSelected.ruta" class="noSelected" src={{urlPrefix+p.ruta}} (click)="setImgSelected(p)">
+            </label>
+          </div>
+  
+          <div class="text-center mt-2">
+            <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
+            <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+          </div> 
+          
+          <div class="tabla">
+            <table>
+              <tbody>
+                <tr *ngFor="let item of tableY; let i=index">
+                  <td *ngFor="let item of tableX; let j=index" class="celda" (click)="locatePatient(j, i)"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
       </aw-wizard-step>
       
       <aw-wizard-completion-step stepTitle="{{ 'wizard.done' | translate }}" style="min-height: 120px;">
