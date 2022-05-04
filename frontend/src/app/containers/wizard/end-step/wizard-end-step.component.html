@@ -1,5 +1,6 @@
 <!-- <h5 class="mb-4">{{ 'wizard.last-end' | translate }}</h5> -->
 <app-select-patient-img-modal #addNewModalRef (seleccionarImg)="getImgSelect($event)" (resetParentImg)="resetChildrenImg()" [parentImg]="childrenImg"></app-select-patient-img-modal>
+<app-locate-patient #locateModalRef (seleccionarPaciente)="getPatientSelected($event)"></app-locate-patient>
 
 <div class="card mb-5">
   <div class="card-body">
@@ -228,8 +229,13 @@
           <div class="tabla">
             <table>
               <tbody>
-                <tr *ngFor="let item of tableY; let i=index">
-                  <td *ngFor="let item of tableX; let j=index" class="celda" (click)="locatePatient(j, i)"></td>
+                <tr *ngFor="let item of table; let i=index">
+                  <td *ngFor="let it of item; let j=index" class="celda" (click)="showLocatePatientModal(j, i)">
+                    <label *ngIf="!celdaVacia(j, i)">
+                      <img class="paciente_ubicado" src="{{urlPrefixPacientes}}paciente8.png">
+                    </label>
+                    <!-- <p *ngIf="!celdaVacia(j, i)">PACIENTE X</p> -->
+                  </td>
                 </tr>
               </tbody>
             </table>

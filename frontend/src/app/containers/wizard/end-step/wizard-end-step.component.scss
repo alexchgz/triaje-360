@@ -423,18 +423,40 @@ input[type="checkbox"] {
     position:absolute;
     top: 0;
     width: 100%;
-    height: 60%;
+    height: 58%;
 }
 
 table {
     height: 100%;
     width: 100%;
-    object-fit: cover;
     cursor: pointer;
 }
+
     .celda {
         border: 1px solid #145388;
+        position: relative;
     }
+
+    .celda p {
+        position: absolute;
+    }
+
+    .celda label {
+        height: 70px;
+        width: 70px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+        .celda label img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
 
 
 

@@ -16,6 +16,7 @@ import { Paciente } from 'src/app/models/paciente.model';
 import { Accion } from 'src/app/models/accion.model';
 import { AccionService } from 'src/app/data/accion.service';
 import { SelectPatientImgModalComponent } from 'src/app/containers/pages/select-patient-img-modal/select-patient-img-modal.component';
+import { LocatePatientComponent } from '../../pages/locate-patient/locate-patient.component';
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -48,8 +49,15 @@ export class WizardEndStepComponent implements OnInit {
   empeora: boolean = false;
   intentos_limitados: boolean = false;
   camina: boolean = false;
-  tableX: string[] = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
-  tableY: string[] = ['', '', '', ''];
+  pacientesNoUbicados: Paciente[] = [];
+  table: string[][] = [
+    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+  ];
+  posX: number;
+  posY: number;
 
   selectAllState = '';
   selected: Accion[] = [];
@@ -77,6 +85,7 @@ export class WizardEndStepComponent implements OnInit {
 
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
   @ViewChild('addNewModalRef', { static: true }) addNewModalRef: SelectPatientImgModalComponent;
+  @ViewChild('locateModalRef', { static: true }) locateModalRef: LocatePatientComponent;
 
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
@@ -589,10 +598,37 @@ export class WizardEndStepComponent implements OnInit {
     this.imgSelected = i;
     // console.log(this.imgSelected);
 
+    this.setPacientesNoUbicados();
+
+  }
+
+  setPacientesNoUbicados() {
+    this.pacientesNoUbicados = this.dataEjercicio.pacientes;
   }
 
   locatePatient(x: number, y: number) {
     console.log('(',x,',',y,')');
+  }
+
+  showLocatePatientModal(x: number, y: number): void {
+    console.log(this.table);
+    this.posX = x;
+    this.posY = y;
+    this.locateModalRef.show(this.pacientesNoUbicados, this.exercise.uid, this.imgSelected.uid, x, y);
+  }
+
+  getPatientSelected(e) {
+    // console.log('t:', this.table[this.posX][this.posY]);
+    this.table[this.posY][this.posX] = e;
+    console.log('t:', this.table);
+  }
+
+  celdaVacia(x: number, y: number): boolean {
+    let ret = false;
+    if(this.table[y][x] === "") {
+      ret = true;
+    }
+    return ret;
   }
 
 }
