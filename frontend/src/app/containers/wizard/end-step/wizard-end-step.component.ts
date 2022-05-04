@@ -12,7 +12,9 @@ import { ImagenService } from 'src/app/data/imagen.service';
 import { Imagen } from 'src/app/models/imagen.model';
 import { environment } from 'src/environments/environment';
 import { PacienteService } from 'src/app/data/paciente.service';
+import { PacienteEjercicioService } from 'src/app/data/pacienteEjercicio.service';
 import { Paciente } from 'src/app/models/paciente.model';
+import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 import { Accion } from 'src/app/models/accion.model';
 import { AccionService } from 'src/app/data/accion.service';
 import { SelectPatientImgModalComponent } from 'src/app/containers/pages/select-patient-img-modal/select-patient-img-modal.component';
@@ -50,7 +52,8 @@ export class WizardEndStepComponent implements OnInit {
   intentos_limitados: boolean = false;
   camina: boolean = false;
   pacientesNoUbicados: Paciente[] = [];
-  table: string[][] = [
+  pacientesEjercicio: PacienteEjercicio[] = [];
+  table: any[][] = [
     ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -90,7 +93,7 @@ export class WizardEndStepComponent implements OnInit {
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
     private notifications: NotificationsService, private imagenService: ImagenService, private pacienteService: PacienteService,
-    private accionService: AccionService) { }
+    private accionService: AccionService, private pacienteEjercicioService: PacienteEjercicioService) { }
 
   ngOnInit(): void {
     this.initData();
@@ -168,7 +171,7 @@ export class WizardEndStepComponent implements OnInit {
             this.dataEjercicio.max_intentos = this.exercise.max_intentos;
             this.dataEjercicio.range_max_intentos = this.exercise.max_intentos;
             this.getImagesRoutes();
-            this.getExercisePatients();
+            this.formatExercisePatients();
           }
         },
         error => {
@@ -336,7 +339,7 @@ export class WizardEndStepComponent implements OnInit {
     }
   }
 
-  getExercisePatients() {
+  formatExercisePatients() {
     for(let i=0; i<this.exercise.pacientes.length; i++) {
       this.dataEjercicio.pacientes[i] = this.exercise.pacientes[i].paciente;
       this.dataEjercicio.pacientes[i].uid = this.dataEjercicio.pacientes[i]['_id'];
@@ -582,6 +585,13 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   // ***************** LOCATE PATIENT METHODS ********************
+
+  initLocatePatient() {
+    this.setImgSelected(this.imgsSelect[0]);
+    this.setPacientesNoUbicados();
+    this.getExercisePatients();
+  }
+
   setImgSelected(i: Imagen) {
     if(this.imgSelected == undefined) {
       var element = document.querySelector('[src="'+ this.urlPrefix + i.ruta +'"]');
@@ -598,12 +608,30 @@ export class WizardEndStepComponent implements OnInit {
     this.imgSelected = i;
     // console.log(this.imgSelected);
 
-    this.setPacientesNoUbicados();
-
   }
 
   setPacientesNoUbicados() {
     this.pacientesNoUbicados = this.dataEjercicio.pacientes;
+  }
+
+  getExercisePatients() {
+    this.pacienteEjercicioService.getExercisePatients(this.exercise.uid).subscribe(
+      data => {
+        if (data['ok']) {
+          this.pacientesEjercicio = data['pacientesEjercicio'];
+          console.log(this.pacientesEjercicio);
+        }
+      },
+      error => {
+        this.notifications.create('Error', 'No se pudo obtener los Paciente ejercicio', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
   }
 
   locatePatient(x: number, y: number) {
@@ -617,10 +645,44 @@ export class WizardEndStepComponent implements OnInit {
     this.locateModalRef.show(this.pacientesNoUbicados, this.exercise.uid, this.imgSelected.uid, x, y);
   }
 
-  getPatientSelected(e) {
+  getPatientSelected(p: Paciente) {
     // console.log('t:', this.table[this.posX][this.posY]);
-    this.table[this.posY][this.posX] = e;
+    for(let i=0; i<this.pacientesNoUbicados.length; i++) {
+      if(this.pacientesNoUbicados[i].img == p.img) {
+        this.pacientesNoUbicados.splice(i, 1);
+      }
+    }
+    this.createExercisePatient(p);
+    this.table[this.posY][this.posX] = p;
     console.log('t:', this.table);
+  }
+
+  createExercisePatient(p: Paciente) {
+    let data = {
+      "idEjercicio": this.exercise.uid,
+      "idPaciente": p.uid,
+      "idImagen": this.imgSelected.uid,
+      "x": this.posX,
+      "y": this.posY
+    }
+    this.pacienteEjercicioService.createExercisePatient(data)
+        .subscribe( res => {
+          this.notifications.create('Registro creado', 'Se ha creado el registro del Paciente Ejercicio', NotificationType.Success, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+        }, (err) => {
+
+          this.notifications.create('Error', 'No se ha podido editar el Ejercicio', NotificationType.Error, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
+
+          return;
+      });
   }
 
   celdaVacia(x: number, y: number): boolean {
@@ -629,6 +691,10 @@ export class WizardEndStepComponent implements OnInit {
       ret = true;
     }
     return ret;
+  }
+
+  dislocatePatient(x: number, y: number) {
+    console.log('entro');
   }
 
 }

@@ -9,7 +9,8 @@ const getPacientesEjercicio = async(req, res) => {
     // parametros
     // const idPaciente = req.query.idPaciente;
     // const idEjercicio = req.query.idEjercicio;
-    const { idPaciente, idEjercicio, ...object } = req.body;
+    const idEjercicio = req.query.idEjercicio;
+    console.log(idEjercicio);
 
     // Solo puede obtener usuarios un admin
     const token = req.header('x-token');
@@ -25,13 +26,13 @@ const getPacientesEjercicio = async(req, res) => {
         var pacientesEjercicio, pacientesEjercicio; // variables para la búsqueda en gestion de pacientesEjercicio
 
         // comprobamos que existen Paciente y Ejercicio
-        const existePaciente = await Paciente.findById(idPaciente);
-        if (!existePaciente) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'El paciente no existe'
-            });
-        }
+        // const existePaciente = await Paciente.findById(idPaciente);
+        // if (!existePaciente) {
+        //     return res.status(400).json({
+        //         ok: false,
+        //         msg: 'El paciente no existe'
+        //     });
+        // }
 
         const existeEjercicio = await Ejercicio.findById(idEjercicio);
         if (!existeEjercicio) {
@@ -42,10 +43,10 @@ const getPacientesEjercicio = async(req, res) => {
         }
 
         [pacientesEjercicio, totalpacientesEjercicio] = await Promise.all([
-            PacienteEjercicio.find({ idPaciente, idEjercicio }, 'nombre apellidos email rol curso activo')
+            PacienteEjercicio.find({ idEjercicio })
             .populate('idPaciente', '-__v')
             .populate('idImagen', '-__v'),
-            PacienteEjercicio.countDocuments({ idPaciente, idEjercicio })
+            PacienteEjercicio.countDocuments({ idEjercicio })
         ]);
         
         res.json({

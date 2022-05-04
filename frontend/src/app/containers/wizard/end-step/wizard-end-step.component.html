@@ -200,7 +200,7 @@
         <div class="text-center mt-3">
           <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
           <!-- <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button> -->
-          <button type="button" class="btn btn-primary" (click)="setImgSelected(imgsSelect[0])" awNextStep>{{ 'wizard.next' | translate }}</button>
+          <button type="button" class="btn btn-primary" (click)="initLocatePatient()" awNextStep>{{ 'wizard.next' | translate }}</button>
         </div>
       </aw-wizard-step>
 
@@ -232,7 +232,8 @@
                 <tr *ngFor="let item of table; let i=index">
                   <td *ngFor="let it of item; let j=index" class="celda" (click)="showLocatePatientModal(j, i)">
                     <label *ngIf="!celdaVacia(j, i)">
-                      <img class="paciente_ubicado" src="{{urlPrefixPacientes}}paciente8.png">
+                      <img class="paciente_ubicado" src="{{urlPrefixPacientes+table[i][j].img}}">
+                      <i class="simple-icon-close" (click)="dislocatePatient(j, i)"></i>
                     </label>
                     <!-- <p *ngIf="!celdaVacia(j, i)">PACIENTE X</p> -->
                   </td>

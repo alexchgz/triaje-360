@@ -30,12 +30,11 @@ export class LocatePatientComponent implements OnInit {
   y: number;
   urlPrefixPacientes: string = environment.prefix_urlPacientes;
 
-  @Output() seleccionarPaciente = new EventEmitter<string>();
+  @Output() seleccionarPaciente = new EventEmitter<Paciente>();
   @Output() resetParentImg = new EventEmitter();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private auth: AuthService, private sender: SenderService,
-    private imagenPacienteService: ImagenPacienteService, private notifications: NotificationsService) { }
+  constructor(private modalService: BsModalService, private auth: AuthService, private sender: SenderService) { }
 
   ngOnInit(): void {
     this.userRole = this.auth.rol;
@@ -71,7 +70,7 @@ export class LocatePatientComponent implements OnInit {
 
   closeModal(): void {
     if(this.pacienteSeleccionado) {
-      this.seleccionarPaciente.emit(this.pacienteSeleccionado.img); 
+      this.seleccionarPaciente.emit(this.pacienteSeleccionado); 
       this.pacienteSeleccionado = undefined;
     }
       

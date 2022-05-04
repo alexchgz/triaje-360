@@ -18,11 +18,11 @@ const PacienteEjercicioSchema = Schema({
         require: true
     },
     x: {
-        type: String,
+        type: Number,
         require: true
     },
     y: {
-        type: String,
+        type: Number,
         require: true
     }
 }, { collection: 'pacienteEjercicio' });

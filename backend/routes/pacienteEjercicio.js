@@ -10,7 +10,7 @@ const router = Router();
 router.get('/', [
     validarJWT,
     // comprobamos campos opcionales
-    check('idPaciente', 'El id debe ser válido').isMongoId(),
+    // check('idPaciente', 'El id debe ser válido').isMongoId(),
     check('idEjercicio', 'El id debe ser válido').isMongoId(),
     validarCampos
 ], getPacientesEjercicio);
@@ -20,8 +20,8 @@ router.post('/', [
     check('idPaciente', 'El id debe ser válido').isMongoId(),
     check('idEjercicio', 'El id debe ser válido').isMongoId(),
     check('idImagen', 'El id debe ser válido').isMongoId(),
-    check('x', 'x debe ser válido').isString(),
-    check('y', 'y debe ser válido').isString(),
+    check('x', 'x debe ser válido').isNumeric(),
+    check('y', 'y debe ser válido').isNumeric(),
     validarCampos
 ], crearPacienteEjercicio);
 
@@ -30,8 +30,8 @@ router.put('/:id', [
     check('idPaciente', 'El id debe ser válido').isMongoId(),
     check('idEjercicio', 'El id debe ser válido').isMongoId(),
     check('idImagen', 'El id debe ser válido').isMongoId(),
-    check('x', 'x debe ser válido').isString(),
-    check('y', 'y debe ser válido').isString(),
+    check('x', 'x debe ser válido').isNumeric(),
+    check('y', 'y debe ser válido').isNumeric(),
     validarCampos
 ], actualizarPacienteEjercicio);
 
