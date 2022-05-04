@@ -24,7 +24,7 @@ export class PacienteEjercicioService {
 
     // PARAMS
     let params = new HttpParams();
-    if(ejercicio) params = params.append('idEjercicio', ejercicio + '');
+    params = params.append('idEjercicio', ejercicio + '');
 
     return this.http.get(url, { headers, params });
 

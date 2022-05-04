@@ -606,6 +606,7 @@ export class WizardEndStepComponent implements OnInit {
     } 
 
     this.imgSelected = i;
+    this.getExercisePatients();
     // console.log(this.imgSelected);
 
   }
@@ -619,7 +620,8 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.pacientesEjercicio = data['pacientesEjercicio'];
-          console.log(this.pacientesEjercicio);
+          this.setTableData();
+          // console.log(this.pacientesEjercicio);
         }
       },
       error => {
@@ -632,6 +634,22 @@ export class WizardEndStepComponent implements OnInit {
         return;
       }
     );
+  }
+
+  setTableData() {
+
+    console.log(this.pacientesEjercicio);
+    for(let i=0; i<this.pacientesEjercicio.length; i++) {
+      if(this.pacientesEjercicio[i].idImagen['_id'] == this.imgSelected.uid) {
+        this.table[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y] = this.pacientesEjercicio[i].idPaciente;
+      }
+      else {
+        this.table[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y] = '';
+      }
+    }
+
+    // console.log(this.table);
+
   }
 
   locatePatient(x: number, y: number) {
@@ -648,7 +666,7 @@ export class WizardEndStepComponent implements OnInit {
   getPatientSelected(p: Paciente) {
     // console.log('t:', this.table[this.posX][this.posY]);
     for(let i=0; i<this.pacientesNoUbicados.length; i++) {
-      if(this.pacientesNoUbicados[i].img == p.img) {
+      if(this.pacientesNoUbicados[i].uid == p.uid) {
         this.pacientesNoUbicados.splice(i, 1);
       }
     }
@@ -662,11 +680,12 @@ export class WizardEndStepComponent implements OnInit {
       "idEjercicio": this.exercise.uid,
       "idPaciente": p.uid,
       "idImagen": this.imgSelected.uid,
-      "x": this.posX,
-      "y": this.posY
+      "x": this.posY,
+      "y": this.posX
     }
     this.pacienteEjercicioService.createExercisePatient(data)
         .subscribe( res => {
+          this.pacientesEjercicio.push(data['pacientesEjercicio']);
           this.notifications.create('Registro creado', 'Se ha creado el registro del Paciente Ejercicio', NotificationType.Success, {
             theClass: 'outline primary',
             timeOut: 6000,
