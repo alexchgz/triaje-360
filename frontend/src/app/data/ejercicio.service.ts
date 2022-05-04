@@ -79,8 +79,6 @@ export class EjercicioService {
       "imgs": data['imgs']
     }
 
-    console.log('SD:', sendData);
-
     return this.http.post(url, sendData, { headers });
 
   }
@@ -115,8 +113,6 @@ export class EjercicioService {
       "imgs": data['imgs'],
       "pacientes": pacs
     }
-
-    console.log('SD:', sendData);
 
     return this.http.put(url, sendData, { headers });
 

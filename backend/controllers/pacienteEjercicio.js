@@ -57,9 +57,7 @@ const crearPacienteEjercicio = async(req, res = response) => {
 
     // parametros
     const { idPaciente, idEjercicio, ...object } = req.body;
-
-    console.log(req.body);
-
+    
     // Solo puede crear usuarios un admin
     const token = req.header('x-token');
 
@@ -208,12 +206,12 @@ const borrarPacienteEjercicio = async(req, res) => {
         }
 
         // si existe lo eliminamos
-        const resultado = await PacienteEjercicio.findByIdAndRemove(uid);
+        const pacienteEjercicio = await PacienteEjercicio.findByIdAndRemove(uid);
 
         res.json({
             ok: true,
             msg: 'PacienteEjercicio Eliminado',
-            resultado
+            pacienteEjercicio
         });
 
     } catch (error) {

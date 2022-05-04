@@ -159,7 +159,6 @@ export class WizardEndStepComponent implements OnInit {
         data => {
           if (data['ok']) {
             this.exercise = data['ejercicios'];
-            console.log(this.exercise);
             // colocamos valores del ejercicio en formulario
             this.totalItem = data['totalEjercicios'];
             this.dataEjercicio.asignatura = this.exercise.asignatura._id;
@@ -344,7 +343,6 @@ export class WizardEndStepComponent implements OnInit {
       this.dataEjercicio.pacientes[i] = this.exercise.pacientes[i].paciente;
       this.dataEjercicio.pacientes[i].uid = this.dataEjercicio.pacientes[i]['_id'];
     }
-    console.log('A:', this.dataEjercicio.pacientes);
   }
 
   selectImgs(img: Imagen) {
@@ -588,7 +586,6 @@ export class WizardEndStepComponent implements OnInit {
 
   initLocatePatient() {
     this.setImgSelected(this.imgsSelect[0]);
-    this.setPacientesNoUbicados();
     this.getExercisePatients();
   }
 
@@ -613,6 +610,13 @@ export class WizardEndStepComponent implements OnInit {
 
   setPacientesNoUbicados() {
     this.pacientesNoUbicados = this.dataEjercicio.pacientes;
+    for(let i=0; i<this.pacientesEjercicio.length; i++) {
+      for(let j=0; j<this.pacientesNoUbicados.length; j++) {
+        if(this.pacientesEjercicio[i].idPaciente['_id'] == this.pacientesNoUbicados[j].uid) {
+          this.pacientesNoUbicados.splice(j, 1);
+        }
+      }
+    }
   }
 
   getExercisePatients() {
@@ -621,7 +625,7 @@ export class WizardEndStepComponent implements OnInit {
         if (data['ok']) {
           this.pacientesEjercicio = data['pacientesEjercicio'];
           this.setTableData();
-          // console.log(this.pacientesEjercicio);
+          this.setPacientesNoUbicados();
         }
       },
       error => {
@@ -638,7 +642,6 @@ export class WizardEndStepComponent implements OnInit {
 
   setTableData() {
 
-    console.log(this.pacientesEjercicio);
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       if(this.pacientesEjercicio[i].idImagen['_id'] == this.imgSelected.uid) {
         this.table[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y] = this.pacientesEjercicio[i].idPaciente;
@@ -648,23 +651,15 @@ export class WizardEndStepComponent implements OnInit {
       }
     }
 
-    // console.log(this.table);
-
-  }
-
-  locatePatient(x: number, y: number) {
-    console.log('(',x,',',y,')');
   }
 
   showLocatePatientModal(x: number, y: number): void {
-    console.log(this.table);
     this.posX = x;
     this.posY = y;
     this.locateModalRef.show(this.pacientesNoUbicados, this.exercise.uid, this.imgSelected.uid, x, y);
   }
 
   getPatientSelected(p: Paciente) {
-    // console.log('t:', this.table[this.posX][this.posY]);
     for(let i=0; i<this.pacientesNoUbicados.length; i++) {
       if(this.pacientesNoUbicados[i].uid == p.uid) {
         this.pacientesNoUbicados.splice(i, 1);
@@ -672,7 +667,6 @@ export class WizardEndStepComponent implements OnInit {
     }
     this.createExercisePatient(p);
     this.table[this.posY][this.posX] = p;
-    console.log('t:', this.table);
   }
 
   createExercisePatient(p: Paciente) {
@@ -713,7 +707,39 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   dislocatePatient(x: number, y: number) {
-    console.log('entro');
+    
+    this.findExercisePatient(x, y);
+    let pe = this.findExercisePatient(x, y);
+    console.log(pe);
+    this.pacienteEjercicioService.dropExercisePatient(pe.uid).subscribe(
+      data => {
+        console.log(this.pacientesEjercicio.indexOf(pe));
+        this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe), 1);
+        
+        this.table[y][x] = '';
+        this.setTableData();
+        this.setPacientesNoUbicados();
+
+      },
+      error => {
+        this.notifications.create('Error', 'No se ha podido eliminar el registro', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      }
+    );
+  }
+
+  findExercisePatient(x: number, y: number): PacienteEjercicio {
+    console.log(this.pacientesEjercicio);
+    for(let i=0; i<this.pacientesEjercicio.length; i++) {
+      if(this.pacientesEjercicio[i].idPaciente['_id'] == this.table[y][x]['_id']) {
+        return this.pacientesEjercicio[i];
+      }
+    }
   }
 
 }
