@@ -39,7 +39,7 @@ export class WizardEndStepComponent implements OnInit {
   imgsSelect: Imagen[] = [];
   imgSelected: Imagen;
   // imgsSelectId: any[] = [];
-  imgs: Imagen[];
+  imgs: Imagen[] = [];
   urlPrefix: string = environment.prefix_url;
   urlPrefixPacientes: string = environment.prefix_urlPacientes;
   colours = ["Verde", "Amarillo", "Rojo", "Negro"];
@@ -239,6 +239,11 @@ export class WizardEndStepComponent implements OnInit {
       this.ejercicioService.updateExercise(this.dataEjercicio, this.exercise.uid)
         .subscribe( res => {
           // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+          this.notifications.create('Ejercicio Actualizado', 'Se han actualizado los Datos Generales y las Imágenes del Ejercicio', NotificationType.Success, {
+            theClass: 'outline primary',
+            timeOut: 6000,
+            showProgressBar: false
+          });
 
         }, (err) => {
 
@@ -325,17 +330,29 @@ export class WizardEndStepComponent implements OnInit {
 
   getImagesRoutes(): void {
 
+    this.dataEjercicio.imgs = [];
+
     for(let i=0; i<this.exercise.imgs.length; i++) {
       this.dataEjercicio.imgs[i] = this.exercise.imgs[i].img;
     }
 
-    for(let j=0; j<this.imgs.length; j++) {
-      for(let k=0; k<this.dataEjercicio.imgs.length; k++) {
-        if(this.imgs[j].uid == this.dataEjercicio.imgs[k]) {
-          this.selectImgs(this.imgs[j]);
-        }
+    console.log('DE:', this.dataEjercicio.imgs);
+    for(let j=0; j<this.dataEjercicio.imgs.length; j++) {
+      for(let k=0; k<this.imgs.length; k++) {
+        if(this.dataEjercicio.imgs[j] == this.imgs[k].uid) {
+          console.log(this.imgs[k]);
+          this.selectImgs(this.imgs[k]);
+        }  
       }
     }
+    // for(let j=0; j<this.imgs.length; j++) {
+    //   for(let k=0; k<this.dataEjercicio.imgs.length; k++) {
+    //     if(this.imgs[j].uid == this.dataEjercicio.imgs[k]) {
+    //       this.selectImgs(this.imgs[j]);
+    //     }
+    //   }
+    // }
+    
   }
 
   formatExercisePatients() {
@@ -350,7 +367,8 @@ export class WizardEndStepComponent implements OnInit {
     let esta = false;
     for(let i=0; i<this.imgsSelect.length && !esta; i++) {
       if(img == this.imgsSelect[i]) {
-        this.imgsSelect.splice(i, 1);
+        // this.imgsSelect.splice(i, 1);
+        this.unselectImg(img, i);
         esta = true;
       }
     }
@@ -373,23 +391,25 @@ export class WizardEndStepComponent implements OnInit {
   unselectImg(img, pos) { 
     // eliminamos la ruta del array
     this.imgsSelect.splice(pos, 1);
+    this.dataEjercicio.imgs.splice(this.dataEjercicio.imgs.indexOf(pos));
 
     // cambiamos la clase de la geleria
     var element = document.querySelector('[src="'+ this.urlPrefix + img.ruta +'"]');
     element.parentElement.className = 'noSelected';
 
     console.log('SEL:', this.imgsSelect);
+    console.log('DE:', this.dataEjercicio.imgs);
   }
 
-  moveImgL(src, pos) { 
+  moveImgL(img, pos) { 
     this.imgsSelect.splice(pos, 1);
-    this.imgsSelect.splice(pos-1, 0, src);
+    this.imgsSelect.splice(pos-1, 0, img);
     console.log('SEL:', this.imgsSelect);
   }
 
-  moveImgR(src, pos) { 
+  moveImgR(img, pos) { 
     this.imgsSelect.splice(pos, 1);
-    this.imgsSelect.splice(pos+1, 0, src);
+    this.imgsSelect.splice(pos+1, 0, img);
     console.log('SEL:', this.imgsSelect);
   }
 
@@ -603,13 +623,17 @@ export class WizardEndStepComponent implements OnInit {
     } 
 
     this.imgSelected = i;
-    this.getExercisePatients();
+    // this.getExercisePatients();
     // console.log(this.imgSelected);
 
   }
 
   setPacientesNoUbicados() {
-    this.pacientesNoUbicados = this.dataEjercicio.pacientes;
+    console.log('DEP:', this.dataEjercicio.pacientes);
+    this.pacientesNoUbicados = [];
+    for(let a=0; a<this.dataEjercicio.pacientes.length; a++) {
+      this.pacientesNoUbicados.push(this.dataEjercicio.pacientes[a]);
+    }
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       for(let j=0; j<this.pacientesNoUbicados.length; j++) {
         if(this.pacientesEjercicio[i].idPaciente['_id'] == this.pacientesNoUbicados[j].uid) {
@@ -617,6 +641,14 @@ export class WizardEndStepComponent implements OnInit {
         }
       }
     }
+    // for(let i=0; i<this.pacientesEjercicio.length; i++) {
+    //   for(let j=0; j<this.dataEjercicio.pacientes.length; j++) {
+    //     if(this.pacientesEjercicio[i].idPaciente['_id'] == this.dataEjercicio.pacientes[j].uid) {
+    //       this.pacientesNoUbicados.push(this.dataEjercicio.pacientes[j]);
+    //     }
+    //   }
+    // }
+    console.log('NU:', this.pacientesNoUbicados);
   }
 
   getExercisePatients() {
@@ -624,6 +656,7 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.pacientesEjercicio = data['pacientesEjercicio'];
+          console.log('PE:', this.pacientesEjercicio);
           this.setTableData();
           this.setPacientesNoUbicados();
         }
@@ -641,6 +674,13 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   setTableData() {
+
+    this.table = [
+      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+    ];
 
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       if(this.pacientesEjercicio[i].idImagen['_id'] == this.imgSelected.uid) {
@@ -678,8 +718,11 @@ export class WizardEndStepComponent implements OnInit {
       "y": this.posX
     }
     this.pacienteEjercicioService.createExercisePatient(data)
-        .subscribe( res => {
-          this.pacientesEjercicio.push(data['pacientesEjercicio']);
+        .subscribe( data => {
+          console.log('DEP:', this.dataEjercicio.pacientes);
+          console.log('NU:', this.pacientesNoUbicados);
+          // console.log(data['populatePacienteEjercicio']);
+          this.pacientesEjercicio.push(data['populatePacienteEjercicio']);
           this.notifications.create('Registro creado', 'Se ha creado el registro del Paciente Ejercicio', NotificationType.Success, {
             theClass: 'outline primary',
             timeOut: 6000,
@@ -708,14 +751,13 @@ export class WizardEndStepComponent implements OnInit {
 
   dislocatePatient(x: number, y: number) {
     
-    this.findExercisePatient(x, y);
     let pe = this.findExercisePatient(x, y);
     console.log(pe);
     this.pacienteEjercicioService.dropExercisePatient(pe.uid).subscribe(
       data => {
-        console.log(this.pacientesEjercicio.indexOf(pe));
-        this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe), 1);
-        
+        console.log('PE:', this.pacientesEjercicio);
+        this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe, 1));
+        console.log('PE:', this.pacientesEjercicio);
         this.table[y][x] = '';
         this.setTableData();
         this.setPacientesNoUbicados();

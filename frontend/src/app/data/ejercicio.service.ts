@@ -114,6 +114,8 @@ export class EjercicioService {
       "pacientes": pacs
     }
 
+    console.log(sendData);
+
     return this.http.put(url, sendData, { headers });
 
   }

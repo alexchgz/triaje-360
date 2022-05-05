@@ -102,10 +102,15 @@ const crearPacienteEjercicio = async(req, res = response) => {
         const pacienteEjercicio = new PacienteEjercicio(object);
         await pacienteEjercicio.save();
 
+        const populatePacienteEjercicio = await PacienteEjercicio.findById(pacienteEjercicio._id)
+        .populate('idPaciente', '-__v')
+        .populate('idImagen', '-__v');
+
         res.json({
             ok: true,
             msg: 'Paciente Ejercicio creado',
-            pacienteEjercicio
+            pacienteEjercicio,
+            populatePacienteEjercicio
         });
     } catch (error) {
         console.log(error);
