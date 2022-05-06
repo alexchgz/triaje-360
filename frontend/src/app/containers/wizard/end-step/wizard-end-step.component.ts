@@ -292,7 +292,17 @@ export class WizardEndStepComponent implements OnInit {
     }
   }
   toExercises(): void {
-    this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
+    this.router.navigateByUrl('app/dashboards/all/exercises/data-list');
+  }
+
+  datosGeneralesValid(): boolean {
+    let valid = false;
+    if(this.dataEjercicio.asignatura != undefined && this.dataEjercicio.nombre != '' && this.dataEjercicio.descripcion != ''
+    && this.dataEjercicio.desde != '' && this.dataEjercicio.hasta != '') {
+      valid = true;
+    }
+
+    return valid;    
   }
 
 
@@ -387,21 +397,25 @@ export class WizardEndStepComponent implements OnInit {
     // cambiamos la clase de la geleria
     var element = document.querySelector('[src="'+ this.urlPrefix + img.ruta +'"]');
     element.parentElement.className = 'noSelected';
-
-    console.log('SEL:', this.imgsSelect);
-    console.log('DE:', this.dataEjercicio.imgs);
   }
 
   moveImgL(img, pos) { 
     this.imgsSelect.splice(pos, 1);
     this.imgsSelect.splice(pos-1, 0, img);
-    console.log('SEL:', this.imgsSelect);
   }
 
   moveImgR(img, pos) { 
     this.imgsSelect.splice(pos, 1);
     this.imgsSelect.splice(pos+1, 0, img);
-    console.log('SEL:', this.imgsSelect);
+  }
+
+  escenaValid(): boolean {
+    let valid = false;
+    if(this.dataEjercicio.imgs.length > 0) {
+      valid = true;
+    }
+
+    return valid;    
   }
 
 
@@ -591,6 +605,15 @@ export class WizardEndStepComponent implements OnInit {
 
   resetChildrenImg() {
     this.childrenImg = undefined;
+  }
+
+  confPacientesValid(): boolean {
+    let valid = false;
+    if(this.dataEjercicio.pacientes.length > 0) {
+      valid = true;
+    }
+
+    return valid;    
   }
 
   // ***************** LOCATE PATIENT METHODS ********************
@@ -799,6 +822,17 @@ export class WizardEndStepComponent implements OnInit {
         return this.pacientesEjercicio[i];
       }
     }
+  }
+
+  ubicarPacientesValid(): boolean {
+    let valid = true;
+    for(let i=0; i<this.pacientesNoUbicados.length && valid; i++) {
+      if(this.pacientesNoUbicados[i] != undefined) {
+        valid = false;
+      }
+    }
+
+    return valid;    
   }
 
 }

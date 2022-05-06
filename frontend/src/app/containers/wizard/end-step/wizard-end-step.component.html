@@ -66,8 +66,8 @@
           </div>
         </div>
         <div class="text-center mt-4">
-          <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
-          <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+          <!-- <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}} -->
+          <button type="button" class="btn btn-primary" [disabled]="!datosGeneralesValid()" awNextStep>{{ 'wizard.next' | translate }}</button>
         </div>        
       </aw-wizard-step>
       
@@ -96,7 +96,7 @@
 
         <div class="text-center mt-2">
           <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
-          <button type="button" class="btn btn-primary" (click)="checkDate()" awNextStep>{{ 'wizard.next' | translate }}</button>
+          <button type="button" class="btn btn-primary" [disabled]="!escenaValid()" (click)="checkDate()" awNextStep>{{ 'wizard.next' | translate }}</button>
         </div> 
       </aw-wizard-step>
 
@@ -200,7 +200,7 @@
         <div class="text-center mt-3">
           <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
           <!-- <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button> -->
-          <button type="button" class="btn btn-primary" (click)="initLocatePatient()" awNextStep>{{ 'wizard.next' | translate }}</button>
+          <button type="button" class="btn btn-primary" [disabled]="!confPacientesValid()" (click)="initLocatePatient()" awNextStep>{{ 'wizard.next' | translate }}</button>
         </div>
       </aw-wizard-step>
 
@@ -223,7 +223,7 @@
   
           <div class="text-center mt-2">
             <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
-            <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+            <button type="button" class="btn btn-primary" [disabled]="!ubicarPacientesValid()" awNextStep>{{ 'wizard.next' | translate }}</button>
           </div> 
           
           <div class="tabla">
@@ -249,8 +249,8 @@
       
       <aw-wizard-completion-step stepTitle="{{ 'wizard.done' | translate }}" style="min-height: 120px;">
         <div class="text-center complete-message-centered">
-          <h2 class="mb-2">{{ 'wizard.content-thanks' | translate }}</h2>
-          <p>{{ 'wizard.registered' | translate }}</p>
+          <h2 class="mb-2">¡Ejercicio Configurado!</h2>
+          <p>Se ha completado correctamente la configuración del Ejercicio</p>
           <button type="button" class="btn btn-primary" (click)="toExercises()">{{ 'wizard.finish' | translate }}</button>
         </div>
       </aw-wizard-completion-step>
