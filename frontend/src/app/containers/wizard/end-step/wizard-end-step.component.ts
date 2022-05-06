@@ -100,12 +100,6 @@ export class WizardEndStepComponent implements OnInit {
     this.getImages();
     this.getActions();
 
-    // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
-    if(this.uid == undefined && this.uidEx == undefined) {
-      this.getSubjects();
-    } else {
-      this.setSubject();
-    }
   }
 
   // *************** DATA METHODS ***********************
@@ -236,6 +230,7 @@ export class WizardEndStepComponent implements OnInit {
 
     // si tenemos ejercicio -> EDITAR
     if(this.exercise) {
+      console.log(this.exercise);
       this.ejercicioService.updateExercise(this.dataEjercicio, this.exercise.uid)
         .subscribe( res => {
           // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
@@ -313,7 +308,12 @@ export class WizardEndStepComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.imgs = data['imagenes'];
-          // console.log(this.imgs);
+          // si no hay Ejercicio ni Asignatura -> selector de Asignatura para el ejercicio
+          if(this.uid == undefined && this.uidEx == undefined) {
+            this.getSubjects();
+          } else {
+            this.setSubject();
+          }
         }
       },
       error => {
@@ -339,13 +339,12 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   getImagesRoutes(): void {
-
     this.dataEjercicio.imgs = [];
 
     for(let i=0; i<this.exercise.imgs.length; i++) {
       this.dataEjercicio.imgs[i] = this.exercise.imgs[i].img;
     }
-
+    
     for(let j=0; j<this.dataEjercicio.imgs.length; j++) {
       for(let k=0; k<this.imgs.length; k++) {
         if(this.dataEjercicio.imgs[j] == this.imgs[k].uid) {
@@ -364,7 +363,6 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   selectImgs(img: Imagen) {
-    // console.log(src);
     let esta = false;
     for(let i=0; i<this.imgsSelect.length && !esta; i++) {
       if(img == this.imgsSelect[i]) {
