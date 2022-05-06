@@ -375,14 +375,9 @@ export class WizardEndStepComponent implements OnInit {
     if(!esta) {
       this.imgsSelect.push(img);
       // console.log(this.imgsSelect);
-    }
-
-    var element = document.querySelector('[src="' + this.urlPrefix + img.ruta +'"]');
-    if(element.parentElement.classList.contains('noSelected')) {
+      var element = document.querySelector('[src="' + this.urlPrefix + img.ruta +'"]');
       element.parentElement.className = 'selected';
-    }
-    else {
-      element.parentElement.className = 'noSelected';
+    
     }
     
   }
@@ -409,7 +404,7 @@ export class WizardEndStepComponent implements OnInit {
 
   escenaValid(): boolean {
     let valid = false;
-    if(this.dataEjercicio.imgs.length > 0) {
+    if(this.imgsSelect.length > 0) {
       valid = true;
     }
 
