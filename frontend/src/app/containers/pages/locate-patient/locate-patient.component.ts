@@ -54,6 +54,12 @@ export class LocatePatientComponent implements OnInit {
       var element = document.getElementById(ident);
       element.parentElement.className = 'selected';
       this.pacienteSeleccionado = p;
+    } else {
+      var ident = 'paciente' + pos;
+      console.log(ident);
+      var element = document.getElementById(ident);
+      element.parentElement.className = 'noSelected';
+      this.pacienteSeleccionado = undefined;
     }
     // this.pacienteSeleccionado = p;
     console.log(this.pacienteSeleccionado);

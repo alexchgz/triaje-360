@@ -623,12 +623,15 @@ export class WizardEndStepComponent implements OnInit {
     console.log('DEP:', this.dataEjercicio.pacientes);
     this.pacientesNoUbicados = [];
     for(let a=0; a<this.dataEjercicio.pacientes.length; a++) {
+      console.log('entro');
       this.pacientesNoUbicados.push(this.dataEjercicio.pacientes[a]);
     }
+    console.log('NU:', this.pacientesNoUbicados);
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       for(let j=0; j<this.pacientesNoUbicados.length; j++) {
-        if(this.pacientesEjercicio[i].idPaciente['_id'] == this.pacientesNoUbicados[j].uid) {
-          this.pacientesNoUbicados.splice(j, 1);
+        if(this.pacientesNoUbicados[j] != undefined && this.pacientesEjercicio[i].idPaciente['_id'] == this.pacientesNoUbicados[j].uid) {
+          // this.pacientesNoUbicados.splice(j, 1);
+          this.pacientesNoUbicados[j] = undefined;
         }
       }
     }
@@ -704,8 +707,9 @@ export class WizardEndStepComponent implements OnInit {
 
   getPatientSelected(p: Paciente) {
     for(let i=0; i<this.pacientesNoUbicados.length; i++) {
-      if(this.pacientesNoUbicados[i].uid == p.uid) {
-        this.pacientesNoUbicados.splice(i, 1);
+      if(this.pacientesNoUbicados[i] != undefined && this.pacientesNoUbicados[i].uid == p.uid) {
+        // this.pacientesNoUbicados.splice(i, 1);
+        this.pacientesNoUbicados[i] = undefined;
       }
     }
     this.createExercisePatient(p);
@@ -769,7 +773,9 @@ export class WizardEndStepComponent implements OnInit {
         console.log('PE:', this.pacientesEjercicio);
         this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe, 1));
         console.log('PE:', this.pacientesEjercicio);
-        // this.table[y][x] = '';
+        if(!pacEj) {
+          this.table[y][x] = '';
+        }
         this.setTableData();
         this.setPacientesNoUbicados();
 

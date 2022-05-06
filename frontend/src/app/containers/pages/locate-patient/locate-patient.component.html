@@ -11,13 +11,31 @@
         <p *ngIf="pacientes==undefined || pacientes.length == 0">No hay pacientes para ubicar</p>
         <div *ngIf="pacientes!=undefined && pacientes.length > 0" class="pacientes">
             <div *ngFor="let p of pacientes; let i=index">
-                <label *ngIf="p!= pacienteSeleccionado" class="noSelected">
+                <label *ngIf="p!= pacienteSeleccionado && p != undefined" class="noSelected">
                     <img [id]="'paciente'+i" src={{urlPrefixPacientes+p.img}} (click)='selectPatient(p, i)'>
                     <i class="simple-icon-check"></i>
+                    <div class="infoPaciente">
+                        <p class="nombre_paciente"><b>Paciente {{i+1}}</b></p>
+                        <p *ngIf="p.camina"><b>&#8226; Camina:</b> Sí</p>
+                        <p *ngIf="!p.camina"><b>&#8226; Camina:</b> No</p>
+                        <p><b>&#8226; Descripción:</b> {{p.descripcion}}</p>
+                        <p><b>&#8226; Color:</b> {{p.color}}</p>
+                        <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
+                        <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
+                    </div>
                 </label>
-                <label *ngIf="p == pacienteSeleccionado" class="selected">
+                <label *ngIf="p == pacienteSeleccionado && p != undefined" class="selected">
                     <img [id]="'paciente'+i" src={{urlPrefixPacientes+p.img}} (click)='selectPatient(p, i)'>
                     <i class="simple-icon-check"></i>
+                    <div class="infoPaciente">
+                        <p class="nombre_paciente"><b>Paciente {{i+1}}</b></p>
+                        <p *ngIf="p.camina"><b>&#8226; Camina:</b> Sí</p>
+                        <p *ngIf="!p.camina"><b>&#8226; Camina:</b> No</p>
+                        <p><b>&#8226; Descripción:</b> {{p.descripcion}}</p>
+                        <p><b>&#8226; Color:</b> {{p.color}}</p>
+                        <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
+                        <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
+                    </div>
                 </label>
             </div>
         </div>

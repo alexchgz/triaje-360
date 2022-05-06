@@ -31,12 +31,42 @@ p {
         // box-shadow: 0 3px 5px #145388;
     }
 
+    .pacientes label:hover {
+        border: 3px solid #145388;
+    }
+
         .pacientes label img {
             height: 100%;
             width: 100%;
             padding: .5em;
             object-fit: cover;
             cursor: pointer;
+        }
+
+        .pacientes label .infoPaciente {
+            position: absolute;
+            display: none;
+            // display: block;
+            border: 1px solid #145388;
+            border-radius: 10px;
+            width: 250px;
+            transform: translateX(-80px);
+            padding: 10px;
+            margin-top: .5em;
+        }
+            .infoPaciente .nombre_paciente {
+                text-align: center;
+            }
+
+            .pacientes label .infoPaciente p {
+                width: 100%;
+                height: auto;
+                margin-bottom: .5em;
+                margin-right: .5em;
+            }
+
+        .pacientes label:hover .infoPaciente {
+            display: block;
         }
 
 .simple-icon-check::before {
@@ -49,7 +79,7 @@ p {
 }
 
 .selected {
-    border: 5px solid #145388;
+    border: 5px solid #145388 !important;
 }
 
 .selected .simple-icon-check {
