@@ -239,7 +239,7 @@ export class DoExerciseComponent implements OnInit {
     }
 
     // Set handler for autorotate toggle.
-    autorotateToggleElement.addEventListener('click', toggleAutorotate);
+    // autorotateToggleElement.addEventListener('click', toggleAutorotate);
 
     // Set up fullscreen mode, if supported.
     // if (screenfull.enabled && data.settings.fullscreenButton) {
@@ -259,12 +259,12 @@ export class DoExerciseComponent implements OnInit {
     // }
 
     // Set handler for scene list toggle.
-    sceneListToggleElement.addEventListener('click', toggleSceneList);
+    // sceneListToggleElement.addEventListener('click', toggleSceneList);
 
     // Start with the scene list open on desktop.
-    if (!document.body.classList.contains('mobile')) {
-      showSceneList();
-    }
+    // if (!document.body.classList.contains('mobile')) {
+    //   showSceneList();
+    // }
 
     // Set handler for scene switch.
     // scenes.forEach(function(scene) {
@@ -304,10 +304,10 @@ export class DoExerciseComponent implements OnInit {
     }
 
     function switchScene(scene): void {
-      stopAutorotate();
+      // stopAutorotate();
       scene.view.setParameters(scene.data.initialViewParameters);
       scene.scene.switchTo();
-      startAutorotate();
+      // startAutorotate();
       updateSceneName(scene);
       updateSceneList(scene);
     }
@@ -342,28 +342,28 @@ export class DoExerciseComponent implements OnInit {
       sceneListToggleElement.classList.toggle('enabled');
     }
 
-    function startAutorotate(): void {
-      if (!autorotateToggleElement.classList.contains('enabled')) {
-        return;
-      }
-      viewer.startMovement(autorotate);
-      viewer.setIdleMovement(3000, autorotate);
-    }
+    // function startAutorotate(): void {
+    //   if (!autorotateToggleElement.classList.contains('enabled')) {
+    //     return;
+    //   }
+    //   viewer.startMovement(autorotate);
+    //   viewer.setIdleMovement(3000, autorotate);
+    // }
 
-    function stopAutorotate(): void {
-      viewer.stopMovement();
-      viewer.setIdleMovement(Infinity);
-    }
+    // function stopAutorotate(): void {
+    //   viewer.stopMovement();
+    //   viewer.setIdleMovement(Infinity);
+    // }
 
-    function toggleAutorotate(): void {
-      if (autorotateToggleElement.classList.contains('enabled')) {
-        autorotateToggleElement.classList.remove('enabled');
-        stopAutorotate();
-      } else {
-        autorotateToggleElement.classList.add('enabled');
-        startAutorotate();
-      }
-    }
+    // function toggleAutorotate(): void {
+    //   if (autorotateToggleElement.classList.contains('enabled')) {
+    //     autorotateToggleElement.classList.remove('enabled');
+    //     stopAutorotate();
+    //   } else {
+    //     autorotateToggleElement.classList.add('enabled');
+    //     startAutorotate();
+    //   }
+    // }
 
     function createLinkHotspotElement(hotspot: any) {
       // Create wrapper element to hold icon and tooltip.
@@ -375,6 +375,7 @@ export class DoExerciseComponent implements OnInit {
       var icon = document.createElement('img');
       icon.src = '././././assets/img/marzipano/link.png';
       icon.classList.add('link-hotspot-icon');
+      icon.style['cursor'] = 'pointer';
 
       // Set rotation transform.
       var transformProperties = [ '-ms-transform', '-webkit-transform', 'transform' ];
@@ -396,7 +397,7 @@ export class DoExerciseComponent implements OnInit {
       var tooltip = document.createElement('div');
       tooltip.classList.add('hotspot-tooltip');
       tooltip.classList.add('link-hotspot-tooltip');
-      tooltip.innerHTML = findSceneDataById(hotspot.target).name;
+      // tooltip.innerHTML = findSceneDataById(hotspot.target).name;
 
       wrapper.appendChild(icon);
       wrapper.appendChild(tooltip);

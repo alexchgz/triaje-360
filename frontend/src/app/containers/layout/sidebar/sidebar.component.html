@@ -1,4 +1,4 @@
-<div class="menu" (click)="menuClicked($event)">
+<div *ngIf="!doExercise()" class="menu" (click)="menuClicked($event)">
     <div class="main-menu">
         <perfect-scrollbar class="scroll" [config]="{suppressScrollX: true}">
             <ul class="list-unstyled">

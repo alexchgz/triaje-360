@@ -38,6 +38,15 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.userRole = authService.rol;
   }
 
+  doExercise(): boolean {
+    let splitUrl = this.router.url.split("/");
+    if(splitUrl[splitUrl.length-1] == 'do-exercise') {
+      return true;
+    }
+
+    return false;
+  }
+
   onDarkModeChange(event): void {
     let color = getThemeColor();
     if (color.indexOf('dark') > -1) {

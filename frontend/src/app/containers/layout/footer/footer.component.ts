@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -6,8 +7,15 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent  {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
+  doExercise(): boolean {
+    let splitUrl = this.router.url.split("/");
+    if(splitUrl[splitUrl.length-1] == 'do-exercise') {
+      return true;
+    }
 
+    return false;
+  }
 
 }

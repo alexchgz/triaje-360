@@ -92,6 +92,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
+  doExercise(): boolean {
+    let splitUrl = this.router.url.split("/");
+    if(splitUrl[splitUrl.length-1] == 'do-exercise') {
+      return true;
+    }
+
+    return false;
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
