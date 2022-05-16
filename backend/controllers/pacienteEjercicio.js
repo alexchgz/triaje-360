@@ -8,11 +8,12 @@ const getPacientesEjercicio = async(req, res) => {
 
     // parametros
     const idEjercicio = req.query.idEjercicio;
+    console.log(idEjercicio);
 
     // Solo puede obtener usuarios un admin
     const token = req.header('x-token');
     // pueden obtener usuarios admin y profesores
-    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR') && !(infoToken(token).rol === 'ROL_ALUMNO')) {
         return res.status(400).json({
             ok: false,
             msg: 'No tiene permisos para obtener Pacientes de Ejercicio',

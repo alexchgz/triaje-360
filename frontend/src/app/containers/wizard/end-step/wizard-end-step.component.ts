@@ -347,7 +347,7 @@ export class WizardEndStepComponent implements OnInit {
     
     for(let j=0; j<this.dataEjercicio.imgs.length; j++) {
       for(let k=0; k<this.imgs.length; k++) {
-        if(this.dataEjercicio.imgs[j] == this.imgs[k].uid) {
+        if(this.dataEjercicio.imgs[j]['_id'] == this.imgs[k].uid) {
           this.selectImgs(this.imgs[k]);
         }  
       }

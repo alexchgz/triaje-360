@@ -15,6 +15,7 @@ export class PacienteEjercicioService {
   // ******* PETICIONES PACIENTES EJERCICIO *********
 
   getExercisePatients(ejercicio: number) {
+    console.log(ejercicio);
     const url = environment.base_url + '/pacienteEjercicio';
     const token = localStorage.getItem('token');
 

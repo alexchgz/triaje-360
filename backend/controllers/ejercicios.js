@@ -40,7 +40,8 @@ const getEjercicios = async(req, res = response) => {
                 // buscamos por el id
                 Ejercicio.findById(id).populate('curso', '-__v')
                 .populate('asignatura', 'nombre nombrecorto profesores alumnos')
-                .populate('pacientes.paciente', '-__v'),
+                .populate('pacientes.paciente', '-__v')
+                .populate('imgs.img', '-__v'),
                 Ejercicio.countDocuments()
             ]);
 

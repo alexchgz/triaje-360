@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { EjercicioService } from 'src/app/data/ejercicio.service';
+import { PacienteEjercicioService } from 'src/app/data/pacienteEjercicio.service';
+import { SenderService } from 'src/app/data/sender.service';
+import { Ejercicio } from 'src/app/models/ejercicio.model';
+import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 // import * as Marzipano from 'marzipano';
 var Marzipano = require('marzipano');
 
@@ -9,9 +15,112 @@ var Marzipano = require('marzipano');
 })
 export class DoExerciseComponent implements OnInit {
 
-  constructor() { }
+  ejercicio: Ejercicio;
+  pacientesEjercicio: PacienteEjercicio[] = [];
+  data = {
+    "scenes": [],
+    "name": "",
+    "settings": {
+      "mouseViewMode": "drag",
+      "autorotateEnabled": false,
+      "fullscreenButton": false,
+      "viewControlButtons": false
+    }
+  }
+
+  constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
+    private pacienteEjercicioService: PacienteEjercicioService) { }
 
   ngOnInit(): void {
+    this.getExercise();
+    this.getExercisePatients();
+  }
+
+  getExercise() {
+    this.ejercicioService.getExercise(this.sender.idExercise).subscribe(data => {
+      this.ejercicio = data['ejercicios'];
+      console.log(this.ejercicio);
+      this.setImagesScene();
+    },
+      error => {
+        this.notifications.create('Error', 'No se ha podido cargar el Ejercicio', NotificationType.Error, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false
+        });
+
+        return;
+      });
+  }
+
+  getExercisePatients() {
+    this.pacienteEjercicioService.getExercisePatients(this.sender.idExercise).subscribe(data => {
+      this.pacientesEjercicio = data['pacientesEjercicio'];
+      console.log('PE:', this.pacientesEjercicio);
+    },
+    error => {
+      this.notifications.create('Error', 'No se han podido obtener los Pacientes del Ejercicio', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+
+      return;
+    })
+  }
+
+  setImagesScene() {
+    // console.log(this.data);
+    this.data.name = this.ejercicio.nombre;
+    for(let i=0; i<this.ejercicio.imgs.length; i++) {
+      let targetLeft, targetRight;
+      if(i == 0) {
+        targetLeft = this.ejercicio.imgs[this.ejercicio.imgs.length-1].img.nombre;
+        targetRight = this.ejercicio.imgs[i+1].img.nombre;
+      } else if (i == this.ejercicio.imgs.length-1) {
+        targetLeft = this.ejercicio.imgs[i-1].img.nombre;
+        targetRight = this.ejercicio.imgs[0].img.nombre;
+      } else {
+        targetLeft = this.ejercicio.imgs[i-1].img.nombre;
+        targetRight = this.ejercicio.imgs[i+1].img.nombre;
+      }
+      this.data.scenes.push({
+        "id": this.ejercicio.imgs[i].img.nombre,
+        "name": this.ejercicio.imgs[i].img.descripcion,
+        "levels": [
+          {
+            "tileSize": 256,
+            "size": 256,
+            "fallbackOnly": true
+          },
+          {
+            "tileSize": 512,
+            "size": 512
+          }
+        ],
+        "faceSize": 896,
+        "initialViewParameters": {
+          "yaw": -1.0006674819595993,
+          "pitch": -0.25
+        },
+        "linkHotspots": [
+          {
+            "yaw": -2.05,
+            "pitch": -0.47,
+            "rotation": 4.71238898038469,
+            "target": targetLeft
+          }, 
+          {
+            "yaw": -0.025,
+            "pitch": -0.54,
+            "rotation": -4.71238898038469,
+            "target": targetRight
+          }, 
+        ],
+        "infoHotspots": []
+      });
+    }
+    console.log(this.data.scenes);
     this.marzipanoScene();
   }
 
@@ -184,7 +293,7 @@ export class DoExerciseComponent implements OnInit {
     // Viewer options.
     var viewerOpts = {
       controls: {
-        mouseViewMode: data.settings.mouseViewMode
+        mouseViewMode: this.data.settings.mouseViewMode
       }
     };
 
@@ -192,7 +301,7 @@ export class DoExerciseComponent implements OnInit {
     var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
 
     // Create scenes.
-    var scenes = data.scenes.map(function(data) {
+    var scenes = this.data.scenes.map(function(data) {
       var urlPrefix = "././././assets/img/tiles";
       var source = Marzipano.ImageUrlSource.fromString(
         urlPrefix + "/" + data.id + "/{f}.png",
@@ -234,7 +343,7 @@ export class DoExerciseComponent implements OnInit {
       targetPitch: 0,
       targetFov: Math.PI/2
     });
-    if (data.settings.autorotateEnabled) {
+    if (this.data.settings.autorotateEnabled) {
       autorotateToggleElement.classList.add('enabled');
     }
 
@@ -370,12 +479,16 @@ export class DoExerciseComponent implements OnInit {
       var wrapper = document.createElement('div');
       wrapper.classList.add('hotspot');
       wrapper.classList.add('link-hotspot');
+      wrapper.style['width'] = '90px';
+      wrapper.style['height'] = '90px';
 
       // Create image element.
       var icon = document.createElement('img');
       icon.src = '././././assets/img/marzipano/link.png';
       icon.classList.add('link-hotspot-icon');
       icon.style['cursor'] = 'pointer';
+      icon.style['width'] = '100%';
+      icon.style['height'] = '100%';
 
       // Set rotation transform.
       var transformProperties = [ '-ms-transform', '-webkit-transform', 'transform' ];
@@ -498,9 +611,9 @@ export class DoExerciseComponent implements OnInit {
     }
 
     function findSceneDataById(id) {
-      for (var i = 0; i < data.scenes.length; i++) {
-        if (data.scenes[i].id === id) {
-          return data.scenes[i];
+      for (var i = 0; i < this.data.scenes.length; i++) {
+        if (this.data.scenes[i].id === id) {
+          return this.data.scenes[i];
         }
       }
       return null;
