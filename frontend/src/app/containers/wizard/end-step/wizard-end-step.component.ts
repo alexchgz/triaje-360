@@ -782,12 +782,19 @@ export class WizardEndStepComponent implements OnInit {
     else {
       pe = pacEj;
     }
-    console.log(pe);
+    console.log('PE:', pe);
     
     this.pacienteEjercicioService.dropExercisePatient(pe.uid).subscribe(
       data => {
         console.log('PE:', this.pacientesEjercicio);
-        this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe, 1));
+        let encontrado = false;
+        for(let i=0; i<this.pacientesEjercicio.length && !encontrado; i++) {
+          if(this.pacientesEjercicio[i] == pe) {
+            encontrado = true;
+            this.pacientesEjercicio.splice(i, 1);
+          }
+        }
+        // this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe, 1));
         console.log('PE:', this.pacientesEjercicio);
         if(!pacEj) {
           this.table[y][x] = '';

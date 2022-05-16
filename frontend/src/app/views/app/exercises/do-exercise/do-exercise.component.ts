@@ -149,12 +149,18 @@ export class DoExerciseComponent implements OnInit {
           "faceSize": 896,
           "initialViewParameters": {
             "yaw": -1.0006674819595993,
-            "pitch": 0.0473607522179762,
-            "fov": 1.3687812585745385
+            "pitch": 0.0473607522179762
           },
           "linkHotspots": [
+            {
+                    "yaw": -0.3048205232822383,
+                    "pitch": 0.13273023062821565,
+                    "rotation": 4.71238898038469,
+                    "target": "I-0001"
+                  }
           ],
-          "infoHotspots": []
+          "infoHotspots": [
+          ]
         }
       ],
       "name": "Prueba1",

@@ -65,6 +65,17 @@ export class LocatePatientComponent implements OnInit {
     console.log(this.pacienteSeleccionado);
   }
 
+  allUndefined(): boolean {
+    let allUndefined = true;
+    for(let i=0; i<this.pacientes.length && allUndefined; i++) {
+      if(this.pacientes[i] != undefined) {
+        allUndefined = false;
+      }
+    }
+
+    return allUndefined;
+  }
+
   show(pacientes: Paciente[], ejercicio: number, imagen:number, x: number, y: number) {
     this.pacientes = pacientes;
     this.ejercicio = ejercicio;

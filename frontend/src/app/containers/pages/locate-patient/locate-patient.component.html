@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="modal-body">
-        <p *ngIf="pacientes==undefined || pacientes.length == 0">No hay pacientes para ubicar</p>
+        <p *ngIf="pacientes==undefined || pacientes.length == 0 || allUndefined()">No hay pacientes para ubicar</p>
         <div *ngIf="pacientes!=undefined && pacientes.length > 0" class="pacientes">
             <div *ngFor="let p of pacientes; let i=index">
                 <label *ngIf="p!= pacienteSeleccionado && p != undefined" class="noSelected">

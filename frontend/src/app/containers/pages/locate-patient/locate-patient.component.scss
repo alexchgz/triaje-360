@@ -20,6 +20,7 @@ p {
     height: 330px;
     position: relative;
     overflow-y: scroll;
+    overflow-x: visible !important;
 }
 
     .pacientes label {
@@ -44,7 +45,7 @@ p {
         }
 
         .pacientes label .infoPaciente {
-            position: absolute;
+            position: fixed;
             display: none;
             // display: block;
             border: 1px solid #145388;
@@ -53,6 +54,7 @@ p {
             transform: translateX(-80px);
             padding: 10px;
             margin-top: .5em;
+            background-color: #fff;
         }
             .infoPaciente .nombre_paciente {
                 text-align: center;
