@@ -8,7 +8,6 @@ const getPacientesEjercicio = async(req, res) => {
 
     // parametros
     const idEjercicio = req.query.idEjercicio;
-    console.log(idEjercicio);
 
     // Solo puede obtener usuarios un admin
     const token = req.header('x-token');

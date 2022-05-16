@@ -106,13 +106,13 @@ export class DoExerciseComponent implements OnInit {
         "linkHotspots": [
           {
             "yaw": -2.05,
-            "pitch": -0.47,
+            "pitch": -0.37,
             "rotation": 4.71238898038469,
             "target": targetLeft
           }, 
           {
-            "yaw": -0.025,
-            "pitch": -0.54,
+            "yaw": 0,
+            "pitch": -0.42,
             "rotation": -4.71238898038469,
             "target": targetRight
           }, 
