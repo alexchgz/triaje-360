@@ -5,6 +5,7 @@ import { PacienteEjercicioService } from 'src/app/data/pacienteEjercicio.service
 import { SenderService } from 'src/app/data/sender.service';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
+import { environment } from 'src/environments/environment';
 // import * as Marzipano from 'marzipano';
 var Marzipano = require('marzipano');
 
@@ -15,6 +16,7 @@ var Marzipano = require('marzipano');
 })
 export class DoExerciseComponent implements OnInit {
 
+  urlPrefixPacientes: string = environment.prefix_urlPacientes;
   ejercicio: Ejercicio;
   pacientesEjercicio: PacienteEjercicio[] = [];
   data = {
@@ -27,13 +29,18 @@ export class DoExerciseComponent implements OnInit {
       "viewControlButtons": false
     }
   }
+  posiciones: any[][] = [
+    [{"yaw":-2.3,"pitch":-0.55}, {"yaw":-1.91,"pitch":-0.55}, {"yaw":-1.52,"pitch":-0.55}, {"yaw":-1.13,"pitch":-0.55}, {"yaw":-0.74,"pitch":-0.55}, {"yaw":-0.35,"pitch":-0.55}, {"yaw":0.04,"pitch":-0.55}, {"yaw":0.43,"pitch":-0.55}, {"yaw":0.82,"pitch":-0.55}, {"yaw":1.21,"pitch":-0.55}, {"yaw":1.6,"pitch":-0.55}, {"yaw":1.99,"pitch":-0.55}, {"yaw":2.38,"pitch":-0.55}, {"yaw":2.77,"pitch":-0.55}, {"yaw":3.16,"pitch":-0.55}, {"yaw":3.55,"pitch":-0.55}],
+    [{"yaw":-2.3,"pitch":-0.25}, {"yaw":-1.91,"pitch":-0.25}, {"yaw":-1.52,"pitch":-0.25}, {"yaw":-1.13,"pitch":-0.25}, {"yaw":-0.74,"pitch":-0.25}, {"yaw":-0.35,"pitch":-0.25}, {"yaw":0.04,"pitch":-0.25}, {"yaw":0.43,"pitch":-0.25}, {"yaw":0.82,"pitch":-0.25}, {"yaw":1.21,"pitch":-0.25}, {"yaw":1.6,"pitch":-0.25}, {"yaw":1.99,"pitch":-0.25}, {"yaw":2.38,"pitch":-0.25}, {"yaw":2.77,"pitch":-0.25}, {"yaw":3.16,"pitch":-0.25}, {"yaw":3.55,"pitch":-0.25}],
+    [{"yaw":-2.3,"pitch":0.05},  {"yaw":-1.91,"pitch":0.05},  {"yaw":-1.52,"pitch":0.05},  {"yaw":-1.13,"pitch":0.05},  {"yaw":-0.74,"pitch":0.05},  {"yaw":-0.35,"pitch":0.05},  {"yaw":0.04,"pitch":0.05},  {"yaw":0.43,"pitch":0.05},  {"yaw":0.82,"pitch":0.05},  {"yaw":1.21,"pitch":0.05},  {"yaw":1.6,"pitch":0.05},  {"yaw":1.99,"pitch":0.05},  {"yaw":2.38,"pitch":0.05},  {"yaw":2.77,"pitch":0.05},  {"yaw":3.16,"pitch":0.05},  {"yaw":3.55,"pitch":0.05}],
+    [{"yaw":-2.3,"pitch":0.35},  {"yaw":-1.91,"pitch":0.35},  {"yaw":-1.52,"pitch":0.35},  {"yaw":-1.13,"pitch":0.35},  {"yaw":-0.74,"pitch":0.35},  {"yaw":-0.35,"pitch":0.35},  {"yaw":0.04,"pitch":0.35},  {"yaw":0.43,"pitch":0.35},  {"yaw":0.82,"pitch":0.35},  {"yaw":1.21,"pitch":0.35},  {"yaw":1.6,"pitch":0.35},  {"yaw":1.99,"pitch":0.35},  {"yaw":2.38,"pitch":0.35},  {"yaw":2.77,"pitch":0.35},  {"yaw":3.16,"pitch":0.35},  {"yaw":3.55,"pitch":0.35}]
+  ];
 
   constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
     private pacienteEjercicioService: PacienteEjercicioService) { }
 
   ngOnInit(): void {
     this.getExercise();
-    this.getExercisePatients();
   }
 
   getExercise() {
@@ -57,6 +64,7 @@ export class DoExerciseComponent implements OnInit {
     this.pacienteEjercicioService.getExercisePatients(this.sender.idExercise).subscribe(data => {
       this.pacientesEjercicio = data['pacientesEjercicio'];
       console.log('PE:', this.pacientesEjercicio);
+      this.setPatientsScene();
     },
     error => {
       this.notifications.create('Error', 'No se han podido obtener los Pacientes del Ejercicio', NotificationType.Error, {
@@ -67,6 +75,24 @@ export class DoExerciseComponent implements OnInit {
 
       return;
     })
+  }
+
+  setPatientsScene() {
+    let infoHotspots = [];
+    for(let i=0; i<this.pacientesEjercicio.length; i++) {
+      for(let j=0; j<this.data.scenes.length; j++) {
+        if(this.pacientesEjercicio[i].idImagen['nombre'] == this.data.scenes[j].id) {
+          infoHotspots.push({
+            "yaw": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].yaw,
+            "pitch": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].pitch,
+            "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img']
+          });
+          this.data.scenes[j].infoHotspots = infoHotspots;
+        }
+      }
+    }
+    // console.log(this.data.scenes);
+    this.marzipanoScene();
   }
 
   setImagesScene() {
@@ -120,8 +146,8 @@ export class DoExerciseComponent implements OnInit {
         "infoHotspots": []
       });
     }
-    console.log(this.data.scenes);
-    this.marzipanoScene();
+    
+    this.getExercisePatients();
   }
 
   marzipanoScene(): void {
@@ -523,69 +549,76 @@ export class DoExerciseComponent implements OnInit {
       var wrapper = document.createElement('div');
       wrapper.classList.add('hotspot');
       wrapper.classList.add('info-hotspot');
+      wrapper.style['width'] = '120px';
+      wrapper.style['height'] = '120px';
 
       // Create hotspot/tooltip header.
-      var header = document.createElement('div');
-      header.classList.add('info-hotspot-header');
+      // var header = document.createElement('div');
+      // header.classList.add('info-hotspot-header');
 
       // Create image element.
-      var iconWrapper = document.createElement('div');
-      iconWrapper.classList.add('info-hotspot-icon-wrapper');
+      // var iconWrapper = document.createElement('div');
+      // iconWrapper.classList.add('info-hotspot-icon-wrapper');
       var icon = document.createElement('img');
-      icon.src = '././././assets/img/marzipano/info.png';
+      // icon.src = '././././assets/img/marzipano/info.png';
+      icon.src = hotspot.src;
       icon.classList.add('info-hotspot-icon');
-      iconWrapper.appendChild(icon);
+      icon.style['width'] = '100%';
+      icon.style['height'] = '100%';
+      // iconWrapper.appendChild(icon);
 
       // Create title element.
-      var titleWrapper = document.createElement('div');
-      titleWrapper.classList.add('info-hotspot-title-wrapper');
-      var title = document.createElement('div');
-      title.classList.add('info-hotspot-title');
-      title.innerHTML = hotspot.title;
-      titleWrapper.appendChild(title);
+      // var titleWrapper = document.createElement('div');
+      // titleWrapper.classList.add('info-hotspot-title-wrapper');
+      // var title = document.createElement('div');
+      // title.classList.add('info-hotspot-title');
+      // title.innerHTML = hotspot.title;
+      // titleWrapper.appendChild(title);
 
       // Create close element.
-      var closeWrapper = document.createElement('div');
-      closeWrapper.classList.add('info-hotspot-close-wrapper');
-      var closeIcon = document.createElement('img');
-      closeIcon.src = '././././assets/img/marzipano/close.png';
-      closeIcon.classList.add('info-hotspot-close-icon');
-      closeWrapper.appendChild(closeIcon);
+      // var closeWrapper = document.createElement('div');
+      // closeWrapper.classList.add('info-hotspot-close-wrapper');
+      // var closeIcon = document.createElement('img');
+      // closeIcon.src = '././././assets/img/marzipano/close.png';
+      // closeIcon.classList.add('info-hotspot-close-icon');
+      // closeWrapper.appendChild(closeIcon);
 
       // Construct header element.
-      header.appendChild(iconWrapper);
-      header.appendChild(titleWrapper);
-      header.appendChild(closeWrapper);
+      // header.appendChild(iconWrapper);
+      // header.appendChild(titleWrapper);
+      // header.appendChild(closeWrapper);
 
       // Create text element.
-      var text = document.createElement('div');
-      text.classList.add('info-hotspot-text');
-      text.innerHTML = hotspot.text;
+      // var text = document.createElement('div');
+      // text.classList.add('info-hotspot-text');
+      // text.innerHTML = hotspot.text;
 
       // Place header and text into wrapper element.
-      wrapper.appendChild(header);
-      wrapper.appendChild(text);
+      // wrapper.appendChild(header);
+      // wrapper.appendChild(text);
 
       // Create a modal for the hotspot content to appear on mobile mode.
-      var modal = document.createElement('div');
-      modal.innerHTML = wrapper.innerHTML;
-      modal.classList.add('info-hotspot-modal');
-      document.body.appendChild(modal);
+      // var modal = document.createElement('div');
+      // modal.innerHTML = wrapper.innerHTML;
+      // modal.classList.add('info-hotspot-modal');
+      // document.body.appendChild(modal);
 
-      var toggle = function() {
-        wrapper.classList.toggle('visible');
-        modal.classList.toggle('visible');
-      };
+      // var toggle = function() {
+      //   wrapper.classList.toggle('visible');
+      //   modal.classList.toggle('visible');
+      // };
 
       // Show content when hotspot is clicked.
-      wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
+      // wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
 
       // Hide content when close icon is clicked.
-      modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
+      // modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
 
       // Prevent touch and scroll events from reaching the parent element.
       // This prevents the view control logic from interfering with the hotspot.
       stopTouchAndScrollEventPropagation(wrapper);
+
+      wrapper.appendChild(icon);
 
       return wrapper;
     }
