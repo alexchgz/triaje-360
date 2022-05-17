@@ -6,7 +6,6 @@ import { SenderService } from 'src/app/data/sender.service';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 import { environment } from 'src/environments/environment';
-// import * as Marzipano from 'marzipano';
 var Marzipano = require('marzipano');
 
 @Component({
@@ -78,20 +77,18 @@ export class DoExerciseComponent implements OnInit {
   }
 
   setPatientsScene() {
-    let infoHotspots = [];
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       for(let j=0; j<this.data.scenes.length; j++) {
         if(this.pacientesEjercicio[i].idImagen['nombre'] == this.data.scenes[j].id) {
-          infoHotspots.push({
+            this.data.scenes[j].infoHotspots.push({
             "yaw": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].yaw,
             "pitch": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].pitch,
             "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img']
           });
-          this.data.scenes[j].infoHotspots = infoHotspots;
         }
       }
     }
-    // console.log(this.data.scenes);
+    console.log(this.data.scenes);
     this.marzipanoScene();
   }
 
@@ -151,170 +148,10 @@ export class DoExerciseComponent implements OnInit {
   }
 
   marzipanoScene(): void {
-    // var screenfull = window.screenfull;
-    var data = {
-      "scenes": [
-        // {
-        //   "id": "0-r0010362",
-        //   "name": "R0010362",
-        //   "levels": [
-        //     {
-        //       "tileSize": 256,
-        //       "size": 256,
-        //       "fallbackOnly": true
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 512
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 1024
-        //     }
-        //   ],
-        //   "faceSize": 896,
-        //   "initialViewParameters": {
-        //     "yaw": 0.6055223935490552,
-        //     "pitch": -0.01992316828963503,
-        //     "fov": 1.3687812585745385
-        //   },
-        //   "linkHotspots": [
-        //     {
-        //       "yaw": -0.3048205232822383,
-        //       "pitch": 0.13273023062821565,
-        //       "rotation": 4.71238898038469,
-        //       "target": "1-r0010355"
-        //     }
-        //   ],
-        //   "infoHotspots": [
-        //     {
-        //       "yaw": 0.27690254020700955,
-        //       "pitch": 0.08942986117396678,
-        //       "title": "Info",
-        //       "text": "Hotspot Info"
-        //     }
-        //   ]
-        // },
-        // {
-        //   "id": "1-r0010355",
-        //   "name": "R0010355",
-        //   "levels": [
-        //     {
-        //       "tileSize": 256,
-        //       "size": 256,
-        //       "fallbackOnly": true
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 512
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 1024
-        //     }
-        //   ],
-        //   "faceSize": 896,
-        //   "initialViewParameters": {
-        //     "pitch": 0,
-        //     "yaw": 0,
-        //     "fov": 1.5707963267948966
-        //   },
-        //   "linkHotspots": [
-        //     {
-        //       "yaw": -0.3048205232822383,
-        //       "pitch": 0.13273023062821565,
-        //       "rotation": 4.71238898038469,
-        //       "target": "2-r0010442"
-        //     }
-        //   ],
-        //   "infoHotspots": []
-        // },
-        // {
-        //   "id": "2-r0010442",
-        //   "name": "R0010442",
-        //   "levels": [
-        //     {
-        //       "tileSize": 256,
-        //       "size": 256,
-        //       "fallbackOnly": true
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 512
-        //     },
-        //     {
-        //       "tileSize": 512,
-        //       "size": 1024
-        //     }
-        //   ],
-        //   "faceSize": 896,
-        //   "initialViewParameters": {
-        //     "yaw": -1.0006674819595993,
-        //     "pitch": 0.0473607522179762,
-        //     "fov": 1.3687812585745385
-        //   },
-        //   "linkHotspots": [
-        //     {
-        //       "yaw": -0.3048205232822383,
-        //       "pitch": 0.13273023062821565,
-        //       "rotation": 4.71238898038469,
-        //       "target": "I-0001"
-        //     }
-        //   ],
-        //   "infoHotspots": []
-        // },
-        {
-          "id": "I-0001",
-          "name": "Imagen 1",
-          "levels": [
-            {
-              "tileSize": 256,
-              "size": 256,
-              "fallbackOnly": true
-            },
-            {
-              "tileSize": 512,
-              "size": 512
-            },
-            // {
-            //   "tileSize": 512,
-            //   "size": 1024
-            // }
-          ],
-          "faceSize": 896,
-          "initialViewParameters": {
-            "yaw": -1.0006674819595993,
-            "pitch": 0.0473607522179762
-          },
-          "linkHotspots": [
-            {
-                    "yaw": -0.3048205232822383,
-                    "pitch": 0.13273023062821565,
-                    "rotation": 4.71238898038469,
-                    "target": "I-0001"
-                  }
-          ],
-          "infoHotspots": [
-          ]
-        }
-      ],
-      "name": "Prueba1",
-      "settings": {
-        "mouseViewMode": "drag",
-        "autorotateEnabled": false,
-        "fullscreenButton": false,
-        "viewControlButtons": false
-      }
-    };
 
     // Grab elements from DOM.
     var panoElement = document.querySelector('#pano');
     var sceneNameElement = document.querySelector('#titleBar .sceneName');
-    var sceneListElement = document.querySelector('#sceneList');
-    var sceneElements = document.querySelectorAll('#sceneList .scene');
-    var sceneListToggleElement = document.querySelector('#sceneListToggle');
-    var autorotateToggleElement = document.querySelector('#autorotateToggle');
-    var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
     // Viewer options.
     var viewerOpts = {
@@ -363,56 +200,6 @@ export class DoExerciseComponent implements OnInit {
       };
     });
 
-    // Set up autorotate, if enabled.
-    var autorotate = Marzipano.autorotate({
-      yawSpeed: 0.03,
-      targetPitch: 0,
-      targetFov: Math.PI/2
-    });
-    if (this.data.settings.autorotateEnabled) {
-      autorotateToggleElement.classList.add('enabled');
-    }
-
-    // Set handler for autorotate toggle.
-    // autorotateToggleElement.addEventListener('click', toggleAutorotate);
-
-    // Set up fullscreen mode, if supported.
-    // if (screenfull.enabled && data.settings.fullscreenButton) {
-    //   document.body.classList.add('fullscreen-enabled');
-    //   fullscreenToggleElement.addEventListener('click', function() {
-    //     screenfull.toggle();
-    //   });
-    //   screenfull.on('change', function() {
-    //     if (screenfull.isFullscreen) {
-    //       fullscreenToggleElement.classList.add('enabled');
-    //     } else {
-    //       fullscreenToggleElement.classList.remove('enabled');
-    //     }
-    //   });
-    // } else {
-    //   document.body.classList.add('fullscreen-disabled');
-    // }
-
-    // Set handler for scene list toggle.
-    // sceneListToggleElement.addEventListener('click', toggleSceneList);
-
-    // Start with the scene list open on desktop.
-    // if (!document.body.classList.contains('mobile')) {
-    //   showSceneList();
-    // }
-
-    // Set handler for scene switch.
-    // scenes.forEach(function(scene) {
-    //   var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
-    //   el.addEventListener('click', function() {
-    //     switchScene(scene);
-    //     // On mobile, hide scene list after selecting a scene.
-    //     if (document.body.classList.contains('mobile')) {
-    //       hideSceneList();
-    //     }
-    //   });
-    // });
-
     // DOM elements for view controls.
     var viewUpElement = document.querySelector('#viewUp');
     var viewDownElement = document.querySelector('#viewDown');
@@ -439,66 +226,14 @@ export class DoExerciseComponent implements OnInit {
     }
 
     function switchScene(scene): void {
-      // stopAutorotate();
       scene.view.setParameters(scene.data.initialViewParameters);
       scene.scene.switchTo();
-      // startAutorotate();
       updateSceneName(scene);
-      updateSceneList(scene);
     }
 
     function updateSceneName(scene) {
       sceneNameElement.innerHTML = sanitize(scene.data.name);
     }
-
-    function updateSceneList(scene): void {
-      for (var i = 0; i < sceneElements.length; i++) {
-        var el = sceneElements[i];
-        if (el.getAttribute('data-id') === scene.data.id) {
-          el.classList.add('current');
-        } else {
-          el.classList.remove('current');
-        }
-      }
-    }
-
-    function showSceneList(): void {
-      sceneListElement.classList.add('enabled');
-      sceneListToggleElement.classList.add('enabled');
-    }
-
-    function hideSceneList(): void {
-      sceneListElement.classList.remove('enabled');
-      sceneListToggleElement.classList.remove('enabled');
-    }
-
-    function toggleSceneList(): void {
-      sceneListElement.classList.toggle('enabled');
-      sceneListToggleElement.classList.toggle('enabled');
-    }
-
-    // function startAutorotate(): void {
-    //   if (!autorotateToggleElement.classList.contains('enabled')) {
-    //     return;
-    //   }
-    //   viewer.startMovement(autorotate);
-    //   viewer.setIdleMovement(3000, autorotate);
-    // }
-
-    // function stopAutorotate(): void {
-    //   viewer.stopMovement();
-    //   viewer.setIdleMovement(Infinity);
-    // }
-
-    // function toggleAutorotate(): void {
-    //   if (autorotateToggleElement.classList.contains('enabled')) {
-    //     autorotateToggleElement.classList.remove('enabled');
-    //     stopAutorotate();
-    //   } else {
-    //     autorotateToggleElement.classList.add('enabled');
-    //     startAutorotate();
-    //   }
-    // }
 
     function createLinkHotspotElement(hotspot: any) {
       // Create wrapper element to hold icon and tooltip.
@@ -536,7 +271,6 @@ export class DoExerciseComponent implements OnInit {
       var tooltip = document.createElement('div');
       tooltip.classList.add('hotspot-tooltip');
       tooltip.classList.add('link-hotspot-tooltip');
-      // tooltip.innerHTML = findSceneDataById(hotspot.target).name;
 
       wrapper.appendChild(icon);
       wrapper.appendChild(tooltip);
@@ -638,15 +372,6 @@ export class DoExerciseComponent implements OnInit {
       for (var i = 0; i < scenes.length; i++) {
         if (scenes[i].data.id === id) {
           return scenes[i];
-        }
-      }
-      return null;
-    }
-
-    function findSceneDataById(id) {
-      for (var i = 0; i < this.data.scenes.length; i++) {
-        if (this.data.scenes[i].id === id) {
-          return this.data.scenes[i];
         }
       }
       return null;

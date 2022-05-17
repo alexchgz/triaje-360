@@ -636,13 +636,10 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   setPacientesNoUbicados() {
-    console.log('DEP:', this.dataEjercicio.pacientes);
     this.pacientesNoUbicados = [];
     for(let a=0; a<this.dataEjercicio.pacientes.length; a++) {
-      console.log('entro');
       this.pacientesNoUbicados.push(this.dataEjercicio.pacientes[a]);
     }
-    console.log('NU:', this.pacientesNoUbicados);
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       for(let j=0; j<this.pacientesNoUbicados.length; j++) {
         if(this.pacientesNoUbicados[j] != undefined && this.pacientesEjercicio[i].idPaciente['_id'] == this.pacientesNoUbicados[j].uid) {
@@ -651,8 +648,6 @@ export class WizardEndStepComponent implements OnInit {
         }
       }
     }
-  
-    console.log('NU:', this.pacientesNoUbicados);
   }
 
   getExercisePatients() {
@@ -661,7 +656,6 @@ export class WizardEndStepComponent implements OnInit {
         if (data['ok']) {
           this.pacientesEjercicio = data['pacientesEjercicio'];
           this.checkPacientesEjercicio();
-          console.log('PE:', this.pacientesEjercicio);
           this.setTableData();
           this.setPacientesNoUbicados();
         }
@@ -688,7 +682,6 @@ export class WizardEndStepComponent implements OnInit {
       }
       if(!esta) {
         this.dislocatePatient(undefined, undefined, this.pacientesEjercicio[i]);
-        console.log('NO ESTA');
         console.log(this.pacientesEjercicio[i]);
       }
       esta = false;
@@ -742,10 +735,6 @@ export class WizardEndStepComponent implements OnInit {
     }
     this.pacienteEjercicioService.createExercisePatient(data)
         .subscribe( data => {
-          console.log('PE:', this.pacientesEjercicio);
-          console.log('DEP:', this.dataEjercicio.pacientes);
-          console.log('NU:', this.pacientesNoUbicados);
-          // console.log(data['populatePacienteEjercicio']);
           this.pacientesEjercicio.push(data['populatePacienteEjercicio']);
           this.notifications.create('Registro creado', 'Se ha creado el registro del Paciente Ejercicio', NotificationType.Success, {
             theClass: 'outline primary',
@@ -782,11 +771,9 @@ export class WizardEndStepComponent implements OnInit {
     else {
       pe = pacEj;
     }
-    console.log('PE:', pe);
     
     this.pacienteEjercicioService.dropExercisePatient(pe.uid).subscribe(
       data => {
-        console.log('PE:', this.pacientesEjercicio);
         let encontrado = false;
         for(let i=0; i<this.pacientesEjercicio.length && !encontrado; i++) {
           if(this.pacientesEjercicio[i] == pe) {
@@ -795,7 +782,6 @@ export class WizardEndStepComponent implements OnInit {
           }
         }
         // this.pacientesEjercicio.splice(this.pacientesEjercicio.indexOf(pe, 1));
-        console.log('PE:', this.pacientesEjercicio);
         if(!pacEj) {
           this.table[y][x] = '';
         }
