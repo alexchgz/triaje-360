@@ -284,7 +284,8 @@
         "exercise-limited-attempts": "¿Intentos Limitados?",
         "show-student-register-modal-title": "Registro de Intentos",
         "select-patient-img-modal-title": "Seleccionar Imagen Paciente",
-        "locate-patient-modal-title": "Seleccionar Paciente a Ubicar"
+        "locate-patient-modal-title": "Seleccionar Paciente a Ubicar",
+        "triar-patient-modal-title": "Triar Paciente"
     },
     "chat": {
         "messages": "Mensajes",

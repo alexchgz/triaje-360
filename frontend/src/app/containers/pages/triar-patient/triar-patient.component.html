@@ -1,47 +1,52 @@
 <ng-template #template>
     <div class="modal-header">
         <div class="header1">
-            <h4 class="modal-title pull-left">{{'pages.locate-patient-modal-title' | translate}}</h4>
+            <h4 class="modal-title pull-left">{{'pages.triar-patient-modal-title' | translate}}</h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
                 <span aria-hidden="true">&times;</span>
               </button>
         </div>
     </div>
-    <div class="modal-body">
-        <p>No hay pacientes para ubicar</p>
-        <!-- <div *ngIf="pacientes!=undefined && pacientes.length > 0" class="pacientes">
-            <div *ngFor="let p of pacientes; let i=index">
-                <label *ngIf="p!= pacienteSeleccionado && p != undefined" class="noSelected">
-                    <img [id]="'paciente'+i" src={{urlPrefixPacientes+p.img}} (click)='selectPatient(p, i)'>
-                    <i class="simple-icon-check"></i>
-                    <div class="infoPaciente">
-                        <p class="nombre_paciente"><b>Paciente {{i+1}}</b></p>
-                        <p *ngIf="p.camina"><b>&#8226; Camina:</b> Sí</p>
-                        <p *ngIf="!p.camina"><b>&#8226; Camina:</b> No</p>
-                        <p><b>&#8226; Descripción:</b> {{p.descripcion}}</p>
-                        <p><b>&#8226; Color:</b> {{p.color}}</p>
-                        <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
-                        <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
-                    </div>
-                </label>
-                <label *ngIf="p == pacienteSeleccionado && p != undefined" class="selected">
-                    <img [id]="'paciente'+i" src={{urlPrefixPacientes+p.img}} (click)='selectPatient(p, i)'>
-                    <i class="simple-icon-check"></i>
-                    <div class="infoPaciente">
-                        <p class="nombre_paciente"><b>Paciente {{i+1}}</b></p>
-                        <p *ngIf="p.camina"><b>&#8226; Camina:</b> Sí</p>
-                        <p *ngIf="!p.camina"><b>&#8226; Camina:</b> No</p>
-                        <p><b>&#8226; Descripción:</b> {{p.descripcion}}</p>
-                        <p><b>&#8226; Color:</b> {{p.color}}</p>
-                        <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
-                        <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
-                    </div>
-                </label>
+    <div class="modal-body" id="modal-body">
+        <div class="separated">
+            <div class="separated1">
+                <div class="imgs">
+                    <label>
+                        <img src={{urlPrefixPacientes+paciente.img}}>
+                        <!-- <i class="simple-icon-check"></i> -->
+                    </label>
+                </div>
+                <div class="descripcion">
+                    <p>{{paciente.descripcion}}</p>
+                </div>
             </div>
-        </div> -->
+            
+            <div class="separated2">
+                <div class="color" id="color">
+                    <label>{{ 'wizard.colour' | translate }}</label>
+                    <label class="w-100">
+                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="color" [(ngModel)]="pacienteTriado.color" required>
+                            <ng-option *ngFor="let item of colours" [value]="item">{{item}}
+                            </ng-option>
+                        </ng-select>
+                    </label>
+                </div>
+                <div class="acciones" id="color">
+                    <label>{{ 'wizard.actions' | translate }}</label>
+                    <label class="w-100">
+                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="acciones" required>
+                            <ng-option *ngFor="let item of actions" [value]="item">{{item.nombre}}
+                            </ng-option>
+                        </ng-select>
+                    </label>
+                    <button type="button" class="btn btn-primary">Realizar</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">Volver</button>
+        <button type="button" class="btn btn-primary" (click)="closeModal()">Triar</button>
     </div>
 </ng-template>
 <simple-notifications></simple-notifications>

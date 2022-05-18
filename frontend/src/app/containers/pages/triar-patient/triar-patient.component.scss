@@ -12,31 +12,51 @@ p {
     margin-right: 3em;
 }
 
-.pacientes {
+.separated {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0 auto 2rem auto;
-    height: 330px;
-    position: relative;
-    overflow-y: scroll;
-    overflow-x: visible !important;
 }
 
-    .pacientes label {
-        height: 90px;
-        width: 90px;
+.separated1, .separated2 {
+    flex: 1;
+    width: 45%;
+    margin: 2%;
+}
+
+.descripcion {
+    width: 250px;
+    border: 1px solid #145388;
+    border-radius: 25px;
+    margin: 10px;
+    justify-content: center;
+}
+
+.descripcion p {
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    text-align: center;
+    padding: 10px 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.imgs {
+    flex-wrap: wrap;
+    position: relative;
+    width: 275px;
+    text-align: center;
+}
+
+    .imgs label {
+        height: 190px;
+        width: 190px;
         margin: 10px;
-        border-radius: 3px;
+        border: 1px solid #145388;
+        border-radius: 25px;
         overflow: hidden;
         // box-shadow: 0 3px 5px #145388;
     }
 
-    .pacientes label:hover {
-        border: 3px solid #145388;
-    }
-
-        .pacientes label img {
+        .imgs label img {
             height: 100%;
             width: 100%;
             padding: .5em;
@@ -44,32 +64,24 @@ p {
             cursor: pointer;
         }
 
-        .pacientes label .infoPaciente {
-            position: fixed;
-            display: none;
-            // display: block;
-            border: 1px solid #145388;
-            border-radius: 10px;
-            width: 250px;
-            transform: translateX(-80px);
-            padding: 10px;
-            margin-top: .5em;
-            background-color: #fff;
-        }
-            .infoPaciente .nombre_paciente {
-                text-align: center;
-            }
+.color, .acciones {
+    margin: 10px;
+}
 
-            .pacientes label .infoPaciente p {
-                width: 100%;
-                height: auto;
-                margin-bottom: .5em;
-                margin-right: .5em;
-            }
+.acciones {
+    margin-top: 2em;
+}
 
-        .pacientes label:hover .infoPaciente {
-            display: block;
-        }
+.ng-select {
+    padding: 0 !important;
+    border: none;
+    width: 250px;
+}
+
+.acciones .btn {
+    padding: .5em 1em !important;
+    margin-top: .5em;
+}
 
 .simple-icon-check::before {
     background-color: #145388;
@@ -78,26 +90,6 @@ p {
     border-radius: 50px;
     border-color: #fff;
     font-size: 18px;
-}
-
-.selected {
-    border: 5px solid #145388 !important;
-}
-
-.selected .simple-icon-check {
-    display: block;
-    position: absolute;
-    transform: translate(58px, -75px);
-    color: #145388;
-}
-
-.noSelected {
-    border: none;
-}
-
-.noSelected .simple-icon-check {
-    display: none;
-    color: #145388;
 }
 
 ///////// SCROLLBAR /////////

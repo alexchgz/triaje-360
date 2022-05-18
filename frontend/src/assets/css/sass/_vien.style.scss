@@ -7487,6 +7487,7 @@ app-profile-who-to-follow app-user-follow:last-of-type > div {
 .rounded {
   .modal .modal-content {
     border-radius: $border-radius-rounded;
+    margin-top: 10% !important;
   }
   .simple-notification {
     border-radius: $border-radius-rounded;

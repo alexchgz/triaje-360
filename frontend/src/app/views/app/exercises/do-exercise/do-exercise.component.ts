@@ -87,7 +87,8 @@ export class DoExerciseComponent implements OnInit {
             this.data.scenes[j].infoHotspots.push({
             "yaw": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].yaw,
             "pitch": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].pitch,
-            "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img']
+            "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img'],
+            "paciente": this.pacientesEjercicio[i].idPaciente
           });
         }
       }
@@ -292,7 +293,7 @@ export class DoExerciseComponent implements OnInit {
 
       // Add click event handler.
       wrapper.addEventListener('click', function() {
-        modal.show();
+        modal.show(hotspot.paciente);
       });
 
       // Create hotspot/tooltip header.
