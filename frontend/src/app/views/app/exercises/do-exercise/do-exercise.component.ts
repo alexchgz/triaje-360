@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { PacienteEjercicioService } from 'src/app/data/pacienteEjercicio.service';
@@ -6,6 +6,7 @@ import { SenderService } from 'src/app/data/sender.service';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 import { environment } from 'src/environments/environment';
+import { TriarPatientComponent } from '../../../../containers/pages/triar-patient/triar-patient.component';
 var Marzipano = require('marzipano');
 
 @Component({
@@ -13,6 +14,7 @@ var Marzipano = require('marzipano');
   templateUrl: './do-exercise.component.html',
   styleUrls: ['./do-exercise.component.scss']
 })
+
 export class DoExerciseComponent implements OnInit {
 
   urlPrefixPacientes: string = environment.prefix_urlPacientes;
@@ -34,6 +36,8 @@ export class DoExerciseComponent implements OnInit {
     [{"yaw":-2.3,"pitch":0.05},  {"yaw":-1.91,"pitch":0.05},  {"yaw":-1.52,"pitch":0.05},  {"yaw":-1.13,"pitch":0.05},  {"yaw":-0.74,"pitch":0.05},  {"yaw":-0.35,"pitch":0.05},  {"yaw":0.04,"pitch":0.05},  {"yaw":0.43,"pitch":0.05},  {"yaw":0.82,"pitch":0.05},  {"yaw":1.21,"pitch":0.05},  {"yaw":1.6,"pitch":0.05},  {"yaw":1.99,"pitch":0.05},  {"yaw":2.38,"pitch":0.05},  {"yaw":2.77,"pitch":0.05},  {"yaw":3.16,"pitch":0.05},  {"yaw":3.55,"pitch":0.05}],
     [{"yaw":-2.3,"pitch":0.35},  {"yaw":-1.91,"pitch":0.35},  {"yaw":-1.52,"pitch":0.35},  {"yaw":-1.13,"pitch":0.35},  {"yaw":-0.74,"pitch":0.35},  {"yaw":-0.35,"pitch":0.35},  {"yaw":0.04,"pitch":0.35},  {"yaw":0.43,"pitch":0.35},  {"yaw":0.82,"pitch":0.35},  {"yaw":1.21,"pitch":0.35},  {"yaw":1.6,"pitch":0.35},  {"yaw":1.99,"pitch":0.35},  {"yaw":2.38,"pitch":0.35},  {"yaw":2.77,"pitch":0.35},  {"yaw":3.16,"pitch":0.35},  {"yaw":3.55,"pitch":0.35}]
   ];
+
+  @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
 
   constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
     private pacienteEjercicioService: PacienteEjercicioService) { }
@@ -89,7 +93,7 @@ export class DoExerciseComponent implements OnInit {
       }
     }
     console.log(this.data.scenes);
-    this.marzipanoScene();
+    this.marzipanoScene(this.triarModalRef);
   }
 
   setImagesScene() {
@@ -147,7 +151,7 @@ export class DoExerciseComponent implements OnInit {
     this.getExercisePatients();
   }
 
-  marzipanoScene(): void {
+  marzipanoScene(modal: any): void {
 
     // Grab elements from DOM.
     var panoElement = document.querySelector('#pano');
@@ -285,6 +289,11 @@ export class DoExerciseComponent implements OnInit {
       wrapper.classList.add('info-hotspot');
       wrapper.style['width'] = '120px';
       wrapper.style['height'] = '120px';
+
+      // Add click event handler.
+      wrapper.addEventListener('click', function() {
+        modal.show();
+      });
 
       // Create hotspot/tooltip header.
       // var header = document.createElement('div');

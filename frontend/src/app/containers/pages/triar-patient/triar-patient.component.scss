@@ -1,0 +1,119 @@
+
+.modal-header, p {
+    display: block;
+}
+
+.header1 {
+    display: flex;
+    margin-bottom: .3em;
+}
+
+p {
+    margin-right: 3em;
+}
+
+.pacientes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto 2rem auto;
+    height: 330px;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: visible !important;
+}
+
+    .pacientes label {
+        height: 90px;
+        width: 90px;
+        margin: 10px;
+        border-radius: 3px;
+        overflow: hidden;
+        // box-shadow: 0 3px 5px #145388;
+    }
+
+    .pacientes label:hover {
+        border: 3px solid #145388;
+    }
+
+        .pacientes label img {
+            height: 100%;
+            width: 100%;
+            padding: .5em;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .pacientes label .infoPaciente {
+            position: fixed;
+            display: none;
+            // display: block;
+            border: 1px solid #145388;
+            border-radius: 10px;
+            width: 250px;
+            transform: translateX(-80px);
+            padding: 10px;
+            margin-top: .5em;
+            background-color: #fff;
+        }
+            .infoPaciente .nombre_paciente {
+                text-align: center;
+            }
+
+            .pacientes label .infoPaciente p {
+                width: 100%;
+                height: auto;
+                margin-bottom: .5em;
+                margin-right: .5em;
+            }
+
+        .pacientes label:hover .infoPaciente {
+            display: block;
+        }
+
+.simple-icon-check::before {
+    background-color: #145388;
+    color: #fff;
+    padding: 0em;
+    border-radius: 50px;
+    border-color: #fff;
+    font-size: 18px;
+}
+
+.selected {
+    border: 5px solid #145388 !important;
+}
+
+.selected .simple-icon-check {
+    display: block;
+    position: absolute;
+    transform: translate(58px, -75px);
+    color: #145388;
+}
+
+.noSelected {
+    border: none;
+}
+
+.noSelected .simple-icon-check {
+    display: none;
+    color: #145388;
+}
+
+///////// SCROLLBAR /////////
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  //   background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #145388;
+    border-radius: 10px;
+  }
