@@ -7,12 +7,14 @@ import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 import { environment } from 'src/environments/environment';
 import { TriarPatientComponent } from '../../../../containers/pages/triar-patient/triar-patient.component';
+import { DatePipe } from '@angular/common';
 var Marzipano = require('marzipano');
 
 @Component({
   selector: 'app-do-exercise',
   templateUrl: './do-exercise.component.html',
-  styleUrls: ['./do-exercise.component.scss']
+  styleUrls: ['./do-exercise.component.scss'],
+  providers: [DatePipe]
 })
 
 export class DoExerciseComponent implements OnInit {
@@ -29,21 +31,53 @@ export class DoExerciseComponent implements OnInit {
       "fullscreenButton": false,
       "viewControlButtons": false
     }
-  }
+  };
   posiciones: any[][] = [
     [{"yaw":-2.3,"pitch":-0.55}, {"yaw":-1.91,"pitch":-0.55}, {"yaw":-1.52,"pitch":-0.55}, {"yaw":-1.13,"pitch":-0.55}, {"yaw":-0.74,"pitch":-0.55}, {"yaw":-0.35,"pitch":-0.55}, {"yaw":0.04,"pitch":-0.55}, {"yaw":0.43,"pitch":-0.55}, {"yaw":0.82,"pitch":-0.55}, {"yaw":1.21,"pitch":-0.55}, {"yaw":1.6,"pitch":-0.55}, {"yaw":1.99,"pitch":-0.55}, {"yaw":2.38,"pitch":-0.55}, {"yaw":2.77,"pitch":-0.55}, {"yaw":3.16,"pitch":-0.55}, {"yaw":3.55,"pitch":-0.55}],
     [{"yaw":-2.3,"pitch":-0.25}, {"yaw":-1.91,"pitch":-0.25}, {"yaw":-1.52,"pitch":-0.25}, {"yaw":-1.13,"pitch":-0.25}, {"yaw":-0.74,"pitch":-0.25}, {"yaw":-0.35,"pitch":-0.25}, {"yaw":0.04,"pitch":-0.25}, {"yaw":0.43,"pitch":-0.25}, {"yaw":0.82,"pitch":-0.25}, {"yaw":1.21,"pitch":-0.25}, {"yaw":1.6,"pitch":-0.25}, {"yaw":1.99,"pitch":-0.25}, {"yaw":2.38,"pitch":-0.25}, {"yaw":2.77,"pitch":-0.25}, {"yaw":3.16,"pitch":-0.25}, {"yaw":3.55,"pitch":-0.25}],
     [{"yaw":-2.3,"pitch":0.05},  {"yaw":-1.91,"pitch":0.05},  {"yaw":-1.52,"pitch":0.05},  {"yaw":-1.13,"pitch":0.05},  {"yaw":-0.74,"pitch":0.05},  {"yaw":-0.35,"pitch":0.05},  {"yaw":0.04,"pitch":0.05},  {"yaw":0.43,"pitch":0.05},  {"yaw":0.82,"pitch":0.05},  {"yaw":1.21,"pitch":0.05},  {"yaw":1.6,"pitch":0.05},  {"yaw":1.99,"pitch":0.05},  {"yaw":2.38,"pitch":0.05},  {"yaw":2.77,"pitch":0.05},  {"yaw":3.16,"pitch":0.05},  {"yaw":3.55,"pitch":0.05}],
     [{"yaw":-2.3,"pitch":0.35},  {"yaw":-1.91,"pitch":0.35},  {"yaw":-1.52,"pitch":0.35},  {"yaw":-1.13,"pitch":0.35},  {"yaw":-0.74,"pitch":0.35},  {"yaw":-0.35,"pitch":0.35},  {"yaw":0.04,"pitch":0.35},  {"yaw":0.43,"pitch":0.35},  {"yaw":0.82,"pitch":0.35},  {"yaw":1.21,"pitch":0.35},  {"yaw":1.6,"pitch":0.35},  {"yaw":1.99,"pitch":0.35},  {"yaw":2.38,"pitch":0.35},  {"yaw":2.77,"pitch":0.35},  {"yaw":3.16,"pitch":0.35},  {"yaw":3.55,"pitch":0.35}]
   ];
+  horas: number = 0;
+  minutos: number = 0;
+  segundos: number = 0;
+  time: string = undefined;
 
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
 
   constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
-    private pacienteEjercicioService: PacienteEjercicioService) { }
+    private pacienteEjercicioService: PacienteEjercicioService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getExercise();
+    this.resetTimer();
+    this.formatTime();
+    setInterval(() => this.tick(), 1000);
+  }
+
+  resetTimer() {
+    this.horas = 0;
+    this.minutos = 0;
+    this.segundos = 0;
+  }
+
+  tick(): void {
+    if(++this.segundos > 59) {
+      this.segundos = 0;
+      if(++this.minutos > 59) {
+        this.minutos = 0;
+        if(++this.horas > 23) {
+          this.horas = 0;
+        }
+      }
+    }
+    this.formatTime();
+  }
+
+  formatTime() {
+    let time = new Date(0, 0, 0, this.horas, this.minutos, this.segundos);
+    this.time = this.datePipe.transform(time, 'HH:mm:ss');
+    // console.log('TIME: ', this.time);
   }
 
   getExercise() {
