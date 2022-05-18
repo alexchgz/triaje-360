@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AccionService } from 'src/app/data/accion.service';
@@ -27,6 +27,7 @@ export class TriarPatientComponent implements OnInit {
   }
   actions: Accion[] = [];
 
+  @Output() enviarColor = new EventEmitter<String>();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private accionService: AccionService, private notifications: NotificationsService) { }
@@ -52,6 +53,10 @@ export class TriarPatientComponent implements OnInit {
         return;
       }
     );
+  }
+
+  asignarColor(e) {
+    this.enviarColor.emit(e); 
   }
 
   show(p: Paciente) {

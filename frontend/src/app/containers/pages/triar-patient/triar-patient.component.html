@@ -25,7 +25,7 @@
                 <div class="color" id="color">
                     <label>{{ 'wizard.colour' | translate }}</label>
                     <label class="w-100">
-                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="color" [(ngModel)]="pacienteTriado.color" required>
+                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="color" (change)="asignarColor($event)" [(ngModel)]="pacienteTriado.color" required>
                             <ng-option *ngFor="let item of colours" [value]="item">{{item}}
                             </ng-option>
                         </ng-select>

@@ -355,6 +355,49 @@
     border-color: #145388;
 }
 
+ .hotspot .simple-icon-check:before {
+    content: "\e080";
+    font-size: 12px;
+    padding: .4em;
+    border-radius: 50px;
+}
+
+.hotspot .simple-icon-check {
+    display: block;
+    position: absolute;
+    transform: translate(85px, -120px);
+}
+
+.hotspot .verde::before {
+    color: green;
+    background-color: green;
+    display: block;
+}
+
+.hotspot .amarillo::before {
+    color: yellow;
+    background-color: yellow;
+    display: block;
+}
+
+.hotspot .rojo::before {
+    color: red;
+    background-color: red;
+    display: block;
+}
+
+.hotspot .negro::before {
+    color: black;
+    background-color: black;
+    display: block;
+}
+
+.hotspot .no_triado::before {
+    color: transparent;
+    background-color: transparent;
+    display: none;
+}
+
 .simple-icon-clock:before {
     content: "\e081";
 }

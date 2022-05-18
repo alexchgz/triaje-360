@@ -152,6 +152,48 @@ export class DoExerciseComponent implements OnInit {
     this.getExercisePatients();
   }
 
+  setColour(e): void {
+    // console.log(e);
+    var icon = document.querySelector('.simple-icon-check');
+    switch (e) {
+      case 'Verde':
+        icon.classList.remove('amarillo');
+        icon.classList.remove('rojo');
+        icon.classList.remove('negro');
+        icon.classList.remove('no_triado');
+        icon.classList.add('verde');
+        break;
+      case 'Amarillo':
+        icon.classList.remove('verde');
+        icon.classList.remove('rojo');
+        icon.classList.remove('negro');
+        icon.classList.remove('no_triado');
+        icon.classList.add('amarillo');
+        break;
+      case 'Rojo':
+        icon.classList.remove('verde');
+        icon.classList.remove('amarillo');
+        icon.classList.remove('negro');
+        icon.classList.remove('no_triado');
+        icon.classList.add('rojo');
+        break;
+      case 'Negro':
+        icon.classList.remove('verde');
+        icon.classList.remove('amarillo');
+        icon.classList.remove('rojo');
+        icon.classList.remove('no_triado');
+        icon.classList.add('negro');
+        break;
+      default:
+        icon.classList.remove('verde');
+        icon.classList.remove('amarillo');
+        icon.classList.remove('rojo');
+        icon.classList.remove('negro');
+        icon.classList.add('no_triado');
+        break;
+    }
+  }
+
   marzipanoScene(modal: any): void {
 
     // Grab elements from DOM.
@@ -311,6 +353,11 @@ export class DoExerciseComponent implements OnInit {
       icon.style['height'] = '100%';
       // iconWrapper.appendChild(icon);
 
+      var color = document.createElement('i');
+      color.classList.add('simple-icon-check');
+      color.classList.add('no_triado');
+
+
       // Create title element.
       // var titleWrapper = document.createElement('div');
       // titleWrapper.classList.add('info-hotspot-title-wrapper');
@@ -363,6 +410,7 @@ export class DoExerciseComponent implements OnInit {
       stopTouchAndScrollEventPropagation(wrapper);
 
       wrapper.appendChild(icon);
+      wrapper.appendChild(color);
 
       return wrapper;
     }

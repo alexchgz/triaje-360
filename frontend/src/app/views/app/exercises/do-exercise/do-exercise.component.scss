@@ -33,6 +33,27 @@
     color: inherit;
   }
 
+  .simple-icon-check::before {
+    background-color: green;
+    color: green;
+    padding: 0em;
+    border-radius: 50px;
+    // border-color: #fff;
+    // font-size: 18px;
+  }
+
+  i {
+    display: block;
+    position: absolute;
+    transform: translate(58px, -75px);
+    color: green;
+  }
+
+  // .simple-icon-check {
+  //   display: none;
+  //   color: #145388;
+  // }
+
   // #contador, #pano, #titleBar {
   //   z-index: -1;
   // }
