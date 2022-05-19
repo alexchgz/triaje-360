@@ -122,7 +122,9 @@ export class DoExerciseComponent implements OnInit {
             "yaw": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].yaw,
             "pitch": this.posiciones[this.pacientesEjercicio[i].x][this.pacientesEjercicio[i].y].pitch,
             "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img'],
-            "paciente": this.pacientesEjercicio[i].idPaciente
+            "paciente": this.pacientesEjercicio[i].idPaciente,
+            "index": i,
+            "color": ''
           });
         }
       }
@@ -186,10 +188,26 @@ export class DoExerciseComponent implements OnInit {
     this.getExercisePatients();
   }
 
-  setColour(e): void {
-    // console.log(e);
-    var icon = document.querySelector('.simple-icon-check');
-    switch (e) {
+  setColour(event): void {
+    
+    var icon, encontrado = false;
+    for(let i=0; i<this.pacientesEjercicio.length; i++) {
+      if(event.paciente['_id'] == this.pacientesEjercicio[i].idPaciente['_id'] && !encontrado) {
+        encontrado = true;
+        icon = document.getElementById('paciente'+i);
+        // recorrido para cargar el color de un paciente clasificado
+        for(let j=0; j<this.data.scenes.length; j++) {
+          for(let k=0; k<this.data.scenes[j].infoHotspots.length; k++) {
+            if(this.data.scenes[j].infoHotspots[k].paciente['_id'] == event.paciente['_id']) {
+              this.data.scenes[j].infoHotspots[k].color = event.e;
+            }
+          } 
+          
+        }
+      }
+    }
+    
+    switch (event.e) {
       case 'Verde':
         icon.classList.remove('amarillo');
         icon.classList.remove('rojo');
@@ -369,7 +387,7 @@ export class DoExerciseComponent implements OnInit {
 
       // Add click event handler.
       wrapper.addEventListener('click', function() {
-        modal.show(hotspot.paciente);
+        modal.show(hotspot.paciente, hotspot.color);
       });
 
       // Create hotspot/tooltip header.
@@ -390,6 +408,7 @@ export class DoExerciseComponent implements OnInit {
       var color = document.createElement('i');
       color.classList.add('simple-icon-check');
       color.classList.add('no_triado');
+      color.setAttribute('id', 'paciente' + hotspot.index);
 
 
       // Create title element.

@@ -26,8 +26,13 @@ export class TriarPatientComponent implements OnInit {
     "acciones": []
   }
   actions: Accion[] = [];
+  event = {
+    "paciente": undefined,
+    "e": ''
+  }
 
-  @Output() enviarColor = new EventEmitter<String>();
+  colorSeleccionado: string = '';
+  @Output() enviarColor = new EventEmitter<Object>();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private accionService: AccionService, private notifications: NotificationsService) { }
@@ -55,17 +60,44 @@ export class TriarPatientComponent implements OnInit {
     );
   }
 
-  asignarColor(e) {
-    this.enviarColor.emit(e); 
+  setColorSeleccionado(): void {
+    switch(this.colorSeleccionado) {
+      case 'Verde':
+        this.pacienteTriado.color = this.colours[0];
+        break;
+      case 'Amarillo':
+        this.pacienteTriado.color = this.colours[1];
+        break;
+      case 'Rojo':
+        this.pacienteTriado.color = this.colours[2];
+        break;
+      case 'Negro':
+        this.pacienteTriado.color = this.colours[3];
+        break;
+      default:
+        this.pacienteTriado.color = '';
+        break;
+    }
   }
 
-  show(p: Paciente) {
+  asignarColor(e) {
+    this.event.paciente = this.paciente;
+    this.event.e = e;
+    this.pacienteTriado.color = '';
+    this.enviarColor.emit(this.event); 
+  }
+
+  show(p: Paciente, c: string) {
     console.log('entro a triar a: ', p);
+    console.log('c:', this.colorSeleccionado);
+    this.colorSeleccionado = c;
+    this.setColorSeleccionado();
     this.paciente = p;
     this.modalRef = this.modalService.show(this.template, this.config);
   }  
 
-  closeModal(): void {      
+  closeModal(): void {   
+    this.colorSeleccionado = '';   
     this.modalRef.hide();
   }
 
