@@ -71,6 +71,15 @@ p {
     margin-top: 2em;
 }
 
+.accionesRealizadas {
+    margin-top: 1em;
+}
+
+.accionesRealizadas>p, .accionesRealizadas>div {
+    display: inline;
+    margin-right: 0;
+}
+
 .ng-select {
     padding: 0 !important;
     border: none;

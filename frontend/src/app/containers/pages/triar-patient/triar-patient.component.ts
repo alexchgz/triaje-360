@@ -23,9 +23,12 @@ export class TriarPatientComponent implements OnInit {
   colours = ["Verde", "Amarillo", "Rojo", "Negro"];
   pacienteTriado: any = {
     "color": '',
-    "acciones": []
+    "accion": undefined
   }
   actions: Accion[] = [];
+  allActions: Accion[] = [];
+  actionsTaken: Accion[] = [];
+
   event = {
     "paciente": undefined,
     "e": ''
@@ -33,6 +36,7 @@ export class TriarPatientComponent implements OnInit {
 
   colorSeleccionado: string = '';
   @Output() enviarColor = new EventEmitter<Object>();
+  @Output() penalizar = new EventEmitter<Number>();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private accionService: AccionService, private notifications: NotificationsService) { }
@@ -46,6 +50,7 @@ export class TriarPatientComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.actions = data['acciones'];
+          this.allActions = this.actions;
         }
       },
       error => {
@@ -87,9 +92,21 @@ export class TriarPatientComponent implements OnInit {
     this.enviarColor.emit(this.event); 
   }
 
+  realizarAccion() {
+    this.actionsTaken.push(this.pacienteTriado.accion);
+    let i = this.actions.indexOf(this.pacienteTriado.accion);
+    this.actions.splice(i, 1);
+    this.penalizarTiempo(this.pacienteTriado.accion.tiempo);
+    this.pacienteTriado.accion = undefined;
+  }
+
+  penalizarTiempo(tiempo) {
+    console.log('tiempo: ', tiempo);
+    this.penalizar.emit(tiempo); 
+  }
+
   show(p: Paciente, c: string) {
     console.log('entro a triar a: ', p);
-    console.log('c:', this.colorSeleccionado);
     this.colorSeleccionado = c;
     this.setColorSeleccionado();
     this.paciente = p;

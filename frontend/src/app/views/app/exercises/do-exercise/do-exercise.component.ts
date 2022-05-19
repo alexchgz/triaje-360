@@ -246,6 +246,19 @@ export class DoExerciseComponent implements OnInit {
     }
   }
 
+  setPenalizacion(tiempo) {
+    this.segundos += tiempo;
+    console.log('aumento el crono: ', tiempo);
+    if(this.segundos > 59) {
+      this.minutos += Math.trunc(this.segundos/60);
+      if(this.minutos > 59) {
+        this.horas += Math.trunc(this.minutos/60);
+        this.minutos = this.minutos%60;
+      }
+      this.segundos = this.segundos%60;
+    }
+  }
+
   marzipanoScene(modal: any): void {
 
     // Grab elements from DOM.
@@ -403,6 +416,7 @@ export class DoExerciseComponent implements OnInit {
       icon.classList.add('info-hotspot-icon');
       icon.style['width'] = '100%';
       icon.style['height'] = '100%';
+      icon.style['cursor'] = 'pointer';
       // iconWrapper.appendChild(icon);
 
       var color = document.createElement('i');

@@ -34,12 +34,19 @@
                 <div class="acciones" id="color">
                     <label>{{ 'wizard.actions' | translate }}</label>
                     <label class="w-100">
-                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="acciones" required>
+                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="acciones" [(ngModel)]="pacienteTriado.accion" [disabled]="actions.length == 0" required>
                             <ng-option *ngFor="let item of actions" [value]="item">{{item.nombre}}
                             </ng-option>
                         </ng-select>
                     </label>
-                    <button type="button" class="btn btn-primary">Realizar</button>
+                    <button type="button" class="btn btn-primary" (click)="realizarAccion()" [disabled]="!pacienteTriado.accion">Realizar</button>
+                    <div class="accionesRealizadas">
+                        <p *ngIf="actionsTaken.length > 0"><b>Acciones realizadas: </b></p>
+                        <p *ngFor="let item of actionsTaken; let i=index">
+                            <span *ngIf="i == actionsTaken.length-1">{{item.nombre}} </span>
+                            <span *ngIf="i != actionsTaken.length-1">{{item.nombre}}, </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
