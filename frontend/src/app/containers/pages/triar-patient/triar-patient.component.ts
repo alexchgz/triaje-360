@@ -16,7 +16,7 @@ export class TriarPatientComponent implements OnInit {
   modalRef: BsModalRef;
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   urlPrefixPacientes: string = environment.prefix_urlPacientes;
   paciente: Paciente;
@@ -113,7 +113,7 @@ export class TriarPatientComponent implements OnInit {
     this.setColorSeleccionado();
     
     this.paciente = p;
-    this.modalRef = this.modalService.show(this.template, this.config);
+    this.modalRef = this.modalService.show(this.template, Object.assign({}, { class: 'gray modal-lg' }));
   }  
 
   closeModal(): void {   

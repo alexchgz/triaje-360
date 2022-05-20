@@ -23,7 +23,6 @@ p {
 }
 
 .descripcion {
-    width: 250px;
     border: 1px solid #145388;
     border-radius: 25px;
     margin: 10px;
@@ -42,7 +41,6 @@ p {
 .imgs {
     flex-wrap: wrap;
     position: relative;
-    width: 275px;
     text-align: center;
 }
 
@@ -109,9 +107,13 @@ input[type="radio"] {
     width: 250px;
 }
 
+.acciones .w-100 {
+    display: flex;
+}
+
 .acciones .btn {
-    padding: .5em 1em !important;
-    margin-top: .5em;
+    height: 36px;
+    margin-left: .5em;
 }
 
 .simple-icon-check::before {
