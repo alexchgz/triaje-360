@@ -22,15 +22,6 @@
             </div>
             
             <div class="separated2">
-                <div class="color" id="color">
-                    <label>{{ 'wizard.colour' | translate }}</label>
-                    <label class="w-100">
-                        <ng-select appearance="outline" [searchable]="false" class="form-control" name="color" (change)="asignarColor($event)" [(ngModel)]="pacienteTriado.color" required>
-                            <ng-option *ngFor="let item of colours" [value]="item">{{item}}
-                            </ng-option>
-                        </ng-select>
-                    </label>
-                </div>
                 <div class="acciones" id="color">
                     <label>{{ 'wizard.actions' | translate }}</label>
                     <label class="w-100">
@@ -48,12 +39,20 @@
                         </p>
                     </div>
                 </div>
+                <div class="color" id="color">
+                    <label>{{ 'wizard.colour' | translate }}</label>
+                    <div class="colores">
+                        <label *ngFor="let item of colours">                      
+                            <input type="radio" [value]="item" id="color" (change)="asignarColor(item)" [(ngModel)]="pacienteTriado.color">
+                            <label for="color"><i class="simple-icon-check {{item}}"></i></label>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="closeModal()">Volver</button>
-        <button type="button" class="btn btn-primary" (click)="closeModal()">Triar</button>
     </div>
 </ng-template>
 <simple-notifications></simple-notifications>

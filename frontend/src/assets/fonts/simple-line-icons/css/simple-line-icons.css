@@ -369,32 +369,32 @@
 }
 
 .hotspot .verde::before {
-    color: green;
-    background-color: green;
+    color: green !important;
+    background-color: green !important;
     display: block;
 }
 
 .hotspot .amarillo::before {
-    color: yellow;
-    background-color: yellow;
+    color: yellow !important;
+    background-color: yellow !important;
     display: block;
 }
 
 .hotspot .rojo::before {
-    color: red;
-    background-color: red;
+    color: red !important;
+    background-color: red !important;
     display: block;
 }
 
 .hotspot .negro::before {
-    color: black;
-    background-color: black;
+    color: black !important;
+    background-color: black !important;
     display: block;
 }
 
 .hotspot .no_triado::before {
-    color: transparent;
-    background-color: transparent;
+    color: transparent !important;
+    background-color: transparent !important;
     display: none;
 }
 

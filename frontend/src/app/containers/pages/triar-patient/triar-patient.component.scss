@@ -63,11 +63,30 @@ p {
             object-fit: cover;
         }
 
+
 .color, .acciones {
     margin: 10px;
 }
 
-.acciones {
+.colores {
+    border-radius: 25px;
+    border: 1px solid #d7d7d7;
+    height: 36px;
+    padding: 0.15rem;
+    width: 250px;
+    text-align: center;
+}
+
+.colores>label {
+    margin-right: 1em;
+    margin-bottom: 0;
+}
+
+    .colores>label>label {
+        margin: 0;
+    }
+
+.color {
     margin-top: 2em;
 }
 
@@ -92,12 +111,35 @@ p {
 }
 
 .simple-icon-check::before {
-    background-color: #145388;
-    color: #fff;
     padding: 0em;
     border-radius: 50px;
-    border-color: #fff;
     font-size: 18px;
+    transform: translateY(1px);
+    margin: 0.25em;
+}
+
+.Verde::before {
+    color: green !important;
+    background-color: green !important;
+    display: block;
+}
+
+.Amarillo::before {
+    color: yellow !important;
+    background-color: yellow !important;
+    display: block;
+}
+
+.Rojo::before {
+    color: red !important;
+    background-color: red !important;
+    display: block;
+}
+
+.Negro::before {
+    color: black !important;
+    background-color: black !important;
+    display: block;
 }
 
 ///////// SCROLLBAR /////////

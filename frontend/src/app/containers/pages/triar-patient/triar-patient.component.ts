@@ -86,6 +86,7 @@ export class TriarPatientComponent implements OnInit {
   asignarColor(e) {
     this.event.paciente = this.paciente;
     this.event.e = e;
+    console.log(e);
     this.pacienteTriado.color = '';
     this.enviarColor.emit(this.event); 
   }
