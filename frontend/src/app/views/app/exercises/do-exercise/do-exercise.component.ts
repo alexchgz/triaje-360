@@ -124,7 +124,8 @@ export class DoExerciseComponent implements OnInit {
             "src": this.urlPrefixPacientes + this.pacientesEjercicio[i].idPaciente['img'],
             "paciente": this.pacientesEjercicio[i].idPaciente,
             "index": i,
-            "color": ''
+            "color": '',
+            "acciones": []
           });
         }
       }
@@ -246,9 +247,22 @@ export class DoExerciseComponent implements OnInit {
     }
   }
 
+  setAction(event) {
+    let accionAsiganda = false;
+    for(let j=0; j<this.data.scenes.length && !accionAsiganda; j++) {
+      for(let k=0; k<this.data.scenes[j].infoHotspots.length; k++) {
+        if(this.data.scenes[j].infoHotspots[k].paciente['_id'] == event.paciente['_id']) {
+          accionAsiganda = true;
+          this.data.scenes[j].infoHotspots[k].acciones.push(event.accion);
+        }
+      }      
+    }
+    this.setPenalizacion(event.accion.tiempo);
+  }
+
   setPenalizacion(tiempo) {
     this.segundos += tiempo;
-    console.log('aumento el crono: ', tiempo);
+    // console.log('aumento el crono: ', tiempo);
     if(this.segundos > 59) {
       this.minutos += Math.trunc(this.segundos/60);
       if(this.minutos > 59) {
@@ -400,7 +414,7 @@ export class DoExerciseComponent implements OnInit {
 
       // Add click event handler.
       wrapper.addEventListener('click', function() {
-        modal.show(hotspot.paciente, hotspot.color);
+        modal.show(hotspot.paciente, hotspot.color, hotspot.acciones);
       });
 
       // Create hotspot/tooltip header.

@@ -26,7 +26,6 @@ export class TriarPatientComponent implements OnInit {
     "accion": undefined
   }
   actions: Accion[] = [];
-  allActions: Accion[] = [];
   actionsTaken: Accion[] = [];
 
   event = {
@@ -36,7 +35,7 @@ export class TriarPatientComponent implements OnInit {
 
   colorSeleccionado: string = '';
   @Output() enviarColor = new EventEmitter<Object>();
-  @Output() penalizar = new EventEmitter<Number>();
+  @Output() penalizar = new EventEmitter<Object>();
   @ViewChild('template', { static: true }) template: TemplateRef<any>;
 
   constructor(private modalService: BsModalService, private accionService: AccionService, private notifications: NotificationsService) { }
@@ -50,7 +49,6 @@ export class TriarPatientComponent implements OnInit {
       data => {
         if (data['ok']) {
           this.actions = data['acciones'];
-          this.allActions = this.actions;
         }
       },
       error => {
@@ -93,29 +91,35 @@ export class TriarPatientComponent implements OnInit {
   }
 
   realizarAccion() {
-    this.actionsTaken.push(this.pacienteTriado.accion);
-    let i = this.actions.indexOf(this.pacienteTriado.accion);
-    this.actions.splice(i, 1);
-    this.penalizarTiempo(this.pacienteTriado.accion.tiempo);
+    this.penalizarTiempo(this.pacienteTriado.accion);
     this.pacienteTriado.accion = undefined;
   }
 
-  penalizarTiempo(tiempo) {
-    console.log('tiempo: ', tiempo);
-    this.penalizar.emit(tiempo); 
+  penalizarTiempo(accion) {
+    // console.log('accion: ', accion);
+    let send = {
+      "paciente": this.paciente,
+      "accion": accion
+    }
+    this.penalizar.emit(send); 
   }
 
-  show(p: Paciente, c: string) {
-    console.log('entro a triar a: ', p);
+  show(p: Paciente, c: string, a: Accion[]) {
+    // console.log('entro a triar a: ', p);
+    // this.getActions();
+    this.actionsTaken = a; 
     this.colorSeleccionado = c;
     this.setColorSeleccionado();
+    
     this.paciente = p;
     this.modalRef = this.modalService.show(this.template, this.config);
   }  
 
   closeModal(): void {   
-    this.colorSeleccionado = '';   
     this.modalRef.hide();
+    // this.colorSeleccionado = ''; 
+    // this.actionsTaken = [];
+    // this.actions = this.allActions;  
   }
 
 }
