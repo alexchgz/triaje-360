@@ -154,7 +154,7 @@ export class DataListComponent implements OnInit {
 
   toDoExercise(p: Ejercicio): void {
     this.sender.idExercise = p['_id'];
-    this.router.navigate(['/app/dashboards/all/exercises/do-exercise'])
+    this.createUserExercise(p);
   }
 
   createUserExercise(exercise: Ejercicio): void {
@@ -165,16 +165,12 @@ export class DataListComponent implements OnInit {
     } else {
       this.ejerciciosUsuarioService.createUserExercise(this.userId, exercise['_id'])
         .subscribe( res => {
-
-          this.loadExercises(this.itemsPerPage, this.currentPage, this.itemSubject, this.userId);
-          this.notifications.create('Registro creado', 'Se ha creado el registro de Ejercicio correctamente', NotificationType.Info, {
-            theClass: 'outline primary',
-            timeOut: 6000,
-            showProgressBar: false
-          });
+          // this.sender.ejercicioUsuario = res['ejercicioUsuario'].uid;
+          console.log('EU:', this.sender.ejercicioUsuario);
+          this.router.navigate(['/app/dashboards/all/exercises/do-exercise']);
 
         }, (err) => {
-          this.notifications.create('Error', 'No se ha podido crear el registro del Ejercicio', NotificationType.Error, {
+          this.notifications.create('Error', 'No se ha podido empezar el Ejercicio', NotificationType.Error, {
             theClass: 'outline primary',
             timeOut: 6000,
             showProgressBar: false

@@ -9,6 +9,7 @@ export class SenderService {
   public idSubjectExercise: number;
   public idExercise: number;
   public idUser: string;
+  public ejercicioUsuario: number
 
   constructor() { }
 }
