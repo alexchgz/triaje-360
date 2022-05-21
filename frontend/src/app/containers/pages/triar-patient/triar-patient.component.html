@@ -29,7 +29,7 @@
                             <ng-option *ngFor="let item of actions" [value]="item">{{item.nombre}}
                             </ng-option>
                         </ng-select>
-                        <button type="button" class="btn btn-primary" (click)="realizarAccion()" [disabled]="!pacienteTriado.accion">Realizar</button>
+                        <button type="button" class="btn btn-primary" (click)="realizarAccionPaciente()" [disabled]="!pacienteTriado.accion">Realizar</button>
                     </label>
                     
                     <div class="accionesRealizadas">

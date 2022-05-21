@@ -1,7 +1,8 @@
-<app-triar-patient #triarModalRef (enviarColor)="setColour($event)" (penalizar)="setAction($event)"></app-triar-patient>
+<app-triar-patient #triarModalRef (enviarColor)="setColour($event)" (realizarAccion)="setAction($event)" (volverEscena)="backScene()"></app-triar-patient>
 
 <div id="contador">
   <p>{{time}}</p>
+  <button type="button" class="btn btn-primary" (click)="terminarEjercicio()">Terminar Ejercicio</button>
 </div>
 <div id="pano"></div>
   

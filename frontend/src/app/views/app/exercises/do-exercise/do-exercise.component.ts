@@ -10,6 +10,8 @@ import { TriarPatientComponent } from '../../../../containers/pages/triar-patien
 import { DatePipe } from '@angular/common';
 import { ActividadService } from 'src/app/data/actividad.service';
 import { Paciente } from 'src/app/models/paciente.model';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 var Marzipano = require('marzipano');
 
 @Component({
@@ -55,7 +57,8 @@ export class DoExerciseComponent implements OnInit {
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
 
   constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
-    private pacienteEjercicioService: PacienteEjercicioService, private datePipe: DatePipe, private actividadService: ActividadService) { }
+    private pacienteEjercicioService: PacienteEjercicioService, private datePipe: DatePipe, private actividadService: ActividadService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getExercise();
@@ -63,28 +66,6 @@ export class DoExerciseComponent implements OnInit {
     this.formatTime();
     this.createActivity("Empieza el Ejercicio", 0);
     setInterval(() => this.tick(), 1000);
-  }
-
-  createActivity(nombre: string, tiempo: number, paciente?: Paciente) {
-    this.actividad.nombre = nombre;
-    this.actividad.tiempo = tiempo;
-    this.actividad.momento = this.time;
-    this.actividad.ejercicioUsuario = this.sender.ejercicioUsuario;
-    if(paciente) {
-      this.actividad.paciente = paciente['_id'];
-    }
-    this.actividadService.createActivity(this.actividad).subscribe(data => {
-      console.log('Actividad: ', data['actividad']);
-      this.setPenalizacion(this.actividad.tiempo);
-    }, (err) => {
-      this.notifications.create('Error', 'No se ha podido crear la Actividad', NotificationType.Error, {
-        theClass: 'outline primary',
-        timeOut: 6000,
-        showProgressBar: false
-      });
-
-      return;
-    });
   }
 
   resetTimer() {
@@ -230,7 +211,7 @@ export class DoExerciseComponent implements OnInit {
         for(let j=0; j<this.data.scenes.length; j++) {
           for(let k=0; k<this.data.scenes[j].infoHotspots.length; k++) {
             if(this.data.scenes[j].infoHotspots[k].paciente['_id'] == event.paciente['_id']) {
-              this.data.scenes[j].infoHotspots[k].color = event.e;
+              this.data.scenes[j].infoHotspots[k].color = event.color;
             }
           } 
           
@@ -238,7 +219,7 @@ export class DoExerciseComponent implements OnInit {
       }
     }
     
-    switch (event.e) {
+    switch (event.color) {
       case 'Verde':
         icon.classList.remove('amarillo');
         icon.classList.remove('rojo');
@@ -275,6 +256,9 @@ export class DoExerciseComponent implements OnInit {
         icon.classList.add('no_triado');
         break;
     }
+
+    let nombre = "Asignación de color '" + event.color + "' a Paciente " + this.searchPatient(event.paciente['_id']);
+    this.createActivity(nombre, 10, event.paciente);
   }
 
   setAction(event) {
@@ -287,7 +271,13 @@ export class DoExerciseComponent implements OnInit {
         }
       }      
     }
-    this.setPenalizacion(event.accion.tiempo);
+    // this.setPenalizacion(event.accion.tiempo);
+    let nombre = "Realización de Acción '" + event.accion.nombre + "' a Paciente " + this.searchPatient(event.paciente['_id']);
+    this.createActivity(nombre, event.accion.tiempo, event.paciente);
+  }
+
+  backScene() {
+    this.createActivity('Volver a la escena', 10);
   }
 
   setPenalizacion(tiempo) {
@@ -310,6 +300,51 @@ export class DoExerciseComponent implements OnInit {
       }
     }
     return -1;
+  }
+
+  createActivity(nombre: string, tiempo: number, paciente?: Paciente) {
+    this.actividad.nombre = nombre;
+    this.actividad.tiempo = tiempo;
+    this.actividad.momento = this.time;
+    this.actividad.ejercicioUsuario = this.sender.ejercicioUsuario;
+    if(paciente) {
+      this.actividad.paciente = paciente['_id'];
+    }
+    this.actividadService.createActivity(this.actividad).subscribe(data => {
+      if(data['actividad'].nombre == "Terminar Ejercicio") {
+        this.sender.ejercicioUsuario = undefined;
+        this.router.navigate(['app/dashboards/all/exercises/data-list']);
+      }
+      this.setPenalizacion(this.actividad.tiempo);
+    }, (err) => {
+      this.notifications.create('Error', 'No se ha podido crear la Actividad', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+
+      return;
+    });
+  }
+
+  terminarEjercicio() {
+    Swal.fire({
+      title: 'Terminar Ejercicio',
+      text: '¿Estás seguro de que quieres terminar el Ejercicio?',
+      icon: 'warning',
+      showDenyButton: true,
+      iconColor: '#145388',
+      confirmButtonColor: '#145388',
+      denyButtonColor: '#145388',
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.createActivity("Terminar Ejercicio", 0);
+      } else if (result.isDenied) {
+        Swal.close();
+      }
+    });
   }
 
   marzipanoScene(): void {
