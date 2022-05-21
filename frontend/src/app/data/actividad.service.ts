@@ -43,7 +43,8 @@ export class ActividadService {
       "nombre": data['nombre'],
       "tiempo": data['tiempo'],
       "momento": data['momento'],
-      "ejercicioUsuario": data['ejercicioUsuario']
+      "ejercicioUsuario": data['ejercicioUsuario'],
+      "paciente": data['paciente']
     }
 
     return this.http.post(url, sendData, { headers });

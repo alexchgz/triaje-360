@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { TriarPatientComponent } from '../../../../containers/pages/triar-patient/triar-patient.component';
 import { DatePipe } from '@angular/common';
 import { ActividadService } from 'src/app/data/actividad.service';
+import { Paciente } from 'src/app/models/paciente.model';
 var Marzipano = require('marzipano');
 
 @Component({
@@ -47,7 +48,8 @@ export class DoExerciseComponent implements OnInit {
     "nombre": undefined,
     "tiempo": undefined,
     "momento": undefined,
-    "ejercicioUsuario": this.sender.ejercicioUsuario 
+    "ejercicioUsuario": this.sender.ejercicioUsuario,
+    "paciente": undefined
   }
 
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
@@ -63,14 +65,17 @@ export class DoExerciseComponent implements OnInit {
     setInterval(() => this.tick(), 1000);
   }
 
-  createActivity(nombre: string, tiempo: number) {
+  createActivity(nombre: string, tiempo: number, paciente?: Paciente) {
     this.actividad.nombre = nombre;
     this.actividad.tiempo = tiempo;
     this.actividad.momento = this.time;
     this.actividad.ejercicioUsuario = this.sender.ejercicioUsuario;
-    console.log('Ac:', this.actividad);
+    if(paciente) {
+      this.actividad.paciente = paciente['_id'];
+    }
     this.actividadService.createActivity(this.actividad).subscribe(data => {
       console.log('Actividad: ', data['actividad']);
+      this.setPenalizacion(this.actividad.tiempo);
     }, (err) => {
       this.notifications.create('Error', 'No se ha podido crear la Actividad', NotificationType.Error, {
         theClass: 'outline primary',
@@ -156,7 +161,7 @@ export class DoExerciseComponent implements OnInit {
         }
       }
     }
-    this.marzipanoScene(this.triarModalRef);
+    this.marzipanoScene();
   }
 
   setImagesScene() {
@@ -298,8 +303,18 @@ export class DoExerciseComponent implements OnInit {
     }
   }
 
-  marzipanoScene(modal: any): void {
+  searchPatient(uid: number): number {
+    for(let i=0; i<this.ejercicio.pacientes.length; i++) {
+      if(this.ejercicio.pacientes[i].paciente['_id'] == uid) {
+        return i+1;
+      }
+    }
+    return -1;
+  }
 
+  marzipanoScene(): void {
+    // copia de THIS para poder acceder a las funciones en los callbacks
+    var that = this;
     // Grab elements from DOM.
     var panoElement = document.querySelector('#pano');
     var sceneNameElement = document.querySelector('#titleBar .sceneName');
@@ -412,6 +427,7 @@ export class DoExerciseComponent implements OnInit {
       // Add click event handler.
       wrapper.addEventListener('click', function() {
         switchScene(findSceneById(hotspot.target));
+        that.createActivity("Desplazamiento por la escena", 15);
       });
 
       // Prevent touch and scroll events from reaching the parent element.
@@ -439,16 +455,14 @@ export class DoExerciseComponent implements OnInit {
 
       // Add click event handler.
       wrapper.addEventListener('click', function() {
-        modal.show(hotspot.paciente, hotspot.color, hotspot.acciones);
+        var i = that.searchPatient(hotspot.paciente['_id']);
+        if(i > -1) {
+          that.triarModalRef.show(hotspot.paciente, hotspot.color, hotspot.acciones);
+          that.createActivity("Entra a atender a Paciente " + i, 10, hotspot.paciente);
+        }
+        
       });
 
-      // Create hotspot/tooltip header.
-      // var header = document.createElement('div');
-      // header.classList.add('info-hotspot-header');
-
-      // Create image element.
-      // var iconWrapper = document.createElement('div');
-      // iconWrapper.classList.add('info-hotspot-icon-wrapper');
       var icon = document.createElement('img');
       // icon.src = '././././assets/img/marzipano/info.png';
       icon.src = hotspot.src;
@@ -463,56 +477,6 @@ export class DoExerciseComponent implements OnInit {
       color.classList.add('no_triado');
       color.setAttribute('id', 'paciente' + hotspot.index);
 
-
-      // Create title element.
-      // var titleWrapper = document.createElement('div');
-      // titleWrapper.classList.add('info-hotspot-title-wrapper');
-      // var title = document.createElement('div');
-      // title.classList.add('info-hotspot-title');
-      // title.innerHTML = hotspot.title;
-      // titleWrapper.appendChild(title);
-
-      // Create close element.
-      // var closeWrapper = document.createElement('div');
-      // closeWrapper.classList.add('info-hotspot-close-wrapper');
-      // var closeIcon = document.createElement('img');
-      // closeIcon.src = '././././assets/img/marzipano/close.png';
-      // closeIcon.classList.add('info-hotspot-close-icon');
-      // closeWrapper.appendChild(closeIcon);
-
-      // Construct header element.
-      // header.appendChild(iconWrapper);
-      // header.appendChild(titleWrapper);
-      // header.appendChild(closeWrapper);
-
-      // Create text element.
-      // var text = document.createElement('div');
-      // text.classList.add('info-hotspot-text');
-      // text.innerHTML = hotspot.text;
-
-      // Place header and text into wrapper element.
-      // wrapper.appendChild(header);
-      // wrapper.appendChild(text);
-
-      // Create a modal for the hotspot content to appear on mobile mode.
-      // var modal = document.createElement('div');
-      // modal.innerHTML = wrapper.innerHTML;
-      // modal.classList.add('info-hotspot-modal');
-      // document.body.appendChild(modal);
-
-      // var toggle = function() {
-      //   wrapper.classList.toggle('visible');
-      //   modal.classList.toggle('visible');
-      // };
-
-      // Show content when hotspot is clicked.
-      // wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
-
-      // Hide content when close icon is clicked.
-      // modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
-
-      // Prevent touch and scroll events from reaching the parent element.
-      // This prevents the view control logic from interfering with the hotspot.
       stopTouchAndScrollEventPropagation(wrapper);
 
       wrapper.appendChild(icon);

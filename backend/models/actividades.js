@@ -18,6 +18,10 @@ const ActividadSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'EjerciciosUsuario',
         require: true
+    },
+    paciente: {
+        type: Schema.Types.ObjectId,
+        ref: 'Paciente'
     }
     
 }, { collection: 'actividades' });
