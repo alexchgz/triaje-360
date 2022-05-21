@@ -165,8 +165,7 @@ export class DataListComponent implements OnInit {
     } else {
       this.ejerciciosUsuarioService.createUserExercise(this.userId, exercise['_id'])
         .subscribe( res => {
-          // this.sender.ejercicioUsuario = res['ejercicioUsuario'].uid;
-          console.log('EU:', this.sender.ejercicioUsuario);
+          this.sender.ejercicioUsuario = res['ejercicioUsuario'].uid;
           this.router.navigate(['/app/dashboards/all/exercises/do-exercise']);
 
         }, (err) => {

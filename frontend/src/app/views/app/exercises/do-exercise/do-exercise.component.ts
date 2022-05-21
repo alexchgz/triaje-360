@@ -8,6 +8,7 @@ import { PacienteEjercicio } from 'src/app/models/pacienteEjercicio.model';
 import { environment } from 'src/environments/environment';
 import { TriarPatientComponent } from '../../../../containers/pages/triar-patient/triar-patient.component';
 import { DatePipe } from '@angular/common';
+import { ActividadService } from 'src/app/data/actividad.service';
 var Marzipano = require('marzipano');
 
 @Component({
@@ -38,21 +39,47 @@ export class DoExerciseComponent implements OnInit {
     [{"yaw":-2.3,"pitch":0.05},  {"yaw":-1.91,"pitch":0.05},  {"yaw":-1.52,"pitch":0.05},  {"yaw":-1.13,"pitch":0.05},  {"yaw":-0.74,"pitch":0.05},  {"yaw":-0.35,"pitch":0.05},  {"yaw":0.04,"pitch":0.05},  {"yaw":0.43,"pitch":0.05},  {"yaw":0.82,"pitch":0.05},  {"yaw":1.21,"pitch":0.05},  {"yaw":1.6,"pitch":0.05},  {"yaw":1.99,"pitch":0.05},  {"yaw":2.38,"pitch":0.05},  {"yaw":2.77,"pitch":0.05},  {"yaw":3.16,"pitch":0.05},  {"yaw":3.55,"pitch":0.05}],
     [{"yaw":-2.3,"pitch":0.35},  {"yaw":-1.91,"pitch":0.35},  {"yaw":-1.52,"pitch":0.35},  {"yaw":-1.13,"pitch":0.35},  {"yaw":-0.74,"pitch":0.35},  {"yaw":-0.35,"pitch":0.35},  {"yaw":0.04,"pitch":0.35},  {"yaw":0.43,"pitch":0.35},  {"yaw":0.82,"pitch":0.35},  {"yaw":1.21,"pitch":0.35},  {"yaw":1.6,"pitch":0.35},  {"yaw":1.99,"pitch":0.35},  {"yaw":2.38,"pitch":0.35},  {"yaw":2.77,"pitch":0.35},  {"yaw":3.16,"pitch":0.35},  {"yaw":3.55,"pitch":0.35}]
   ];
-  horas: number = 0;
-  minutos: number = 0;
-  segundos: number = 0;
+  horas: number;
+  minutos: number;
+  segundos: number;
   time: string = undefined;
+  actividad = {
+    "nombre": undefined,
+    "tiempo": undefined,
+    "momento": undefined,
+    "ejercicioUsuario": this.sender.ejercicioUsuario 
+  }
 
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
 
   constructor(private sender: SenderService, private ejercicioService: EjercicioService, private notifications: NotificationsService,
-    private pacienteEjercicioService: PacienteEjercicioService, private datePipe: DatePipe) { }
+    private pacienteEjercicioService: PacienteEjercicioService, private datePipe: DatePipe, private actividadService: ActividadService) { }
 
   ngOnInit(): void {
     this.getExercise();
     this.resetTimer();
     this.formatTime();
+    this.createActivity("Empieza el Ejercicio", 0);
     setInterval(() => this.tick(), 1000);
+  }
+
+  createActivity(nombre: string, tiempo: number) {
+    this.actividad.nombre = nombre;
+    this.actividad.tiempo = tiempo;
+    this.actividad.momento = this.time;
+    this.actividad.ejercicioUsuario = this.sender.ejercicioUsuario;
+    console.log('Ac:', this.actividad);
+    this.actividadService.createActivity(this.actividad).subscribe(data => {
+      console.log('Actividad: ', data['actividad']);
+    }, (err) => {
+      this.notifications.create('Error', 'No se ha podido crear la Actividad', NotificationType.Error, {
+        theClass: 'outline primary',
+        timeOut: 6000,
+        showProgressBar: false
+      });
+
+      return;
+    });
   }
 
   resetTimer() {
@@ -100,7 +127,6 @@ export class DoExerciseComponent implements OnInit {
   getExercisePatients() {
     this.pacienteEjercicioService.getExercisePatients(this.sender.idExercise).subscribe(data => {
       this.pacientesEjercicio = data['pacientesEjercicio'];
-      console.log('PE:', this.pacientesEjercicio);
       this.setPatientsScene();
     },
     error => {
@@ -130,7 +156,6 @@ export class DoExerciseComponent implements OnInit {
         }
       }
     }
-    console.log(this.data.scenes);
     this.marzipanoScene(this.triarModalRef);
   }
 

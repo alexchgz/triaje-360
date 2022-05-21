@@ -31,7 +31,7 @@ export class ActividadService {
       
   }
 
-  createActivity(data: Actividad) {
+  createActivity(data: Object) {
     const url = environment.base_url + '/actividades';
     const token = localStorage.getItem('token');
 

@@ -4,14 +4,14 @@ const ActividadSchema = Schema({
     nombre: {
         type: String,
         require: true,
-        unique: true
+        unique: false
     },
     tiempo: {
         type: Number,
         require: true,
     },
     momento: {
-        type: Date,
+        type: String,
         require: true
     },
     ejercicioUsuario: {
