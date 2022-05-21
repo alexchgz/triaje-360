@@ -3,6 +3,40 @@ const Ejercicio = require('../models/ejercicios');
 const Usuario = require('../models/usuarios');
 
 // eliminar registro
+const updateEjerciciosUsuario = async(idEjercicioUsuario, tiempo) => {
+
+    const uid = idEjercicioUsuario;
+
+    try {
+        // Comprobamos si existe el item que queremos borrar y si es un ejercicio o un usuario
+        const existeEjercicioUsuario = await EjerciciosUsuario.findById(uid);
+        
+        if (!existeEjercicioUsuario) {
+            return false;
+        }
+
+        const resultado = await EjerciciosUsuario.updateOne(
+            { _id: uid },
+            { 
+                $set: { 
+                    "fecha_fin": new Date(),
+                    "tiempoTotal": tiempo 
+                } 
+            }
+        );
+
+        return resultado;
+
+    } catch (error) {
+        console.log(error);
+        return false;
+
+    }
+
+
+}
+
+// eliminar registro
 const deleteEjerciciosUsuario = async(id) => {
 
     const uid = id;
@@ -44,4 +78,4 @@ const deleteEjerciciosUsuario = async(id) => {
 
 
 }
-module.exports = { deleteEjerciciosUsuario }
+module.exports = { deleteEjerciciosUsuario, updateEjerciciosUsuario }

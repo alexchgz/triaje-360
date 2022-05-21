@@ -47,7 +47,6 @@ const updateEjercicio = async(idEjercicio, paciente) => {
             { _id: uid },
             { $push: { 'pacientes': { 'paciente': paciente } } }
         );
-        console.log('res:', resultado);
 
         return true;
     } catch (error) {

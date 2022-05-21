@@ -2,6 +2,7 @@
 const { response } = require('express');
 const { infoToken } = require('../helpers/infotoken');
 const Actividad = require('../models/actividades');
+const { updateEjerciciosUsuario } = require('../helpers/hEjerciciosUsuario');
 
 // funciones
 const getActividades = async(req, res = response) => {
@@ -55,7 +56,7 @@ const getActividades = async(req, res = response) => {
 
 const crearActividad = async(req, res = response) => {
 
-    const { nombre, tiempo } = req.body;
+    const { nombre, momento, ejercicioUsuario } = req.body;
 
     const token = req.header('x-token');
     // lo puede actualizar un administrador
@@ -70,6 +71,13 @@ const crearActividad = async(req, res = response) => {
 
         // creamos el curso  y lo almacenamos los datos en la BBDD
         const actividad = new Actividad(req.body);
+        // actualizamos la asignatura incluyendo el ejercicio
+        if(nombre == "Terminar Ejercicio") {
+            await updateEjerciciosUsuario(ejercicioUsuario, momento).then(actualizarEjerciciosUsuario => {
+                console.log('Ejercicio Usuario actualizado:', actualizarEjerciciosUsuario);
+            });
+        }
+        
         await actividad.save();
 
         res.json({

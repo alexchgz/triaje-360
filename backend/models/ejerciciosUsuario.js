@@ -15,6 +15,12 @@ const EjerciciosUsuarioSchema = Schema({
     fecha_ejecucion: {
         type: Date,
         default: Date.now
+    },
+    fecha_fin: {
+        type: Date
+    },
+    tiempoTotal: {
+        type: String
     }
 }, { collection: 'ejerciciosUsuario' });
 
