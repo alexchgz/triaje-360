@@ -7,11 +7,13 @@ import { Actividad } from 'src/app/models/actividad.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { EjerciciosUsuario } from 'src/app/models/ejerciciosUsuario.model';
 import { Usuario } from 'src/app/models/usuario.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-report',
   templateUrl: './view-report.component.html',
-  styleUrls: ['./view-report.component.scss']
+  styleUrls: ['./view-report.component.scss'],
+  providers: [DatePipe]
 })
 export class ViewReportComponent implements OnInit {
 
@@ -22,7 +24,7 @@ export class ViewReportComponent implements OnInit {
   usuario: Usuario;
 
   constructor(private sender: SenderService, private actividadService: ActividadService, private notifications: NotificationsService,
-    private ejerciciosUsuarioService: EjerciciosUsuarioService) { }
+    private ejerciciosUsuarioService: EjerciciosUsuarioService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getEjercicioUsuario();
@@ -71,6 +73,13 @@ export class ViewReportComponent implements OnInit {
       activar.classList.add('active');
       this.pillActive = a;
     }
+  }
+
+  changeDateFormat(f: Date): void {
+    let fecha;
+    fecha = this.datePipe.transform(f, 'dd/MM/yyyy HH:mm:ss');
+
+    return fecha;
   }
 
 }

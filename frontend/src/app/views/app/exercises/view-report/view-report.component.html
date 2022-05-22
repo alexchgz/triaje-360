@@ -1,5 +1,5 @@
 <div class="card mb-4">
-    <div class="card-body">
+    <div class="card-body contenedor">
       <h5 *ngIf="ejercicio && usuario" class="mb-4">Informe de Ejercicio: '{{ejercicio.nombre}}' de {{usuario.apellidos}}, {{usuario.nombre}} </h5>
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -13,13 +13,30 @@
         </li>
       </ul>
       <div *ngIf="pillActive=='resumen'" class="resumen_content">
-        <p>Resumen</p>
+        <div *ngIf="ejercicioUsuario" class="tiempos">
+            <p><b>Fecha Inicio:</b> {{ changeDateFormat(ejercicioUsuario.fecha_ejecucion) }}</p>
+            <p><b>Fecha Fin:</b> {{ changeDateFormat(ejercicioUsuario.fecha_fin) }}</p>
+            <p><b>Tiempo Total:</b> {{ ejercicioUsuario.tiempoTotal }}</p>
+        </div>
       </div>
       <div *ngIf="pillActive=='pacientes'" class="pacientes_content">
         <p>Pacientes</p>
       </div>
       <div *ngIf="pillActive=='actividad'" class="actividad_content">
-        <p>Actividad</p>
+        <div *ngIf="ejercicioUsuario" class="tiempos">
+            <p><b>Fecha Inicio:</b> {{ changeDateFormat(ejercicioUsuario.fecha_ejecucion) }}</p>
+            <p><b>Fecha Fin:</b> {{ changeDateFormat(ejercicioUsuario.fecha_fin) }}</p>
+            <p><b>Tiempo Total:</b> {{ ejercicioUsuario.tiempoTotal }}</p>
+        </div>
+        <div class="actividades">
+            <div [ngClass]="{'card d-flex flex-row mb-3': true}" *ngFor="let p of actividades; let i=index">
+                <div class="d-flex flex-grow-1 min-width-zero atc">
+                    <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                        <p class="list-item-heading mb-0 truncate w-xs-100">{{p.nombre}} ({{p.momento}})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
 </div>

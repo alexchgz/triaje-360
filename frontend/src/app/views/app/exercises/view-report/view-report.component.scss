@@ -1,0 +1,48 @@
+
+.contenedor {
+    max-height: 100%;
+}
+
+.resumen_content, .actividad_content {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.tiempos {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.tiempos p {
+    margin: .5em 1.5em;
+}
+
+.actividades {
+    max-height: 480px;
+    overflow-y: scroll;
+}
+.actividad_content .d-flex {
+    margin-right: 1.5em;
+}
+.actividad_content .card-body {
+    padding: 1em;
+}
+
+///////// SCROLLBAR /////////
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  //   background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #145388;
+    border-radius: 10px;
+  }

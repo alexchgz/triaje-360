@@ -10,7 +10,7 @@ import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { DatePipe } from '@angular/common';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-show-student-register-modal',
@@ -109,7 +109,6 @@ export class ShowStudentRegisterModalComponent implements OnInit {
     for(let i = 0; i < this.registros.length; i++) {
       this.registros[i].fecha_ejecucion = this.datePipe.transform(this.registros[i].fecha_ejecucion, 'dd/MM/yyyy HH:mm:ss');
     }
-
   }
 
   toViewReport(registro: EjerciciosUsuario) {
