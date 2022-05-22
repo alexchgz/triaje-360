@@ -25,13 +25,15 @@ const getActividades = async(req, res = response) => {
 
         if (id) { // si nos pasan un id
             [actividades, totalActividades] = await Promise.all([
-                Actividad.findById(id),
+                Actividad.find( { ejercicioUsuario: id }).populate('-__v')
+                .populate('paciente', '-__v')
+                .populate('ejercicioUsuario', '-__v'),
                 Actividad.countDocuments()
             ]);
 
         } else { // si no nos pasan el id
             [actividades, totalActividades] = await Promise.all([
-                Actividad.find({}, 'nombre tiempo'),
+                Actividad.find({}),
                 Actividad.countDocuments()
             ]);
             

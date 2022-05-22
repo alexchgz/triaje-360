@@ -12,7 +12,7 @@ export class EjerciciosUsuarioService {
 
   // ******* PETICIONES EJERCICIOS *********
 
-  getUserExercises(userId?: string, exerciseId?: string) {
+  getUserExercises(userId?: string, exerciseId?: string, id?: number) {
     const url = environment.base_url + '/ejerciciosUsuario';
     const token = localStorage.getItem('token');
 
@@ -25,6 +25,9 @@ export class EjerciciosUsuarioService {
     if(userId || exerciseId){
       if(userId) { params = params.append('idUsuario', userId + ''); }
       if(exerciseId) { params = params.append('idEjercicio', exerciseId + ''); }
+    }
+    if(id) {
+      params = params.append('id', id + '');
     }
 
     return this.http.get(url, { headers, params });

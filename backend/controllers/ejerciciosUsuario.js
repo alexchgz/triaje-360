@@ -9,6 +9,7 @@ const { infoToken } = require('../helpers/infotoken');
 const getEjerciciosUsuario = async(req, res = response) => {
     const idUsuario = req.query.idUsuario;
     const idEjercicio = req.query.idEjercicio;
+    const id = req.query.id;
 
     // comprobamos roles
     const token = req.header('x-token');
@@ -28,7 +29,12 @@ const getEjerciciosUsuario = async(req, res = response) => {
                 EjerciciosUsuario.find({ idUsuario, idEjercicio }),
                 EjerciciosUsuario.countDocuments()
             ]);
-
+        } else {
+            if(id) {
+                ejerciciosUsuario = await EjerciciosUsuario.findById(id)
+                .populate('idEjercicio', '-__v')
+                .populate('idUsuario', '-__v');
+            }
         }
 
         res.json({

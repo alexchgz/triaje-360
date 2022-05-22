@@ -32,7 +32,7 @@ export class EjercicioService {
 
   }
 
-  getExercise(id: number) {
+  getExercise(id: any) {
     const url = environment.base_url + '/ejercicios';
     const token = localStorage.getItem('token');
 

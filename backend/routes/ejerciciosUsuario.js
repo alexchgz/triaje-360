@@ -12,8 +12,9 @@ const router = Router();
 router.get('/', [
     validarJWT,
     // comprobamos campos opcionales
-    check('idUsuario', 'El id debe ser válido').isMongoId(),
-    check('idEjercicio', 'El id debe ser válido').isMongoId(),
+    check('idUsuario', 'El id debe ser válido').optional().isMongoId(),
+    check('idEjercicio', 'El id debe ser válido').optional().isMongoId(),
+    check('id', 'El id debe ser válido').optional().isMongoId(),
     validarCampos
 ], getEjerciciosUsuario);
 

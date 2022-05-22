@@ -102,7 +102,7 @@ export class ShowStudentRegisterModalComponent implements OnInit {
           });
 
           return;
-      });
+        });
   }
 
   changeDateFormat(): void {
@@ -113,7 +113,6 @@ export class ShowStudentRegisterModalComponent implements OnInit {
   }
 
   toViewReport(registro: EjerciciosUsuario) {
-    console.log(registro);
     this.sender.ejercicioUsuario = registro.uid;
     this.router.navigateByUrl('app/dashboards/all/exercises/view-report');
     this.closeModal(false);

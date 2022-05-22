@@ -1,1 +1,25 @@
-<p>view-report works!</p>
+<div class="card mb-4">
+    <div class="card-body">
+      <h5 *ngIf="ejercicio && usuario" class="mb-4">Informe de Ejercicio: '{{ejercicio.nombre}}' de {{usuario.apellidos}}, {{usuario.nombre}} </h5>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link c-pointer resumen active" (click)="setActive('resumen')">Resumen</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer pacientes" (click)="setActive('pacientes')">Pacientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer actividad" (click)="setActive('actividad')">Actividad</a>
+        </li>
+      </ul>
+      <div *ngIf="pillActive=='resumen'" class="resumen_content">
+        <p>Resumen</p>
+      </div>
+      <div *ngIf="pillActive=='pacientes'" class="pacientes_content">
+        <p>Pacientes</p>
+      </div>
+      <div *ngIf="pillActive=='actividad'" class="actividad_content">
+        <p>Actividad</p>
+      </div>
+    </div>
+</div>
