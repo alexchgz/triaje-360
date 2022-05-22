@@ -11,21 +11,23 @@
     <div class="modal-body">
         <div class="intentos">
             <p class="font-weight-bold">Intentos Realizados: {{registros.length}}</p>
-            <p *ngIf="dataEjercicio!=undefined" class="font-weight-bold">Intentos Restantes: {{dataEjercicio.max_intentos - registros.length}}</p>
+            <p *ngIf="dataEjercicio!=undefined && dataEjercicio.intentos_limitados" class="font-weight-bold">Intentos Restantes: {{dataEjercicio.max_intentos - registros.length}}</p>
         </div>
         <div class="card card-body">
             <p *ngIf="registros.length == 0">Aún no hay intentos realizados de este alumno para este ejercicio</p>
             <table *ngIf="registros.length > 0" class="table table-borderless">
                 <thead>
                     <tr>
-                        <th scope="col">Intento</th>
-                        <th scope="col">Fecha</th>
+                        <th scope="col" class="intento">Intento</th>
+                        <th scope="col" class="fecha">Fecha</th>
+                        <th scope="col" class="informe"></th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let p of registros; index as indexOfelement;">
                     <tr>
-                        <td>Intento Nº {{indexOfelement+1}}</td>
-                        <td>{{p.fecha_ejecucion}}</td>
+                        <td class="intento">Intento Nº {{indexOfelement+1}}</td>
+                        <td class="fecha">{{p.fecha_ejecucion}}</td>
+                        <td class="informe"><i class="acciones simple-icon-eye w-xs-100" (click)="toViewReport(p)" data-toggle="tooltip" data-placement="bottom" title="Ver Informe"></i></td>
                     </tr>
                 </tbody>
             </table>

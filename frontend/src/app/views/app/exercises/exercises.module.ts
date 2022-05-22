@@ -24,9 +24,10 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { ViewExerciseComponent } from './view-exercise/view-exercise.component';
 import { DoExerciseComponent } from './do-exercise/do-exercise.component';
+import { ViewReportComponent } from './view-report/view-report.component';
 
 @NgModule({
-  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, ExercisesComponent, DetailsAltComponent, ViewExerciseComponent, DoExerciseComponent],
+  declarations: [DataListComponent, DetailsComponent, ImageListComponent, ThumbListComponent, ExercisesComponent, DetailsAltComponent, ViewExerciseComponent, DoExerciseComponent, ViewReportComponent],
   imports: [
     SharedModule,
     ExercisesRoutingModule,

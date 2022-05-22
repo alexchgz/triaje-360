@@ -10,6 +10,7 @@ import { EjercicioService } from 'src/app/data/ejercicio.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { DatePipe } from '@angular/common';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-show-student-register-modal',
@@ -36,7 +37,7 @@ export class ShowStudentRegisterModalComponent implements OnInit {
 
   constructor(private modalService: BsModalService, private auth: AuthService, private sender: SenderService,
     private ejerciciosUsuarioService: EjerciciosUsuarioService, private usuarioService: UsuarioService, private ejercicioService: EjercicioService,
-    private notifications: NotificationsService, private datePipe: DatePipe) { }
+    private notifications: NotificationsService, private datePipe: DatePipe, private router: Router) { }
 
   ngOnInit(): void {
     this.userRole = this.auth.rol;
@@ -111,9 +112,18 @@ export class ShowStudentRegisterModalComponent implements OnInit {
 
   }
 
-  closeModal(): void {
+  toViewReport(registro: EjerciciosUsuario) {
+    console.log(registro);
+    this.sender.ejercicioUsuario = registro.uid;
+    this.router.navigateByUrl('app/dashboards/all/exercises/view-report');
+    this.closeModal(false);
+  }
+
+  closeModal(report?: boolean): void {
     this.modalRef.hide();
-    this.sender.idExercise = undefined;
+    if(report == true) {
+      this.sender.idExercise = undefined;
+    }
   }
 
 }
