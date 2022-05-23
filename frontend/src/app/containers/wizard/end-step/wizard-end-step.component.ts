@@ -230,7 +230,6 @@ export class WizardEndStepComponent implements OnInit {
 
     // si tenemos ejercicio -> EDITAR
     if(this.exercise) {
-      console.log(this.exercise);
       this.ejercicioService.updateExercise(this.dataEjercicio, this.exercise.uid)
         .subscribe( res => {
           // this.router.navigateByUrl('app/dashboards/all/subjects/data-list');
@@ -485,7 +484,6 @@ export class WizardEndStepComponent implements OnInit {
             }
           }
 
-          console.log('EJER:', this.dataEjercicio.pacientes);
           this.resetDataPaciente();
 
           this.notifications.create('Paciente editado', 'Se ha editado el Paciente correctamente', NotificationType.Info, {
@@ -538,7 +536,6 @@ export class WizardEndStepComponent implements OnInit {
     
     this.childrenImg = paciente.img;
     this.dataPaciente = paciente;
-    console.log(this.dataPaciente);
     this.selected = [];
     for(let i=0; i<this.actions.length; i++) {
       for(let j=0; j<this.dataPaciente.acciones.length; j++) {

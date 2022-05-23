@@ -98,7 +98,6 @@ export class EjercicioService {
           "paciente": data['pacientes'][i].uid
         });
       }
-      console.log('pacs:', pacs);
     }
 
     // DATA
@@ -113,8 +112,6 @@ export class EjercicioService {
       "imgs": data['imgs'],
       "pacientes": pacs
     }
-
-    console.log(sendData);
 
     return this.http.put(url, sendData, { headers });
 
