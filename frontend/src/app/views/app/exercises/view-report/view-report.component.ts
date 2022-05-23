@@ -7,7 +7,7 @@ import { Actividad } from 'src/app/models/actividad.model';
 import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { EjerciciosUsuario } from 'src/app/models/ejerciciosUsuario.model';
 import { Usuario } from 'src/app/models/usuario.model';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Paciente } from 'src/app/models/paciente.model';
 import { environment } from 'src/environments/environment';
 
@@ -32,7 +32,7 @@ export class ViewReportComponent implements OnInit {
   triadosP: any[] = [0, 0, 0, 0, 0];
 
   constructor(private sender: SenderService, private actividadService: ActividadService, private notifications: NotificationsService,
-    private ejerciciosUsuarioService: EjerciciosUsuarioService, private datePipe: DatePipe) { }
+    private ejerciciosUsuarioService: EjerciciosUsuarioService, private datePipe: DatePipe, private location: Location) { }
 
   ngOnInit(): void {
     this.getEjercicioUsuario();
@@ -132,6 +132,30 @@ export class ViewReportComponent implements OnInit {
     }
 
     return;
+  }
+
+  searchActions(p: Paciente):string {
+    let aux = '';
+    for(let i=0; i<this.actividades.length; i++) {
+      if(this.actividades[i].paciente != undefined && this.actividades[i].paciente['_id'] == p['_id']) {
+        if(this.actividades[i].accion != undefined) {
+          if(aux == '') {
+            aux += this.actividades[i].accion['nombre'];
+          } else {
+            aux += ', ' + this.actividades[i].accion['nombre'];
+          }
+        }
+      }
+    }
+    if(aux == '') {
+      aux = 'Ninguna'
+    }
+    return aux;
+  }
+
+  goBack(): void {
+    this.sender.ejercicioUsuario = undefined;
+    this.location.back();
   }
 
 }

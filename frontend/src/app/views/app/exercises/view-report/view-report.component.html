@@ -1,5 +1,6 @@
 <div class="card mb-4">
     <div class="card-body contenedor">
+      <button class="top-right-button btn btn-primary btn-lg mr-1" (click)="goBack()">VOLVER</button>
       <h5 *ngIf="ejercicio && usuario" class="mb-4">Informe de Ejercicio: '{{ejercicio.nombre}}' de {{usuario.apellidos}}, {{usuario.nombre}} </h5>
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -48,13 +49,25 @@
                   </div>
                   <div class="descripcion">
                       <p><b>Paciente {{i+1}}</b></p>
-                      <p>{{p.paciente.descripcion}}</p>
+                      <p>{{p.paciente.descripcion}}.
+                        <span *ngIf="p.paciente.camina">Camina.</span>
+                        <span *ngIf="!p.paciente.camina">No camina.</span>
+                      </p>
                   </div>
                 </div>
                 <div class="separated2 card">
                   <div class="acciones card-body" id="color">
-                      <p><b>&#8226; Acciones Configuradas:</b> Collarín</p>
-                      <p><b>&#8226; Acciones Realizadas:</b> Collarín</p>
+                    <div class="accionesRealizadas">
+                      <p *ngIf="p.paciente.acciones.length==0"><b>&#8226; Acciones Configuradas: Ninguna</b></p>
+                      <p *ngIf="p.paciente.acciones.length>0"><b>&#8226; Acciones Configuradas:</b></p>
+                      <p *ngFor="let item of p.paciente.acciones; let i=index">
+                          <span *ngIf="i == p.paciente.acciones.length-1">{{item.accion.nombre}}</span>
+                          <span *ngIf="i != p.paciente.acciones.length-1">{{item.accion.nombre}},</span>
+                      </p>
+                    </div>
+                    <div class="accionesRealizadas">
+                      <p class="mt-2"><b>&#8226; Acciones Realizadas: </b>{{searchActions(p.paciente)}}</p>
+                    </div>
                   </div>
                   <div class="color card-body" id="color">
                       <p><b>&#8226; Color Configurado:</b> Rojo</p>

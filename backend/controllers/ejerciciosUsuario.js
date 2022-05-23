@@ -41,6 +41,7 @@ const getEjerciciosUsuario = async(req, res = response) => {
                     Actividad.find( { ejercicioUsuario: id }).populate('-__v')
                     .populate('paciente', '-__v')
                     .populate('ejercicioUsuario', '-__v')
+                    .populate('accion', '-__v')
                 ]);
             }
         }

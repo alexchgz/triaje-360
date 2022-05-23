@@ -52,7 +52,8 @@ export class DoExerciseComponent implements OnInit {
     "momento": undefined,
     "ejercicioUsuario": this.sender.ejercicioUsuario,
     "paciente": undefined,
-    "color": undefined
+    "color": undefined,
+    "accion": undefined
   }
 
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
@@ -97,7 +98,6 @@ export class DoExerciseComponent implements OnInit {
   getExercise() {
     this.ejercicioService.getExercise(this.sender.idExercise).subscribe(data => {
       this.ejercicio = data['ejercicios'];
-      console.log(this.ejercicio);
       this.setImagesScene();
     },
       error => {
@@ -275,7 +275,7 @@ export class DoExerciseComponent implements OnInit {
     }
     // this.setPenalizacion(event.accion.tiempo);
     let nombre = "Realización de Acción '" + event.accion.nombre + "' a";
-    this.createActivity(nombre, event.accion.tiempo, event.paciente);
+    this.createActivity(nombre, event.accion.tiempo, event.paciente, undefined, event.accion.uid);
   }
 
   backScene() {
@@ -304,7 +304,7 @@ export class DoExerciseComponent implements OnInit {
     return -1;
   }
 
-  createActivity(nombre: string, tiempo: number, paciente?: Paciente, color?: string) {
+  createActivity(nombre: string, tiempo: number, paciente?: Paciente, color?: string, accion?: number) {
     this.actividad.nombre = nombre;
     this.actividad.tiempo = tiempo;
     this.actividad.momento = this.time;
@@ -326,6 +326,8 @@ export class DoExerciseComponent implements OnInit {
             this.actividad.color = 'negro';
             break;
         }
+      } else if(accion) {
+        this.actividad.accion = accion;
       }
     }
     
@@ -353,6 +355,7 @@ export class DoExerciseComponent implements OnInit {
     this.actividad.momento = undefined;
     this.actividad.paciente = undefined;
     this.actividad.color = undefined;
+    this.actividad.accion = undefined;
   }
 
   terminarEjercicio() {

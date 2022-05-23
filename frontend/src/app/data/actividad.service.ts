@@ -45,7 +45,8 @@ export class ActividadService {
       "momento": data['momento'],
       "ejercicioUsuario": data['ejercicioUsuario'],
       "paciente": data['paciente'],
-      "color": data['color']
+      "color": data['color'],
+      "accion": data['accion']
     }
 
     return this.http.post(url, sendData, { headers });

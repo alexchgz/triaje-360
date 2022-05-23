@@ -26,6 +26,10 @@ const ActividadSchema = Schema({
     color: {
         type: String
     },
+    accion: {
+        type: Schema.Types.ObjectId,
+        ref: 'Accion'
+    },
     
 }, { collection: 'actividades' });
 

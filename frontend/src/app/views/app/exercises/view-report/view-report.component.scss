@@ -102,14 +102,40 @@ table {
     padding-bottom: 0 !important;
 }
 
-.color p, .acciones p {
-    margin: .5em;
+.color p, .acciones p, .acciones>.accionesRealizadas {
+    margin-left: 0 !important;
+}
+.acciones>.accionesRealizadas {
+    margin-top: .5em !important;
+    margin-bottom: .25em !important;
+}
+
+.acciones>.accionesRealizadas>p {
+    margin-right: .25em;
+}
+
+.color p {
+    margin-top: .25em !important;
+    margin-bottom: .5em !important;
+}
+
+.acciones .accionesRealizadas>p, .acciones .accionesRealizadas>div {
+    display: inline;
 }
 
 
 // ACTIVIDAD
 .contenedor {
     max-height: 100%;
+    position: relative;
+    padding: 0 !important;
+    margin: 1.75rem;
+}
+
+.contenedor button {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .resumen_content, .actividad_content {
@@ -168,7 +194,6 @@ table {
 
 .infoPaciente .accionesRealizadas>p {
     display: inline;
-    // margin-right: 0;
 }
 
 .infoPaciente .nombre_paciente {

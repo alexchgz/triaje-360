@@ -27,7 +27,8 @@ const getActividades = async(req, res = response) => {
             [actividades, totalActividades] = await Promise.all([
                 Actividad.find( { ejercicioUsuario: id }).populate('-__v')
                 .populate('paciente', '-__v')
-                .populate('ejercicioUsuario', '-__v'),
+                .populate('ejercicioUsuario', '-__v')
+                .populate('accion', '-__v'),
                 Actividad.countDocuments()
             ]);
 

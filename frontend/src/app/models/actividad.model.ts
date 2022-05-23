@@ -7,5 +7,6 @@ export class Actividad {
                  public momento: string,
                  public ejercicioUsuario: number,
                  public paciente?: number,
-                 public color?: string) {}
+                 public color?: string,
+                 public accion?: number) {}
   }
