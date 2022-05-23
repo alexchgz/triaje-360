@@ -41,6 +41,72 @@ table {
     border: 1px solid black;
 }
 
+// PACIENTES
+.separated {
+    display: flex;
+    padding: 1.75em;
+}
+
+.separated1 {
+    width: 25%;
+}
+.separated2 {
+    width: 70%;
+}
+
+.descripcion {
+    justify-content: center;
+}
+
+.descripcion p {
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    text-align: center;
+    font-size: 14px;
+}
+
+.imgs {
+    flex-wrap: wrap;
+    position: relative;
+    text-align: center;
+}
+
+    .imgs label {
+        height: 90px;
+        width: 90px;
+        // margin: 10px;
+        border: 1px solid #145388;
+        border-radius: 25px;
+        overflow: hidden;
+        // box-shadow: 0 3px 5px #145388;
+    }
+
+        .imgs label img {
+            height: 100%;
+            width: 100%;
+            padding: .5em;
+            object-fit: cover;
+        }
+
+.color, .acciones {
+    padding-left: 1em;
+}
+
+.color {
+    padding-top: 0 !important;
+    padding-bottom: 1em !important;
+}
+
+.acciones {
+    padding-top: 1em !important;
+    padding-bottom: 0 !important;
+}
+
+.color p, .acciones p {
+    margin: .5em;
+}
+
+
 // ACTIVIDAD
 .contenedor {
     max-height: 100%;

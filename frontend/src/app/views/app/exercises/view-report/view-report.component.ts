@@ -9,6 +9,7 @@ import { EjerciciosUsuario } from 'src/app/models/ejerciciosUsuario.model';
 import { Usuario } from 'src/app/models/usuario.model';
 import { DatePipe } from '@angular/common';
 import { Paciente } from 'src/app/models/paciente.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-report',
@@ -18,6 +19,7 @@ import { Paciente } from 'src/app/models/paciente.model';
 })
 export class ViewReportComponent implements OnInit {
 
+  urlPrefixPacientes: string = environment.prefix_urlPacientes;
   pillActive: string = 'resumen';
   actividades: Actividad[] = [];
   ejercicioUsuario: EjerciciosUsuario;

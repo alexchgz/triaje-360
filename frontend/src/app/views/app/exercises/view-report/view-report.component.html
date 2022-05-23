@@ -36,7 +36,33 @@
         </table>
       </div>
       <div *ngIf="pillActive=='pacientes'" class="pacientes_content">
-        <p>Pacientes</p>
+        <div [ngClass]="{'card d-flex flex-row mt-3 mb-3': true}" *ngFor="let p of ejercicio.pacientes; let i=index">
+          <div class="d-flex flex-grow-1 min-width-zero atc">
+              <div class="separated card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                <div class="separated1">
+                  <div class="imgs">
+                      <label>
+                          <img src={{urlPrefixPacientes+p.paciente.img}}>
+                          <!-- <i class="simple-icon-check"></i> -->
+                      </label>
+                  </div>
+                  <div class="descripcion">
+                      <p><b>Paciente {{i+1}}</b></p>
+                      <p>{{p.paciente.descripcion}}</p>
+                  </div>
+              </div>
+              <div class="separated2 card">
+                <div class="acciones card-body" id="color">
+                    <p><b>&#8226; Acciones Configuradas:</b> Collarín</p>
+                    <p><b>&#8226; Acciones Realizadas:</b> Collarín</p>
+                </div>
+                <div class="color card-body" id="color">
+                    <p><b>&#8226; Color Configurado:</b> Rojo</p>
+                    <p><b>&#8226; Color Asignado:</b> Amarillo</p>
+                </div>
+            </div>
+          </div>
+      </div>
       </div>
       <div *ngIf="pillActive=='actividad'" class="actividad_content">
         <div *ngIf="ejercicioUsuario" class="tiempos">
