@@ -1,6 +1,7 @@
 const Ejercicio = require('../models/ejercicios');
 const Usuario = require('../models/usuarios');
 const EjerciciosUsuario = require('../models/ejerciciosUsuario');
+const Actividad = require('../models/actividades');
 const { response } = require('express');
 
 const { infoToken } = require('../helpers/infotoken');
@@ -22,7 +23,7 @@ const getEjerciciosUsuario = async(req, res = response) => {
     }
 
     try {
-        var ejerciciosUsuario, totalEjerciciosUsuario;
+        var ejerciciosUsuario, totalEjerciciosUsuario, ejercicio, actividades;
 
         if (idUsuario && idEjercicio) { // si tenemos id de usuario y ejercicio
             [ejerciciosUsuario, totalEjerciciosUsuario] = await Promise.all([
@@ -31,9 +32,16 @@ const getEjerciciosUsuario = async(req, res = response) => {
             ]);
         } else {
             if(id) {
-                ejerciciosUsuario = await EjerciciosUsuario.findById(id)
-                .populate('idEjercicio', '-__v')
-                .populate('idUsuario', '-__v');
+                [ejerciciosUsuario, ejercicio, actividades] = await Promise.all([
+                    EjerciciosUsuario.findById(id)
+                    .populate('idEjercicio', '-__v')
+                    .populate('idUsuario', '-__v'),
+                    Ejercicio.findById(idEjercicio)
+                    .populate('pacientes.paciente', '-__v'),
+                    Actividad.find( { ejercicioUsuario: id }).populate('-__v')
+                    .populate('paciente', '-__v')
+                    .populate('ejercicioUsuario', '-__v')
+                ]);
             }
         }
 
@@ -41,7 +49,9 @@ const getEjerciciosUsuario = async(req, res = response) => {
             ok: true,
             msg: 'Registros de ejercicios obtenidos',
             ejerciciosUsuario,
-            totalEjerciciosUsuario
+            totalEjerciciosUsuario,
+            ejercicio,
+            actividades
         });
 
     } catch (error) {

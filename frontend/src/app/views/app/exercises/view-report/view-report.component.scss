@@ -1,4 +1,47 @@
+// RESUMEN
+table {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+}
 
+.simple-icon-check::before {
+    padding: 0em;
+    border-radius: 50px;
+    font-size: 18px;
+    transform: translateY(1px);
+    margin: 0.25em;
+    max-width: 40px;
+    display: block;
+}
+
+.Verde::before {
+    color: green !important;
+    background-color: green !important;
+}
+
+.Amarillo::before {
+    color: yellow !important;
+    background-color: yellow !important;
+}
+
+.Rojo::before {
+    color: red !important;
+    background-color: red !important;
+}
+
+.Negro::before {
+    color: black !important;
+    background-color: black !important;
+}
+
+.NoTriado::before {
+    color: transparent !important;
+    background-color: transparent !important;
+    border: 1px solid black;
+}
+
+// ACTIVIDAD
 .contenedor {
     max-height: 100%;
 }

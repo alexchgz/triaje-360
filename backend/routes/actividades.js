@@ -22,7 +22,8 @@ router.post('/', [
     check('tiempo', 'El argumento tiempo es obligatorio').isNumeric(),
     check('momento', 'El argumento momento es obligatorio').isString(),
     check('ejercicioUsuario', 'El argumento ejercicioUsuario es obligatorio').isMongoId(),
-    check('paciente', 'El argumento paciente es obligatorio').optional().isMongoId(),
+    check('paciente', 'El argumento paciente es Id').optional().isMongoId(),
+    check('color', 'El argumento color es string').optional().isString(),
     validarCampos
 ], crearActividad);
 
@@ -33,6 +34,7 @@ router.put('/:id', [
     check('momento', 'El argumento momento es obligatorio').isString(),
     check('ejercicioUsuario', 'El argumento ejercicioUsuario es obligatorio').isMongoId(),
     check('paciente', 'El argumento paciente es obligatorio').optional().isMongoId(),
+    check('color', 'El argumento color es string').optional().isString(),
     validarCampos
 ], actualizarActividad);
 

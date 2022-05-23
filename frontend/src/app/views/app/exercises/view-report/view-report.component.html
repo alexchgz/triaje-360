@@ -12,12 +12,28 @@
           <a class="nav-link c-pointer actividad" (click)="setActive('actividad')">Actividad</a>
         </li>
       </ul>
-      <div *ngIf="pillActive=='resumen'" class="resumen_content">
-        <div *ngIf="ejercicioUsuario" class="tiempos">
-            <p><b>Fecha Inicio:</b> {{ changeDateFormat(ejercicioUsuario.fecha_ejecucion) }}</p>
-            <p><b>Fecha Fin:</b> {{ changeDateFormat(ejercicioUsuario.fecha_fin) }}</p>
-            <p><b>Tiempo Total:</b> {{ ejercicioUsuario.tiempoTotal }}</p>
-        </div>
+      <div *ngIf="pillActive=='resumen'" class="resumen_content card">
+        <table class="table table-borderless card-body">
+          <thead>
+              <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Configurados</th>
+                  <th scope="col">% Configurados</th>
+                  <th scope="col">Triados</th>
+                  <th scope="col">% Triados</th>
+              </tr>
+          </thead>
+          <tbody *ngFor="let p of colours; let i=index">
+              <tr>
+                <td><i class="simple-icon-check {{p}}"></i></td>
+                <td>{{configurados[i]}}</td>
+                <td *ngIf="i == colours.length-1">{{configuradosP[i]}}</td>
+                <td *ngIf="i != colours.length-1">{{configuradosP[i]}}%</td>
+                <td>{{triados[i]}}</td>
+                <td>{{triadosP[i]}}%</td>
+              </tr>
+          </tbody>
+        </table>
       </div>
       <div *ngIf="pillActive=='pacientes'" class="pacientes_content">
         <p>Pacientes</p>

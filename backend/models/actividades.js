@@ -22,7 +22,10 @@ const ActividadSchema = Schema({
     paciente: {
         type: Schema.Types.ObjectId,
         ref: 'Paciente'
-    }
+    },
+    color: {
+        type: String
+    },
     
 }, { collection: 'actividades' });
 

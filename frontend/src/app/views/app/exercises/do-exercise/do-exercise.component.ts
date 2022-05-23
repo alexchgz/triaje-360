@@ -51,7 +51,8 @@ export class DoExerciseComponent implements OnInit {
     "tiempo": undefined,
     "momento": undefined,
     "ejercicioUsuario": this.sender.ejercicioUsuario,
-    "paciente": undefined
+    "paciente": undefined,
+    "color": undefined
   }
 
   @ViewChild('triarModalRef', { static: true }) triarModalRef: TriarPatientComponent;
@@ -259,7 +260,7 @@ export class DoExerciseComponent implements OnInit {
 
     // let nombre = "Asignación de color '" + event.color + "' a Paciente " + this.searchPatient(event.paciente['_id']);
     let nombre = "Asignación de color '" + event.color + "' a";
-    this.createActivity(nombre, 10, event.paciente);
+    this.createActivity(nombre, 10, event.paciente, event.color);
   }
 
   setAction(event) {
@@ -303,16 +304,32 @@ export class DoExerciseComponent implements OnInit {
     return -1;
   }
 
-  createActivity(nombre: string, tiempo: number, paciente?: Paciente) {
+  createActivity(nombre: string, tiempo: number, paciente?: Paciente, color?: string) {
     this.actividad.nombre = nombre;
     this.actividad.tiempo = tiempo;
     this.actividad.momento = this.time;
     this.actividad.ejercicioUsuario = this.sender.ejercicioUsuario;
     if(paciente) {
       this.actividad.paciente = paciente['_id'];
+      if(color) {
+        switch(color) {
+          case 'Verde':
+            this.actividad.color = 'verde';
+            break;
+          case 'Amarillo':
+            this.actividad.color = 'amarillo';
+            break;
+          case 'Rojo':
+            this.actividad.color = 'rojo';
+            break;
+          case 'Negro':
+            this.actividad.color = 'negro';
+            break;
+        }
+      }
     }
+    
     this.actividadService.createActivity(this.actividad).subscribe(data => {
-      console.log('Ac:', data['actividad']);
       if(data['actividad'].nombre == "Terminar Ejercicio") {
         this.sender.ejercicioUsuario = undefined;
         this.router.navigate(['app/dashboards/all/exercises/data-list']);
@@ -335,7 +352,7 @@ export class DoExerciseComponent implements OnInit {
     this.actividad.tiempo = undefined;
     this.actividad.momento = undefined;
     this.actividad.paciente = undefined;
-    console.log('A:', this.actividad);
+    this.actividad.color = undefined;
   }
 
   terminarEjercicio() {
