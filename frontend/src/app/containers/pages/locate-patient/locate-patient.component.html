@@ -22,6 +22,13 @@
                         <p><b>&#8226; Color:</b> {{p.color}}</p>
                         <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
                         <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
+                        <div class="accionesRealizadas">
+                            <p *ngIf="p.acciones.length>0"><b>&#8226; Acciones:</b></p>
+                            <p *ngFor="let item of p.acciones; let i=index">
+                                <span *ngIf="i == p.acciones.length-1">{{item.accion.nombre}}</span>
+                                <span *ngIf="i != p.acciones.length-1">{{item.accion.nombre}},</span>
+                            </p>
+                        </div>
                     </div>
                 </label>
                 <label *ngIf="p == pacienteSeleccionado && p != undefined" class="selected">
@@ -35,6 +42,13 @@
                         <p><b>&#8226; Color:</b> {{p.color}}</p>
                         <p *ngIf="p.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.tiempoEmpeora}} segundos</p>
                         <p *ngIf="!p.empeora"><b>&#8226; Empeora:</b> No</p>
+                        <div class="accionesRealizadas">
+                            <p *ngIf="p.acciones.length>0"><b>&#8226; Acciones:</b></p>
+                            <p *ngFor="let item of p.acciones; let i=index">
+                                <span *ngIf="i == p.acciones.length-1">{{item.accion.nombre}}</span>
+                                <span *ngIf="i != p.acciones.length-1">{{item.accion.nombre}},</span>
+                            </p>
+                        </div>
                     </div>
                 </label>
             </div>

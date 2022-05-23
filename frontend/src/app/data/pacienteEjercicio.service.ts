@@ -46,8 +46,6 @@ export class PacienteEjercicioService {
       "y": data['y']
     }
 
-    console.log(sendData);
-
     return this.http.post(url, sendData, { headers });
 
   }

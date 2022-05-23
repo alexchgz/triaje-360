@@ -9,36 +9,35 @@ table {
     padding: 0em;
     border-radius: 50px;
     font-size: 18px;
-    transform: translateY(1px);
+    vertical-align: middle;
     margin: 0.25em;
-    max-width: 40px;
-    display: block;
+    border: 1px solid black;
+    // display: block;
 }
 
-.Verde::before {
+.Verde::before, .verde::before {
     color: green !important;
     background-color: green !important;
 }
 
-.Amarillo::before {
+.Amarillo::before, .amarillo::before {
     color: yellow !important;
     background-color: yellow !important;
 }
 
-.Rojo::before {
+.Rojo::before, .rojo::before {
     color: red !important;
     background-color: red !important;
 }
 
-.Negro::before {
+.Negro::before, .negro::before {
     color: black !important;
     background-color: black !important;
 }
 
-.NoTriado::before {
+.NoTriado::before, .noTriado::before {
     color: transparent !important;
     background-color: transparent !important;
-    border: 1px solid black;
 }
 
 // PACIENTES

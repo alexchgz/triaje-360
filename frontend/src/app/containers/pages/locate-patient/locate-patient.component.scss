@@ -50,8 +50,8 @@ p {
             // display: block;
             border: 1px solid #145388;
             border-radius: 10px;
-            width: 250px;
-            transform: translateX(-80px);
+            width: 290px;
+            transform: translateX(-100px);
             padding: 10px;
             margin-top: .5em;
             background-color: #fff;
@@ -70,6 +70,11 @@ p {
         .pacientes label:hover .infoPaciente {
             display: block;
         }
+
+        .accionesRealizadas>p {
+            display: inline;
+        }
+        
 
 .simple-icon-check::before {
     background-color: #145388;

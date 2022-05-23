@@ -153,6 +153,23 @@ export class ViewReportComponent implements OnInit {
     return aux;
   }
 
+  searchColour(p: Paciente): string {
+
+    let aux = '';
+    for(let i=0; i<this.actividades.length; i++) {
+      if(this.actividades[i].paciente != undefined && this.actividades[i].paciente['_id'] == p['_id']) {
+        if(this.actividades[i].color != undefined) {
+          aux = this.actividades[i].color;
+        }
+      }
+    }
+    if(aux == '') {
+      aux = 'noTriado'
+    }
+
+    return aux;
+  }
+
   goBack(): void {
     this.sender.ejercicioUsuario = undefined;
     this.location.back();

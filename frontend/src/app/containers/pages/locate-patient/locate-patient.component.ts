@@ -50,7 +50,6 @@ export class LocatePatientComponent implements OnInit {
     if(p != this.pacienteSeleccionado) {
       // var element = document.querySelector('img[src="' + this.urlPrefixPacientes + p.img +'"]');
       var ident = 'paciente' + pos;
-      console.log(ident);
       var element = document.getElementById(ident);
       element.parentElement.className = 'selected';
       this.pacienteSeleccionado = p;
@@ -62,7 +61,6 @@ export class LocatePatientComponent implements OnInit {
       this.pacienteSeleccionado = undefined;
     }
     // this.pacienteSeleccionado = p;
-    console.log(this.pacienteSeleccionado);
   }
 
   allUndefined(): boolean {
