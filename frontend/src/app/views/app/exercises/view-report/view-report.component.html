@@ -43,7 +43,7 @@
                                     <p *ngIf="p.paciente.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.paciente.tiempoEmpeora}} segundos</p>
                                     <p *ngIf="!p.paciente.empeora"><b>&#8226; Empeora:</b> No</p>
                                     <div class="accionesRealizadas">
-                                        <p *ngIf="p.paciente.acciones.length>0"><b>&#8226; Acciones: </b></p>
+                                        <p *ngIf="p.paciente.acciones.length>0"><b>&#8226; Acciones:</b></p>
                                         <p *ngFor="let item of p.paciente.acciones; let i=index">
                                             <span *ngIf="i == p.paciente.acciones.length-1">{{item.accion.nombre}}</span>
                                             <span *ngIf="i != p.paciente.acciones.length-1">{{item.accion.nombre}},</span>

@@ -273,7 +273,7 @@ export class DoExerciseComponent implements OnInit {
       }      
     }
     // this.setPenalizacion(event.accion.tiempo);
-    let nombre = "Realización de Acción '" + event.accion.nombre + "' a Paciente " + this.searchPatient(event.paciente['_id']);
+    let nombre = "Realización de Acción '" + event.accion.nombre + "' a";
     this.createActivity(nombre, event.accion.tiempo, event.paciente);
   }
 
@@ -312,11 +312,13 @@ export class DoExerciseComponent implements OnInit {
       this.actividad.paciente = paciente['_id'];
     }
     this.actividadService.createActivity(this.actividad).subscribe(data => {
+      console.log('Ac:', data['actividad']);
       if(data['actividad'].nombre == "Terminar Ejercicio") {
         this.sender.ejercicioUsuario = undefined;
         this.router.navigate(['app/dashboards/all/exercises/data-list']);
       }
       this.setPenalizacion(this.actividad.tiempo);
+      this.resetActividad();
     }, (err) => {
       this.notifications.create('Error', 'No se ha podido crear la Actividad', NotificationType.Error, {
         theClass: 'outline primary',
@@ -326,6 +328,14 @@ export class DoExerciseComponent implements OnInit {
 
       return;
     });
+  }
+
+  resetActividad() {
+    this.actividad.nombre = undefined;
+    this.actividad.tiempo = undefined;
+    this.actividad.momento = undefined;
+    this.actividad.paciente = undefined;
+    console.log('A:', this.actividad);
   }
 
   terminarEjercicio() {
