@@ -32,7 +32,26 @@
             <div [ngClass]="{'card d-flex flex-row mb-3': true}" *ngFor="let p of actividades; let i=index">
                 <div class="d-flex flex-grow-1 min-width-zero atc">
                     <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                        <p class="list-item-heading mb-0 truncate w-xs-100">{{p.nombre}} ({{p.momento}})</p>
+                        <div class="list-item-heading mb-0 truncate w-xs-100">{{p.nombre}} 
+                            <span *ngIf="!p.paciente">({{p.momento}})</span>
+                            <span *ngIf="p.paciente" class="paciente">Paciente {{searchPatient(p.paciente)}} <span class="normal">({{p.momento}})</span> 
+                                <div class="infoPaciente">
+                                    <p *ngIf="p.paciente.camina" class="first"><b>&#8226; Camina:</b> Sí</p>
+                                    <p *ngIf="!p.paciente.camina" class="first"><b>&#8226; Camina:</b> No</p>
+                                    <p><b>&#8226; Descripción:</b> {{p.paciente.descripcion}}</p>
+                                    <p><b>&#8226; Color:</b> {{p.paciente.color}}</p>
+                                    <p *ngIf="p.paciente.empeora"><b>&#8226; Empeora:</b> Sí, tras {{p.paciente.tiempoEmpeora}} segundos</p>
+                                    <p *ngIf="!p.paciente.empeora"><b>&#8226; Empeora:</b> No</p>
+                                    <div class="accionesRealizadas">
+                                        <p *ngIf="p.paciente.acciones.length>0"><b>&#8226; Acciones: </b></p>
+                                        <p *ngFor="let item of p.paciente.acciones; let i=index">
+                                            <span *ngIf="i == p.paciente.acciones.length-1">{{item.accion.nombre}}</span>
+                                            <span *ngIf="i != p.paciente.acciones.length-1">{{item.accion.nombre}},</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

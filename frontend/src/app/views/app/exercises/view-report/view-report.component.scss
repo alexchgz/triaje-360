@@ -27,7 +27,66 @@
 }
 .actividad_content .card-body {
     padding: 1em;
+    width: 100%;
 }
+
+.card-body>div {
+    text-align: left !important;
+}
+
+.infoPaciente {
+    position: absolute;
+    display: none;
+    padding: 10px;
+    margin-top: 1em;
+    background-color: #fff;
+    z-index: 10;
+    color: #3c3c3c;
+    cursor: default;
+}
+
+.infoPaciente p, .infoPaciente div {
+    width: 100%;
+    height: auto;
+    margin-bottom: .5em;
+    margin-right: .5em;
+    text-align: left;
+}
+
+.infoPaciente .first {
+    margin-top: 1em !important;
+}
+
+.infoPaciente .accionesRealizadas>p {
+    display: inline;
+    // margin-right: 0;
+}
+
+.infoPaciente .nombre_paciente {
+    text-align: center !important;
+}
+
+.paciente {
+    color: #145388;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+}
+
+.normal {
+    color: #3c3c3c !important;
+    cursor: default !important;
+    font-weight: normal !important;
+}
+
+.paciente:hover .infoPaciente {
+    display: contents;
+    margin-top: 1em;
+}
+
+// .normal:hover .infoPaciente {
+//     display: none !important;
+// }
 
 ///////// SCROLLBAR /////////
 ::-webkit-scrollbar {

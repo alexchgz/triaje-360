@@ -8,6 +8,7 @@ import { Ejercicio } from 'src/app/models/ejercicio.model';
 import { EjerciciosUsuario } from 'src/app/models/ejerciciosUsuario.model';
 import { Usuario } from 'src/app/models/usuario.model';
 import { DatePipe } from '@angular/common';
+import { Paciente } from 'src/app/models/paciente.model';
 
 @Component({
   selector: 'app-view-report',
@@ -75,11 +76,23 @@ export class ViewReportComponent implements OnInit {
     }
   }
 
-  changeDateFormat(f: Date): void {
+  changeDateFormat(f: Date): string {
     let fecha;
     fecha = this.datePipe.transform(f, 'dd/MM/yyyy HH:mm:ss');
 
     return fecha;
+  }
+
+  searchPatient(p: Paciente): number {
+    // console.log('1:' , this.ejercicio.pacientes);
+    // console.log('2:' , p);
+    for(let i=0; i<this.ejercicio.pacientes.length; i++) {
+      if(this.ejercicio.pacientes[i].paciente == p['_id']) {
+        return i; 
+      }
+    }
+
+    return;
   }
 
 }

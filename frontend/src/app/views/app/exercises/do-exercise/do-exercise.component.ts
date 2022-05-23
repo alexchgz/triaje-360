@@ -257,7 +257,8 @@ export class DoExerciseComponent implements OnInit {
         break;
     }
 
-    let nombre = "Asignación de color '" + event.color + "' a Paciente " + this.searchPatient(event.paciente['_id']);
+    // let nombre = "Asignación de color '" + event.color + "' a Paciente " + this.searchPatient(event.paciente['_id']);
+    let nombre = "Asignación de color '" + event.color + "' a";
     this.createActivity(nombre, 10, event.paciente);
   }
 
@@ -493,7 +494,8 @@ export class DoExerciseComponent implements OnInit {
         var i = that.searchPatient(hotspot.paciente['_id']);
         if(i > -1) {
           that.triarModalRef.show(hotspot.paciente, hotspot.color, hotspot.acciones);
-          that.createActivity("Entra a atender a Paciente " + i, 10, hotspot.paciente);
+          // that.createActivity("Entra a atender a Paciente " + i, 10, hotspot.paciente);
+          that.createActivity("Entra a atender a", 10, hotspot.paciente);
         }
         
       });
