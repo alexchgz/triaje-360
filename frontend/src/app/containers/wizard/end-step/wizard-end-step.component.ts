@@ -508,8 +508,6 @@ export class WizardEndStepComponent implements OnInit {
         data => {
           if (data['ok']) {
             this.dataEjercicio.pacientes.push(data['paciente']);
-            // console.log('Paciente:', data['paciente']);
-            console.log('EJER:', this.dataEjercicio.pacientes);
             this.resetDataPaciente();
             this.notifications.create('Paciente creado', 'Se ha creado el Paciente correctamente y se ha añadido al Ejercicio', NotificationType.Info, {
               theClass: 'outline primary',
@@ -549,9 +547,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   deletePatient(i: number) {
-    console.log('Elimino Paciente');
     if(this.dataEjercicio.pacientes[i].uid == this.dataPaciente['uid']) {
-      console.log('entro');
       this.resetDataPaciente();
     }
     this.dataEjercicio.pacientes.splice(i, 1);
@@ -560,7 +556,6 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   resetDataPaciente(): void {
-    console.log('entro');
     if(this.dataPaciente['uid']) {
       this.dataPaciente['uid'] = undefined;
     }
@@ -679,7 +674,6 @@ export class WizardEndStepComponent implements OnInit {
       }
       if(!esta) {
         this.dislocatePatient(undefined, undefined, this.pacientesEjercicio[i]);
-        console.log(this.pacientesEjercicio[i]);
       }
       esta = false;
     }
@@ -799,7 +793,6 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   findExercisePatient(x: number, y: number): PacienteEjercicio {
-    console.log(this.pacientesEjercicio);
     for(let i=0; i<this.pacientesEjercicio.length; i++) {
       if(this.pacientesEjercicio[i].idPaciente['_id'] == this.table[y][x]['_id']) {
         return this.pacientesEjercicio[i];

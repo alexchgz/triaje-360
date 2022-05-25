@@ -60,7 +60,7 @@ const crearPaciente = async(req, res = response) => {
     // Solo puede crear cursos un admin
     const token = req.header('x-token');
     // lo puede actualizar un administrador
-    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
         return res.status(400).json({
             ok: false,
             msg: 'No tiene permisos para crear pacientes',
@@ -102,7 +102,7 @@ const actualizarPaciente = async(req, res = response) => {
     // Solo puede actualizar cursos un admin
     const token = req.header('x-token');
     // lo puede actualizar un administrador
-    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
         return res.status(400).json({
             ok: false,
             msg: 'No tiene permisos para actualizar pacientes',
@@ -145,7 +145,7 @@ const borrarPaciente = async(req, res = response) => {
     // Solo puede borrar cursos un admin
     const token = req.header('x-token');
     // lo puede actualizar un administrador
-    if (!(infoToken(token).rol === 'ROL_ADMIN')) {
+    if (!(infoToken(token).rol === 'ROL_ADMIN') && !(infoToken(token).rol === 'ROL_PROFESOR')) {
         return res.status(400).json({
             ok: false,
             msg: 'No tiene permisos para borrar imagenes',

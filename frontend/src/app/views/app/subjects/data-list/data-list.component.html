@@ -45,9 +45,9 @@
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                     <!-- INFO -->
                     <div class="codigo">
-                        <a class="list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
+                        <p class="list-item-heading mb-0 truncate w-xs-100">
                             {{p.nombrecorto}} ({{ p.codigo }})
-                        </a>
+                        </p>
                     </div>
                     <div class="nombre">
                         <p class="mb-0 text-muted text-small w-xs-100">{{p.nombre}}</p>
@@ -64,7 +64,7 @@
 
                     <!-- ACCIONES -->
                     <div [className]="userRole==0 ? 'acciones atc up d-flex mb-0 text-muted text-small w-xs-100' : 'acciones atc d-flex mb-0 text-muted text-small w-xs-100'">
-                        <i *ngIf="userRole == 0" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Añadir Ejercicio" (click)="toCreateExercise(p.uid)"></i>
+                        <i *ngIf="userRole != 2" class="simple-icon-plus" data-toggle="tooltip" data-placement="bottom" title="Añadir Ejercicio" (click)="toCreateExercise(p.uid)"></i>
                         <i class="simple-icon-notebook ml-3" data-toggle="tooltip" data-placement="bottom" title="Ver Ejercicios" (click)="toExercises(p.uid)"></i>
                         <i *ngIf="userRole != 2" class="simple-icon-user ml-3" data-toggle="tooltip" data-placement="bottom" title="Gestionar Asignatura" (click)="showManageModal(p)"></i>
                         <i *ngIf="userRole == 0" class="simple-icon-pencil ml-3" data-toggle="tooltip" data-placement="bottom" title="Editar Asignatura" (click)="showAddNewModal(p)"></i>

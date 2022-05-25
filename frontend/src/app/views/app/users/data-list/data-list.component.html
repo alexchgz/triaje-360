@@ -40,9 +40,9 @@
         <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index">
             <div class="d-flex flex-grow-1 min-width-zero atc">
                 <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                    <a class="nombre list-item-heading mb-0 truncate w-xs-100" href="javascript:;">
+                    <p class="nombre list-item-heading mb-0 truncate w-xs-100">
                       {{p.apellidos}}, {{p.nombre}}
-                    </a>
+                    </p>
                     <p class="email mb-0 text-muted text-small w-xs-100">{{p.email}}</p>
                     <div class="rol w-xs-100">
                         <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.rol}}</span>
