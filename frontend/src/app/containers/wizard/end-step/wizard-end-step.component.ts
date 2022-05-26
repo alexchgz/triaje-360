@@ -19,6 +19,7 @@ import { Accion } from 'src/app/models/accion.model';
 import { AccionService } from 'src/app/data/accion.service';
 import { SelectPatientImgModalComponent } from 'src/app/containers/pages/select-patient-img-modal/select-patient-img-modal.component';
 import { LocatePatientComponent } from '../../pages/locate-patient/locate-patient.component';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-wizard-end-step',
@@ -28,6 +29,7 @@ import { LocatePatientComponent } from '../../pages/locate-patient/locate-patien
 })
 export class WizardEndStepComponent implements OnInit {
 
+  userId: string;
   exercise: Ejercicio;
   subject: Asignatura;
   subjects: Asignatura[];
@@ -93,7 +95,7 @@ export class WizardEndStepComponent implements OnInit {
   constructor(private asignaturaService: AsignaturaService, private ejercicioService: EjercicioService, private fb: FormBuilder,
     private router: Router, private datePipe: DatePipe, private location: Location, private sender: SenderService,
     private notifications: NotificationsService, private imagenService: ImagenService, private pacienteService: PacienteService,
-    private accionService: AccionService, private pacienteEjercicioService: PacienteEjercicioService) { }
+    private accionService: AccionService, private pacienteEjercicioService: PacienteEjercicioService, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.initData();
@@ -105,6 +107,7 @@ export class WizardEndStepComponent implements OnInit {
   // *************** DATA METHODS ***********************
 
   initData(): void {
+    this.userId = this.auth.uid;
     // para comprobar la fecha de hoy y mañana en el input
     var today = new Date();
     var tomorrow = new Date(today.getTime() + 24*60*60*1000);
@@ -128,7 +131,7 @@ export class WizardEndStepComponent implements OnInit {
   }
 
   getSubjects() {
-    this.asignaturaService.getSubjects().subscribe(
+    this.asignaturaService.getSubjects(undefined, undefined, undefined, this.userId).subscribe(
       data => {
         if (data['ok']) {
           this.subjects = data['asignaturas'];
