@@ -537,6 +537,7 @@ export class DoExerciseComponent implements OnInit {
       icon.style['width'] = '100%';
       icon.style['height'] = '100%';
       icon.style['cursor'] = 'pointer';
+      icon.style['border-radius'] = '10px';
       // iconWrapper.appendChild(icon);
 
       var color = document.createElement('i');
