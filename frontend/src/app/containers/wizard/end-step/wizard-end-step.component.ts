@@ -136,6 +136,7 @@ export class WizardEndStepComponent implements OnInit {
         if (data['ok']) {
           this.subjects = data['asignaturas'];
         }
+        console.log('si');
       },
       error => {
         this.notifications.create('Error', 'No se han podidio obtener las Asignaturas', NotificationType.Error, {
